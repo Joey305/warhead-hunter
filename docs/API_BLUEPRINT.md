@@ -266,6 +266,53 @@ Proposed response structure:
 - `GET /api/jobs/{job_id}/files/{filename}` streams one specific file
 - `GET /api/jobs/{job_id}/bundle` returns a ZIP archive
 
+## Curated Example Jobs and Prepared Structure Retrieval
+
+Read-only curated examples provide immediate API usability without requiring full public job submission. They are useful for demonstrating output formats, supporting reproducible inspection of completed jobs, and allowing users to download prepared structure outputs from known example runs.
+
+### Why read-only examples are useful
+
+- they let users test the API safely
+- they expose real output formats from completed jobs
+- they avoid requiring new job submission for first-contact API exploration
+- they support downstream structure collection and notebook workflows
+
+### Endpoint table
+
+| Method | Path | Role |
+|---|---|---|
+| GET | `/api/examples` | List curated examples and availability metadata |
+| GET | `/api/examples/{job_id}` | Return metadata for one curated example |
+| GET | `/api/examples/{job_id}/files` | List safe downloadable files for one example |
+| GET | `/api/examples/{job_id}/files/{filename}` | Download one safe result file |
+| GET | `/api/examples/{job_id}/bundle` | Download ZIP bundle of safe example outputs |
+| GET | `/api/indexed-jobs` | Optional read-only index aligned with the Past Jobs Browser |
+
+### How curated examples differ from new job submission
+
+- curated examples are read-only
+- curated examples refer to known completed jobs on a given deployment
+- curated examples do not change pipeline execution behavior
+- curated examples are not a substitute for future `POST /api/jobs`
+
+### How users can download cleaned structures
+
+Curated example jobs can expose:
+
+- cleaned ligand-bound PDB files
+- ligand SDF files
+- SVG atom maps
+- CSV and related result tables
+- downloadable ZIP bundles of safe job-derived outputs
+
+These endpoints are intended for prepared, job-derived outputs rather than for unrestricted filesystem access.
+
+### Future extension
+
+- protein-class search over indexed jobs
+- richer target/query filtering
+- batch export of prepared structures from selected completed jobs
+
 ## Health / Status Endpoints
 
 ### Proposed endpoints

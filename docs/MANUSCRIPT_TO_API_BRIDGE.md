@@ -12,6 +12,7 @@ The manuscript can safely state that the current repository:
 - runs analyses as per-job workflows stored in job-specific directories
 - produces structured output artifacts including CSV, SVG, SDF, and PDB files
 - already includes JSON-style endpoints for atom-level SASA retrieval and result-serving support
+- can expose curated completed jobs through read-only API endpoints for example-based exploration
 - is architecturally compatible with future programmatic access
 
 These claims are grounded in the current code.
@@ -34,6 +35,7 @@ Recommended manuscript phrasing:
 
 - "The current job-oriented architecture is compatible with future programmatic interfaces."
 - "The repository already includes JSON-serving components for SASA-focused result retrieval."
+- "Curated completed jobs can be exposed through read-only API endpoints to demonstrate output formats and support reproducible inspection of example results."
 - "A future API layer could expose job submission, result manifests, and downloadable outputs."
 
 Avoid stronger wording such as:

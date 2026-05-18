@@ -16,6 +16,7 @@ Fixes:
 """
 
 import os
+import json
 import shutil
 import subprocess
 import threading
@@ -87,6 +88,43 @@ def _timestamp() -> str:
 def _job_log_path(job_dir: str) -> str:
     return os.path.join(job_dir, "job.log")
 
+def _job_metadata_path(job_dir: str) -> str:
+    return os.path.join(job_dir, "job_metadata.json")
+
+def _metadata_timestamp() -> str:
+    return datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+
+def _default_outputs(job_id: str) -> Dict[str, Any]:
+    return {
+        "job_dir": os.path.join(JOBS_DIR, job_id),
+        "results_url": f"/api/jobs/{job_id}/results",
+        "files_url": f"/api/jobs/{job_id}/files",
+        "bundle_url": f"/api/jobs/{job_id}/bundle",
+    }
+
+def write_job_metadata(job_id: str, patch: Dict[str, Any], job_dir: Optional[str] = None) -> None:
+    job_dir = job_dir or os.path.join(JOBS_DIR, job_id)
+    os.makedirs(job_dir, exist_ok=True)
+    fp = _job_metadata_path(job_dir)
+
+    with JOB_LOCK:
+        data: Dict[str, Any] = {}
+        if os.path.exists(fp):
+            try:
+                with open(fp, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+            except Exception:
+                data = {}
+
+        data.update(patch or {})
+        data["job_id"] = job_id
+        data["updated_at"] = _metadata_timestamp()
+        data.setdefault("outputs", _default_outputs(job_id))
+        data.setdefault("error", None)
+
+        with open(fp, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, sort_keys=True)
+
 def log_message(job_id: str, message: str) -> None:
     entry = f"[{_now()}] {message}"
     print(entry, flush=True)
@@ -125,6 +163,11 @@ def run_script_logged(
     with JOB_LOCK:
         JOB_STORE[job_id]["current_step"] = script_name
         JOB_STORE[job_id]["step_started_at"] = _now()
+    write_job_metadata(job_id, {
+        "status": JOB_STORE.get(job_id, {}).get("status", "running"),
+        "current_step": script_name,
+        "step_started_at": _now(),
+    }, job_dir=job_dir)
 
     log_message(job_id, f"🚀 Running {script_name}...")
 
@@ -231,6 +274,14 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
         JOB_STORE[job_id]["finished_at"] = ""
         JOB_STORE[job_id]["current_step"] = ""
         JOB_STORE[job_id]["step_started_at"] = ""
+    write_job_metadata(job_id, {
+        "status": "running",
+        "started_at": _timestamp(),
+        "finished_at": "",
+        "current_step": "",
+        "step_started_at": "",
+        "error": None,
+    }, job_dir=job_dir)
 
     try:
         log_message(job_id, f"Initializing workspace for {target_name}...")
@@ -284,6 +335,12 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
         with JOB_LOCK:
             JOB_STORE[job_id]["status"] = "completed"
             JOB_STORE[job_id]["finished_at"] = _timestamp()
+        write_job_metadata(job_id, {
+            "status": "completed",
+            "finished_at": _timestamp(),
+            "current_step": "",
+            "error": None,
+        }, job_dir=job_dir)
 
         log_message(job_id, "✅ PIPELINE FINISHED SUCCESSFULLY")
         log_message(job_id, "Access results in the Browse tab.")
@@ -292,11 +349,25 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
         with JOB_LOCK:
             JOB_STORE[job_id]["status"] = "failed"
             JOB_STORE[job_id]["finished_at"] = _timestamp()
+        write_job_metadata(job_id, {
+            "status": "failed",
+            "finished_at": _timestamp(),
+            "error": {
+                "message": str(e),
+            },
+        }, job_dir=job_dir)
 
         log_message(job_id, f"❌ CRITICAL ERROR: {str(e)}")
 
 
-def start_job(target_name: str, search_query: str, fasta_seq: str) -> str:
+def start_job(
+    target_name: str,
+    search_query: str,
+    fasta_seq: str,
+    *,
+    source: str = "web",
+    request_payload: Optional[Dict[str, Any]] = None,
+) -> str:
     job_id = str(uuid.uuid4())[:8]
     job_dir = os.path.join(JOBS_DIR, job_id)
     os.makedirs(job_dir, exist_ok=True)
@@ -312,6 +383,18 @@ def start_job(target_name: str, search_query: str, fasta_seq: str) -> str:
             "step_started_at": "",
             "log": [],
         }
+    write_job_metadata(job_id, {
+        "status": "queued",
+        "created_at": _metadata_timestamp(),
+        "source": source,
+        "request": request_payload or {
+            "target_name": target_name,
+            "search_query": search_query,
+            "fasta_seq": fasta_seq,
+        },
+        "outputs": _default_outputs(job_id),
+        "error": None,
+    }, job_dir=job_dir)
 
     thread = threading.Thread(
         target=run_pipeline_task,

@@ -73,6 +73,32 @@ Add a documented, automatable API to Warhead Hunter without discarding the curre
 - Simplifies future API result endpoints
 - Documents the de facto output contract
 
+## Phase 3A: Read-only Curated Examples
+
+### Objectives
+
+- expose a small set of completed example jobs through safe read-only endpoints
+- make the API immediately usable before full job submission exists
+- support prepared structure retrieval from completed jobs
+
+### Suggested work
+
+- define a centralized curated example list
+- add:
+  - `GET /api/examples`
+  - `GET /api/examples/{job_id}`
+  - `GET /api/examples/{job_id}/files`
+  - `GET /api/examples/{job_id}/files/{filename}`
+  - `GET /api/examples/{job_id}/bundle`
+- optionally add `GET /api/indexed-jobs`
+
+### Benefits
+
+- immediate real-output API exploration
+- reproducible example workflows
+- safe access to cleaned, job-derived structure outputs
+- useful bridge between browser-only use and future full API support
+
 ## Phase 4: Add Single-Job API Submission
 
 ### Objectives
