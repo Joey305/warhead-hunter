@@ -1,45 +1,55 @@
 {% extends "base.html" %}
 
-{% block title %}Warhead Hunter API Documentation — Python Automation Examples{% endblock %}
-{% block meta_description %}Warhead Hunter API documentation with copy/paste curl and Python examples for loading jobs, downloading cleaned WAR_PDB structures, retrieving SDF/SVG outputs, and preparing protein-ligand files for downstream workflows.{% endblock %}
+{% block title %}Warhead Hunter API Documentation — Active Job, Batch, And Structure Retrieval Endpoints{% endblock %}
+{% block meta_description %}Warhead Hunter API documentation for active job submission, batch submission, job monitoring, results manifests, WAR_PDB downloads, curated examples, and Python automation workflows.{% endblock %}
 
 {% block page_css %}
 <style>
   .api-docs-wrap {
-    max-width: 1240px;
+    width: min(1240px, 100%);
     margin: 0 auto;
-    padding: 92px 18px 32px;
+    display: grid;
+    gap: 20px;
   }
 
   .api-hero,
-  .api-panel {
-    background: rgba(8, 8, 8, 0.74);
-    border: 1px solid rgba(255, 215, 0, 0.34);
-    border-radius: 18px;
+  .api-panel,
+  .api-code-card {
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)),
+      rgba(4, 8, 16, 0.84);
+    border: 1px solid rgba(125, 249, 255, 0.14);
+    border-radius: 24px;
     box-shadow:
-      0 0 22px rgba(255, 215, 0, 0.12),
-      inset 0 0 0 1px rgba(0, 255, 127, 0.06);
-    backdrop-filter: blur(10px);
-  }
-
-  .api-hero {
-    padding: 28px;
-    margin-bottom: 20px;
+      0 18px 44px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255,255,255,0.03);
     position: relative;
     overflow: hidden;
   }
 
-  .api-hero::before {
+  .api-hero::before,
+  .api-panel::before,
+  .api-code-card::before {
     content: "";
     position: absolute;
     inset: 0;
-    background:
-      radial-gradient(circle at top right, rgba(30, 144, 255, 0.16), transparent 28%),
-      radial-gradient(circle at left center, rgba(0, 255, 127, 0.12), transparent 24%);
     pointer-events: none;
+    background:
+      radial-gradient(circle at top right, rgba(125, 249, 255, 0.12), transparent 24%),
+      radial-gradient(circle at bottom left, rgba(255, 215, 0, 0.08), transparent 24%);
   }
 
-  .api-hero-content {
+  .api-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.9fr);
+    gap: 24px;
+    padding: clamp(26px, 4vw, 40px);
+  }
+
+  .api-hero-copy,
+  .api-hero-side,
+  .api-panel-inner,
+  .api-code-card-inner {
     position: relative;
     z-index: 1;
   }
@@ -48,44 +58,43 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 12px;
-    border: 1px solid rgba(0, 255, 255, 0.28);
-    border-radius: 999px;
-    color: #9bfaff;
-    font-size: 0.84rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    background: rgba(0, 255, 255, 0.06);
     margin-bottom: 14px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(125, 249, 255, 0.18);
+    background: rgba(125, 249, 255, 0.05);
+    color: rgba(215, 248, 255, 0.82);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.72rem;
   }
 
   .api-title {
     margin: 0;
-    font-size: clamp(2rem, 4vw, 3rem);
-    color: var(--tron-yellow);
-    text-shadow: 0 0 14px rgba(255, 215, 0, 0.3);
+    color: #f4fbff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 4.6vw, 3.4rem);
+    line-height: 1.04;
   }
 
   .api-subtitle {
-    margin: 12px 0 0;
-    max-width: 900px;
-    color: #d7d7d7;
-    font-size: 1rem;
-    line-height: 1.7;
+    margin: 16px 0 0;
+    color: rgba(220, 232, 242, 0.84);
+    line-height: 1.75;
+    max-width: 72ch;
   }
 
   .api-actions,
   .api-inline-actions,
   .api-card-actions,
-  .api-code-actions,
-  .api-companion-actions {
+  .api-link-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
   }
 
   .api-actions {
-    margin-top: 20px;
+    margin-top: 22px;
   }
 
   .api-btn,
@@ -93,42 +102,112 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    min-height: 42px;
-    padding: 10px 14px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 215, 0, 0.34);
-    background: rgba(255, 255, 255, 0.03);
-    color: var(--tron-white);
+    min-height: 40px;
+    padding: 9px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    color: rgba(235, 243, 252, 0.88);
+    font-weight: 700;
     text-decoration: none;
     cursor: pointer;
-    transition: 160ms ease;
-    font-weight: 700;
-    box-shadow: 0 0 12px rgba(255, 215, 0, 0.08);
+    transition: transform 160ms ease, box-shadow 180ms ease, border-color 180ms ease, color 180ms ease;
   }
 
   .api-btn:hover,
   .api-btn-link:hover {
-    color: var(--tron-green);
-    border-color: rgba(0, 255, 127, 0.44);
-    box-shadow: 0 0 14px rgba(0, 255, 127, 0.18);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    color: var(--tron-cyan);
+    border-color: rgba(125, 249, 255, 0.26);
+    box-shadow: 0 0 18px rgba(125, 249, 255, 0.08);
   }
 
   .api-btn-primary {
-    border-color: rgba(0, 255, 255, 0.36);
-    color: #9bfaff;
+    border-color: rgba(255, 215, 0, 0.22);
+    background: rgba(255, 215, 0, 0.08);
+    color: #ffe694;
   }
 
   .api-btn-subtle {
-    font-size: 0.88rem;
-    min-height: 36px;
-    padding: 8px 12px;
+    min-height: 34px;
+    padding: 7px 12px;
+    font-size: 0.9rem;
+  }
+
+  .api-status-box {
+    padding: 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(125, 249, 255, 0.16);
+    background: rgba(0, 0, 0, 0.28);
+    display: grid;
+    gap: 10px;
+  }
+
+  .api-status-label,
+  .api-section-kicker {
+    color: rgba(176, 214, 238, 0.68);
+    font-size: 0.76rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .api-selected-base,
+  .api-base-url,
+  .api-inline-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  }
+
+  .api-selected-base,
+  .api-base-url {
+    color: #fff4b2;
+    word-break: break-all;
+  }
+
+  .api-note,
+  .api-copy-feedback,
+  .api-status-note,
+  .api-panel-copy,
+  .api-card-copy {
+    color: rgba(214, 227, 239, 0.8);
+    line-height: 1.7;
+  }
+
+  .api-warning {
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 215, 0, 0.22);
+    background: rgba(255, 215, 0, 0.06);
+    color: rgba(246, 237, 192, 0.92);
+    line-height: 1.68;
+  }
+
+  .api-panel,
+  .api-code-card {
+    padding: 22px;
+  }
+
+  .api-section-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: end;
+    margin-bottom: 18px;
+  }
+
+  .api-section-title {
+    margin: 6px 0 0;
+    color: #f4fbff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.35rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 
   .api-grid {
     display: grid;
-    gap: 18px;
+    gap: 16px;
   }
 
   .api-grid-2 {
@@ -139,89 +218,106 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .api-panel {
-    padding: 22px;
-    margin-bottom: 20px;
+  .api-grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  .api-section-title {
-    margin: 0 0 10px;
-    color: var(--tron-cyan, #9bfaff);
-    font-size: 1.4rem;
-    letter-spacing: 0.02em;
+  .api-card,
+  .api-route-group,
+  .api-example-card,
+  .api-feature-card {
+    padding: 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.025);
   }
 
-  .api-section-copy,
-  .api-card-copy,
-  .api-note,
-  .api-warning,
-  .api-status,
-  .api-list-note {
-    color: #d8d8d8;
-    line-height: 1.7;
-  }
-
-  .api-status-box {
-    margin-top: 18px;
-    padding: 14px 16px;
-    border-radius: 14px;
-    border: 1px solid rgba(0, 255, 255, 0.24);
-    background: linear-gradient(135deg, rgba(0, 255, 255, 0.08), rgba(255, 215, 0, 0.04));
-  }
-
-  .api-status-label {
-    margin: 0 0 8px;
-    font-size: 0.82rem;
-    color: #9bfaff;
-    letter-spacing: 0.08em;
+  .api-card-title {
+    margin: 0;
+    color: #f4fbff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.98rem;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
-  .api-selected-base {
+  .api-route-list {
+    list-style: none;
+    padding: 0;
+    margin: 14px 0 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  .api-route-item {
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.34);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .api-route-method {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+    padding: 4px 8px;
+    margin-right: 10px;
+    border-radius: 999px;
+    background: rgba(30, 144, 255, 0.14);
+    color: #8ec5ff;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+
+  .api-route-path {
+    color: #f5f7ff;
+    word-break: break-word;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-    font-size: 1rem;
-    color: #fff7bf;
-    word-break: break-all;
   }
 
-  .api-status-note {
-    margin: 10px 0 0;
-    color: #b8b8b8;
-    font-size: 0.92rem;
+  .api-route-note {
+    margin: 8px 0 0;
+    color: #bcbcbc;
+    font-size: 0.93rem;
+    line-height: 1.6;
   }
 
-  .api-base-card,
-  .api-route-group,
-  .api-example-card,
-  .api-roadmap-card,
-  .api-companion-card,
-  .api-example-job-card,
-  .api-retrieval-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+  .api-code-wrap {
+    display: grid;
+    gap: 8px;
+  }
+
+  .api-code-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .api-code-title {
+    margin: 0;
+    color: #f4fbff;
+    font-size: 0.96rem;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .api-code {
+    margin: 0;
+    padding: 16px;
     border-radius: 16px;
-    padding: 18px;
-  }
-
-  .api-base-card h3,
-  .api-route-group h3,
-  .api-example-card h3,
-  .api-roadmap-card h3,
-  .api-companion-card h3 {
-    margin: 0 0 8px;
-    color: var(--tron-yellow);
-  }
-
-  .api-base-url {
-    display: block;
-    margin: 12px 0;
-    padding: 12px;
-    border-radius: 12px;
-    background: rgba(0, 0, 0, 0.48);
-    border: 1px solid rgba(0, 255, 255, 0.18);
-    color: #dffeff;
+    background: rgba(0, 0, 0, 0.46);
+    border: 1px solid rgba(125, 249, 255, 0.12);
+    color: #dffcff;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    font-size: 0.9rem;
+    line-height: 1.64;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-    word-break: break-all;
   }
 
   .api-pill {
@@ -233,102 +329,7 @@
     background: rgba(255, 215, 0, 0.08);
     border: 1px solid rgba(255, 215, 0, 0.2);
     color: #ffe694;
-    font-size: 0.84rem;
-  }
-
-  .api-route-list,
-  .api-roadmap-list {
-    list-style: none;
-    padding: 0;
-    margin: 14px 0 0;
-    display: grid;
-    gap: 10px;
-  }
-
-  .api-route-item,
-  .api-roadmap-item {
-    padding: 12px 14px;
-    border-radius: 12px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  .api-route-method {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 52px;
-    padding: 4px 8px;
-    margin-right: 10px;
-    border-radius: 999px;
-    background: rgba(30, 144, 255, 0.14);
-    color: #8ec5ff;
-    font-size: 0.8rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-  }
-
-  .api-route-path,
-  .api-code,
-  .api-inline-code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  }
-
-  .api-route-path {
-    color: #f5f7ff;
-    word-break: break-word;
-  }
-
-  .api-route-note {
-    margin: 8px 0 0;
-    color: #bcbcbc;
-    font-size: 0.93rem;
-    line-height: 1.6;
-  }
-
-  .api-code-wrap {
-    margin-top: 14px;
-  }
-
-  .api-code-actions {
-    justify-content: flex-end;
-    margin-bottom: 8px;
-  }
-
-  .api-code {
-    margin: 0;
-    padding: 16px;
-    border-radius: 14px;
-    background: #050505;
-    border: 1px solid rgba(0, 255, 255, 0.14);
-    color: #dffeff;
-    overflow-x: auto;
-    white-space: pre-wrap;
-    line-height: 1.65;
-    font-size: 0.94rem;
-  }
-
-  .api-inline-code {
-    color: #ffe694;
-  }
-
-  .api-warning {
-    margin-top: 16px;
-    padding: 14px 16px;
-    border-radius: 14px;
-    border: 1px solid rgba(255, 95, 109, 0.26);
-    background: rgba(255, 90, 109, 0.08);
-  }
-
-  .api-copy-feedback {
-    min-height: 20px;
-    margin-top: 10px;
-    color: #9bfaff;
-    font-size: 0.9rem;
-  }
-
-  .api-companion-actions {
-    margin-top: 16px;
+    font-size: 0.82rem;
   }
 
   .api-example-meta {
@@ -339,71 +340,51 @@
 
   .api-example-meta-row {
     display: grid;
-    grid-template-columns: 112px 1fr;
+    grid-template-columns: 108px 1fr;
     gap: 10px;
     align-items: start;
   }
 
   .api-example-meta-label {
     color: #9bfaff;
-    font-size: 0.86rem;
-    letter-spacing: 0.04em;
+    font-size: 0.82rem;
     text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
 
   .api-example-meta-value {
-    color: #efefef;
+    color: rgba(235, 243, 252, 0.88);
     word-break: break-word;
   }
 
   .api-availability {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    margin-top: 12px;
+    justify-content: center;
     padding: 6px 10px;
     border-radius: 999px;
-    font-size: 0.84rem;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 0.82rem;
+    font-weight: 700;
   }
 
-  .api-availability.ok {
-    color: #7dffb3;
-    border-color: rgba(125, 255, 179, 0.22);
-    background: rgba(125, 255, 179, 0.08);
+  .api-availability-yes {
+    background: rgba(0, 255, 127, 0.12);
+    color: #a7ffcf;
+    border: 1px solid rgba(0, 255, 127, 0.18);
   }
 
-  .api-availability.no {
-    color: #ffb2b2;
-    border-color: rgba(255, 178, 178, 0.2);
-    background: rgba(255, 90, 109, 0.08);
+  .api-availability-no {
+    background: rgba(255, 122, 122, 0.12);
+    color: #ffc7c7;
+    border: 1px solid rgba(255, 122, 122, 0.18);
   }
 
-  .api-btn-disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-
-  .api-retrieval-list {
-    margin: 14px 0 0;
-    padding-left: 18px;
-    color: #d8d8d8;
-    line-height: 1.8;
-  }
-
-  .api-spaced-top {
-    margin-top: 14px;
-  }
-
-  @media (max-width: 980px) {
-    .api-grid-2,
-    .api-grid-3 {
+  @media (max-width: 1040px) {
+    .api-hero,
+    .api-grid-4,
+    .api-grid-3,
+    .api-grid-2 {
       grid-template-columns: 1fr;
-    }
-
-    .api-docs-wrap {
-      padding-top: 86px;
     }
   }
 </style>
@@ -411,27 +392,33 @@
 
 {% block content %}
 <div class="api-docs-wrap">
-  <section class="api-hero">
-    <div class="api-hero-content">
+  <section class="api-hero reveal">
+    <div class="api-hero-copy">
       <div class="api-kicker">API Version {{ api_version }} · {{ environment }}</div>
       <h1 class="api-title">Warhead Hunter API</h1>
       <p class="api-subtitle">
-        Programmatic access for solvent-exposure analysis, job monitoring, structure retrieval, and future batch warhead/linker vector screening.
+        Active programmatic access for job submission, batch submission, job monitoring, results manifests, cleaned ligand-bound structure retrieval, and downloadable Warhead Hunter outputs.
       </p>
-
       <div class="api-actions">
         <button type="button" class="api-btn api-btn-primary" id="hero-test-api">Test API</button>
         <button type="button" class="api-btn" id="hero-copy-base">Copy Base URL</button>
         <a href="/browse" class="api-btn-link">Open Job Browser</a>
         <a href="/hunter" class="api-btn-link">Open Warhead Hunter</a>
       </div>
-
+      <div class="api-warning">
+        Everything shown below is active on this deployment unless marked unavailable for a specific curated example job.
+      </div>
+    </div>
+    <div class="api-hero-side">
       <div class="api-status-box">
-        <p class="api-status-label">Selected API Base</p>
+        <div class="api-status-label">Selected API Base</div>
         <div id="selected-api-base" class="api-selected-base">{{ primary_api_base }}</div>
-        <p id="api-status-note" class="api-status-note">
-          Internal/Tailscale is preferred first. Use Auto-detect to test fallback behavior.
-        </p>
+        <div id="api-status-note" class="api-status-note">Internal / Tailscale is preferred first. Use Auto-detect to confirm browser reachability.</div>
+        <div class="api-inline-actions">
+          <button type="button" class="api-btn api-btn-subtle" id="test-primary-btn">Test Internal API</button>
+          <button type="button" class="api-btn api-btn-subtle" id="test-secondary-btn">Test Public API</button>
+          <button type="button" class="api-btn api-btn-subtle" id="auto-detect-btn">Auto-detect Best API Base</button>
+        </div>
       </div>
     </div>
   </section>
@@ -439,698 +426,334 @@
   <section class="wh-section reveal">
     <div class="wh-section-head">
       <div>
-        <div class="wh-section-kicker">Quickstart</div>
+        <div class="wh-section-kicker">Workflow Story</div>
         <h2 class="wh-section-title">API Workflow At A Glance</h2>
       </div>
-      <p class="wh-section-copy">Use the read-only examples first, then move into job submission, result manifests, file retrieval, and bundle downloads as needed.</p>
+      <p class="wh-section-copy">Submit jobs with target_name and search_query, monitor status, retrieve file manifests, download WAR_PDB structures, and automate downstream structure collection.</p>
     </div>
-    <div class="wh-card-grid wh-card-grid-4">
-      <article class="wh-feature-card">
-        <div class="wh-card-icon">BASE</div>
-        <h3 class="wh-card-title">Choose A Base</h3>
-        <p class="wh-card-copy">Prefer the internal Tailscale base first, then fall back to the public domain if it is reachable.</p>
+    <div class="wh-pipeline">
+      <article class="wh-pipeline-node">
+        <div class="wh-pipeline-label">Input</div>
+        <div class="wh-pipeline-title">Submit Job</div>
+        <div class="wh-pipeline-copy">POST target_name, search_query, and optional fasta_seq.</div>
       </article>
-      <article class="wh-feature-card">
-        <div class="wh-card-icon">JOB</div>
-        <h3 class="wh-card-title">Submit Or Inspect</h3>
-        <p class="wh-card-copy">Create a single job or inspect completed example jobs before launching a new run.</p>
+      <article class="wh-pipeline-node">
+        <div class="wh-pipeline-label">Status</div>
+        <div class="wh-pipeline-title">Monitor</div>
+        <div class="wh-pipeline-copy">Poll active job status and browser monitor URLs.</div>
       </article>
-      <article class="wh-feature-card">
-        <div class="wh-card-icon">FILE</div>
-        <h3 class="wh-card-title">Retrieve Files</h3>
-        <p class="wh-card-copy">List prepared artifacts such as PDB, SDF, SVG, CSV, HTML, and manifests.</p>
+      <article class="wh-pipeline-node">
+        <div class="wh-pipeline-label">Results</div>
+        <div class="wh-pipeline-title">Manifest</div>
+        <div class="wh-pipeline-copy">Inspect key outputs, counts, and result paths.</div>
       </article>
-      <article class="wh-feature-card">
-        <div class="wh-card-icon">AUTO</div>
-        <h3 class="wh-card-title">Automate</h3>
-        <p class="wh-card-copy">Use Python or curl workflows for result polling, downloads, and reproducible structure retrieval.</p>
+      <article class="wh-pipeline-node">
+        <div class="wh-pipeline-label">Artifacts</div>
+        <div class="wh-pipeline-title">Files</div>
+        <div class="wh-pipeline-copy">List WAR_PDB, SDF, SVG, table, HTML, and manifest files.</div>
+      </article>
+      <article class="wh-pipeline-node">
+        <div class="wh-pipeline-label">Download</div>
+        <div class="wh-pipeline-title">ZIP Bundles</div>
+        <div class="wh-pipeline-copy">Download curated result bundles or WAR_PDB-only ZIP archives.</div>
+      </article>
+      <article class="wh-pipeline-node">
+        <div class="wh-pipeline-label">Scale</div>
+        <div class="wh-pipeline-title">Batch API</div>
+        <div class="wh-pipeline-copy">Launch multiple jobs sequentially and monitor them as one batch.</div>
       </article>
     </div>
   </section>
 
-  <section class="api-panel">
-    <h2 class="api-section-title">Base URLs</h2>
-    <p class="api-section-copy">
-      For current development, use the Tailscale/internal address first. Once the public deployment is stable, the production domain can become the default. The selection order is centralized server-side so it can be flipped later without rewriting the page.
-    </p>
-
-    <div class="api-grid api-grid-2">
-      {% for base in api_base_options %}
-      <div class="api-base-card">
-        <span class="api-pill">{{ base.label }}</span>
-        <div class="api-base-url" id="base-{{ base.key }}">{{ base.value }}</div>
-        <p class="api-card-copy">{{ base.description }}</p>
-        <div class="api-card-actions">
-          <button type="button" class="api-btn api-btn-subtle" data-copy-text="{{ base.value }}">Copy URL</button>
-          {% if base.key == "internal" %}
-          <button type="button" class="api-btn api-btn-subtle" id="test-primary-btn">Test Internal API</button>
-          {% else %}
-          <button type="button" class="api-btn api-btn-subtle" id="test-secondary-btn">Test Public API</button>
-          {% endif %}
+  <section class="api-panel reveal">
+    <div class="api-panel-inner">
+      <div class="api-section-head">
+        <div>
+          <div class="api-section-kicker">Base URLs</div>
+          <h2 class="api-section-title">Connection Options</h2>
         </div>
+        <p class="api-panel-copy">Browser reachability can differ from terminal reachability because of CORS or mixed-content rules. Terminal curl may still work even when the in-browser tester fails.</p>
       </div>
-      {% endfor %}
-    </div>
-
-    <div class="api-inline-actions api-spaced-top">
-      <button type="button" class="api-btn" id="auto-detect-btn">Auto-detect Best API Base</button>
-      <button type="button" class="api-btn" id="copy-selected-base-btn">Copy Selected Base</button>
-    </div>
-
-    <div class="api-warning">
-      Browser-based API tests may fail even when a terminal request still works. Common causes include CORS policy, mixed-content blocking when an HTTPS page tries to call an HTTP base, or a network path that is only reachable from Tailscale. If the browser test fails, try the curl commands below from your terminal.
-    </div>
-  </section>
-
-  <section class="api-panel">
-    <h2 class="api-section-title">Current API Endpoints</h2>
-    <p class="api-section-copy">
-      The routes below are implemented or currently exposed in the Flask app. Route families with multiple path variants are labeled conservatively where needed.
-    </p>
-
-    <div class="api-grid">
-      {% for group in api_doc_current_groups %}
-      <div class="api-route-group">
-        <h3>{{ group.title }}</h3>
-        <p class="api-card-copy">{{ group.description }}</p>
-        <ul class="api-route-list">
-          {% for route in group.routes %}
-          <li class="api-route-item">
-            <span class="api-route-method">{{ route.method }}</span>
-            <span class="api-route-path">{{ route.path }}</span>
-            <p class="api-route-note">{{ route.note }}</p>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-      {% endfor %}
-    </div>
-  </section>
-
-  <section class="api-panel">
-    <h2 class="api-section-title">Curated Example Jobs</h2>
-    <p class="api-section-copy">
-      Explore completed Warhead Hunter jobs and download cleaned ligand-bound structure outputs for downstream analysis.
-    </p>
-    <p class="api-note">
-      These examples are completed local/internal jobs. They are useful for testing the API, inspecting output formats, and retrieving cleaned ligand-bound structures without launching a new run.
-    </p>
-    <div class="api-warning">
-      Example availability depends on the deployment. If an example job is not present, the API will mark it unavailable.
-    </div>
-
-    <div class="api-grid api-grid-2 api-spaced-top">
-      {% for example in curated_examples %}
-      <div class="api-example-job-card">
-        <h3>{{ example.label }}</h3>
-        <div class="api-example-meta">
-          <div class="api-example-meta-row">
-            <div class="api-example-meta-label">Job ID</div>
-            <div class="api-example-meta-value api-inline-code">{{ example.job_id }}</div>
+      <div class="api-grid api-grid-2">
+        {% for base in api_base_options %}
+        <article class="api-card">
+          <span class="api-pill">{{ base.label }}</span>
+          <div class="api-base-url">{{ base.value }}</div>
+          <p class="api-card-copy">{{ base.description }}</p>
+          <div class="api-card-actions">
+            <button type="button" class="api-btn api-btn-subtle" data-copy-text="{{ base.value }}">Copy URL</button>
           </div>
-          <div class="api-example-meta-row">
-            <div class="api-example-meta-label">Protein</div>
-            <div class="api-example-meta-value">{{ example.protein or "—" }}</div>
-          </div>
-          <div class="api-example-meta-row">
-            <div class="api-example-meta-label">Use Case</div>
-            <div class="api-example-meta-value">{{ example.use_case }}</div>
-          </div>
-          <div class="api-example-meta-row">
-            <div class="api-example-meta-label">Query</div>
-            <div class="api-example-meta-value">{{ example.search_query or "Not available in this deployment metadata." }}</div>
-          </div>
-        </div>
-
-        <div class="api-availability {% if example.available %}ok{% else %}no{% endif %}">
-          {% if example.available %}Available on this deployment{% else %}Unavailable on this deployment{% endif %}
-        </div>
-
-        <div class="api-card-actions api-spaced-top">
-          <a
-            href="{{ example.browser_url if example.available else '#' }}"
-            class="api-btn-link {% if not example.available %}api-btn-disabled{% endif %}">
-            View job in browser
-          </a>
-          <a
-            href="{{ example.files_url if example.available else '#' }}"
-            class="api-btn-link {% if not example.available %}api-btn-disabled{% endif %}"
-            {% if example.available %}target="_blank" rel="noopener noreferrer"{% endif %}>
-            List files
-          </a>
-          <a
-            href="{{ example.bundle_url if example.available else '#' }}"
-            class="api-btn-link {% if not example.available %}api-btn-disabled{% endif %}">
-            Download bundle
-          </a>
-          <button
-            type="button"
-            class="api-btn api-btn-subtle api-copy-example-curl"
-            data-jobid="{{ example.job_id }}">
-            Copy curl
-          </button>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </section>
-
-  <section class="api-panel">
-    <h2 class="api-section-title">Prepared Structure Retrieval</h2>
-    <div class="api-retrieval-card">
-      <p class="api-section-copy">
-        Warhead Hunter example jobs can expose cleaned ligand-bound PDB files, ligand SDF files, SVG atom maps, SASA tables, and downloadable result bundles. This makes the API useful for researchers who want to collect prepared protein-ligand structures by target class, protein name, or completed job ID.
-      </p>
-      <p class="api-note">
-        These are prepared, cleaned, job-derived outputs. They should be treated as available outputs from completed Warhead Hunter runs, not as a validated dataset.
-      </p>
-      <ul class="api-retrieval-list">
-        <li>Notebook-based structure inspection</li>
-        <li>Ligand-bound PDB collection</li>
-        <li>PROTAC linker/vector analysis</li>
-        <li>Comparison across protein families</li>
-        <li>Feeding cleaned structures into companion tools</li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="api-panel">
-    <h2 class="api-section-title">Clean Result Bundles</h2>
-    <div class="api-retrieval-card">
-      <p class="api-section-copy">
-        Warhead Hunter jobs can include a curated public result bundle generated by <code>18_CleanJobDirNzip.py</code>. This bundle is intended for downstream users who want cleaned/prepared PDB files, ligand SDFs, SVG atom maps, SASA tables, and final result summaries without repeated scripts or intermediate clutter.
-      </p>
-      <p class="api-note">
-        If a curated public bundle is not yet present, the API falls back to the existing safe bundle behavior.
-      </p>
-      <div class="api-grid api-spaced-top">
-        <div class="api-example-card">
-          <h3>A. Download Cleaned Bundle</h3>
-          <div class="api-code-wrap">
-            <div class="api-code-actions">
-              <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-clean-job-bundle">Copy</button>
-            </div>
-            <pre id="code-clean-job-bundle" class="api-code"></pre>
-          </div>
-        </div>
-
-        <div class="api-example-card">
-          <h3>B. Download Curated Example Cleaned Bundle</h3>
-          <div class="api-code-wrap">
-            <div class="api-code-actions">
-              <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-clean-example-bundle">Copy</button>
-            </div>
-            <pre id="code-clean-example-bundle" class="api-code"></pre>
-          </div>
-        </div>
-
-        <div class="api-example-card">
-          <h3>C. List Files Before Downloading</h3>
-          <div class="api-code-wrap">
-            <div class="api-code-actions">
-              <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-clean-job-files">Copy</button>
-            </div>
-            <pre id="code-clean-job-files" class="api-code"></pre>
-          </div>
-        </div>
-
-        <div class="api-example-card">
-          <h3>D. Get Results Manifest</h3>
-          <div class="api-code-wrap">
-            <div class="api-code-actions">
-              <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-clean-job-results">Copy</button>
-            </div>
-            <pre id="code-clean-job-results" class="api-code"></pre>
-          </div>
-        </div>
+        </article>
+        {% endfor %}
       </div>
     </div>
   </section>
 
-  <section class="api-panel">
-    <h2 class="api-section-title">Copy/Paste Examples</h2>
-    <p class="api-section-copy">
-      Base-aware examples update automatically when the selected API base changes.
-    </p>
+  <section class="api-panel reveal">
+    <div class="api-panel-inner">
+      <div class="api-section-head">
+        <div>
+          <div class="api-section-kicker">Active Endpoints</div>
+          <h2 class="api-section-title">Implemented Route Groups</h2>
+        </div>
+      </div>
+      <div class="api-grid api-grid-2">
+        {% for group in api_doc_current_groups %}
+        <article class="api-route-group">
+          <h3 class="api-card-title">{{ group.title }}</h3>
+          <p class="api-card-copy">{{ group.description }}</p>
+          <ul class="api-route-list">
+            {% for route in group.routes %}
+            <li class="api-route-item">
+              <span class="api-route-method">{{ route.method }}</span>
+              <span class="api-route-path">{{ route.path }}</span>
+              <p class="api-route-note">{{ route.note }}</p>
+            </li>
+            {% endfor %}
+          </ul>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
 
-    <div class="api-grid">
-      <div class="api-example-card">
-        <h3>1. Submit A Job</h3>
+  <section class="api-panel reveal">
+    <div class="api-panel-inner">
+      <div class="api-section-head">
+        <div>
+          <div class="api-section-kicker">Verified Command-Line Workflow</div>
+          <h2 class="api-section-title">Submit A Real Job Using The Active Input Model</h2>
+        </div>
+      </div>
+      <div class="api-code-wrap">
+        <div class="api-code-head">
+          <h3 class="api-code-title">1. Submit A Single Job</h3>
+          <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-submit-job">Copy</button>
+        </div>
+        <pre id="code-submit-job" class="api-code"></pre>
+      </div>
+      <div class="api-grid api-grid-2" style="margin-top:16px;">
         <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-submit-job">Copy</button>
-          </div>
-          <pre id="code-submit-job" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>2. Check Job Status</h3>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
+          <div class="api-code-head">
+            <h3 class="api-code-title">2. Monitor Job Status</h3>
             <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-status">Copy</button>
           </div>
           <pre id="code-job-status" class="api-code"></pre>
         </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>3. Get Result Manifest</h3>
         <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-results">Copy</button>
-          </div>
-          <pre id="code-job-results" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>4. List Job Files</h3>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-files">Copy</button>
-          </div>
-          <pre id="code-job-files" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>5. Download One File</h3>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-file-download">Copy</button>
-          </div>
-          <pre id="code-job-file-download" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>6. Download Result Bundle</h3>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-bundle">Copy</button>
-          </div>
-          <pre id="code-job-bundle" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>7. Health Check</h3>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-health">Copy</button>
-          </div>
-          <pre id="code-health" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>8. Manifest</h3>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-manifest">Copy</button>
-          </div>
-          <pre id="code-manifest" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>9. Export Jobs CSV</h3>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-export">Copy</button>
-          </div>
-          <pre id="code-export" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>10. Read Job Log</h3>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
+          <div class="api-code-head">
+            <h3 class="api-code-title">3. Read Job Log</h3>
             <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-log">Copy</button>
           </div>
           <pre id="code-job-log" class="api-code"></pre>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="api-example-card">
-        <h3>11. Read Job Summary</h3>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-summary">Copy</button>
-          </div>
-          <pre id="code-job-summary" class="api-code"></pre>
+  <section class="api-panel reveal">
+    <div class="api-panel-inner">
+      <div class="api-section-head">
+        <div>
+          <div class="api-section-kicker">Results And Files</div>
+          <h2 class="api-section-title">Manifest, Artifact Listing, And Download Routes</h2>
         </div>
       </div>
-
-      <div class="api-example-card">
-        <h3>12. Download Legacy Job ZIP</h3>
+      <div class="api-grid api-grid-2">
         <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-download">Copy</button>
+          <div class="api-code-head">
+            <h3 class="api-code-title">4. Results Manifest</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-results">Copy</button>
           </div>
-          <pre id="code-job-download" class="api-code"></pre>
+          <pre id="code-job-results" class="api-code"></pre>
+        </div>
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">5. List Job Files</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-files">Copy</button>
+          </div>
+          <pre id="code-job-files" class="api-code"></pre>
+        </div>
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">6. List WAR_PDB Files</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-war-pdbs">Copy</button>
+          </div>
+          <pre id="code-job-war-pdbs" class="api-code"></pre>
+        </div>
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">7. Download WAR_PDB ZIP</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-war-pdbs-zip">Copy</button>
+          </div>
+          <pre id="code-job-war-pdbs-zip" class="api-code"></pre>
+        </div>
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">8. List SDF Files</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-sdf-files">Copy</button>
+          </div>
+          <pre id="code-job-sdf-files" class="api-code"></pre>
+        </div>
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">9. List SVG Files</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-svg-files">Copy</button>
+          </div>
+          <pre id="code-job-svg-files" class="api-code"></pre>
+        </div>
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">10. Download Result Bundle</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-bundle">Copy</button>
+          </div>
+          <pre id="code-job-bundle" class="api-code"></pre>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="api-example-card">
-        <h3>13. List Curated Examples</h3>
+  <section class="api-panel reveal">
+    <div class="api-panel-inner">
+      <div class="api-section-head">
+        <div>
+          <div class="api-section-kicker">Curated Examples</div>
+          <h2 class="api-section-title">Read-Only Example Jobs</h2>
+        </div>
+        <p class="api-panel-copy">These examples are useful for testing output formats, downloading prepared structures, and building automation workflows without launching a new job.</p>
+      </div>
+      <div class="api-warning">
+        Example availability depends on the deployment. Unavailable examples remain documented but return <code class="api-inline-code">available: false</code> rather than crashing.
+      </div>
+      <div class="api-grid api-grid-2" style="margin-top:16px;">
+        {% for example in curated_examples %}
+        <article class="api-example-card">
+          <h3 class="api-card-title">{{ example.label }}</h3>
+          <div class="api-example-meta">
+            <div class="api-example-meta-row">
+              <div class="api-example-meta-label">Job ID</div>
+              <div class="api-example-meta-value">{{ example.job_id }}</div>
+            </div>
+            <div class="api-example-meta-row">
+              <div class="api-example-meta-label">Protein</div>
+              <div class="api-example-meta-value">{{ example.protein }}</div>
+            </div>
+            <div class="api-example-meta-row">
+              <div class="api-example-meta-label">Use Case</div>
+              <div class="api-example-meta-value">{{ example.use_case }}</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;">
+            <span class="api-availability {% if example.available %}api-availability-yes{% else %}api-availability-no{% endif %}">
+              {% if example.available %}Available{% else %}Unavailable{% endif %}
+            </span>
+          </div>
+          <div class="api-card-actions" style="margin-top:14px;">
+            <a href="{{ example.urls.metadata }}" class="api-btn-link">Metadata</a>
+            <a href="{{ example.urls.files }}" class="api-btn-link">Files</a>
+            <a href="{{ example.urls.bundle }}" class="api-btn-link">Bundle</a>
+            <a href="{{ example.urls.war_pdbs }}" class="api-btn-link">WAR_PDB</a>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      <div class="api-grid api-grid-2" style="margin-top:16px;">
         <div class="api-code-wrap">
-          <div class="api-code-actions">
+          <div class="api-code-head">
+            <h3 class="api-code-title">11. List Curated Examples</h3>
             <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-example-list">Copy</button>
           </div>
           <pre id="code-example-list" class="api-code"></pre>
         </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>14. Get One Example</h3>
         <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-example-detail">Copy</button>
+          <div class="api-code-head">
+            <h3 class="api-code-title">12. Download Example WAR_PDB ZIP</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-example-war-pdbs-zip">Copy</button>
           </div>
-          <pre id="code-example-detail" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>15. List Files For A Curated Example</h3>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-example-files">Copy</button>
-          </div>
-          <pre id="code-example-files" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>16. List Only PDB Files</h3>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-example-pdb-files">Copy</button>
-          </div>
-          <pre id="code-example-pdb-files" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>17. Download An Example Bundle</h3>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-example-bundle">Copy</button>
-          </div>
-          <pre id="code-example-bundle" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>18. Download One Specific Cleaned PDB</h3>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-example-file-download">Copy</button>
-          </div>
-          <pre id="code-example-file-download" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>19. Python Example</h3>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python">Copy</button>
-          </div>
-          <pre id="code-python" class="api-code">import requests
-
-BASES = [
-    "{{ primary_api_base }}",
-    "{{ secondary_api_base }}",
-]
-
-def choose_base():
-    for base in BASES:
-        try:
-            r = requests.get(f"{base}/api/health", timeout=5)
-            if r.ok:
-                return base
-        except requests.RequestException:
-            pass
-    raise RuntimeError("No Warhead Hunter API base is reachable")
-
-base = choose_base()
-examples = requests.get(f"{base}/api/examples").json()
-print(examples)
-
-job_id = "{{ preferred_example_job_id }}"
-files = requests.get(f"{base}/api/examples/{job_id}/files?kind=pdb").json()
-print(files)</pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>20. JavaScript Example</h3>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-javascript">Copy</button>
-          </div>
-          <pre id="code-javascript" class="api-code">const BASES = [
-  "{{ primary_api_base }}",
-  "{{ secondary_api_base }}"
-];
-
-async function chooseWarheadHunterBase() {
-  for (const base of BASES) {
-    try {
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 5000);
-      const res = await fetch(`${base}/api/health`, { signal: controller.signal });
-      clearTimeout(timer);
-      if (res.ok) return base;
-    } catch (err) {}
-  }
-  throw new Error("No Warhead Hunter API base reachable");
-}</pre>
-        </div>
-      </div>
-    </div>
-
-    <div id="api-copy-feedback" class="api-copy-feedback"></div>
-  </section>
-
-
-  <section class="api-panel">
-    <h2 class="api-section-title">Python Automation Recipes</h2>
-    <p class="api-section-copy">
-      These examples are designed for real downstream work: loading all indexed jobs, filtering completed runs, listing output files, downloading cleaned <code>WAR_PDB</code> structures, collecting ligand SDFs/SVGs/tables, and preparing job-derived structures for workflows such as PRosettaC, docking, notebooks, and molecular-dynamics setup.
-    </p>
-    <div class="api-warning">
-      Replace <code>JOB_ID</code> with a real completed job such as <code>{{ preferred_example_job_id }}</code>. For internal development, the Tailscale base URL is usually the most reliable.
-    </div>
-
-    <div class="api-grid">
-      <div class="api-example-card">
-        <h3>21. Python Client Starter</h3>
-        <p class="api-card-copy">
-          A reusable mini-client for choosing a reachable Warhead Hunter API base and making JSON/file requests.
-        </p>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-client-starter">Copy</button>
-          </div>
-          <pre id="code-python-client-starter" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>22. Load All Indexed Jobs Into Python</h3>
-        <p class="api-card-copy">
-          Pull the public job index, print a compact table, and save a local CSV for exploration in notebooks.
-        </p>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-load-indexed-jobs">Copy</button>
-          </div>
-          <pre id="code-python-load-indexed-jobs" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>23. Filter Completed Jobs By Protein Name</h3>
-        <p class="api-card-copy">
-          Search the indexed job list for available jobs matching targets such as CRBN, EGFR, KRAS, BTK, BCL-2, DYRK1A, or HIV.
-        </p>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-filter-jobs">Copy</button>
-          </div>
-          <pre id="code-python-filter-jobs" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>24. List All Files For One Job</h3>
-        <p class="api-card-copy">
-          Inspect every safe downloadable file from a completed job and summarize the output folders.
-        </p>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-list-job-files">Copy</button>
-          </div>
-          <pre id="code-python-list-job-files" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>25. Download All Cleaned WAR_PDB Structures</h3>
-        <p class="api-card-copy">
-          Download every cleaned ligand-bound PDB under <code>TARGET_RESULTS/WAR_PDB/</code> for a specific completed job.
-        </p>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-download-war-pdb">Copy</button>
-          </div>
-          <pre id="code-python-download-war-pdb" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>26. Download All Ligand SDF Files</h3>
-        <p class="api-card-copy">
-          Collect ligand SDF files from <code>MCS_Output/MCS_SDF</code> or any job-safe SDF output path.
-        </p>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-download-sdfs">Copy</button>
-          </div>
-          <pre id="code-python-download-sdfs" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>27. Download SVG Atom Maps And Result Tables</h3>
-        <p class="api-card-copy">
-          Pull exposure-colored SVG maps, plain SVGs, CSV summaries, and TSV files for manuscript figures or notebook analysis.
-        </p>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-download-figures-tables">Copy</button>
-          </div>
-          <pre id="code-python-download-figures-tables" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>28. Download A Bundle And Unzip It Locally</h3>
-        <p class="api-card-copy">
-          Use this when you want the whole cleaned public bundle rather than selecting individual PDB/SDF/SVG/table files.
-        </p>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-download-unzip-bundle">Copy</button>
-          </div>
-          <pre id="code-python-download-unzip-bundle" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>29. Batch Download WAR_PDB Files Across All Available Jobs</h3>
-        <p class="api-card-copy">
-          Build a local structure library from every indexed job with available results.
-        </p>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-batch-download-war-pdb">Copy</button>
-          </div>
-          <pre id="code-python-batch-download-war-pdb" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>30. Create A PRosettaC-Ready Structure Staging Folder</h3>
-        <p class="api-card-copy">
-          Stage cleaned PDBs and ligand SDFs into a predictable local folder layout for downstream modeling or automation.
-        </p>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-prosettac-stage">Copy</button>
-          </div>
-          <pre id="code-python-prosettac-stage" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>31. Build A Local Manifest Of Downloaded Structures</h3>
-        <p class="api-card-copy">
-          Save a CSV manifest mapping job IDs, proteins, source paths, and local downloaded files.
-        </p>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-local-manifest">Copy</button>
-          </div>
-          <pre id="code-python-local-manifest" class="api-code"></pre>
-        </div>
-      </div>
-
-      <div class="api-example-card">
-        <h3>32. Notebook Quickstart: Read Results Tables</h3>
-        <p class="api-card-copy">
-          Download result tables and load them into pandas for filtering ligand exposure summaries.
-        </p>
-        <div class="api-code-wrap">
-          <div class="api-code-actions">
-            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-notebook-tables">Copy</button>
-          </div>
-          <pre id="code-python-notebook-tables" class="api-code"></pre>
+          <pre id="code-example-war-pdbs-zip" class="api-code"></pre>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="api-panel">
-    <h2 class="api-section-title">Future API Roadmap</h2>
-    <p class="api-section-copy">
-      Planned routes are shown here for documentation and architecture alignment only. They are not active yet unless separately implemented.
-    </p>
-    <div class="api-roadmap-card">
-      <ul class="api-roadmap-list">
-        {% for route in api_doc_planned_endpoints %}
-        <li class="api-roadmap-item">
-          <span class="api-route-path">{{ route }}</span>
-          <p class="api-route-note">Planned / not yet implemented.</p>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-  </section>
-
-  <section class="api-panel">
-    <h2 class="api-section-title">Batch API Preview</h2>
-    <p class="api-section-copy">
-      Planned interface — not active yet.
-    </p>
-    <div class="api-example-card">
+  <section class="api-panel reveal">
+    <div class="api-panel-inner">
+      <div class="api-section-head">
+        <div>
+          <div class="api-section-kicker">Batch API</div>
+          <h2 class="api-section-title">Launch Multiple Jobs Sequentially</h2>
+        </div>
+        <p class="api-panel-copy">The batch API reuses the same job submission logic as <code class="api-inline-code">POST /api/jobs</code> and stores lightweight batch metadata on disk.</p>
+      </div>
       <div class="api-code-wrap">
-        <div class="api-code-actions">
-          <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-batch-preview">Copy</button>
+        <div class="api-code-head">
+          <h3 class="api-code-title">13. Submit A Batch</h3>
+          <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-submit-batch">Copy</button>
         </div>
-        <pre id="code-batch-preview" class="api-code">{{ batch_preview_payload | tojson(indent=2) }}</pre>
+        <pre id="code-submit-batch" class="api-code"></pre>
+      </div>
+      <div class="api-grid api-grid-2" style="margin-top:16px;">
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">14. Monitor Batch Status</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-batch-status">Copy</button>
+          </div>
+          <pre id="code-batch-status" class="api-code"></pre>
+        </div>
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">15. Batch Results Summary</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-batch-results">Copy</button>
+          </div>
+          <pre id="code-batch-results" class="api-code"></pre>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="api-panel">
-    <h2 class="api-section-title">Companion Tool Integration</h2>
-    <div class="api-companion-card">
-      <p class="api-section-copy">
-        Future API output can support downstream reuse in PROTAC Builder, E3 Ligandalyzer, and V-LiSEMOD. The current docs page focuses on the routes already present in Warhead Hunter while keeping those integrations visible for future programmatic workflows.
-      </p>
-      <div class="api-companion-actions">
+  <section class="api-panel reveal">
+    <div class="api-panel-inner">
+      <div class="api-section-head">
+        <div>
+          <div class="api-section-kicker">Python Automation</div>
+          <h2 class="api-section-title">Reusable Workflows</h2>
+        </div>
+        <p class="api-panel-copy">Use the example scripts in <code class="api-inline-code">docs/examples/</code> for reproducible submissions, WAR_PDB retrieval, bundle downloads, structure-library assembly, and PRosettaC staging.</p>
+      </div>
+      <div class="api-grid api-grid-3">
+        <article class="api-feature-card">
+          <h3 class="api-card-title">Submit And Monitor</h3>
+          <p class="api-card-copy">Submit one job, poll status, inspect the manifest, and optionally download the result bundle.</p>
+        </article>
+        <article class="api-feature-card">
+          <h3 class="api-card-title">Build Structure Libraries</h3>
+          <p class="api-card-copy">Filter indexed jobs, collect WAR_PDB, SDF, SVG, and table outputs, and stage them for notebook analysis.</p>
+        </article>
+        <article class="api-feature-card">
+          <h3 class="api-card-title">Stage PROTAC Inputs</h3>
+          <p class="api-card-copy">Retrieve cleaned ligand-bound PDBs and pair them with ligand SDFs for downstream modeling workflows such as PRosettaC staging.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="api-panel reveal">
+    <div class="api-panel-inner">
+      <div class="api-section-head">
+        <div>
+          <div class="api-section-kicker">Companion Ecosystem</div>
+          <h2 class="api-section-title">Where The Outputs Can Flow Next</h2>
+        </div>
+      </div>
+      <div class="api-link-row">
         {% for tool in companion_tool_links %}
-        <a href="{{ tool.url }}" class="api-btn-link" target="_blank" rel="noopener noreferrer">{{ tool.name }}</a>
+        <a href="{{ tool.url }}" target="_blank" rel="noopener noreferrer" class="api-btn-link">{{ tool.name }}</a>
         {% endfor %}
       </div>
     </div>
   </section>
+
+  <div id="api-copy-feedback" class="api-copy-feedback" aria-live="polite"></div>
 </div>
 {% endblock %}
 
@@ -1140,680 +763,122 @@ async function chooseWarheadHunterBase() {
   const PRIMARY_BASE = {{ primary_api_base | tojson }};
   const SECONDARY_BASE = {{ secondary_api_base | tojson }};
   const PREFERRED_EXAMPLE_JOB_ID = {{ preferred_example_job_id | tojson }};
-  const BASES = [PRIMARY_BASE, SECONDARY_BASE].filter(Boolean);
+  const BASES = [PRIMARY_BASE, SECONDARY_BASE];
 
-  const state = {
-    selectedBase: PRIMARY_BASE || SECONDARY_BASE || "",
-  };
-
-  const codeTemplates = {
+  const codeGenerators = {
     "code-submit-job": base => `curl -s -X POST "${base}/api/jobs" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "pdb_id": "4EIY",
-    "ligand": "ABC",
-    "options": {
-      "run_sasa": true,
-      "generate_svg": true,
-      "generate_viewer": true
-    }
+    "target_name": "OGA",
+    "search_query": "O-GlcNAcase 9BA9 6PM9 5UN9 5M7T",
+    "fasta_seq": ">FASTA_SEQUENCE"
   }' | python -m json.tool`,
     "code-job-status": base => `curl -s "${base}/api/jobs/JOB_ID" | python -m json.tool`,
-    "code-job-results": base => `curl -s "${base}/api/jobs/JOB_ID/results" | python -m json.tool`,
-    "code-job-files": base => `curl -s "${base}/api/jobs/JOB_ID/files" | python -m json.tool`,
-    "code-job-file-download": base => `curl -L "${base}/api/jobs/JOB_ID/files/RELATIVE_FILE_PATH" -o output_file`,
-    "code-job-bundle": base => `curl -L "${base}/api/jobs/JOB_ID/bundle" -o JOB_ID_results.zip`,
-    "code-clean-job-bundle": base => `curl -L "${base}/api/jobs/JOB_ID/bundle" -o JOB_ID_warhead_hunter_public_results.zip`,
-    "code-clean-example-bundle": base => `curl -L "${base}/api/examples/${PREFERRED_EXAMPLE_JOB_ID}/bundle" -o crbn_public_results.zip`,
-    "code-clean-job-files": base => `curl -s "${base}/api/jobs/JOB_ID/files" | python -m json.tool`,
-    "code-clean-job-results": base => `curl -s "${base}/api/jobs/JOB_ID/results" | python -m json.tool`,
-    "code-health": base => `curl -s "${base}/api/health" | python -m json.tool`,
-    "code-manifest": base => `curl -s "${base}/api/manifest" | python -m json.tool`,
-    "code-export": base => `curl -L "${base}/api/jobs/export" -o warhead_hunter_jobs.csv`,
     "code-job-log": base => `curl -s "${base}/api/job_log/JOB_ID" | python -m json.tool`,
-    "code-job-summary": base => `curl -s "${base}/api/job_summary/JOB_ID" | python -m json.tool`,
-    "code-job-download": base => `curl -L "${base}/api/jobs/JOB_ID/download" -o JOB_ID_results.zip`,
+    "code-job-results": base => `curl -s "${base}/api/jobs/JOB_ID/results" | python -m json.tool`,
+    "code-job-files": base => `curl -s "${base}/api/jobs/JOB_ID/files?limit=1000" | python -m json.tool`,
+    "code-job-war-pdbs": base => `curl -s "${base}/api/jobs/JOB_ID/war-pdbs" | python -m json.tool`,
+    "code-job-war-pdbs-zip": base => `curl -L "${base}/api/jobs/JOB_ID/war-pdbs.zip" -o JOB_ID_WAR_PDB.zip`,
+    "code-job-sdf-files": base => `curl -s "${base}/api/jobs/JOB_ID/artifacts?kind=sdf" | python -m json.tool`,
+    "code-job-svg-files": base => `curl -s "${base}/api/jobs/JOB_ID/artifacts?kind=svg" | python -m json.tool`,
+    "code-job-bundle": base => `curl -L "${base}/api/jobs/JOB_ID/bundle" -o JOB_ID_warhead_hunter_results.zip`,
     "code-example-list": base => `curl -s "${base}/api/examples" | python -m json.tool`,
-    "code-example-detail": base => `curl -s "${base}/api/examples/${PREFERRED_EXAMPLE_JOB_ID}" | python -m json.tool`,
-    "code-example-files": base => `curl -s "${base}/api/examples/${PREFERRED_EXAMPLE_JOB_ID}/files" | python -m json.tool`,
-    "code-example-pdb-files": base => `curl -s "${base}/api/examples/${PREFERRED_EXAMPLE_JOB_ID}/files?kind=pdb" | python -m json.tool`,
-    "code-example-bundle": base => `curl -L "${base}/api/examples/${PREFERRED_EXAMPLE_JOB_ID}/bundle" -o crbn_warhead_hunter_results.zip`,
-    "code-example-file-download": base => `curl -L "${base}/api/examples/${PREFERRED_EXAMPLE_JOB_ID}/files/RELATIVE_FILE_PATH.pdb" -o cleaned_bound_structure.pdb`,
-    "code-python-client-starter": base => `from pathlib import Path
-from urllib.parse import quote
-import requests
-
-BASES = [
-    "${base}",
-    "https://warheadhunter.com",
-]
-
-def choose_base():
-    for base_url in BASES:
-        try:
-            r = requests.get(f"{base_url}/api/health", timeout=5)
-            if r.ok:
-                print(f"Using Warhead Hunter API: {base_url}")
-                return base_url.rstrip("/")
-        except requests.RequestException:
-            pass
-    raise RuntimeError("No Warhead Hunter API base is reachable")
-
-BASE = choose_base()
-
-def get_json(path, **params):
-    url = f"{BASE}{path}"
-    r = requests.get(url, params=params, timeout=30)
-    r.raise_for_status()
-    return r.json()
-
-def download_file(path, out_path):
-    url = f"{BASE}{path}"
-    out_path = Path(out_path)
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    with requests.get(url, stream=True, timeout=120) as r:
-        r.raise_for_status()
-        with open(out_path, "wb") as handle:
-            for chunk in r.iter_content(chunk_size=1024 * 1024):
-                if chunk:
-                    handle.write(chunk)
-    return out_path
-
-def safe_file_url(job_id, relative_path, example=False):
-    rel = quote(relative_path.lstrip("/"), safe="/")
-    if example:
-        return f"/api/examples/{job_id}/files/{rel}"
-    return f"/api/jobs/{job_id}/files/{rel}"
-
-print(get_json("/api/health"))`,
-    "code-python-load-indexed-jobs": base => `import csv
-import requests
-
-BASE = "${base}"
-OUT_CSV = "warhead_hunter_indexed_jobs.csv"
-
-r = requests.get(f"{BASE}/api/indexed-jobs", params={"limit": 1000}, timeout=30)
-r.raise_for_status()
-payload = r.json()
-
-jobs = payload.get("jobs", payload if isinstance(payload, list) else [])
-print(f"Loaded {len(jobs)} indexed jobs")
-
-# Print a compact terminal table.
-for job in jobs[:25]:
-    job_id = job.get("job_id") or job.get("id") or ""
-    protein = job.get("protein") or job.get("target") or ""
-    query = job.get("search_query") or job.get("query") or ""
-    available = job.get("available") or job.get("has_results") or job.get("results_available")
-    print(f"{job_id:10s} | {str(available):8s} | {protein[:35]:35s} | {query[:60]}")
-
-# Save a CSV for Excel, pandas, or downstream automation.
-fieldnames = sorted({key for job in jobs for key in job.keys()})
-with open(OUT_CSV, "w", newline="") as handle:
-    writer = csv.DictWriter(handle, fieldnames=fieldnames)
-    writer.writeheader()
-    writer.writerows(jobs)
-
-print(f"Saved {OUT_CSV}")`,
-    "code-python-filter-jobs": base => `import requests
-
-BASE = "${base}"
-KEYWORDS = ["CRBN", "EGFR", "KRAS", "BTK", "BCL", "DYRK", "HIV"]
-
-payload = requests.get(f"{BASE}/api/indexed-jobs", params={"limit": 1000}, timeout=30).json()
-jobs = payload.get("jobs", payload if isinstance(payload, list) else [])
-
-def is_available(job):
-    value = job.get("available", job.get("has_results", job.get("results_available", False)))
-    return str(value).lower() in {"true", "1", "yes", "available"}
-
-matches = []
-for job in jobs:
-    blob = " ".join(str(job.get(k, "")) for k in ["job_id", "protein", "target", "search_query", "query"]).lower()
-    if is_available(job) and any(k.lower() in blob for k in KEYWORDS):
-        matches.append(job)
-
-print(f"Found {len(matches)} available matching jobs")
-for job in matches:
-    print(
-        job.get("job_id") or job.get("id"),
-        "|",
-        job.get("protein") or job.get("target"),
-        "|",
-        job.get("search_query") or job.get("query")
-    )`,
-    "code-python-list-job-files": base => `from collections import Counter
-from pathlib import PurePosixPath
-import requests
-
-BASE = "${base}"
-JOB_ID = "${PREFERRED_EXAMPLE_JOB_ID}"  # replace with any completed job id
-
-payload = requests.get(f"{BASE}/api/jobs/{JOB_ID}/files", timeout=30).json()
-files = payload.get("files", payload if isinstance(payload, list) else [])
-
-def relpath(item):
-    return item.get("relative_path") or item.get("path") or item.get("filename") or item.get("name") or ""
-
-paths = [relpath(f) for f in files if relpath(f)]
-print(f"Job {JOB_ID}: {len(paths)} safe downloadable files")
-
-by_ext = Counter(PurePosixPath(p).suffix.lower() or "[no extension]" for p in paths)
-by_top_folder = Counter(p.split("/", 1)[0] for p in paths)
-
-print("\\nBy extension:")
-for ext, n in by_ext.most_common():
-    print(f"{ext:12s} {n}")
-
-print("\\nBy top folder:")
-for folder, n in by_top_folder.most_common():
-    print(f"{folder:30s} {n}")
-
-print("\\nFirst 25 files:")
-for p in paths[:25]:
-    print(p)`,
-    "code-python-download-war-pdb": base => `from pathlib import Path
-from urllib.parse import quote
-import requests
-
-BASE = "${base}"
-JOB_ID = "${PREFERRED_EXAMPLE_JOB_ID}"  # replace with your job id
-OUT_DIR = Path(f"{JOB_ID}_WAR_PDB")
-OUT_DIR.mkdir(parents=True, exist_ok=True)
-
-payload = requests.get(f"{BASE}/api/jobs/{JOB_ID}/files", timeout=30).json()
-files = payload.get("files", payload if isinstance(payload, list) else [])
-
-def relpath(item):
-    return item.get("relative_path") or item.get("path") or item.get("filename") or item.get("name") or ""
-
-war_pdbs = [
-    relpath(f) for f in files
-    if relpath(f).endswith(".pdb") and "TARGET_RESULTS/WAR_PDB/" in relpath(f)
-]
-
-print(f"Found {len(war_pdbs)} WAR_PDB files for job {JOB_ID}")
-
-for rel in war_pdbs:
-    url_path = quote(rel.lstrip("/"), safe="/")
-    url = f"{BASE}/api/jobs/{JOB_ID}/files/{url_path}"
-    out = OUT_DIR / Path(rel).name
-
-    with requests.get(url, stream=True, timeout=120) as r:
-        r.raise_for_status()
-        with open(out, "wb") as handle:
-            for chunk in r.iter_content(chunk_size=1024 * 1024):
-                if chunk:
-                    handle.write(chunk)
-
-    print(f"Downloaded {out}")
-
-print(f"Done: {OUT_DIR.resolve()}")`,
-    "code-python-download-sdfs": base => `from pathlib import Path
-from urllib.parse import quote
-import requests
-
-BASE = "${base}"
-JOB_ID = "${PREFERRED_EXAMPLE_JOB_ID}"
-OUT_DIR = Path(f"{JOB_ID}_SDF")
-OUT_DIR.mkdir(parents=True, exist_ok=True)
-
-payload = requests.get(f"{BASE}/api/jobs/{JOB_ID}/files", timeout=30).json()
-files = payload.get("files", payload if isinstance(payload, list) else [])
-
-def relpath(item):
-    return item.get("relative_path") or item.get("path") or item.get("filename") or item.get("name") or ""
-
-sdfs = [relpath(f) for f in files if relpath(f).lower().endswith(".sdf")]
-print(f"Found {len(sdfs)} SDF files")
-
-for rel in sdfs:
-    url = f"{BASE}/api/jobs/{JOB_ID}/files/{quote(rel.lstrip('/'), safe='/')}"
-    out = OUT_DIR / Path(rel).name
-    r = requests.get(url, timeout=120)
-    r.raise_for_status()
-    out.write_bytes(r.content)
-    print(f"Downloaded {out}")`,
-    "code-python-download-figures-tables": base => `from pathlib import Path
-from urllib.parse import quote
-import requests
-
-BASE = "${base}"
-JOB_ID = "${PREFERRED_EXAMPLE_JOB_ID}"
-OUT_DIR = Path(f"{JOB_ID}_maps_and_tables")
-OUT_DIR.mkdir(parents=True, exist_ok=True)
-
-payload = requests.get(f"{BASE}/api/jobs/{JOB_ID}/files", timeout=30).json()
-files = payload.get("files", payload if isinstance(payload, list) else [])
-
-def relpath(item):
-    return item.get("relative_path") or item.get("path") or item.get("filename") or item.get("name") or ""
-
-wanted_exts = {".svg", ".csv", ".tsv"}
-wanted = []
-for f in files:
-    rel = relpath(f)
-    suffix = Path(rel).suffix.lower()
-    if suffix in wanted_exts and "TARGET_RESULTS/" in rel:
-        wanted.append(rel)
-
-print(f"Found {len(wanted)} SVG/CSV/TSV files under TARGET_RESULTS")
-
-for rel in wanted:
-    # Preserve subfolders locally.
-    local_rel = rel.replace("TARGET_RESULTS/", "", 1)
-    out = OUT_DIR / local_rel
-    out.parent.mkdir(parents=True, exist_ok=True)
-
-    url = f"{BASE}/api/jobs/{JOB_ID}/files/{quote(rel.lstrip('/'), safe='/')}"
-    r = requests.get(url, timeout=120)
-    r.raise_for_status()
-    out.write_bytes(r.content)
-    print(f"Downloaded {out}")`,
-    "code-python-download-unzip-bundle": base => `from pathlib import Path
-import zipfile
-import requests
-
-BASE = "${base}"
-JOB_ID = "${PREFERRED_EXAMPLE_JOB_ID}"
-
-zip_path = Path(f"{JOB_ID}_warhead_hunter_results.zip")
-extract_dir = Path(f"{JOB_ID}_warhead_hunter_results")
-
-url = f"{BASE}/api/jobs/{JOB_ID}/bundle"
-with requests.get(url, stream=True, timeout=300) as r:
-    r.raise_for_status()
-    with open(zip_path, "wb") as handle:
-        for chunk in r.iter_content(chunk_size=1024 * 1024):
-            if chunk:
-                handle.write(chunk)
-
-print(f"Downloaded {zip_path}")
-
-extract_dir.mkdir(parents=True, exist_ok=True)
-with zipfile.ZipFile(zip_path, "r") as zf:
-    zf.extractall(extract_dir)
-
-print(f"Extracted to {extract_dir.resolve()}")`,
-    "code-python-batch-download-war-pdb": base => `from pathlib import Path
-from urllib.parse import quote
-import requests
-
-BASE = "${base}"
-ROOT = Path("warhead_hunter_WAR_PDB_library")
-ROOT.mkdir(parents=True, exist_ok=True)
-
-jobs_payload = requests.get(f"{BASE}/api/indexed-jobs", params={"limit": 1000}, timeout=30).json()
-jobs = jobs_payload.get("jobs", jobs_payload if isinstance(jobs_payload, list) else [])
-
-def is_available(job):
-    value = job.get("available", job.get("has_results", job.get("results_available", False)))
-    return str(value).lower() in {"true", "1", "yes", "available"}
-
-def relpath(item):
-    return item.get("relative_path") or item.get("path") or item.get("filename") or item.get("name") or ""
-
-downloaded = 0
-
-for job in jobs:
-    if not is_available(job):
-        continue
-
-    job_id = job.get("job_id") or job.get("id")
-    protein = str(job.get("protein") or job.get("target") or "unknown").replace("/", "_").replace(" ", "_")
-    if not job_id:
-        continue
-
-    try:
-        files_payload = requests.get(f"{BASE}/api/jobs/{job_id}/files", timeout=30).json()
-        files = files_payload.get("files", files_payload if isinstance(files_payload, list) else [])
-        war_pdbs = [
-            relpath(f) for f in files
-            if relpath(f).endswith(".pdb") and "TARGET_RESULTS/WAR_PDB/" in relpath(f)
-        ]
-
-        out_dir = ROOT / f"{protein}_{job_id}"
-        out_dir.mkdir(parents=True, exist_ok=True)
-
-        for rel in war_pdbs:
-            url = f"{BASE}/api/jobs/{job_id}/files/{quote(rel.lstrip('/'), safe='/')}"
-            out = out_dir / Path(rel).name
-            if out.exists() and out.stat().st_size > 0:
-                continue
-            r = requests.get(url, timeout=120)
-            r.raise_for_status()
-            out.write_bytes(r.content)
-            downloaded += 1
-
-        print(f"{job_id}: {len(war_pdbs)} WAR_PDB files")
-
-    except Exception as exc:
-        print(f"Skipped {job_id}: {exc}")
-
-print(f"Downloaded {downloaded} new PDB files into {ROOT.resolve()}")`,
-    "code-python-prosettac-stage": base => `from pathlib import Path
-from urllib.parse import quote
-import shutil
-import requests
-
-BASE = "${base}"
-JOB_ID = "${PREFERRED_EXAMPLE_JOB_ID}"
-
-STAGE = Path(f"PROSETTAC_input_from_{JOB_ID}")
-PDB_DIR = STAGE / "pdb"
-SDF_DIR = STAGE / "sdf"
-PDB_DIR.mkdir(parents=True, exist_ok=True)
-SDF_DIR.mkdir(parents=True, exist_ok=True)
-
-payload = requests.get(f"{BASE}/api/jobs/{JOB_ID}/files", timeout=30).json()
-files = payload.get("files", payload if isinstance(payload, list) else [])
-
-def relpath(item):
-    return item.get("relative_path") or item.get("path") or item.get("filename") or item.get("name") or ""
-
-def download(rel, out_dir):
-    url = f"{BASE}/api/jobs/{JOB_ID}/files/{quote(rel.lstrip('/'), safe='/')}"
-    out = out_dir / Path(rel).name
-    r = requests.get(url, timeout=120)
-    r.raise_for_status()
-    out.write_bytes(r.content)
-    return out
-
-for f in files:
-    rel = relpath(f)
-    if "TARGET_RESULTS/WAR_PDB/" in rel and rel.endswith(".pdb"):
-        print("PDB", download(rel, PDB_DIR))
-    elif rel.lower().endswith(".sdf"):
-        print("SDF", download(rel, SDF_DIR))
-
-readme = STAGE / "README.txt"
-readme.write_text(
-    f"Warhead Hunter staged inputs\\n"
-    f"Job ID: {JOB_ID}\\n"
-    f"Source API: {BASE}\\n"
-    f"PDB folder: {PDB_DIR}\\n"
-    f"SDF folder: {SDF_DIR}\\n"
-)
-
-print(f"Prepared staging folder: {STAGE.resolve()}")`,
-    "code-python-local-manifest": base => `from pathlib import Path
-from urllib.parse import quote
-import csv
-import requests
-
-BASE = "${base}"
-ROOT = Path("warhead_hunter_downloads")
-MANIFEST = ROOT / "download_manifest.csv"
-ROOT.mkdir(parents=True, exist_ok=True)
-
-jobs_payload = requests.get(f"{BASE}/api/indexed-jobs", params={"limit": 1000}, timeout=30).json()
-jobs = jobs_payload.get("jobs", jobs_payload if isinstance(jobs_payload, list) else [])
-
-def is_available(job):
-    value = job.get("available", job.get("has_results", job.get("results_available", False)))
-    return str(value).lower() in {"true", "1", "yes", "available"}
-
-def relpath(item):
-    return item.get("relative_path") or item.get("path") or item.get("filename") or item.get("name") or ""
-
-rows = []
-
-for job in jobs:
-    if not is_available(job):
-        continue
-
-    job_id = job.get("job_id") or job.get("id")
-    protein = job.get("protein") or job.get("target") or ""
-    if not job_id:
-        continue
-
-    files_payload = requests.get(f"{BASE}/api/jobs/{job_id}/files", timeout=30).json()
-    files = files_payload.get("files", files_payload if isinstance(files_payload, list) else [])
-
-    for f in files:
-        rel = relpath(f)
-        if not (rel.endswith(".pdb") and "TARGET_RESULTS/WAR_PDB/" in rel):
-            continue
-
-        local_dir = ROOT / str(job_id)
-        local_dir.mkdir(parents=True, exist_ok=True)
-        local_path = local_dir / Path(rel).name
-
-        if not local_path.exists():
-            url = f"{BASE}/api/jobs/{job_id}/files/{quote(rel.lstrip('/'), safe='/')}"
-            r = requests.get(url, timeout=120)
-            r.raise_for_status()
-            local_path.write_bytes(r.content)
-
-        rows.append({
-            "job_id": job_id,
-            "protein": protein,
-            "source_relative_path": rel,
-            "local_path": str(local_path),
-            "bytes": local_path.stat().st_size,
-        })
-
-with open(MANIFEST, "w", newline="") as handle:
-    writer = csv.DictWriter(handle, fieldnames=["job_id", "protein", "source_relative_path", "local_path", "bytes"])
-    writer.writeheader()
-    writer.writerows(rows)
-
-print(f"Wrote {MANIFEST} with {len(rows)} downloaded structures")`,
-    "code-python-notebook-tables": base => `from pathlib import Path
-from urllib.parse import quote
-import pandas as pd
-import requests
-
-BASE = "${base}"
-JOB_ID = "${PREFERRED_EXAMPLE_JOB_ID}"
-OUT_DIR = Path(f"{JOB_ID}_tables")
-OUT_DIR.mkdir(parents=True, exist_ok=True)
-
-payload = requests.get(f"{BASE}/api/jobs/{JOB_ID}/files", timeout=30).json()
-files = payload.get("files", payload if isinstance(payload, list) else [])
-
-def relpath(item):
-    return item.get("relative_path") or item.get("path") or item.get("filename") or item.get("name") or ""
-
-table_paths = [
-    relpath(f) for f in files
-    if relpath(f).lower().endswith((".csv", ".tsv")) and "TARGET_RESULTS/" in relpath(f)
-]
-
-local_tables = []
-for rel in table_paths:
-    out = OUT_DIR / Path(rel).name
-    url = f"{BASE}/api/jobs/{JOB_ID}/files/{quote(rel.lstrip('/'), safe='/')}"
-    r = requests.get(url, timeout=120)
-    r.raise_for_status()
-    out.write_bytes(r.content)
-    local_tables.append(out)
-
-print(f"Downloaded {len(local_tables)} tables")
-
-# Example: load whichever final summary table exists.
-for table in local_tables:
-    if table.name in {"Resolved_SASA_Summary.csv", "Results_Display.csv", "Ligand_3D_Atoms_with_SASA.csv"}:
-        sep = "\\t" if table.suffix.lower() == ".tsv" else ","
-        df = pd.read_csv(table, sep=sep)
-        print("\\n", table.name, df.shape)
-        display(df.head() if "display" in globals() else df.head())
-`
+    "code-example-war-pdbs-zip": base => `curl -L "${base}/api/examples/${PREFERRED_EXAMPLE_JOB_ID}/war-pdbs.zip" -o ${PREFERRED_EXAMPLE_JOB_ID}_WAR_PDB.zip`,
+    "code-submit-batch": base => `curl -s -X POST "${base}/api/batches" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "jobs": [
+      {
+        "target_name": "OGA",
+        "search_query": "O-GlcNAcase 9BA9 6PM9 5UN9 5M7T",
+        "fasta_seq": ">FASTA_SEQUENCE"
+      },
+      {
+        "target_name": "DYRK1A",
+        "search_query": "DYRK1A 3ANR 4MQ2 6EIF 7AKL",
+        "fasta_seq": ">FASTA_SEQUENCE"
+      }
+    ],
+    "delay_seconds": 2
+  }' | python -m json.tool`,
+    "code-batch-status": base => `curl -s "${base}/api/batches/BATCH_ID" | python -m json.tool`,
+    "code-batch-results": base => `curl -s "${base}/api/batches/BATCH_ID/results" | python -m json.tool`
   };
 
-  function setStatus(base, note) {
-    const baseNode = document.getElementById("selected-api-base");
-    const noteNode = document.getElementById("api-status-note");
-    if (baseNode && base) baseNode.textContent = base;
-    if (noteNode && note) noteNode.textContent = note;
+  let selectedBase = PRIMARY_BASE;
+
+  const selectedBaseEl = document.getElementById("selected-api-base");
+  const statusEl = document.getElementById("api-status-note");
+  const feedbackEl = document.getElementById("api-copy-feedback");
+
+  function setStatus(base, message) {
+    selectedBase = String(base || PRIMARY_BASE).replace(/\/+$/, "");
+    if (selectedBaseEl) selectedBaseEl.textContent = selectedBase;
+    if (statusEl) statusEl.textContent = message;
+    renderCodeBlocks();
   }
 
-  function setCopyFeedback(msg) {
-    const node = document.getElementById("api-copy-feedback");
-    if (!node) return;
-    node.textContent = msg || "";
-    if (msg) {
-      window.clearTimeout(node._feedbackTimer);
-      node._feedbackTimer = window.setTimeout(() => {
-        node.textContent = "";
-      }, 1800);
-    }
+  function setFeedback(message) {
+    if (feedbackEl) feedbackEl.textContent = message;
   }
 
-  function renderExamples() {
-    const base = state.selectedBase || PRIMARY_BASE || SECONDARY_BASE || "";
-    Object.entries(codeTemplates).forEach(([id, builder]) => {
-      const node = document.getElementById(id);
-      if (!node) return;
-      node.textContent = builder(base);
+  function renderCodeBlocks() {
+    Object.entries(codeGenerators).forEach(([id, fn]) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = fn(selectedBase);
     });
-    setStatus(base, `Current copy/paste examples use ${base}.`);
   }
 
   async function copyText(text) {
-    const clean = String(text || "").trim();
-    if (!clean) return false;
+    await navigator.clipboard.writeText(text);
+    setFeedback("Copied to clipboard.");
+  }
 
-    if (navigator.clipboard && window.isSecureContext) {
-      try {
-        await navigator.clipboard.writeText(clean);
-        return true;
-      } catch (err) {}
-    }
-
+  async function testBase(base, label) {
+    const cleaned = String(base).replace(/\/+$/, "");
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 4500);
     try {
-      const ta = document.createElement("textarea");
-      ta.value = clean;
-      ta.setAttribute("readonly", "");
-      ta.style.position = "fixed";
-      ta.style.left = "-9999px";
-      document.body.appendChild(ta);
-      ta.select();
-      const ok = document.execCommand("copy");
-      document.body.removeChild(ta);
-      return ok;
+      const res = await fetch(`${cleaned}/api/health`, { signal: controller.signal });
+      clearTimeout(timer);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setStatus(cleaned, `${label} responded successfully via /api/health.`);
+      return true;
     } catch (err) {
+      clearTimeout(timer);
+      setStatus(cleaned, `${label} did not respond in-browser. The endpoint may still work from terminal curl depending on CORS or network path.`);
       return false;
     }
   }
 
-  async function fetchWithTimeout(url, timeoutMs = 3500) {
-    const controller = new AbortController();
-    const timer = window.setTimeout(() => controller.abort(), timeoutMs);
-    try {
-      const res = await fetch(url, {
-        method: "GET",
-        signal: controller.signal,
-        headers: { "Accept": "application/json" },
-        cache: "no-store"
-      });
-      return res;
-    } finally {
-      window.clearTimeout(timer);
-    }
-  }
-
-  async function testBase(base, label) {
-    const url = `${String(base).replace(/\/+$/, "")}/api/health`;
-    try {
-      const res = await fetchWithTimeout(url, 3500);
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
-      }
-      const data = await res.json().catch(() => null);
-      state.selectedBase = base;
-      renderExamples();
-      setStatus(base, `${label} responded successfully via /api/health.`);
-      return { ok: true, base, data };
-    } catch (err) {
-      const message = `${label} browser test failed. This can still happen even when terminal curl works because of CORS, mixed-content rules, or network reachability.`;
-      setStatus(state.selectedBase || base, message);
-      return { ok: false, base, error: err };
-    }
-  }
-
-  async function autoDetectBase() {
+  async function autoDetect() {
     for (const base of BASES) {
-      const label = base === PRIMARY_BASE ? "Internal API" : "Public API";
-      const result = await testBase(base, label);
-      if (result.ok) {
-        return result.base;
-      }
+      const ok = await testBase(base, base === PRIMARY_BASE ? "Internal API" : "Public API");
+      if (ok) return;
     }
-    setStatus(
-      state.selectedBase || PRIMARY_BASE || SECONDARY_BASE || "",
-      "Neither API base responded to the browser test. Check server/network access, and try the curl commands from a terminal."
-    );
-    return null;
+    setStatus(PRIMARY_BASE, "Neither API base responded in-browser. Check server/network access or try the curl commands from your terminal.");
   }
 
-  function bindCopyButtons() {
-    document.querySelectorAll("[data-copy-text]").forEach((btn) => {
-      btn.addEventListener("click", async () => {
-        const ok = await copyText(btn.getAttribute("data-copy-text"));
-        setCopyFeedback(ok ? "Copied." : "Copy failed.");
-      });
+  document.querySelectorAll("[data-copy-text]").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      await copyText(btn.getAttribute("data-copy-text") || "");
     });
-
-    document.querySelectorAll(".api-copy-code").forEach((btn) => {
-      btn.addEventListener("click", async () => {
-        const id = btn.getAttribute("data-target");
-        const node = id ? document.getElementById(id) : null;
-        const ok = await copyText(node ? node.textContent : "");
-        setCopyFeedback(ok ? "Code copied." : "Copy failed.");
-      });
-    });
-
-    document.querySelectorAll(".api-copy-example-curl").forEach((btn) => {
-      btn.addEventListener("click", async () => {
-        const jobId = btn.getAttribute("data-jobid") || "";
-        const base = state.selectedBase || PRIMARY_BASE || SECONDARY_BASE || "";
-        const cmd = `curl -s "${base}/api/examples/${jobId}" | python -m json.tool`;
-        const ok = await copyText(cmd);
-        setCopyFeedback(ok ? "Example curl copied." : "Copy failed.");
-      });
-    });
-  }
-
-  function bindActionButtons() {
-    const heroTest = document.getElementById("hero-test-api");
-    const heroCopyBase = document.getElementById("hero-copy-base");
-    const autoDetectBtn = document.getElementById("auto-detect-btn");
-    const copySelectedBaseBtn = document.getElementById("copy-selected-base-btn");
-    const testPrimaryBtn = document.getElementById("test-primary-btn");
-    const testSecondaryBtn = document.getElementById("test-secondary-btn");
-
-    if (heroTest) {
-      heroTest.addEventListener("click", () => autoDetectBase());
-    }
-    if (autoDetectBtn) {
-      autoDetectBtn.addEventListener("click", () => autoDetectBase());
-    }
-    if (heroCopyBase) {
-      heroCopyBase.addEventListener("click", async () => {
-        const ok = await copyText(state.selectedBase);
-        setCopyFeedback(ok ? "Selected base copied." : "Copy failed.");
-      });
-    }
-    if (copySelectedBaseBtn) {
-      copySelectedBaseBtn.addEventListener("click", async () => {
-        const ok = await copyText(state.selectedBase);
-        setCopyFeedback(ok ? "Selected base copied." : "Copy failed.");
-      });
-    }
-    if (testPrimaryBtn) {
-      testPrimaryBtn.addEventListener("click", () => testBase(PRIMARY_BASE, "Internal API"));
-    }
-    if (testSecondaryBtn) {
-      testSecondaryBtn.addEventListener("click", () => testBase(SECONDARY_BASE, "Public API"));
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    renderExamples();
-    bindCopyButtons();
-    bindActionButtons();
   });
+
+  document.querySelectorAll(".api-copy-code").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const target = document.getElementById(btn.getAttribute("data-target"));
+      if (target) await copyText(target.textContent || "");
+    });
+  });
+
+  document.getElementById("hero-copy-base")?.addEventListener("click", async () => copyText(selectedBase));
+  document.getElementById("test-primary-btn")?.addEventListener("click", () => testBase(PRIMARY_BASE, "Internal API"));
+  document.getElementById("test-secondary-btn")?.addEventListener("click", () => testBase(SECONDARY_BASE, "Public API"));
+  document.getElementById("auto-detect-btn")?.addEventListener("click", autoDetect);
+  document.getElementById("hero-test-api")?.addEventListener("click", autoDetect);
+
+  setStatus(PRIMARY_BASE, "Internal / Tailscale is preferred first. Use Auto-detect to confirm browser reachability.");
 })();
 </script>
 {% endblock %}

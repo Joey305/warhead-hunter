@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document explains how a future Warhead Hunter API can strengthen the scientific software manuscript while keeping present-tense claims aligned with the current repository.
+This document explains how the current and future Warhead Hunter API can strengthen the scientific software manuscript while keeping present-tense claims aligned with the current repository.
 
 ## What Can Be Mentioned Now
 
@@ -13,7 +13,8 @@ The manuscript can safely state that the current repository:
 - produces structured output artifacts including CSV, SVG, SDF, and PDB files
 - already includes JSON-style endpoints for atom-level SASA retrieval and result-serving support
 - can expose curated completed jobs through read-only API endpoints for example-based exploration
-- is architecturally compatible with future programmatic access
+- already supports job submission, job-status lookup, result manifests, file listing, WAR_PDB retrieval, and downloadable bundles through active API routes
+- is architecturally compatible with future authenticated or larger-scale programmatic access
 
 These claims are grounded in the current code.
 
@@ -21,8 +22,7 @@ These claims are grounded in the current code.
 
 The manuscript should not yet claim that Warhead Hunter:
 
-- provides a full public API
-- supports batch submission through an API
+- provides a fully production-hardened public API
 - supports authenticated or rate-limited API access
 - exposes a stable OpenAPI-described interface
 - is ready for large-scale automated deployment
@@ -36,14 +36,15 @@ Recommended manuscript phrasing:
 - "The current job-oriented architecture is compatible with future programmatic interfaces."
 - "The repository already includes JSON-serving components for SASA-focused result retrieval."
 - "Curated completed jobs can be exposed through read-only API endpoints to demonstrate output formats and support reproducible inspection of example results."
-- "A future API layer could expose job submission, result manifests, and downloadable outputs."
+- "The current repository exposes job submission, result manifests, downloadable outputs, and curated example retrieval through an active API layer."
+- "Future work can extend the current API with stronger persistence, authentication, and larger-scale operational support."
 
 Avoid stronger wording such as:
 
-- "Warhead Hunter provides a public API"
-- "Warhead Hunter supports batch automation"
+- "Warhead Hunter provides a fully production-hardened public API"
+- "Warhead Hunter guarantees large-scale automated deployment readiness"
 
-unless those features are actually present.
+unless those features are explicitly validated.
 
 ## How Batch Processing Could Support Future Validation
 

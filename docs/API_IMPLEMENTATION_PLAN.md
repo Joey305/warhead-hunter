@@ -4,7 +4,11 @@
 
 Add a documented, automatable API to Warhead Hunter without discarding the current Flask application, job-folder execution model, or existing SASA endpoints.
 
+Status note: the repository now implements the core single-job API, file/bundle retrieval, read-only curated examples, indexed jobs, WAR_PDB retrieval, artifact listing, and a lightweight batch API. The remaining work is largely schema stabilization, validation, and operational hardening rather than first-time route creation.
+
 ## Phase 1: Document Current Endpoints
+
+Status: completed in the current repository.
 
 ### Objectives
 
@@ -24,6 +28,8 @@ Add a documented, automatable API to Warhead Hunter without discarding the curre
 - It should explicitly cover `api/sasa_api.py`, `api/handoff_server.py`, and JSON-producing routes in `app.py`.
 
 ## Phase 2: Standardize Job Metadata
+
+Status: partially completed through per-job `job_metadata.json` files. SQLite remains optional future hardening, not a current requirement.
 
 ### Objectives
 
@@ -53,6 +59,8 @@ Add a documented, automatable API to Warhead Hunter without discarding the curre
 
 ## Phase 3: Add JSON Result Manifest
 
+Status: partially completed through `GET /api/jobs/{job_id}/results` plus optional `job_result_manifest.json` generation in cleanup packaging.
+
 ### Objectives
 
 - Standardize discovery of job outputs
@@ -74,6 +82,8 @@ Add a documented, automatable API to Warhead Hunter without discarding the curre
 - Documents the de facto output contract
 
 ## Phase 3A: Read-only Curated Examples
+
+Status: completed in the current repository.
 
 ### Objectives
 
@@ -101,6 +111,8 @@ Add a documented, automatable API to Warhead Hunter without discarding the curre
 
 ## Phase 4: Add Single-Job API Submission
 
+Status: completed in the current repository.
+
 ### Objectives
 
 - Introduce `POST /api/jobs`
@@ -120,6 +132,8 @@ Add a documented, automatable API to Warhead Hunter without discarding the curre
 - Reuses current background pipeline
 
 ## Phase 5: Add Batch Submission
+
+Status: completed in lightweight form using sequential submission plus batch metadata persisted under `jobs/_batches/`.
 
 ### Objectives
 
@@ -141,6 +155,8 @@ Add a documented, automatable API to Warhead Hunter without discarding the curre
 - Makes the platform more useful for internal screening workflows
 
 ## Phase 6: Add Downloadable Result Bundles
+
+Status: completed for job bundles, curated example bundles, WAR_PDB-only ZIP downloads, and safe file listing.
 
 ### Objectives
 
@@ -194,10 +210,9 @@ Add a documented, automatable API to Warhead Hunter without discarding the curre
 
 ## Recommended Immediate Next Step
 
-Implement Phase 1 to 3 first:
+The next engineering step is not route expansion; it is stabilization:
 
-1. document endpoints,
-2. standardize persisted job metadata,
-3. generate a JSON result manifest.
-
-That sequence creates a stable foundation for both the manuscript and future external automation.
+1. harden automated tests for active endpoints,
+2. keep result-manifest fields and artifact classifications stable,
+3. validate batch behavior on real deployments,
+4. decide whether SQLite persistence is needed beyond the current JSON-on-disk metadata model.

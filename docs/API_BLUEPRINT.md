@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document proposes a future-facing API for Warhead Hunter based on the current repository structure. It does not assume that the API is already implemented. The goal is to preserve the current Flask/job-folder architecture while making single-job, batch, and result-retrieval workflows easier to automate.
+This document began as a future-facing API blueprint for Warhead Hunter. The current repository now implements the core single-job API, read-only curated examples, indexed jobs, WAR_PDB retrieval, artifact listing, and a lightweight batch API. The goal remains to preserve the current Flask/job-folder architecture while making single-job, batch, and result-retrieval workflows easier to automate.
 
 ## Current API Audit
 
@@ -39,14 +39,10 @@ The repository already contains several API-like routes:
 
 ### What the current API does not yet provide
 
-- A canonical `POST /api/jobs` submission endpoint
-- A canonical `GET /api/jobs/{job_id}` metadata endpoint
-- A stable JSON results manifest
-- A batch submission endpoint
-- A public health endpoint
-- A manifest/discovery endpoint for supported features
 - Authentication or rate limiting
 - A durable database-backed job registry
+- A fully versioned OpenAPI contract
+- Large-scale queue infrastructure
 
 ## Recommended API Goals
 
@@ -125,15 +121,12 @@ Submit multiple jobs in one request while reusing the same background execution 
 {
   "jobs": [
     {
-      "pdb_id": "example",
-      "ligand": "ABC",
-      "options": {
-        "run_sasa": true,
-        "generate_svg": true,
-        "generate_viewer": true
-      }
+      "target_name": "OGA",
+      "search_query": "O-GlcNAcase 9BA9 6PM9 5UN9 5M7T",
+      "fasta_seq": ">EXAMPLE_FASTA\nMKT..."
     }
-  ]
+  ],
+  "delay_seconds": 2
 }
 ```
 
@@ -542,19 +535,29 @@ Neither should be required for the first documented API release.
 
 | Method | Path | Current status | Proposed role |
 |---|---|---|---|
-| GET | `/api/health` | Not implemented | Health check |
-| GET | `/api/manifest` | Not implemented | API discovery |
-| POST | `/api/jobs` | Not implemented | Submit one job |
-| GET | `/api/jobs/{job_id}` | Not implemented | Job metadata/status |
-| GET | `/api/jobs/{job_id}/results` | Not implemented | Structured results manifest |
-| GET | `/api/jobs/{job_id}/files` | Not implemented | File listing |
-| GET | `/api/jobs/{job_id}/files/{filename}` | Not implemented | File download/stream |
-| GET | `/api/jobs/{job_id}/bundle` | Not implemented | ZIP bundle |
-| POST | `/api/batches` | Not implemented | Submit batch |
-| GET | `/api/batches/{batch_id}` | Not implemented | Batch metadata/status |
-| GET | `/api/batches/{batch_id}/results` | Not implemented | Batch result manifest |
+| GET | `/api/health` | Implemented | Health check |
+| GET | `/api/manifest` | Implemented | API discovery |
+| POST | `/api/jobs` | Implemented | Submit one job |
+| GET | `/api/jobs/{job_id}` | Implemented | Job metadata/status |
+| GET | `/api/jobs/{job_id}/results` | Implemented | Structured results manifest |
+| GET | `/api/jobs/{job_id}/files` | Implemented | File listing |
+| GET | `/api/jobs/{job_id}/files/{filename}` | Implemented | File download/stream |
+| GET | `/api/jobs/{job_id}/bundle` | Implemented | ZIP bundle |
+| GET | `/api/jobs/{job_id}/war-pdbs` | Implemented | WAR_PDB-only listing |
+| GET | `/api/jobs/{job_id}/war-pdbs.zip` | Implemented | WAR_PDB-only ZIP download |
+| GET | `/api/jobs/{job_id}/artifacts` | Implemented | Artifact listing by kind/folder |
+| POST | `/api/batches` | Implemented | Submit batch |
+| GET | `/api/batches/{batch_id}` | Implemented | Batch metadata/status |
+| GET | `/api/batches/{batch_id}/results` | Implemented | Batch result manifest |
 | POST | `/api/rcsb/submit` | Not implemented | Optional direct PDB-centric submission |
 | POST | `/api/sasa/analyze` | Not implemented | Optional direct SASA service endpoint |
+| GET | `/api/examples` | Implemented | Curated example listing |
+| GET | `/api/examples/{job_id}` | Implemented | Curated example metadata |
+| GET | `/api/examples/{job_id}/files` | Implemented | Curated example file listing |
+| GET | `/api/examples/{job_id}/bundle` | Implemented | Curated example ZIP bundle |
+| GET | `/api/examples/{job_id}/war-pdbs` | Implemented | Curated example WAR_PDB listing |
+| GET | `/api/examples/{job_id}/war-pdbs.zip` | Implemented | Curated example WAR_PDB ZIP |
+| GET | `/api/indexed-jobs` | Implemented | Read-only indexed job inventory |
 | GET | `/api/jobs/{job_id}/sasa/available` | Implemented | Retain as detailed subresource |
 | GET | `/api/jobs/{job_id}/sasa/atoms` | Implemented | Retain as detailed subresource |
 | POST | `/api/jobs/{job_id}/sasa/bulk` | Implemented | Retain as detailed subresource |
@@ -562,11 +565,11 @@ Neither should be required for the first documented API release.
 
 ## Recommended Near-Term Path
 
-The cleanest first step is not to replace the current route surface, but to add:
+The cleanest immediate next step is not basic route creation anymore; it is to stabilize schemas, improve test coverage, and tighten output contracts for the active API:
 
-1. `GET /api/health`
-2. `GET /api/manifest`
-3. `GET /api/jobs/{job_id}`
-4. `GET /api/jobs/{job_id}/results`
+1. standardize result-manifest fields,
+2. keep WAR_PDB and artifact retrieval stable,
+3. harden batch metadata persistence,
+4. document example-driven automation patterns.
 
-That path would immediately make Warhead Hunter easier to script while staying faithful to the existing job-folder design.
+That path keeps Warhead Hunter scriptable while staying faithful to the existing job-folder design.

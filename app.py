@@ -10,6 +10,7 @@ import json
 import csv
 import io
 import zipfile
+import uuid
 from pathlib import Path
 from typing import Optional, Dict, Any, List
 from datetime import datetime, timezone
@@ -42,6 +43,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 APP_ROOT = Path(__file__).resolve().parent
 JOBS_DIR = (APP_ROOT / "jobs")
 JOBS_DIR.mkdir(parents=True, exist_ok=True)
+BATCHES_DIR = JOBS_DIR / "_batches"
+BATCHES_DIR.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = str(APP_ROOT / "uploads")
@@ -104,12 +107,12 @@ API_DOC_CURRENT_GROUPS = [
             {
                 "method": "GET",
                 "path": "/api/health",
-                "note": "Health and environment status.",
+                "note": "Health, deployment metadata, and filesystem readiness status.",
             },
             {
                 "method": "GET",
                 "path": "/api/manifest",
-                "note": "Implemented endpoint groups, base URLs, and roadmap summary.",
+                "note": "Implemented endpoint groups, base URLs, docs URLs, and companion links.",
             },
         ],
     },
@@ -146,7 +149,7 @@ API_DOC_CURRENT_GROUPS = [
             {
                 "method": "POST",
                 "path": "/api/jobs",
-                "note": "Submit a single Warhead Hunter job using the current compatible input model.",
+                "note": "Submit a single Warhead Hunter job using target_name, search_query, and optional fasta_seq.",
             },
             {
                 "method": "GET",
@@ -172,6 +175,42 @@ API_DOC_CURRENT_GROUPS = [
                 "method": "GET",
                 "path": "/api/jobs/<job_id>/bundle",
                 "note": "Download a ZIP bundle of safe result files for the job, preferring a curated public results bundle when present.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/jobs/<job_id>/war-pdbs",
+                "note": "List cleaned ligand-bound PDB files under TARGET_RESULTS/WAR_PDB for one job.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/jobs/<job_id>/war-pdbs.zip",
+                "note": "Download only the cleaned ligand-bound WAR_PDB files for one job.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/jobs/<job_id>/artifacts",
+                "note": "List classified job artifacts with kind and folder filters for automation workflows.",
+            },
+        ],
+    },
+    {
+        "title": "Batch Submission",
+        "description": "Launch multiple jobs sequentially with lightweight batch metadata and aggregated status endpoints.",
+        "routes": [
+            {
+                "method": "POST",
+                "path": "/api/batches",
+                "note": "Submit multiple jobs using the same input model as POST /api/jobs.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/batches/<batch_id>",
+                "note": "Read batch metadata and live/computed status for each submitted job.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/batches/<batch_id>/results",
+                "note": "Return per-job result manifest summaries for a batch.",
             },
         ],
     },
@@ -287,6 +326,21 @@ API_DOC_CURRENT_GROUPS = [
                 "path": "/api/examples/<job_id>/bundle",
                 "note": "Downloads a ZIP bundle of safe result files for a curated example job, preferring a curated public results bundle when present.",
             },
+            {
+                "method": "GET",
+                "path": "/api/examples/<job_id>/war-pdbs",
+                "note": "List cleaned ligand-bound PDB files for one curated example job.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/examples/<job_id>/war-pdbs.zip",
+                "note": "Download only the cleaned ligand-bound WAR_PDB files for one curated example job.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/examples/<job_id>/artifacts",
+                "note": "List classified artifact files for one curated example job.",
+            },
         ],
     },
     {
@@ -296,22 +350,10 @@ API_DOC_CURRENT_GROUPS = [
             {
                 "method": "GET",
                 "path": "/api/indexed-jobs",
-                "note": "Lists indexed jobs with optional filters such as protein, query, available, and limit.",
+                "note": "Lists indexed jobs with optional filters such as protein, target, query, availability, limit, offset, and sort.",
             },
         ],
     },
-]
-
-API_DOC_PLANNED_ENDPOINTS = [
-    "POST /api/jobs",
-    "GET /api/jobs/{job_id}",
-    "GET /api/jobs/{job_id}/results",
-    "GET /api/jobs/{job_id}/files",
-    "GET /api/jobs/{job_id}/files/{filename}",
-    "GET /api/jobs/{job_id}/bundle",
-    "POST /api/batches",
-    "GET /api/batches/{batch_id}",
-    "GET /api/batches/{batch_id}/results",
 ]
 
 COMPANION_TOOL_LINKS = [
@@ -397,6 +439,50 @@ def _api_error(code: str, message: str, status: int = 400, details: Optional[Dic
     return resp, status
 
 
+def _normalize_job_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
+    normalized = dict(payload or {})
+
+    alias_groups = {
+        "target_name": ["target_name", "protein", "target"],
+        "search_query": ["search_query", "query"],
+        "fasta_seq": ["fasta_seq", "fasta", "sequence"],
+    }
+
+    for canonical, aliases in alias_groups.items():
+        value = normalized.get(canonical)
+        if value in (None, ""):
+            for alias in aliases:
+                if normalized.get(alias) not in (None, ""):
+                    normalized[canonical] = normalized.get(alias)
+                    break
+
+    return normalized
+
+
+def _batch_metadata_path(batch_id: str) -> Path:
+    return BATCHES_DIR / f"{batch_id}.json"
+
+
+def _read_batch_metadata(batch_id: str) -> Optional[Dict[str, Any]]:
+    fp = _batch_metadata_path(batch_id)
+    if not fp.exists():
+        return None
+    try:
+        return json.loads(fp.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+
+
+def _write_batch_metadata(batch_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
+    BATCHES_DIR.mkdir(parents=True, exist_ok=True)
+    fp = _batch_metadata_path(batch_id)
+    payload = dict(data or {})
+    payload["batch_id"] = batch_id
+    payload["updated_at"] = _utc_now_iso()
+    fp.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    return payload
+
+
 def _public_url(path: str) -> str:
     base = app.config["PUBLIC_SITE_BASE"].rstrip("/")
     if not path.startswith("/"):
@@ -472,6 +558,7 @@ def _fetch_fasta_for_pdb(pdb_id: str) -> Optional[str]:
 
 
 def _build_api_job_request(payload: Dict[str, Any]) -> Dict[str, Any]:
+    payload = _normalize_job_payload(payload)
     pdb_id = str(payload.get("pdb_id") or "").strip().upper()
     ligand = str(payload.get("ligand") or "").strip().upper()
     target_name = str(payload.get("target_name") or "").strip()
@@ -481,11 +568,13 @@ def _build_api_job_request(payload: Dict[str, Any]) -> Dict[str, Any]:
 
     if target_name or search_query or fasta_seq:
         if not target_name:
-            return {"ok": False, "error": ("MISSING_REQUIRED_FIELD", "Field 'target_name' is required when using direct pipeline-compatible submission.", {"field": "target_name"})}
+            return {"ok": False, "error": ("MISSING_FIELD", "Field 'target_name' is required. Alias keys 'protein' and 'target' are also accepted.", {"field": "target_name"})}
         if not search_query:
-            return {"ok": False, "error": ("MISSING_REQUIRED_FIELD", "Field 'search_query' is required when using direct pipeline-compatible submission.", {"field": "search_query"})}
+            return {"ok": False, "error": ("MISSING_FIELD", "Field 'search_query' is required. Alias key 'query' is also accepted.", {"field": "search_query"})}
+
+        notes: List[str] = []
         if not fasta_seq:
-            return {"ok": False, "error": ("MISSING_REQUIRED_FIELD", "Field 'fasta_seq' is required for API submission because the current pipeline expects sequence-backed filtering.", {"field": "fasta_seq"})}
+            notes.append("No FASTA sequence was provided. The current pipeline accepts this, but sequence-backed filtering may be less specific.")
 
         return {
             "ok": True,
@@ -500,18 +589,23 @@ def _build_api_job_request(payload: Dict[str, Any]) -> Dict[str, Any]:
                 "ligand": ligand,
                 "options": options,
                 "submission_mode": "pipeline-compatible",
+                "notes": notes,
             },
         }
 
     if not pdb_id:
-        return {"ok": False, "error": ("MISSING_REQUIRED_FIELD", "Provide either 'pdb_id' or the direct pipeline-compatible fields 'target_name', 'search_query', and 'fasta_seq'.", {"required_any_of": ["pdb_id", "target_name/search_query/fasta_seq"]})}
+        return {"ok": False, "error": ("MISSING_FIELD", "Fields 'target_name' and 'search_query' are required. Alias keys 'protein', 'target', and 'query' are accepted.", {"required_fields": ["target_name", "search_query"]})}
 
-    fasta_from_pdb = _fetch_fasta_for_pdb(pdb_id)
-    if not fasta_from_pdb:
-        return {"ok": False, "error": ("PIPELINE_START_FAILED", f"Could not resolve FASTA for pdb_id '{pdb_id}'. Provide 'target_name', 'search_query', and 'fasta_seq' explicitly for API submission.", {"pdb_id": pdb_id})}
-
+    fasta_from_pdb = fasta_seq or _fetch_fasta_for_pdb(pdb_id) or ""
     derived_target = target_name or pdb_id
     derived_query = search_query or pdb_id
+
+    notes = [
+        "The current pipeline is target/query-oriented.",
+        "This request was normalized from pdb_id compatibility mode.",
+    ]
+    if not fasta_from_pdb:
+        notes.append("No FASTA sequence could be resolved for this pdb_id. The job will still be submitted with an empty fasta_seq.")
 
     return {
         "ok": True,
@@ -526,11 +620,7 @@ def _build_api_job_request(payload: Dict[str, Any]) -> Dict[str, Any]:
             "search_query": derived_query,
             "fasta_seq": fasta_from_pdb,
             "submission_mode": "pdb-id-compatible",
-            "notes": [
-                "The current pipeline is target/query/FASTA-oriented.",
-                "For API compatibility, search_query is derived from pdb_id and FASTA is resolved before launch.",
-                "Ligand is preserved in request metadata but is not yet a first-class pipeline selector.",
-            ],
+            "notes": notes,
         },
     }
 
@@ -814,7 +904,6 @@ def api_docs():
         environment=APP_ENVIRONMENT,
         api_base_options=API_BASE_OPTIONS,
         api_doc_current_groups=API_DOC_CURRENT_GROUPS,
-        api_doc_planned_endpoints=API_DOC_PLANNED_ENDPOINTS,
         companion_tool_links=COMPANION_TOOL_LINKS,
         primary_api_base=PRIMARY_API_BASE,
         secondary_api_base=SECONDARY_API_BASE,
@@ -823,15 +912,12 @@ def api_docs():
         batch_preview_payload={
             "jobs": [
                 {
-                    "pdb_id": "4EIY",
-                    "ligand": "ABC",
-                    "options": {
-                        "run_sasa": True,
-                        "generate_svg": True,
-                        "generate_viewer": True,
-                    },
+                    "target_name": "OGA",
+                    "search_query": "O-GlcNAcase 9BA9 6PM9 5UN9 5M7T",
+                    "fasta_seq": ">FASTA_SEQUENCE",
                 }
-            ]
+            ],
+            "delay_seconds": 2,
         },
     )
 
@@ -840,11 +926,15 @@ def api_docs():
 def api_health():
     return _api_json({
         "ok": True,
-        "service": "warhead-hunter",
+        "service": "Warhead Hunter API",
         "status": "healthy",
+        "version": API_VERSION,
         "api_version": API_VERSION,
         "environment": APP_ENVIRONMENT,
+        "timestamp": _utc_now_iso(),
         "time": _utc_now_iso(),
+        "jobs_dir_exists": JOBS_DIR.exists(),
+        "pipeline_assets_exists": (APP_ROOT / "pipeline_assets").exists(),
     })
 
 
@@ -852,15 +942,16 @@ def api_health():
 def api_manifest():
     return _api_json({
         "ok": True,
-        "service": "warhead-hunter",
+        "service": "Warhead Hunter API",
+        "version": API_VERSION,
         "api_version": API_VERSION,
         "environment": APP_ENVIRONMENT,
-        "time": _utc_now_iso(),
+        "timestamp": _utc_now_iso(),
         "base_urls": {
             "primary": PRIMARY_API_BASE,
             "secondary": SECONDARY_API_BASE,
         },
-        "current_implemented_endpoint_groups": [
+        "active_endpoint_groups": [
             {
                 "title": group["title"],
                 "description": group["description"],
@@ -868,41 +959,10 @@ def api_manifest():
             }
             for group in API_DOC_CURRENT_GROUPS
         ],
-        "future_planned_endpoint_groups": {
-            "planned_endpoints": API_DOC_PLANNED_ENDPOINTS,
-            "warning": "Batch endpoints and structured job-submission endpoints are planned but not yet implemented.",
-        },
-        "implemented_groups": {
-            "job_api": {
-                "status": "implemented",
-                "description": "Single-job submission, status retrieval, result manifest access, file listing, and bundle download.",
-                "endpoints": [
-                    "POST /api/jobs",
-                    "GET /api/jobs/<job_id>",
-                    "GET /api/jobs/<job_id>/results",
-                    "GET /api/jobs/<job_id>/files",
-                    "GET /api/jobs/<job_id>/files/<filename>",
-                    "GET /api/jobs/<job_id>/bundle",
-                ],
-            },
-            "example_jobs": {
-                "status": "implemented",
-                "description": "Read-only curated examples for exploring completed Warhead Hunter outputs.",
-                "endpoints": [
-                    "GET /api/examples",
-                    "GET /api/examples/<job_id>",
-                    "GET /api/examples/<job_id>/files",
-                    "GET /api/examples/<job_id>/files/<filename>",
-                    "GET /api/examples/<job_id>/bundle",
-                ],
-            },
-            "indexed_jobs": {
-                "status": "implemented",
-                "description": "Read-only indexed job listing aligned with the Past Jobs Browser.",
-                "endpoints": [
-                    "GET /api/indexed-jobs",
-                ],
-            },
+        "docs_urls": {
+            "api_docs": "/api-docs",
+            "browser": "/browse",
+            "examples": "/examples",
         },
         "companion_tool_links": COMPANION_TOOL_LINKS,
         "warning": "Use the internal/Tailscale base first for current development. Public production may become the preferred default later.",
@@ -916,52 +976,15 @@ def api_submit_job():
         return _api_error("INVALID_JSON", "Request body must be valid JSON.", 400)
     if not isinstance(payload, dict):
         return _api_error("INVALID_JSON", "Top-level JSON body must be an object.", 400)
-
-    unsupported_keys = [k for k in ("structure_path", "structure_file", "input_path", "upload_path") if k in payload]
-    if unsupported_keys:
+    result = _submit_job_from_payload(payload)
+    if not result.get("ok"):
         return _api_error(
-            "MISSING_REQUIRED_FIELD",
-            "Direct structure-path submission is not supported by the current pipeline. Use 'pdb_id' or provide 'target_name', 'search_query', and 'fasta_seq'.",
-            400,
-            {"unsupported_fields": unsupported_keys},
+            result["error"]["code"],
+            result["error"]["message"],
+            result.get("status_code", 400),
+            result["error"].get("details") or {},
         )
-
-    built = _build_api_job_request(payload)
-    if not built.get("ok"):
-        code, message, details = built["error"]
-        status = 400 if code in {"INVALID_JSON", "MISSING_REQUIRED_FIELD"} else 422
-        return _api_error(code, message, status, details)
-
-    try:
-        job_id = start_job(
-            built["target_name"],
-            built["search_query"],
-            built["fasta_seq"],
-            source="api",
-            request_payload=built["request_payload"],
-        )
-    except Exception as e:
-        return _api_error(
-            "PIPELINE_START_FAILED",
-            "The pipeline could not be started.",
-            500,
-            {"message": str(e)},
-        )
-
-    meta = get_job_api_metadata(job_id) or {}
-    meta["source"] = "api"
-    _write_job_metadata_local(job_id, meta)
-
-    return _api_json({
-        "ok": True,
-        "job_id": job_id,
-        "status": meta.get("status", "queued"),
-        "status_url": f"/api/jobs/{job_id}",
-        "results_url": f"/api/jobs/{job_id}/results",
-        "files_url": f"/api/jobs/{job_id}/files",
-        "bundle_url": f"/api/jobs/{job_id}/bundle",
-        "notes": built["request_payload"].get("notes", []),
-    })
+    return _api_json(result)
 
 
 @app.get("/api/jobs/<job_id>")
@@ -973,11 +996,16 @@ def api_job_status(job_id):
     if meta is None:
         return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
 
-    _write_job_metadata_local(job_id, meta)
-    return _api_json({
-        "ok": True,
-        "job": meta,
+    _write_job_metadata_local(job_id, {
+        "status": meta.get("status"),
+        "current_step": meta.get("current_step"),
+        "started_at": meta.get("started_at"),
+        "finished_at": meta.get("finished_at"),
+        "request": meta.get("request", {}),
+        "outputs": meta.get("outputs", {}),
+        "error": meta.get("error"),
     })
+    return _api_json({"ok": True, **meta})
 
 
 @app.get("/api/jobs/<job_id>/results")
@@ -990,24 +1018,16 @@ def api_job_results(job_id):
         return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
 
     manifest = build_job_results_manifest(job_id)
-    status_value = str(meta.get("status") or "unknown").lower()
-    if not manifest["files"] and status_value in {"queued", "running", "pending", "unknown"}:
-        resp = _api_json({
-            "ok": True,
-            "job_id": job_id,
-            "status": meta.get("status", "unknown"),
-            "message": "Results are not ready yet.",
-        })
-        return resp, 202
+    if not manifest["has_results"] and str(meta.get("status") or "").lower() not in {"completed", "failed"}:
+        return _api_error("RESULTS_NOT_READY", "Results are not ready yet.", 202, {"job_id": job_id})
 
-    meta["outputs"]["results_manifest_available"] = True
-    _write_job_metadata_local(job_id, meta)
-    return _api_json({
-        "ok": True,
-        "job_id": job_id,
-        "status": meta.get("status", "unknown"),
-        "results": manifest,
+    _write_job_metadata_local(job_id, {
+        "outputs": {
+            **(meta.get("outputs") or {}),
+            "results_manifest_available": True,
+        }
     })
+    return _api_json(manifest)
 
 
 @app.get("/api/jobs/<job_id>/files")
@@ -1020,13 +1040,21 @@ def api_job_files(job_id):
         return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
 
     kind = (request.args.get("kind") or "all").strip().lower()
-    if kind not in {"all", "pdb", "sdf", "svg", "csv", "html", "other"}:
+    if kind not in API_FILE_KINDS:
         return _api_error("INVALID_PATH", f"Unsupported kind filter: {kind}", 400, {"kind": kind})
+    try:
+        folder = _safe_folder_arg(request.args.get("folder") or "")
+    except ValueError:
+        return _api_error("INVALID_PATH", "Requested folder path is invalid.", 400)
+    limit = _parse_limit(request.args.get("limit") or "1000", default=1000)
 
-    files = list_safe_job_files(job_id, kind=kind, namespace="jobs")
+    files = list_safe_job_files(job_id, kind=kind, namespace="jobs", folder=folder, limit=limit)
     return _api_json({
         "ok": True,
         "job_id": job_id,
+        "kind": kind,
+        "folder": folder,
+        "count": len(files),
         "files": files,
     })
 
@@ -1079,20 +1107,162 @@ def api_job_bundle(job_id):
     )
 
 
-@app.post("/api/batches")
-def api_batches_stub():
-    return _api_error(
-        "NOT_IMPLEMENTED",
-        "Batch API is planned but not implemented yet. Use POST /api/jobs for single-job submission.",
-        501,
+@app.get("/api/jobs/<job_id>/war-pdbs")
+def api_job_war_pdbs(job_id):
+    if not _safe_job_id(job_id):
+        return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
+    base = safe_job_dir(job_id)
+    if not base or not base.exists():
+        return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
+    files = _war_pdb_files(job_id, namespace="jobs")
+    return _api_json({
+        "ok": True,
+        "job_id": job_id,
+        "count": len(files),
+        "files": files,
+        "zip_url": f"/api/jobs/{job_id}/war-pdbs.zip",
+    })
+
+
+@app.get("/api/jobs/<job_id>/war-pdbs.zip")
+def api_job_war_pdbs_zip(job_id):
+    if not _safe_job_id(job_id):
+        return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
+    mem = _create_kind_zip(job_id, kind="war_pdb", namespace="jobs", root_name=f"{job_id}_WAR_PDB")
+    if mem is None:
+        return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
+    return send_file(
+        mem,
+        mimetype="application/zip",
+        as_attachment=True,
+        download_name=f"{job_id}_WAR_PDB.zip",
     )
+
+
+@app.get("/api/jobs/<job_id>/artifacts")
+def api_job_artifacts(job_id):
+    if not _safe_job_id(job_id):
+        return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
+    base = safe_job_dir(job_id)
+    if not base or not base.exists():
+        return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
+    kind = (request.args.get("kind") or "all").strip().lower()
+    if kind not in API_FILE_KINDS:
+        return _api_error("INVALID_PATH", f"Unsupported kind filter: {kind}", 400, {"kind": kind})
+    try:
+        folder = _safe_folder_arg(request.args.get("folder") or "")
+    except ValueError:
+        return _api_error("INVALID_PATH", "Requested folder path is invalid.", 400)
+    limit = _parse_limit(request.args.get("limit") or "1000", default=1000)
+    return _api_json(_list_artifacts_response(job_id, "jobs", kind, folder, limit))
+
+
+@app.post("/api/batches")
+def api_batches():
+    payload = request.get_json(silent=True)
+    if payload is None:
+        return _api_error("INVALID_JSON", "Request body must be valid JSON.", 400)
+    if not isinstance(payload, dict):
+        return _api_error("INVALID_JSON", "Top-level JSON body must be an object.", 400)
+
+    jobs_payload = payload.get("jobs")
+    if not isinstance(jobs_payload, list) or not jobs_payload:
+        return _api_error("MISSING_FIELD", "Field 'jobs' must be a non-empty JSON array.", 400, {"field": "jobs"})
+
+    delay_seconds = payload.get("delay_seconds", 0)
+    try:
+        delay_seconds = max(0, min(float(delay_seconds), 30.0))
+    except Exception:
+        delay_seconds = 0.0
+
+    batch_id = f"batch_{uuid.uuid4().hex[:8]}"
+    batch_jobs = []
+    for idx, job_payload in enumerate(jobs_payload, start=1):
+        if not isinstance(job_payload, dict):
+            return _api_error("INVALID_JSON", "Each item inside 'jobs' must be a JSON object.", 400, {"index": idx - 1})
+        result = _submit_job_from_payload(job_payload)
+        if not result.get("ok"):
+            return _api_error(
+                result["error"]["code"],
+                f"Batch job {idx} failed validation or submission: {result['error']['message']}",
+                result.get("status_code", 400),
+                {"index": idx - 1, **(result["error"].get("details") or {})},
+            )
+        batch_jobs.append({
+            "target_name": (_normalize_job_payload(job_payload).get("target_name") or ""),
+            "search_query": (_normalize_job_payload(job_payload).get("search_query") or ""),
+            "job_id": result["job_id"],
+            "status_url": result["status_url"],
+            "monitor_url": result["monitor_url"],
+            "results_url": result["results_url"],
+            "browser_results_url": result["browser_results_url"],
+        })
+        if delay_seconds and idx < len(jobs_payload):
+            time.sleep(delay_seconds)
+
+    batch_meta = _write_batch_metadata(batch_id, {
+        "created_at": _utc_now_iso(),
+        "count": len(batch_jobs),
+        "delay_seconds": delay_seconds,
+        "jobs": batch_jobs,
+    })
+    return _api_json({
+        "ok": True,
+        "batch_id": batch_id,
+        "count": len(batch_jobs),
+        "jobs": batch_jobs,
+        "batch_status_url": f"/api/batches/{batch_id}",
+        "batch_results_url": f"/api/batches/{batch_id}/results",
+    })
+
+
+@app.get("/api/batches/<batch_id>")
+def api_batch_status(batch_id):
+    batch_meta = _read_batch_metadata(batch_id)
+    if not batch_meta:
+        return _api_error("JOB_NOT_FOUND", "No batch was found for this batch_id.", 404)
+    jobs = _collect_batch_status(batch_meta)
+    return _api_json({
+        "ok": True,
+        "batch_id": batch_id,
+        "created_at": batch_meta.get("created_at", ""),
+        "updated_at": batch_meta.get("updated_at", ""),
+        "count": batch_meta.get("count", len(jobs)),
+        "delay_seconds": batch_meta.get("delay_seconds", 0),
+        "jobs": jobs,
+    })
+
+
+@app.get("/api/batches/<batch_id>/results")
+def api_batch_results(batch_id):
+    batch_meta = _read_batch_metadata(batch_id)
+    if not batch_meta:
+        return _api_error("JOB_NOT_FOUND", "No batch was found for this batch_id.", 404)
+    payload = []
+    for item in batch_meta.get("jobs", []):
+        job_id = item.get("job_id", "")
+        meta = get_job_api_metadata(job_id)
+        manifest = build_job_results_manifest(job_id) if meta else None
+        payload.append({
+            "job_id": job_id,
+            "target_name": item.get("target_name", ""),
+            "status": (meta or {}).get("status", "unknown"),
+            "has_results": bool((meta or {}).get("has_results")),
+            "results": manifest,
+        })
+    return _api_json({
+        "ok": True,
+        "batch_id": batch_id,
+        "count": len(payload),
+        "jobs": payload,
+    })
 
 
 @app.get("/api/examples")
 def api_examples():
     return _api_json({
         "ok": True,
-        "service": "warhead-hunter",
+        "service": "Warhead Hunter API",
         "examples": get_curated_examples(),
     })
 
@@ -1101,18 +1271,15 @@ def api_examples():
 def api_example_detail(job_id):
     item = get_curated_example_by_id(job_id)
     if not item:
-        return _api_json({
-            "ok": False,
-            "error": f"Curated example not found: {job_id}",
-        }), 404
+        return _api_error("JOB_NOT_FOUND", f"Curated example not found: {job_id}", 404)
 
     entry = build_curated_example_entry(item)
     if entry["available"]:
         entry["files_count"] = len(list_safe_job_files(job_id, kind="all"))
     return _api_json({
         "ok": True,
-        "service": "warhead-hunter",
-        "example": entry,
+        "service": "Warhead Hunter API",
+        **entry,
     })
 
 
@@ -1120,22 +1287,28 @@ def api_example_detail(job_id):
 def api_example_files(job_id):
     item = get_curated_example_by_id(job_id)
     if not item:
-        return _api_json({"ok": False, "error": f"Curated example not found: {job_id}"}), 404
+        return _api_error("JOB_NOT_FOUND", f"Curated example not found: {job_id}", 404)
 
     base = safe_job_dir(job_id)
     if not base or not base.exists():
-        return _api_json({"ok": False, "error": f"Curated example job is not available on this deployment: {job_id}"}), 404
+        return _api_error("JOB_NOT_FOUND", f"Curated example job is not available on this deployment: {job_id}", 404)
 
     kind = (request.args.get("kind") or "all").strip().lower()
-    if kind not in {"all", "pdb", "sdf", "svg", "csv", "html", "other"}:
-        return _api_json({"ok": False, "error": f"Unsupported kind filter: {kind}"}), 400
+    if kind not in API_FILE_KINDS:
+        return _api_error("INVALID_PATH", f"Unsupported kind filter: {kind}", 400, {"kind": kind})
+    try:
+        folder = _safe_folder_arg(request.args.get("folder") or "")
+    except ValueError:
+        return _api_error("INVALID_PATH", "Requested folder path is invalid.", 400)
+    limit = _parse_limit(request.args.get("limit") or "1000", default=1000)
 
-    files = list_safe_job_files(job_id, kind=kind)
+    files = list_safe_job_files(job_id, kind=kind, namespace="examples", folder=folder, limit=limit)
     return _api_json({
         "ok": True,
-        "service": "warhead-hunter",
+        "service": "Warhead Hunter API",
         "job_id": job_id,
         "kind": kind,
+        "folder": folder,
         "count": len(files),
         "files": files,
     })
@@ -1145,21 +1318,21 @@ def api_example_files(job_id):
 def api_example_file_download(job_id, filename):
     item = get_curated_example_by_id(job_id)
     if not item:
-        return _api_json({"ok": False, "error": f"Curated example not found: {job_id}"}), 404
+        return _api_error("JOB_NOT_FOUND", f"Curated example not found: {job_id}", 404)
 
     base = safe_job_dir(job_id)
     if not base or not base.exists():
-        return _api_json({"ok": False, "error": f"Curated example job is not available on this deployment: {job_id}"}), 404
+        return _api_error("JOB_NOT_FOUND", f"Curated example job is not available on this deployment: {job_id}", 404)
 
     rel = str(filename or "").strip().lstrip("/")
     if not rel or ".." in rel.split("/"):
-        return _api_json({"ok": False, "error": "Invalid filename"}), 400
+        return _api_error("INVALID_PATH", "Invalid filename", 400)
 
     fp = (base / rel).resolve()
     if not _is_safe_job_file(base, fp):
-        return _api_json({"ok": False, "error": "File not found or not allowed"}), 404
+        return _api_error("FILE_NOT_FOUND", "File not found or not allowed", 404)
     if not fp.exists():
-        return _api_json({"ok": False, "error": "File not found"}), 404
+        return _api_error("FILE_NOT_FOUND", "File not found", 404)
 
     return send_file(fp, as_attachment=True, download_name=fp.name)
 
@@ -1168,7 +1341,7 @@ def api_example_file_download(job_id, filename):
 def api_example_bundle(job_id):
     item = get_curated_example_by_id(job_id)
     if not item:
-        return _api_json({"ok": False, "error": f"Curated example not found: {job_id}"}), 404
+        return _api_error("JOB_NOT_FOUND", f"Curated example not found: {job_id}", 404)
 
     public_bundle = get_preferred_public_bundle(job_id)
     if public_bundle:
@@ -1181,7 +1354,7 @@ def api_example_bundle(job_id):
 
     mem = create_safe_job_zip(job_id, mode="example")
     if mem is None:
-        return _api_json({"ok": False, "error": f"Curated example job is not available on this deployment: {job_id}"}), 404
+        return _api_error("JOB_NOT_FOUND", f"Curated example job is not available on this deployment: {job_id}", 404)
 
     return send_file(
         mem,
@@ -1191,43 +1364,116 @@ def api_example_bundle(job_id):
     )
 
 
+@app.get("/api/examples/<job_id>/war-pdbs")
+def api_example_war_pdbs(job_id):
+    item = get_curated_example_by_id(job_id)
+    if not item:
+        return _api_error("JOB_NOT_FOUND", f"Curated example not found: {job_id}", 404)
+    base = safe_job_dir(job_id)
+    if not base or not base.exists():
+        return _api_error("JOB_NOT_FOUND", f"Curated example job is not available on this deployment: {job_id}", 404)
+    files = _war_pdb_files(job_id, namespace="examples")
+    return _api_json({
+        "ok": True,
+        "job_id": job_id,
+        "count": len(files),
+        "files": files,
+        "zip_url": f"/api/examples/{job_id}/war-pdbs.zip",
+    })
+
+
+@app.get("/api/examples/<job_id>/war-pdbs.zip")
+def api_example_war_pdbs_zip(job_id):
+    item = get_curated_example_by_id(job_id)
+    if not item:
+        return _api_error("JOB_NOT_FOUND", f"Curated example not found: {job_id}", 404)
+    mem = _create_kind_zip(job_id, kind="war_pdb", namespace="examples", root_name=f"{job_id}_WAR_PDB")
+    if mem is None:
+        return _api_error("JOB_NOT_FOUND", f"Curated example job is not available on this deployment: {job_id}", 404)
+    return send_file(
+        mem,
+        mimetype="application/zip",
+        as_attachment=True,
+        download_name=f"{job_id}_WAR_PDB.zip",
+    )
+
+
+@app.get("/api/examples/<job_id>/artifacts")
+def api_example_artifacts(job_id):
+    item = get_curated_example_by_id(job_id)
+    if not item:
+        return _api_error("JOB_NOT_FOUND", f"Curated example not found: {job_id}", 404)
+    base = safe_job_dir(job_id)
+    if not base or not base.exists():
+        return _api_error("JOB_NOT_FOUND", f"Curated example job is not available on this deployment: {job_id}", 404)
+    kind = (request.args.get("kind") or "all").strip().lower()
+    if kind not in API_FILE_KINDS:
+        return _api_error("INVALID_PATH", f"Unsupported kind filter: {kind}", 400, {"kind": kind})
+    try:
+        folder = _safe_folder_arg(request.args.get("folder") or "")
+    except ValueError:
+        return _api_error("INVALID_PATH", "Requested folder path is invalid.", 400)
+    limit = _parse_limit(request.args.get("limit") or "1000", default=1000)
+    return _api_json(_list_artifacts_response(job_id, "examples", kind, folder, limit))
+
+
 @app.get("/api/indexed-jobs")
 def api_indexed_jobs():
-    protein_filter = (request.args.get("protein") or "").strip().lower()
+    protein_filter = (request.args.get("protein") or request.args.get("target") or "").strip().lower()
     query_filter = (request.args.get("query") or "").strip().lower()
     available_filter = (request.args.get("available") or "").strip().lower()
-    limit_raw = (request.args.get("limit") or "50").strip()
-
+    limit = _parse_limit(request.args.get("limit") or "50", default=50, maximum=5000)
     try:
-        limit = max(1, min(int(limit_raw), 500))
+        offset = max(0, int((request.args.get("offset") or "0").strip() or 0))
     except Exception:
-        limit = 50
+        offset = 0
+    sort_key = (request.args.get("sort") or "created_desc").strip().lower()
 
     jobs = load_indexed_jobs()
 
     if protein_filter:
-        jobs = [j for j in jobs if protein_filter in (j.get("protein", "").lower())]
+        jobs = [j for j in jobs if protein_filter in (j.get("protein", "").lower()) or protein_filter in (j.get("target_name", "").lower())]
     if query_filter:
         jobs = [j for j in jobs if query_filter in (j.get("search_query", "").lower())]
     if available_filter in {"true", "false"}:
         want = available_filter == "true"
         jobs = [j for j in jobs if bool(j.get("has_results")) == want]
 
-    jobs = jobs[:limit]
+    if sort_key == "created_asc":
+        jobs.sort(key=lambda j: j.get("created_at", ""))
+    elif sort_key == "protein":
+        jobs.sort(key=lambda j: (j.get("protein", "").lower(), j.get("job_id", "")))
+    elif sort_key == "job_id":
+        jobs.sort(key=lambda j: j.get("job_id", ""))
+    else:
+        jobs.sort(key=lambda j: j.get("created_at", "") or j.get("modified_at", ""), reverse=True)
+
+    total_count = len(jobs)
+    jobs = jobs[offset:offset + limit]
     job_summaries = [
         {
             "job_id": j.get("job_id", ""),
             "protein": j.get("protein", ""),
+            "target_name": j.get("target_name", ""),
             "search_query": j.get("search_query", ""),
             "fasta_len": j.get("fasta_len", 0),
             "has_results": bool(j.get("has_results")),
-            "mtime": j.get("mtime", ""),
+            "available": bool(j.get("available")),
+            "created_at": j.get("created_at", ""),
+            "modified_at": j.get("modified_at", ""),
+            "monitor_url": f"/monitor/{j.get('job_id', '')}",
+            "browser_results_url": f"/results/{j.get('job_id', '')}",
+            "api_status_url": f"/api/jobs/{j.get('job_id', '')}",
+            "files_url": f"/api/jobs/{j.get('job_id', '')}/files",
+            "bundle_url": f"/api/jobs/{j.get('job_id', '')}/bundle",
+            "war_pdbs_url": f"/api/jobs/{j.get('job_id', '')}/war-pdbs",
         }
         for j in jobs
     ]
     return _api_json({
         "ok": True,
-        "count": len(job_summaries),
+        "count": total_count,
+        "returned": len(job_summaries),
         "jobs": job_summaries,
     })
 
@@ -1375,23 +1621,44 @@ def _fasta_length(fasta: str) -> int:
 
 
 def _job_meta_from_dir(job_dir: Path) -> Dict[str, Any]:
-    meta = _read_protein_data_csv(job_dir) or {}
-    fasta = (meta.get("fasta") or "").strip()
+    protein_meta = _read_protein_data_csv(job_dir) or {}
+    disk_meta = _read_job_metadata(job_dir.name) or {}
+    request_meta = disk_meta.get("request") or {}
+    fasta = (
+        str(request_meta.get("fasta_seq") or "").strip()
+        or str(protein_meta.get("fasta") or "").strip()
+    )
 
     try:
-        mtime = datetime.fromtimestamp(job_dir.stat().st_mtime)
-        mtime_s = mtime.strftime("%Y-%m-%d %H:%M")
+        stat = job_dir.stat()
+        created_s = datetime.fromtimestamp(stat.st_ctime).strftime("%Y-%m-%d %H:%M:%S")
+        modified_s = datetime.fromtimestamp(stat.st_mtime).strftime("%Y-%m-%d %H:%M:%S")
     except Exception:
-        mtime_s = ""
+        created_s = ""
+        modified_s = ""
+
+    target_name = (
+        str(request_meta.get("target_name") or "").strip()
+        or str(protein_meta.get("protein") or "").strip()
+    )
+    search_query = (
+        str(request_meta.get("search_query") or "").strip()
+        or str(protein_meta.get("search_query") or "").strip()
+    )
 
     return {
         "job_id": job_dir.name,
-        "protein": (meta.get("protein") or "").strip(),
-        "search_query": (meta.get("search_query") or "").strip(),
+        "protein": target_name,
+        "target_name": target_name,
+        "search_query": search_query,
         "fasta": fasta,
         "fasta_len": _fasta_length(fasta),
         "has_results": _job_has_results(job_dir),
-        "mtime": mtime_s,
+        "available": _job_has_results(job_dir),
+        "status": str(disk_meta.get("status") or ("completed" if _job_has_results(job_dir) else "unknown")).lower(),
+        "created_at": str(disk_meta.get("created_at") or created_s),
+        "modified_at": modified_s,
+        "mtime": modified_s,
     }
 
 
@@ -1405,26 +1672,46 @@ def load_indexed_jobs() -> List[Dict[str, Any]]:
         if not d.is_dir():
             continue
         jid = d.name
+        if jid.startswith("_"):
+            continue
         if not _safe_job_id(jid):
             continue
         jobs.append(_job_meta_from_dir(d))
 
-    jobs.sort(key=lambda x: x.get("mtime", ""), reverse=True)
+    jobs.sort(key=lambda x: x.get("modified_at", ""), reverse=True)
     return jobs
 
 
 def classify_file_kind(path: Path) -> str:
+    rel = path.as_posix().lower()
+    name = path.name.lower()
     suffix = path.suffix.lower()
+    if name == "job_result_manifest.json":
+        return "manifest"
+    if rel.startswith("war_pdb/") or "/war_pdb/" in rel:
+        return "war_pdb" if suffix == ".pdb" else "other"
     if suffix == ".pdb":
         return "pdb"
     if suffix == ".sdf":
         return "sdf"
     if suffix == ".svg":
         return "svg"
-    if suffix in {".csv", ".tsv"}:
+    if suffix == ".tsv":
+        return "table"
+    if suffix == ".csv":
+        if any(token in name for token in [
+            "results_display", "summary", "metadata", "index", "table",
+            "atoms", "chainrename", "chain_similarity", "filtered_data",
+            "cifdata", "ligand_mcs_map"
+        ]) or any(part.lower() in {"target_table"} for part in path.parts):
+            return "table"
         return "csv"
     if suffix in {".html", ".htm"}:
         return "html"
+    if suffix == ".json":
+        return "manifest"
+    if suffix in {".log", ".txt"}:
+        return "log"
     return "other"
 
 
@@ -1447,9 +1734,13 @@ def _is_safe_job_file(base: Path, fp: Path) -> bool:
         return False
     if any(part in SAFE_SKIP_DIRS for part in rel_parts):
         return False
+    if any(part.endswith(".app") for part in rel_parts):
+        return False
     if fp_r.name.lower() in SAFE_SKIP_NAMES:
         return False
     if fp_r.suffix.lower() not in SAFE_RESULT_SUFFIXES:
+        return False
+    if fp_r.name.endswith(".py"):
         return False
     return True
 
@@ -1461,66 +1752,102 @@ def build_file_download_url(job_id: str, relative_path: str, namespace: str = "e
     return f"/api/jobs/{job_id}/files/{rel}"
 
 
-def list_safe_job_files(job_id: str, kind: Optional[str] = None, namespace: str = "examples") -> List[Dict[str, Any]]:
+def _filter_file_item(item: Dict[str, Any], kind: str, folder: str) -> bool:
+    if kind not in {"", "all"}:
+        if kind == "table":
+            if item["kind"] != "table":
+                return False
+        elif item["kind"] != kind:
+            return False
+
+    if folder:
+        wanted = folder.replace("\\", "/").strip("/").lower()
+        if not item["relative_path"].lower().startswith(wanted):
+            return False
+
+    return True
+
+
+def list_safe_job_files(
+    job_id: str,
+    kind: Optional[str] = None,
+    namespace: str = "examples",
+    folder: str = "",
+    limit: Optional[int] = None,
+) -> List[Dict[str, Any]]:
     base = safe_job_dir(job_id)
     if not base or not base.exists():
         return []
 
     kind_norm = (kind or "all").strip().lower()
+    folder_norm = folder.replace("\\", "/").strip("/")
     files: List[Dict[str, Any]] = []
 
     for fp in base.rglob("*"):
         if not _is_safe_job_file(base, fp):
             continue
 
-        file_kind = classify_file_kind(fp)
-        if kind_norm not in {"", "all"} and file_kind != kind_norm:
-            continue
-
         rel = fp.relative_to(base).as_posix()
         try:
-            size_bytes = fp.stat().st_size
-            modified_at = datetime.fromtimestamp(fp.stat().st_mtime).strftime("%Y-%m-%d %H:%M:%S")
+            stat = fp.stat()
+            size_bytes = stat.st_size
+            modified_at = datetime.fromtimestamp(stat.st_mtime).strftime("%Y-%m-%d %H:%M:%S")
         except Exception:
             size_bytes = 0
             modified_at = ""
 
-        files.append({
+        file_kind = classify_file_kind(Path(rel))
+        item = {
             "name": fp.name,
+            "filename": fp.name,
             "relative_path": rel,
             "kind": file_kind,
             "size_bytes": size_bytes,
             "modified_at": modified_at,
             "download_url": build_file_download_url(job_id, rel, namespace=namespace),
-        })
+        }
+
+        if not _filter_file_item(item, kind_norm, folder_norm):
+            continue
+
+        files.append(item)
 
     files.sort(key=lambda x: (x["kind"], x["relative_path"]))
+    if isinstance(limit, int) and limit > 0:
+        files = files[:limit]
     return files
 
 
-def create_safe_job_zip(job_id: str, mode: str = "example") -> Optional[io.BytesIO]:
+def create_safe_job_zip(
+    job_id: str,
+    mode: str = "example",
+    kind: str = "all",
+    folder: str = "",
+    root_name: Optional[str] = None,
+) -> Optional[io.BytesIO]:
     base = safe_job_dir(job_id)
     if not base or not base.exists():
         return None
 
-    if mode == "example":
-        safe_files = list_safe_job_files(job_id, kind="all")
-        rel_paths = [item["relative_path"] for item in safe_files]
-    else:
+    if mode == "job":
         rel_paths = []
         for fp in base.rglob("*"):
             if fp.is_file():
                 rel_paths.append(fp.relative_to(base).as_posix())
+    else:
+        safe_files = list_safe_job_files(job_id, kind=kind, namespace="jobs" if mode == "job_api" else "examples", folder=folder)
+        rel_paths = [item["relative_path"] for item in safe_files]
 
     mem = io.BytesIO()
     with zipfile.ZipFile(mem, "w", zipfile.ZIP_DEFLATED) as z:
         for rel in rel_paths:
             fp = (base / rel).resolve()
-            if mode == "example" and not _is_safe_job_file(base, fp):
+            if mode != "job" and not _is_safe_job_file(base, fp):
                 continue
             if not fp.exists() or not fp.is_file():
                 continue
-            z.write(fp, arcname=str(Path(job_id) / rel))
+            zip_root = root_name or job_id
+            z.write(fp, arcname=str(Path(zip_root) / rel))
 
     mem.seek(0)
     return mem
@@ -1544,34 +1871,73 @@ def get_preferred_public_bundle(job_id: str) -> Optional[Path]:
 
 
 def build_job_results_manifest(job_id: str) -> Dict[str, Any]:
+    base = safe_job_dir(job_id)
     files = list_safe_job_files(job_id, kind="all", namespace="jobs")
-    counts: Dict[str, int] = {}
-    for item in files:
-        counts[item["kind"]] = counts.get(item["kind"], 0) + 1
-
-    meta = _read_job_metadata(job_id) or {}
-    public_bundle = get_preferred_public_bundle(job_id)
-    job_manifest = job_root(job_id) / "job_result_manifest.json"
-    cleanup_report = job_root(job_id) / "cleanup_report.md"
-    summary = {
-        "file_count": len(files),
-        "counts_by_kind": counts,
-        "has_target_results_dir": bool((job_root(job_id) / "TARGET_RESULTS").exists()),
-        "has_results_display_csv": bool((target_results_dir(job_id) / "Results_Display.csv").exists() or (job_root(job_id) / "Results_Display.csv").exists()),
-        "has_resolved_sasa_summary": bool(_first_existing([
-            job_root(job_id) / "Resolved_SASA_Summary.csv",
-            job_root(job_id) / "Resolved_SASA_Summary.tsv",
-            target_results_dir(job_id) / "Resolved_SASA_Summary.csv",
-            target_results_dir(job_id) / "Resolved_SASA_Summary.tsv",
-        ])),
-        "status_from_metadata": meta.get("status", ""),
-        "has_curated_public_bundle": bool(public_bundle),
-        "public_bundle_path": public_bundle.relative_to(job_root(job_id)).as_posix() if public_bundle else "",
-        "has_job_result_manifest": bool(job_manifest.exists()),
-        "has_cleanup_report": bool(cleanup_report.exists()),
+    counts = {
+        "war_pdb": len([f for f in files if f["kind"] == "war_pdb"]),
+        "pdb": len([f for f in files if f["kind"] == "pdb"]),
+        "sdf": len([f for f in files if f["kind"] == "sdf"]),
+        "svg": len([f for f in files if f["kind"] == "svg"]),
+        "csv": len([f for f in files if f["kind"] == "csv"]),
+        "table": len([f for f in files if f["kind"] == "table"]),
+        "html": len([f for f in files if f["kind"] == "html"]),
+        "manifest": len([f for f in files if f["kind"] == "manifest"]),
+        "tsv": len([f for f in files if f["relative_path"].lower().endswith(".tsv")]),
     }
+
+    def _find_rel(candidates: List[Path]) -> str:
+        fp = _first_existing(candidates)
+        if not fp or not base:
+            return ""
+        try:
+            return fp.relative_to(base).as_posix()
+        except Exception:
+            return ""
+
     return {
-        "summary": summary,
+        "ok": True,
+        "job_id": job_id,
+        "has_results": _job_has_results(job_root(job_id)),
+        "target_results_dir": "TARGET_RESULTS",
+        "summary_files": [
+            item for item in files
+            if item["relative_path"].endswith("Results_Display.csv")
+            or "summary" in item["relative_path"].lower()
+        ],
+        "display_files": [
+            item for item in files
+            if item["kind"] in {"html", "svg"}
+        ],
+        "counts": counts,
+        "key_outputs": {
+            "results_display": _find_rel([
+                target_results_dir(job_id) / "Results_Display.csv",
+                job_root(job_id) / "Results_Display.csv",
+            ]),
+            "resolved_sasa_summary": _find_rel([
+                target_results_dir(job_id) / "Resolved_SASA_Summary.csv",
+                target_results_dir(job_id) / "Resolved_SASA_Summary.tsv",
+                job_root(job_id) / "Resolved_SASA_Summary.csv",
+                job_root(job_id) / "Resolved_SASA_Summary.tsv",
+            ]),
+            "ligand_metadata": _find_rel([
+                target_results_dir(job_id) / "Ligand_Metadata.csv",
+                job_root(job_id) / "Ligand_Metadata.csv",
+            ]),
+            "war_pdb_dir": (
+                "TARGET_RESULTS/WAR_PDB" if (target_results_dir(job_id) / "WAR_PDB").exists()
+                else ("WAR_PDB" if (job_root(job_id) / "WAR_PDB").exists() else "")
+            ),
+            "mcs_output_dir": (
+                "TARGET_RESULTS/MCS_Output" if (target_results_dir(job_id) / "MCS_Output").exists()
+                else ("MCS_Output" if (job_root(job_id) / "MCS_Output").exists() else "")
+            ),
+        },
+        "urls": {
+            "files": f"/api/jobs/{job_id}/files",
+            "bundle": f"/api/jobs/{job_id}/bundle",
+            "browser_results": f"/results/{job_id}",
+        },
         "files": files,
     }
 
@@ -1584,6 +1950,15 @@ def get_job_api_metadata(job_id: str) -> Optional[Dict[str, Any]]:
     data = _read_job_metadata(job_id) or {}
     live = JOB_STORE.get(job_id, {})
     protein_meta = _read_protein_data_csv(base) or {}
+    request_meta = dict(data.get("request") or {})
+    target_name = (
+        str(request_meta.get("target_name") or "").strip()
+        or str(protein_meta.get("protein") or "").strip()
+    )
+    search_query = (
+        str(request_meta.get("search_query") or "").strip()
+        or str(protein_meta.get("search_query") or "").strip()
+    )
 
     if not data:
         data = {
@@ -1593,8 +1968,8 @@ def get_job_api_metadata(job_id: str) -> Optional[Dict[str, Any]]:
             "updated_at": _utc_now_iso(),
             "source": "web",
             "request": {
-                "target_name": (protein_meta.get("protein") or "").strip(),
-                "search_query": (protein_meta.get("search_query") or "").strip(),
+                "target_name": target_name,
+                "search_query": search_query,
                 "fasta_seq": (protein_meta.get("fasta") or "").strip(),
             },
             "outputs": {},
@@ -1611,18 +1986,47 @@ def get_job_api_metadata(job_id: str) -> Optional[Dict[str, Any]]:
 
     public_bundle = get_preferred_public_bundle(job_id)
     outputs = dict(data.get("outputs") or {})
+    files = list_safe_job_files(job_id, kind="all", namespace="jobs")
+    artifact_counts = {
+        "war_pdb_count": len([f for f in files if f["kind"] == "war_pdb"]),
+        "sdf_count": len([f for f in files if f["kind"] == "sdf"]),
+        "svg_count": len([f for f in files if f["kind"] == "svg"]),
+        "csv_count": len([f for f in files if f["kind"] == "csv"]),
+        "table_count": len([f for f in files if f["kind"] == "table"]),
+    }
     outputs.update({
         "job_dir": str(base),
         "has_results": _job_has_results(base),
         "results_url": f"/api/jobs/{job_id}/results",
         "files_url": f"/api/jobs/{job_id}/files",
         "bundle_url": f"/api/jobs/{job_id}/bundle",
+        "war_pdbs_url": f"/api/jobs/{job_id}/war-pdbs",
         "legacy_download_url": f"/api/jobs/{job_id}/download",
         "public_bundle_path": public_bundle.relative_to(base).as_posix() if public_bundle else outputs.get("public_bundle_path", ""),
     })
     data["outputs"] = outputs
     data["updated_at"] = _utc_now_iso()
-    return data
+    return {
+        "job_id": job_id,
+        "status": str(data.get("status") or ("completed" if _job_has_results(base) else "unknown")).lower(),
+        "target_name": target_name,
+        "search_query": search_query,
+        "created_at": data.get("created_at", ""),
+        "started_at": data.get("started_at", ""),
+        "finished_at": data.get("finished_at", ""),
+        "current_step": data.get("current_step", ""),
+        "source": data.get("source", "web"),
+        "request": data.get("request", {}),
+        "outputs": outputs,
+        "error": data.get("error"),
+        "monitor_url": f"/monitor/{job_id}",
+        "results_url": f"/api/jobs/{job_id}/results",
+        "files_url": f"/api/jobs/{job_id}/files",
+        "bundle_url": f"/api/jobs/{job_id}/bundle",
+        "browser_results_url": f"/results/{job_id}",
+        "has_results": _job_has_results(base),
+        "available_artifacts": artifact_counts,
+    }
 
 
 def get_curated_example_by_id(job_id: str) -> Optional[Dict[str, Any]]:
@@ -1646,16 +2050,152 @@ def build_curated_example_entry(item: Dict[str, Any]) -> Dict[str, Any]:
         "use_case": item.get("use_case", ""),
         "available": available,
         "has_results": bool(meta.get("has_results")) if available else False,
+        "urls": {
+            "browser": f"/results/{job_id}" if available else "",
+            "metadata": f"/api/examples/{job_id}",
+            "files": f"/api/examples/{job_id}/files",
+            "bundle": f"/api/examples/{job_id}/bundle",
+            "war_pdbs": f"/api/examples/{job_id}/war-pdbs",
+            "war_pdbs_zip": f"/api/examples/{job_id}/war-pdbs.zip",
+            "artifacts": f"/api/examples/{job_id}/artifacts",
+        },
         "job_url": f"/api/examples/{job_id}",
         "files_url": f"/api/examples/{job_id}/files",
         "bundle_url": f"/api/examples/{job_id}/bundle",
-        "browser_url": f"/open_job/{job_id}" if available else "",
+        "browser_url": f"/results/{job_id}" if available else "",
         "api_curl": f'curl -s "$BASE/api/examples/{job_id}" | python -m json.tool',
     }
 
 
 def get_curated_examples() -> List[Dict[str, Any]]:
     return [build_curated_example_entry(item) for item in CURATED_EXAMPLE_CONFIG]
+
+
+API_FILE_KINDS = {"all", "war_pdb", "pdb", "sdf", "svg", "csv", "table", "html", "manifest", "log", "other"}
+
+
+def _parse_limit(value: str, default: int = 500, maximum: int = 2000) -> int:
+    try:
+        parsed = int(str(value or default).strip())
+    except Exception:
+        parsed = default
+    return max(1, min(parsed, maximum))
+
+
+def _safe_folder_arg(folder: str) -> str:
+    folder = str(folder or "").replace("\\", "/").strip().strip("/")
+    if not folder:
+        return ""
+    parts = [part for part in folder.split("/") if part]
+    if any(part in {".", ".."} for part in parts):
+        raise ValueError("Invalid folder")
+    return "/".join(parts)
+
+
+def _list_artifacts_response(job_id: str, namespace: str, kind: str, folder: str, limit: int) -> Dict[str, Any]:
+    files = list_safe_job_files(job_id, kind=kind, namespace=namespace, folder=folder, limit=limit)
+    return {
+        "ok": True,
+        "job_id": job_id,
+        "kind": kind,
+        "folder": folder,
+        "count": len(files),
+        "files": files,
+    }
+
+
+def _war_pdb_files(job_id: str, namespace: str = "jobs") -> List[Dict[str, Any]]:
+    return list_safe_job_files(
+        job_id,
+        kind="war_pdb",
+        namespace=namespace,
+    )
+
+
+def _create_kind_zip(job_id: str, kind: str, namespace: str, root_name: str) -> Optional[io.BytesIO]:
+    return create_safe_job_zip(
+        job_id,
+        mode="job_api" if namespace == "jobs" else "example",
+        kind=kind,
+        folder="",
+        root_name=root_name,
+    )
+
+
+def _submit_job_from_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
+    unsupported_keys = [k for k in ("structure_path", "structure_file", "input_path", "upload_path") if k in payload]
+    if unsupported_keys:
+        return {
+            "ok": False,
+            "error": {
+                "code": "UNSUPPORTED_INPUT",
+                "message": "Direct structure-path submission is not supported by the current pipeline. Use target_name/search_query/fasta_seq or pdb_id compatibility mode.",
+                "details": {"unsupported_fields": unsupported_keys},
+            },
+            "status_code": 400,
+        }
+
+    built = _build_api_job_request(payload)
+    if not built.get("ok"):
+        code, message, details = built["error"]
+        return {
+            "ok": False,
+            "error": {"code": code, "message": message, "details": details},
+            "status_code": 400 if code in {"INVALID_JSON", "MISSING_FIELD", "UNSUPPORTED_INPUT"} else 422,
+        }
+
+    try:
+        job_id = start_job(
+            built["target_name"],
+            built["search_query"],
+            built["fasta_seq"],
+            source="api",
+            request_payload=built["request_payload"],
+        )
+    except Exception as e:
+        return {
+            "ok": False,
+            "error": {
+                "code": "PIPELINE_START_FAILED",
+                "message": "The pipeline could not be started.",
+                "details": {"message": str(e)},
+            },
+            "status_code": 500,
+        }
+
+    meta = get_job_api_metadata(job_id) or {}
+    _write_job_metadata_local(job_id, {
+        "source": "api",
+        "request": built["request_payload"],
+    })
+    return {
+        "ok": True,
+        "job_id": job_id,
+        "status": "running" if meta.get("status", "running") in {"queued", "pending"} else meta.get("status", "running"),
+        "status_url": f"/api/jobs/{job_id}",
+        "monitor_url": f"/monitor/{job_id}",
+        "results_url": f"/api/jobs/{job_id}/results",
+        "files_url": f"/api/jobs/{job_id}/files",
+        "bundle_url": f"/api/jobs/{job_id}/bundle",
+        "browser_results_url": f"/results/{job_id}",
+        "notes": built["request_payload"].get("notes", []),
+    }
+
+
+def _collect_batch_status(batch_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    jobs = []
+    for item in batch_data.get("jobs", []):
+        job_id = str(item.get("job_id") or "").strip()
+        if not job_id:
+            continue
+        meta = get_job_api_metadata(job_id)
+        jobs.append({
+            **item,
+            "status": (meta or {}).get("status", "unknown"),
+            "has_results": bool((meta or {}).get("has_results")),
+            "browser_results_url": (meta or {}).get("browser_results_url", f"/results/{job_id}"),
+        })
+    return jobs
 
 
 
