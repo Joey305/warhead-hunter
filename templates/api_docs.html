@@ -1,0 +1,791 @@
+{% extends "base.html" %}
+
+{% block page_css %}
+<style>
+  .api-docs-wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 92px 18px 32px;
+  }
+
+  .api-hero,
+  .api-panel {
+    background: rgba(8, 8, 8, 0.74);
+    border: 1px solid rgba(255, 215, 0, 0.34);
+    border-radius: 18px;
+    box-shadow:
+      0 0 22px rgba(255, 215, 0, 0.12),
+      inset 0 0 0 1px rgba(0, 255, 127, 0.06);
+    backdrop-filter: blur(10px);
+  }
+
+  .api-hero {
+    padding: 28px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .api-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at top right, rgba(30, 144, 255, 0.16), transparent 28%),
+      radial-gradient(circle at left center, rgba(0, 255, 127, 0.12), transparent 24%);
+    pointer-events: none;
+  }
+
+  .api-hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .api-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border: 1px solid rgba(0, 255, 255, 0.28);
+    border-radius: 999px;
+    color: #9bfaff;
+    font-size: 0.84rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(0, 255, 255, 0.06);
+    margin-bottom: 14px;
+  }
+
+  .api-title {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--tron-yellow);
+    text-shadow: 0 0 14px rgba(255, 215, 0, 0.3);
+  }
+
+  .api-subtitle {
+    margin: 12px 0 0;
+    max-width: 900px;
+    color: #d7d7d7;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .api-actions,
+  .api-inline-actions,
+  .api-card-actions,
+  .api-code-actions,
+  .api-companion-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .api-actions {
+    margin-top: 20px;
+  }
+
+  .api-btn,
+  .api-btn-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 215, 0, 0.34);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--tron-white);
+    text-decoration: none;
+    cursor: pointer;
+    transition: 160ms ease;
+    font-weight: 700;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.08);
+  }
+
+  .api-btn:hover,
+  .api-btn-link:hover {
+    color: var(--tron-green);
+    border-color: rgba(0, 255, 127, 0.44);
+    box-shadow: 0 0 14px rgba(0, 255, 127, 0.18);
+    transform: translateY(-1px);
+  }
+
+  .api-btn-primary {
+    border-color: rgba(0, 255, 255, 0.36);
+    color: #9bfaff;
+  }
+
+  .api-btn-subtle {
+    font-size: 0.88rem;
+    min-height: 36px;
+    padding: 8px 12px;
+  }
+
+  .api-grid {
+    display: grid;
+    gap: 18px;
+  }
+
+  .api-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .api-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .api-panel {
+    padding: 22px;
+    margin-bottom: 20px;
+  }
+
+  .api-section-title {
+    margin: 0 0 10px;
+    color: var(--tron-cyan, #9bfaff);
+    font-size: 1.4rem;
+    letter-spacing: 0.02em;
+  }
+
+  .api-section-copy,
+  .api-card-copy,
+  .api-note,
+  .api-warning,
+  .api-status,
+  .api-list-note {
+    color: #d8d8d8;
+    line-height: 1.7;
+  }
+
+  .api-status-box {
+    margin-top: 18px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 255, 255, 0.24);
+    background: linear-gradient(135deg, rgba(0, 255, 255, 0.08), rgba(255, 215, 0, 0.04));
+  }
+
+  .api-status-label {
+    margin: 0 0 8px;
+    font-size: 0.82rem;
+    color: #9bfaff;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .api-selected-base {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 1rem;
+    color: #fff7bf;
+    word-break: break-all;
+  }
+
+  .api-status-note {
+    margin: 10px 0 0;
+    color: #b8b8b8;
+    font-size: 0.92rem;
+  }
+
+  .api-base-card,
+  .api-route-group,
+  .api-example-card,
+  .api-roadmap-card,
+  .api-companion-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 18px;
+  }
+
+  .api-base-card h3,
+  .api-route-group h3,
+  .api-example-card h3,
+  .api-roadmap-card h3,
+  .api-companion-card h3 {
+    margin: 0 0 8px;
+    color: var(--tron-yellow);
+  }
+
+  .api-base-url {
+    display: block;
+    margin: 12px 0;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.48);
+    border: 1px solid rgba(0, 255, 255, 0.18);
+    color: #dffeff;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    word-break: break-all;
+  }
+
+  .api-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255, 215, 0, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    color: #ffe694;
+    font-size: 0.84rem;
+  }
+
+  .api-route-list,
+  .api-roadmap-list {
+    list-style: none;
+    padding: 0;
+    margin: 14px 0 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  .api-route-item,
+  .api-roadmap-item {
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .api-route-method {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 52px;
+    padding: 4px 8px;
+    margin-right: 10px;
+    border-radius: 999px;
+    background: rgba(30, 144, 255, 0.14);
+    color: #8ec5ff;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+
+  .api-route-path,
+  .api-code,
+  .api-inline-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  }
+
+  .api-route-path {
+    color: #f5f7ff;
+    word-break: break-word;
+  }
+
+  .api-route-note {
+    margin: 8px 0 0;
+    color: #bcbcbc;
+    font-size: 0.93rem;
+    line-height: 1.6;
+  }
+
+  .api-code-wrap {
+    margin-top: 14px;
+  }
+
+  .api-code-actions {
+    justify-content: flex-end;
+    margin-bottom: 8px;
+  }
+
+  .api-code {
+    margin: 0;
+    padding: 16px;
+    border-radius: 14px;
+    background: #050505;
+    border: 1px solid rgba(0, 255, 255, 0.14);
+    color: #dffeff;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    line-height: 1.65;
+    font-size: 0.94rem;
+  }
+
+  .api-inline-code {
+    color: #ffe694;
+  }
+
+  .api-warning {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 95, 109, 0.26);
+    background: rgba(255, 90, 109, 0.08);
+  }
+
+  .api-copy-feedback {
+    min-height: 20px;
+    margin-top: 10px;
+    color: #9bfaff;
+    font-size: 0.9rem;
+  }
+
+  .api-companion-actions {
+    margin-top: 16px;
+  }
+
+  .api-spaced-top {
+    margin-top: 14px;
+  }
+
+  @media (max-width: 980px) {
+    .api-grid-2,
+    .api-grid-3 {
+      grid-template-columns: 1fr;
+    }
+
+    .api-docs-wrap {
+      padding-top: 86px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="api-docs-wrap">
+  <section class="api-hero">
+    <div class="api-hero-content">
+      <div class="api-kicker">API Version {{ api_version }} · {{ environment }}</div>
+      <h1 class="api-title">Warhead Hunter API</h1>
+      <p class="api-subtitle">
+        Programmatic access for solvent-exposure analysis, job monitoring, structure retrieval, and future batch warhead/linker vector screening.
+      </p>
+
+      <div class="api-actions">
+        <button type="button" class="api-btn api-btn-primary" id="hero-test-api">Test API</button>
+        <button type="button" class="api-btn" id="hero-copy-base">Copy Base URL</button>
+        <a href="/browse" class="api-btn-link">Open Job Browser</a>
+        <a href="/hunter" class="api-btn-link">Open Warhead Hunter</a>
+      </div>
+
+      <div class="api-status-box">
+        <p class="api-status-label">Selected API Base</p>
+        <div id="selected-api-base" class="api-selected-base">{{ primary_api_base }}</div>
+        <p id="api-status-note" class="api-status-note">
+          Internal/Tailscale is preferred first. Use Auto-detect to test fallback behavior.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="api-panel">
+    <h2 class="api-section-title">Base URLs</h2>
+    <p class="api-section-copy">
+      For current development, use the Tailscale/internal address first. Once the public deployment is stable, the production domain can become the default. The selection order is centralized server-side so it can be flipped later without rewriting the page.
+    </p>
+
+    <div class="api-grid api-grid-2">
+      {% for base in api_base_options %}
+      <div class="api-base-card">
+        <span class="api-pill">{{ base.label }}</span>
+        <div class="api-base-url" id="base-{{ base.key }}">{{ base.value }}</div>
+        <p class="api-card-copy">{{ base.description }}</p>
+        <div class="api-card-actions">
+          <button type="button" class="api-btn api-btn-subtle" data-copy-text="{{ base.value }}">Copy URL</button>
+          {% if base.key == "internal" %}
+          <button type="button" class="api-btn api-btn-subtle" id="test-primary-btn">Test Internal API</button>
+          {% else %}
+          <button type="button" class="api-btn api-btn-subtle" id="test-secondary-btn">Test Public API</button>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="api-inline-actions api-spaced-top">
+      <button type="button" class="api-btn" id="auto-detect-btn">Auto-detect Best API Base</button>
+      <button type="button" class="api-btn" id="copy-selected-base-btn">Copy Selected Base</button>
+    </div>
+
+    <div class="api-warning">
+      Browser-based API tests may fail even when a terminal request still works. Common causes include CORS policy, mixed-content blocking when an HTTPS page tries to call an HTTP base, or a network path that is only reachable from Tailscale. If the browser test fails, try the curl commands below from your terminal.
+    </div>
+  </section>
+
+  <section class="api-panel">
+    <h2 class="api-section-title">Current API Endpoints</h2>
+    <p class="api-section-copy">
+      The routes below are implemented or currently exposed in the Flask app. Route families with multiple path variants are labeled conservatively where needed.
+    </p>
+
+    <div class="api-grid">
+      {% for group in api_doc_current_groups %}
+      <div class="api-route-group">
+        <h3>{{ group.title }}</h3>
+        <p class="api-card-copy">{{ group.description }}</p>
+        <ul class="api-route-list">
+          {% for route in group.routes %}
+          <li class="api-route-item">
+            <span class="api-route-method">{{ route.method }}</span>
+            <span class="api-route-path">{{ route.path }}</span>
+            <p class="api-route-note">{{ route.note }}</p>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="api-panel">
+    <h2 class="api-section-title">Copy/Paste Examples</h2>
+    <p class="api-section-copy">
+      Examples 1 through 6 update automatically when the selected API base changes.
+    </p>
+
+    <div class="api-grid">
+      <div class="api-example-card">
+        <h3>1. Health Check</h3>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-health">Copy</button>
+          </div>
+          <pre id="code-health" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>2. Manifest</h3>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-manifest">Copy</button>
+          </div>
+          <pre id="code-manifest" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>3. Export Jobs CSV</h3>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-export">Copy</button>
+          </div>
+          <pre id="code-export" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>4. Read Job Log</h3>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-log">Copy</button>
+          </div>
+          <pre id="code-job-log" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>5. Read Job Summary</h3>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-summary">Copy</button>
+          </div>
+          <pre id="code-job-summary" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>6. Download Job Result Bundle</h3>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-download">Copy</button>
+          </div>
+          <pre id="code-job-download" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>7. Python Example</h3>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python">Copy</button>
+          </div>
+          <pre id="code-python" class="api-code">import requests
+
+BASES = [
+    "{{ primary_api_base }}",
+    "{{ secondary_api_base }}",
+]
+
+def choose_base():
+    for base in BASES:
+        try:
+            r = requests.get(f"{base}/api/health", timeout=5)
+            if r.ok:
+                return base
+        except requests.RequestException:
+            pass
+    raise RuntimeError("No Warhead Hunter API base is reachable")
+
+base = choose_base()
+print("Using:", base)
+print(requests.get(f"{base}/api/manifest").json())</pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>8. JavaScript Example</h3>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-javascript">Copy</button>
+          </div>
+          <pre id="code-javascript" class="api-code">const BASES = [
+  "{{ primary_api_base }}",
+  "{{ secondary_api_base }}"
+];
+
+async function chooseWarheadHunterBase() {
+  for (const base of BASES) {
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 5000);
+      const res = await fetch(`${base}/api/health`, { signal: controller.signal });
+      clearTimeout(timer);
+      if (res.ok) return base;
+    } catch (err) {}
+  }
+  throw new Error("No Warhead Hunter API base reachable");
+}</pre>
+        </div>
+      </div>
+    </div>
+
+    <div id="api-copy-feedback" class="api-copy-feedback"></div>
+  </section>
+
+  <section class="api-panel">
+    <h2 class="api-section-title">Future API Roadmap</h2>
+    <p class="api-section-copy">
+      Planned routes are shown here for documentation and architecture alignment only. They are not active yet unless separately implemented.
+    </p>
+    <div class="api-roadmap-card">
+      <ul class="api-roadmap-list">
+        {% for route in api_doc_planned_endpoints %}
+        <li class="api-roadmap-item">
+          <span class="api-route-path">{{ route }}</span>
+          <p class="api-route-note">Planned / not yet implemented.</p>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+
+  <section class="api-panel">
+    <h2 class="api-section-title">Batch API Preview</h2>
+    <p class="api-section-copy">
+      Planned interface — not active yet.
+    </p>
+    <div class="api-example-card">
+      <div class="api-code-wrap">
+        <div class="api-code-actions">
+          <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-batch-preview">Copy</button>
+        </div>
+        <pre id="code-batch-preview" class="api-code">{{ batch_preview_payload | tojson(indent=2) }}</pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="api-panel">
+    <h2 class="api-section-title">Companion Tool Integration</h2>
+    <div class="api-companion-card">
+      <p class="api-section-copy">
+        Future API output can support downstream reuse in PROTAC Builder, E3 Ligandalyzer, and V-LiSEMOD. The current docs page focuses on the routes already present in Warhead Hunter while keeping those integrations visible for future programmatic workflows.
+      </p>
+      <div class="api-companion-actions">
+        {% for tool in companion_tool_links %}
+        <a href="{{ tool.url }}" class="api-btn-link" target="_blank" rel="noopener noreferrer">{{ tool.name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block page_js %}
+<script>
+(() => {
+  const PRIMARY_BASE = {{ primary_api_base | tojson }};
+  const SECONDARY_BASE = {{ secondary_api_base | tojson }};
+  const BASES = [PRIMARY_BASE, SECONDARY_BASE].filter(Boolean);
+
+  const state = {
+    selectedBase: PRIMARY_BASE || SECONDARY_BASE || "",
+  };
+
+  const codeTemplates = {
+    "code-health": base => `curl -s "${base}/api/health" | python -m json.tool`,
+    "code-manifest": base => `curl -s "${base}/api/manifest" | python -m json.tool`,
+    "code-export": base => `curl -L "${base}/api/jobs/export" -o warhead_hunter_jobs.csv`,
+    "code-job-log": base => `curl -s "${base}/api/job_log/JOB_ID" | python -m json.tool`,
+    "code-job-summary": base => `curl -s "${base}/api/job_summary/JOB_ID" | python -m json.tool`,
+    "code-job-download": base => `curl -L "${base}/api/jobs/JOB_ID/download" -o JOB_ID_results.zip`
+  };
+
+  function setStatus(base, note) {
+    const baseNode = document.getElementById("selected-api-base");
+    const noteNode = document.getElementById("api-status-note");
+    if (baseNode && base) baseNode.textContent = base;
+    if (noteNode && note) noteNode.textContent = note;
+  }
+
+  function setCopyFeedback(msg) {
+    const node = document.getElementById("api-copy-feedback");
+    if (!node) return;
+    node.textContent = msg || "";
+    if (msg) {
+      window.clearTimeout(node._feedbackTimer);
+      node._feedbackTimer = window.setTimeout(() => {
+        node.textContent = "";
+      }, 1800);
+    }
+  }
+
+  function renderExamples() {
+    const base = state.selectedBase || PRIMARY_BASE || SECONDARY_BASE || "";
+    Object.entries(codeTemplates).forEach(([id, builder]) => {
+      const node = document.getElementById(id);
+      if (!node) return;
+      node.textContent = builder(base);
+    });
+    setStatus(base, `Current copy/paste examples use ${base}.`);
+  }
+
+  async function copyText(text) {
+    const clean = String(text || "").trim();
+    if (!clean) return false;
+
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(clean);
+        return true;
+      } catch (err) {}
+    }
+
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = clean;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  async function fetchWithTimeout(url, timeoutMs = 3500) {
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, {
+        method: "GET",
+        signal: controller.signal,
+        headers: { "Accept": "application/json" },
+        cache: "no-store"
+      });
+      return res;
+    } finally {
+      window.clearTimeout(timer);
+    }
+  }
+
+  async function testBase(base, label) {
+    const url = `${String(base).replace(/\/+$/, "")}/api/health`;
+    try {
+      const res = await fetchWithTimeout(url, 3500);
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+      const data = await res.json().catch(() => null);
+      state.selectedBase = base;
+      renderExamples();
+      setStatus(base, `${label} responded successfully via /api/health.`);
+      return { ok: true, base, data };
+    } catch (err) {
+      const message = `${label} browser test failed. This can still happen even when terminal curl works because of CORS, mixed-content rules, or network reachability.`;
+      setStatus(state.selectedBase || base, message);
+      return { ok: false, base, error: err };
+    }
+  }
+
+  async function autoDetectBase() {
+    for (const base of BASES) {
+      const label = base === PRIMARY_BASE ? "Internal API" : "Public API";
+      const result = await testBase(base, label);
+      if (result.ok) {
+        return result.base;
+      }
+    }
+    setStatus(
+      state.selectedBase || PRIMARY_BASE || SECONDARY_BASE || "",
+      "Neither API base responded to the browser test. Check server/network access, and try the curl commands from a terminal."
+    );
+    return null;
+  }
+
+  function bindCopyButtons() {
+    document.querySelectorAll("[data-copy-text]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const ok = await copyText(btn.getAttribute("data-copy-text"));
+        setCopyFeedback(ok ? "Copied." : "Copy failed.");
+      });
+    });
+
+    document.querySelectorAll(".api-copy-code").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.getAttribute("data-target");
+        const node = id ? document.getElementById(id) : null;
+        const ok = await copyText(node ? node.textContent : "");
+        setCopyFeedback(ok ? "Code copied." : "Copy failed.");
+      });
+    });
+  }
+
+  function bindActionButtons() {
+    const heroTest = document.getElementById("hero-test-api");
+    const heroCopyBase = document.getElementById("hero-copy-base");
+    const autoDetectBtn = document.getElementById("auto-detect-btn");
+    const copySelectedBaseBtn = document.getElementById("copy-selected-base-btn");
+    const testPrimaryBtn = document.getElementById("test-primary-btn");
+    const testSecondaryBtn = document.getElementById("test-secondary-btn");
+
+    if (heroTest) {
+      heroTest.addEventListener("click", () => autoDetectBase());
+    }
+    if (autoDetectBtn) {
+      autoDetectBtn.addEventListener("click", () => autoDetectBase());
+    }
+    if (heroCopyBase) {
+      heroCopyBase.addEventListener("click", async () => {
+        const ok = await copyText(state.selectedBase);
+        setCopyFeedback(ok ? "Selected base copied." : "Copy failed.");
+      });
+    }
+    if (copySelectedBaseBtn) {
+      copySelectedBaseBtn.addEventListener("click", async () => {
+        const ok = await copyText(state.selectedBase);
+        setCopyFeedback(ok ? "Selected base copied." : "Copy failed.");
+      });
+    }
+    if (testPrimaryBtn) {
+      testPrimaryBtn.addEventListener("click", () => testBase(PRIMARY_BASE, "Internal API"));
+    }
+    if (testSecondaryBtn) {
+      testSecondaryBtn.addEventListener("click", () => testBase(SECONDARY_BASE, "Public API"));
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderExamples();
+    bindCopyButtons();
+    bindActionButtons();
+  });
+})();
+</script>
+{% endblock %}

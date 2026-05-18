@@ -10,6 +10,7 @@ import csv
 import zipfile
 from pathlib import Path
 from typing import Optional, Dict, Any, List
+from datetime import datetime, timezone
 from flask import jsonify
 from pathlib import Path
 import pandas as pd
@@ -42,6 +43,22 @@ JOBS_DIR.mkdir(parents=True, exist_ok=True)
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = str(APP_ROOT / "uploads")
 app.config["JOBS_DIR"] = str(JOBS_DIR)
+
+# API docs / manifest config
+PRIMARY_API_BASE = os.getenv("WARHEAD_API_PRIMARY_BASE", "http://cartman.rove-vernier.ts.net").rstrip("/")
+SECONDARY_API_BASE = os.getenv("WARHEAD_API_SECONDARY_BASE", "https://warheadhunter.com").rstrip("/")
+API_VERSION = "0.1"
+APP_ENVIRONMENT = (
+    os.getenv("WARHEAD_ENVIRONMENT")
+    or os.getenv("FLASK_ENV")
+    or "development"
+)
+
+app.config["PRIMARY_API_BASE"] = PRIMARY_API_BASE
+app.config["SECONDARY_API_BASE"] = SECONDARY_API_BASE
+app.config["API_VERSION"] = API_VERSION
+app.config["APP_ENVIRONMENT"] = APP_ENVIRONMENT
+
 app.register_blueprint(sasa_bp)
 app.register_blueprint(routes_bp)
 app.register_blueprint(hand_bp)
@@ -59,6 +76,167 @@ FOLDERS = {
 for folder in FOLDERS.values():
     (Path(app.config["UPLOAD_FOLDER"]) / folder).mkdir(parents=True, exist_ok=True)
 
+API_BASE_OPTIONS = [
+    {
+        "label": "Internal / Tailscale",
+        "key": "internal",
+        "value": PRIMARY_API_BASE,
+        "description": "Use this first for current internal and Tailscale-based development.",
+    },
+    {
+        "label": "Public / Future Production",
+        "key": "public",
+        "value": SECONDARY_API_BASE,
+        "description": "Use this after the public deployment becomes the preferred default.",
+    },
+]
+
+API_DOC_CURRENT_GROUPS = [
+    {
+        "title": "Health And Discovery",
+        "description": "Lightweight service metadata and discovery routes.",
+        "routes": [
+            {
+                "method": "GET",
+                "path": "/api/health",
+                "note": "Health and environment status.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/manifest",
+                "note": "Implemented endpoint groups, base URLs, and roadmap summary.",
+            },
+        ],
+    },
+    {
+        "title": "Job Monitoring And Export",
+        "description": "Current job-state, summary, and archive retrieval.",
+        "routes": [
+            {
+                "method": "GET",
+                "path": "/api/job_log/<job_id>",
+                "note": "Returns current in-memory job log/status for active jobs.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/job_summary/<job_id>",
+                "note": "Returns a lightweight per-job summary.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/jobs/<job_id>/download",
+                "note": "Downloads a ZIP bundle of the job folder.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/jobs/export",
+                "note": "Exports the job index as CSV.",
+            },
+        ],
+    },
+    {
+        "title": "Structure And Visualization Assets",
+        "description": "Routes that serve SVG, PDB, protein-only PDB, SDF, and related structure assets.",
+        "routes": [
+            {
+                "method": "GET",
+                "path": "/api/svg/...",
+                "note": "Implemented route family — exact path arguments should be confirmed from code.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/svg-plain/...",
+                "note": "Implemented route family — exact path arguments should be confirmed from code.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/pdb/...",
+                "note": "Implemented route family — exact path arguments should be confirmed from code.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/protein/...",
+                "note": "Implemented route family — exact path arguments should be confirmed from code.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/sdf/...",
+                "note": "Implemented route family — exact path arguments should be confirmed from code.",
+            },
+        ],
+    },
+    {
+        "title": "Ligand And Result Helpers",
+        "description": "Routes that help the browser resolve ligand properties, chains, and mapped atom data.",
+        "routes": [
+            {
+                "method": "GET",
+                "path": "/api/ligand_props/...",
+                "note": "Implemented route family — exact path arguments should be confirmed from code.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/ligand_chain/...",
+                "note": "Implemented route family — exact path arguments should be confirmed from code.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/sasa_overlay/...",
+                "note": "Implemented route family — exact path arguments should be confirmed from code.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/sasa_atommap/...",
+                "note": "Implemented route family — exact path arguments should be confirmed from code.",
+            },
+        ],
+    },
+    {
+        "title": "SASA Blueprint Endpoints",
+        "description": "Programmatic atom-level solvent-exposure retrieval for job outputs.",
+        "routes": [
+            {
+                "method": "GET",
+                "path": "/api/jobs/<job_id>/sasa/available",
+                "note": "Lists available chain and residue combinations for a PDB.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/jobs/<job_id>/sasa/atoms",
+                "note": "Returns atom-level SASA payloads for one ligand occurrence.",
+            },
+            {
+                "method": "POST",
+                "path": "/api/jobs/<job_id>/sasa/bulk",
+                "note": "Bulk atom-level SASA lookup for multiple requests.",
+            },
+            {
+                "method": "GET",
+                "path": "/api/jobs/<job_id>/sasa/residue_for_ligand",
+                "note": "Resolves residue ID from PDB, chain, and ligand code.",
+            },
+        ],
+    },
+]
+
+API_DOC_PLANNED_ENDPOINTS = [
+    "POST /api/jobs",
+    "GET /api/jobs/{job_id}",
+    "GET /api/jobs/{job_id}/results",
+    "GET /api/jobs/{job_id}/files",
+    "GET /api/jobs/{job_id}/files/{filename}",
+    "GET /api/jobs/{job_id}/bundle",
+    "POST /api/batches",
+    "GET /api/batches/{batch_id}",
+    "GET /api/batches/{batch_id}/results",
+]
+
+COMPANION_TOOL_LINKS = [
+    {"name": "PROTAC Builder", "url": "https://protacbuilder.com"},
+    {"name": "E3 Ligandalyzer", "url": "https://e3ligandalyzer.com"},
+    {"name": "V-LiSEMOD", "url": "https://vlisemod.com"},
+]
+
 # Expected filename: 7pcd_A_70I.pdb
 PDB_RE = re.compile(
     r"^([0-9a-z]{4})_([A-Za-z0-9])_([A-Za-z0-9]{2,12})\.pdb$",
@@ -70,8 +248,18 @@ PDB_RE = re.compile(
 # -----------------------------
 @app.context_processor
 def inject_year():
-    from datetime import datetime
     return {"current_year": datetime.now().year}
+
+
+def _utc_now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def _api_json(payload: Dict[str, Any]):
+    resp = jsonify(payload)
+    resp.headers["Access-Control-Allow-Origin"] = "*"
+    resp.headers["Cache-Control"] = "no-store"
+    return resp
 
 
 def job_root(job_id: str) -> Path:
@@ -339,6 +527,79 @@ def ligand_sdf_path(job_id: str, pdb: str, chain: str, warhead: str) -> Optional
         if p.exists() and _is_under(job_root(job_id), p):
             return p
     return None
+
+
+# -----------------------------
+#        ROUTES (API DOCS)
+# -----------------------------
+@app.get("/api-docs")
+@app.get("/api")
+def api_docs():
+    return render_template(
+        "api_docs.html",
+        api_version=API_VERSION,
+        environment=APP_ENVIRONMENT,
+        api_base_options=API_BASE_OPTIONS,
+        api_doc_current_groups=API_DOC_CURRENT_GROUPS,
+        api_doc_planned_endpoints=API_DOC_PLANNED_ENDPOINTS,
+        companion_tool_links=COMPANION_TOOL_LINKS,
+        primary_api_base=PRIMARY_API_BASE,
+        secondary_api_base=SECONDARY_API_BASE,
+        batch_preview_payload={
+            "jobs": [
+                {
+                    "pdb_id": "4EIY",
+                    "ligand": "ABC",
+                    "options": {
+                        "run_sasa": True,
+                        "generate_svg": True,
+                        "generate_viewer": True,
+                    },
+                }
+            ]
+        },
+    )
+
+
+@app.get("/api/health")
+def api_health():
+    return _api_json({
+        "ok": True,
+        "service": "warhead-hunter",
+        "status": "healthy",
+        "api_version": API_VERSION,
+        "environment": APP_ENVIRONMENT,
+        "time": _utc_now_iso(),
+    })
+
+
+@app.get("/api/manifest")
+def api_manifest():
+    return _api_json({
+        "ok": True,
+        "service": "warhead-hunter",
+        "api_version": API_VERSION,
+        "environment": APP_ENVIRONMENT,
+        "time": _utc_now_iso(),
+        "base_urls": {
+            "primary": PRIMARY_API_BASE,
+            "secondary": SECONDARY_API_BASE,
+        },
+        "current_implemented_endpoint_groups": [
+            {
+                "title": group["title"],
+                "description": group["description"],
+                "routes": group["routes"],
+            }
+            for group in API_DOC_CURRENT_GROUPS
+        ],
+        "future_planned_endpoint_groups": {
+            "planned_endpoints": API_DOC_PLANNED_ENDPOINTS,
+            "warning": "Batch endpoints and structured job-submission endpoints are planned but not yet implemented.",
+        },
+        "companion_tool_links": COMPANION_TOOL_LINKS,
+        "warning": "Use the internal/Tailscale base first for current development. Public production may become the preferred default later.",
+    })
 
 
 # -----------------------------
@@ -1480,8 +1741,6 @@ def not_found(e):
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5070)
-
-
 
 
 

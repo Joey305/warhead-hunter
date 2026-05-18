@@ -1,0 +1,134 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{setspace}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
+
+\title{Warhead Hunter: Atom-Level Solvent Exposure Mapping of Protein-Bound Ligands for Structure-Guided Modification-Site Prioritization}
+\author{
+Author 1\textsuperscript{1},
+Author 2\textsuperscript{1,2},
+Corresponding Author\textsuperscript{1,*}
+}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\noindent
+\textsuperscript{1}Affiliation placeholder\\
+\textsuperscript{2}Affiliation placeholder\\
+\textsuperscript{*}Corresponding author placeholder
+
+\begin{abstract}
+Warhead Hunter is a web-based software workflow for converting ligand-bound protein structures into atom-level solvent exposure maps. The platform combines structure retrieval, sequence-guided filtering, ligand-focused preprocessing, solvent-accessible surface area analysis, RDKit-based atom mapping, and browser-based visualization to support inspection of potentially modifiable ligand atoms. Warhead Hunter is designed to assist structure-guided evaluation of candidate sites for warhead installation, linker attachment, chemical expansion, and PROTAC-oriented ligand design.
+\end{abstract}
+
+\section{Introduction}
+Ligand-bound protein structures can guide medicinal chemistry beyond pose inspection alone by helping identify ligand atoms that remain solvent exposed in the bound state. Such atom-level information can support evaluation of candidate sites for derivatization, linker attachment, and related structure-guided design tasks. [REF NEEDED]
+
+Warhead Hunter was developed as a web-oriented software workflow for this purpose. Based on the current repository, the platform integrates structure retrieval, sequence-guided filtering, ligand-focused preprocessing, atom-level solvent-accessible surface area (SASA) analysis, and 2D/3D atom mapping into a browser-accessible interface.
+
+\section{Software Design and Implementation}
+Warhead Hunter is implemented as a Flask application with job-specific output folders and browser-based result pages. The default workflow is launched from a form that accepts a target identifier, a structure-search query, and an optional FASTA sequence. A per-job pipeline then performs structure retrieval, filtering, ligand-centered preparation, SASA analysis, atom mapping, and result assembly. [TO VERIFY]
+
+\section{Workflow}
+The repository code supports a workflow that includes:
+\begin{enumerate}[leftmargin=*]
+  \item structure retrieval from RCSB with PDBe fallbacks,
+  \item sequence- and ligand-aware filtering,
+  \item processed PDB generation,
+  \item ligand atom SASA analysis,
+  \item ligand metadata and scaffold summarization,
+  \item RDKit-based 2D/3D atom mapping,
+  \item browser-based result visualization.
+\end{enumerate}
+
+\section{Atom-Level Solvent Exposure and Modification-Site Prioritization}
+In the current code, ligand atom SASA is computed in protein-bound complexes using \texttt{Bio.PDB.ShrakeRupley}. Exposure values are then linked back to ligand atom identities and served through CSV outputs, SVG depictions, and JSON endpoints used by the front-end viewer. The platform is therefore designed to support inspection of candidate ligand atoms for derivatization in structural context.
+
+\section{Web Interface and Visualization}
+The results interface combines ligand summary cards, 2D ligand depictions, and a 3D viewer. The current front-end code uses NGL for structure display and color-coded overlays for exposed ligand atoms. Supporting files include SVG depictions, SDF files, protein PDB files, and atom-level SASA payloads.
+
+\section{Example Use Case}
+A representative target-ligand case study should be added here after a final run is selected and verified. [FIGURE NEEDED]
+
+\begin{figure}[htbp]
+  \centering
+  \fbox{\parbox{0.9\linewidth}{\centering Figure 1 placeholder: Overall Warhead Hunter workflow schematic.}}
+  \caption{Overall Warhead Hunter workflow. [FIGURE NEEDED]}
+  \label{fig:workflow}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \fbox{\parbox{0.9\linewidth}{\centering Figure 2 placeholder: Web interface workflow from launch to results.}}
+  \caption{Web interface workflow. [FIGURE NEEDED]}
+  \label{fig:web}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \fbox{\parbox{0.9\linewidth}{\centering Figure 3 placeholder: Ligand atom mapping and SASA exposure classification.}}
+  \caption{Ligand atom mapping and exposure classification. [FIGURE NEEDED]}
+  \label{fig:mapping}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \fbox{\parbox{0.9\linewidth}{\centering Figure 4 placeholder: Representative case study.}}
+  \caption{Representative case study. [FIGURE NEEDED]}
+  \label{fig:case}
+\end{figure}
+
+\section{Discussion}
+The strongest code-supported contribution is that Warhead Hunter converts ligand-bound structures into interpretable atom-level exposure maps and presents them through an integrated web workflow. The repository does not, on its own, establish predictive accuracy, prospective validation, or medicinal chemistry success rates, so such claims should not be made without additional evidence.
+
+\section{Limitations}
+Observed repository limitations include an empty \texttt{requirements.txt}, an in-memory job-state model for active jobs, mixed legacy/current output conventions, and deployment-specific handoff logic. Validation datasets, benchmark results, and runtime metrics are not present in the inspected code and remain [TO VERIFY].
+
+\section{Conclusions}
+Warhead Hunter is a scientific software workflow for structure-guided inspection of ligand atom solvent exposure in protein-bound complexes. The current repository supports job-oriented execution, atom-level SASA computation, ligand mapping, and interactive visualization intended to assist evaluation of candidate ligand modification sites.
+
+\section{Data and Software Availability}
+Repository URL: [TO VERIFY].\\
+Deployment URL: [TO VERIFY].\\
+License information: [TO VERIFY].
+
+\section*{Author Contributions}
+Conceptualization: [AUTHOR NEEDED]\\
+Software: [AUTHOR NEEDED]\\
+Methodology: [AUTHOR NEEDED]\\
+Writing: [AUTHOR NEEDED]
+
+\section*{Acknowledgments}
+[ACKNOWLEDGMENTS NEEDED]
+
+\section*{References}
+\begin{enumerate}[leftmargin=*]
+  \item SASA methodology reference. [REF NEEDED]
+  \item RDKit reference. [REF NEEDED]
+  \item Biopython reference. [REF NEEDED]
+  \item Flask reference. [REF NEEDED]
+  \item NGL reference. [REF NEEDED]
+  \item RCSB PDB reference. [REF NEEDED]
+  \item PDBe reference. [REF NEEDED]
+\end{enumerate}
+
+\end{document}
