@@ -37,13 +37,34 @@
 {% endblock %}
 {% block content %}
 <div class="content-page">
-  <section class="content-hero">
-    <div class="content-kicker">FAQ</div>
-    <h1 class="content-title">Warhead Hunter FAQ</h1>
-    <p class="content-lead">Common questions about ligand solvent exposure mapping, candidate site inspection, and how Warhead Hunter fits into structure-guided medicinal chemistry workflows.</p>
+  <section class="wh-hero wh-scanline-panel reveal">
+    <div class="wh-hero-copy">
+      <div class="wh-kicker">FAQ</div>
+      <h1 class="wh-hero-title">Warhead Hunter FAQ</h1>
+      <p class="wh-hero-lead">Common questions about ligand solvent exposure mapping, candidate site inspection, and how Warhead Hunter fits into structure-guided medicinal chemistry workflows.</p>
+      <div class="wh-actions">
+        <a href="{{ url_for('hunter') }}" class="tron-btn">Launch Hunter</a>
+        <a href="{{ url_for('docs_page') }}" class="content-pill">Docs</a>
+        <a href="{{ url_for('api_docs') }}" class="content-pill">API Docs</a>
+      </div>
+    </div>
+    <div class="wh-hero-visual">
+      <div class="wh-card-grid">
+        <article class="wh-mini-metric">
+          <h3 class="wh-metric-title">Inputs</h3>
+          <span class="wh-mini-metric-value">Target + query</span>
+          <span class="wh-mini-metric-label">With optional FASTA or manual uploads</span>
+        </article>
+        <article class="wh-mini-metric">
+          <h3 class="wh-metric-title">Artifacts</h3>
+          <span class="wh-mini-metric-value">PDB / SDF / CSV</span>
+          <span class="wh-mini-metric-label">Viewer files, manifests, and bundles</span>
+        </article>
+      </div>
+    </div>
   </section>
 
-  <section class="content-section faq-list">
+  <section class="content-section faq-list reveal">
     <article class="faq-item">
       <h3>What does Warhead Hunter do?</h3>
       <p>Warhead Hunter maps atom-level solvent exposure on protein-bound ligands and helps researchers inspect candidate atoms for warhead installation, linker attachment, chemical expansion, and PROTAC-oriented design.</p>
@@ -62,14 +83,14 @@
     </article>
   </section>
 
-  <section class="content-sidebar-card">
-    <h2>Explore More</h2>
-    <div class="content-link-row">
-      <a class="content-pill" href="{{ url_for('hunter') }}">Launch Hunter</a>
-      <a class="content-pill" href="{{ url_for('how_to_use') }}">How to Use</a>
-      <a class="content-pill" href="{{ url_for('science') }}">Science</a>
-      <a class="content-pill" href="{{ url_for('use_cases') }}">Use Cases</a>
-      <a class="content-pill" href="{{ url_for('docs_page') }}">Docs</a>
+  <section class="wh-cta-panel reveal">
+    <h2 class="wh-cta-title">Need More Than A Quick Answer?</h2>
+    <p class="wh-cta-copy">Move into the workflow guide, science background, or API docs when you want a deeper view of how the output should be used.</p>
+    <div class="wh-actions">
+      <a href="{{ url_for('how_to_use') }}" class="content-pill">How to Use</a>
+      <a href="{{ url_for('science') }}" class="content-pill">Science</a>
+      <a href="{{ url_for('use_cases') }}" class="content-pill">Use Cases</a>
+      <a href="{{ url_for('docs_page') }}" class="content-pill">Docs</a>
     </div>
   </section>
 </div>

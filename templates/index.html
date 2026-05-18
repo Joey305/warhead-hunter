@@ -21,48 +21,187 @@
 </script>
 {% endblock %}
 {% block content %}
-
-<div class="homepage-shell">
-    <section class="glass-panel homepage-hero">
-        <div class="content-kicker">Structure-Guided Medicinal Chemistry</div>
-        <h1 class="content-title">Warhead Hunter</h1>
-        <p class="content-subtitle">Atom-Level Solvent Exposure Mapping for Protein-Bound Ligands</p>
-        <p class="content-lead">
-            Analyze protein-bound ligands, compute atom-level SASA, and visualize candidate modification sites in synchronized 2D and 3D views. Warhead Hunter helps researchers inspect candidate atoms for warhead installation, linker attachment, chemical expansion, and PROTAC-oriented design.
-        </p>
-        <div class="content-actions">
-            <a href="{{ url_for('hunter') }}" class="tron-btn">Launch Warhead Hunter</a>
-            <a href="{{ url_for('how_to_use') }}" class="content-pill">How It Works</a>
-            <a href="{{ url_for('science') }}" class="content-pill">Scientific Background</a>
+<div class="content-page">
+    <section class="wh-hero wh-scanline-panel reveal">
+        <div class="wh-hero-copy">
+            <div class="wh-kicker">Structure-Guided Medicinal Chemistry Platform</div>
+            <h1 class="wh-hero-title">Warhead Hunter</h1>
+            <p class="wh-hero-subtitle">Atom-Level Solvent Exposure Mapping for Protein-Bound Ligands</p>
+            <p class="wh-hero-lead">
+                Analyze protein-bound ligands, compute atom-level SASA, and visualize candidate modification sites in synchronized 2D and 3D views. Warhead Hunter helps researchers inspect candidate atoms for warhead installation, linker attachment, chemical expansion, and PROTAC-oriented design.
+            </p>
+            <div class="wh-pill-row">
+                <span class="wh-pill wh-pill-strong">Input Layer</span>
+                <span class="wh-pill">Exposure Engine</span>
+                <span class="wh-pill">Atom Mapping Layer</span>
+                <span class="wh-pill">Automation Layer</span>
+            </div>
+            <div class="wh-actions">
+                <a href="{{ url_for('hunter') }}" class="tron-btn">Launch Warhead Hunter</a>
+                <a href="{{ url_for('how_to_use') }}" class="content-pill">How It Works</a>
+                <a href="{{ url_for('api_docs') }}" class="content-pill">API Docs</a>
+            </div>
+        </div>
+        <div class="wh-hero-visual">
+            <div class="wh-visual-stack">
+                <div class="wh-orbit-visual" aria-hidden="true">
+                    <div class="wh-orbit-core">Atom<br>Exposure</div>
+                    <div class="wh-orbit-node wh-orbit-node-a">SASA</div>
+                    <div class="wh-orbit-node wh-orbit-node-b">2D Map</div>
+                    <div class="wh-orbit-node wh-orbit-node-c">3D View</div>
+                    <div class="wh-orbit-node wh-orbit-node-d">PDB/SDF</div>
+                    <div class="wh-orbit-tag">Protein-bound ligand context</div>
+                </div>
+                <p class="wh-visual-caption">
+                    Convert ligand-bound structures into interpretable exposure maps, downloadable result bundles, and API-accessible artifacts for downstream analysis.
+                </p>
+            </div>
         </div>
     </section>
 
-    <section class="homepage-card-grid">
-        <article class="glass-panel homepage-card" onclick="window.location.href='{{ url_for('hunter') }}'">
-            <h2 class="homepage-card-title">Automated Warhead Scan</h2>
-            <p class="content-subtitle">Launch structure retrieval and ligand exposure analysis</p>
-            <p class="homepage-card-copy">
-                Start from a target name, structure-search query, and optional FASTA sequence. Warhead Hunter retrieves candidate structures, filters ligand-containing complexes, computes ligand atom SASA, and assembles browser-ready results for inspection.
-            </p>
-            <div class="content-actions">
-                <span class="content-pill">Target name</span>
-                <span class="content-pill">Search query</span>
-                <span class="content-pill">FASTA-guided filtering</span>
+    <section class="wh-section reveal">
+        <div class="wh-section-head">
+            <div>
+                <div class="wh-section-kicker">Platform Signals</div>
+                <h2 class="wh-section-title">What The Interface Is Built To Surface</h2>
             </div>
-        </article>
+            <p class="wh-section-copy">Warhead Hunter is designed around a small set of job-derived outputs that help researchers move from structure retrieval to candidate atom inspection quickly.</p>
+        </div>
+        <div class="wh-card-grid wh-card-grid-3">
+            <article class="wh-mini-metric">
+                <h3 class="wh-metric-title">Atom-Level SASA</h3>
+                <span class="wh-mini-metric-value">Bound-state exposure</span>
+                <span class="wh-mini-metric-label">Ligand atoms scored in protein context</span>
+            </article>
+            <article class="wh-mini-metric">
+                <h3 class="wh-metric-title">2D / 3D Mapping</h3>
+                <span class="wh-mini-metric-value">Synchronized views</span>
+                <span class="wh-mini-metric-label">SVG atom maps paired with structural viewers</span>
+            </article>
+            <article class="wh-mini-metric">
+                <h3 class="wh-metric-title">Job Outputs</h3>
+                <span class="wh-mini-metric-value">Download-ready artifacts</span>
+                <span class="wh-mini-metric-label">PDB, SDF, CSV, HTML, manifest, and bundles</span>
+            </article>
+        </div>
+    </section>
 
-        <article class="glass-panel homepage-card" onclick="window.location.href='{{ url_for('upload_manual') }}'">
-            <h2 class="homepage-card-title homepage-card-secondary">Manual Data Upload</h2>
-            <p class="content-subtitle">Bring your own SASA, mapping, and structure files</p>
-            <p class="homepage-card-copy">
-                Upload prepared SASA tables, 2D-to-3D ligand mapping tables, ligand metadata, scaffold assignments, and structure files when you already have processed inputs and want to render them through the Warhead Hunter interface.
-            </p>
-            <div class="content-actions">
-                <span class="content-pill">SASA CSV</span>
-                <span class="content-pill">MCS mapping</span>
-                <span class="content-pill">PDB/CIF structures</span>
+    <section class="wh-section reveal">
+        <div class="wh-section-head">
+            <div>
+                <div class="wh-section-kicker">Workflow Story</div>
+                <h2 class="wh-section-title">From Target Input To Interpretable Output</h2>
             </div>
-        </article>
+        </div>
+        <div class="wh-pipeline">
+            <article class="wh-pipeline-node">
+                <div class="wh-pipeline-label">Input</div>
+                <div class="wh-pipeline-title">Target</div>
+                <div class="wh-pipeline-copy">Target label, search phrase, optional FASTA sequence.</div>
+            </article>
+            <article class="wh-pipeline-node">
+                <div class="wh-pipeline-label">Structure Layer</div>
+                <div class="wh-pipeline-title">PDB Search</div>
+                <div class="wh-pipeline-copy">Retrieve ligand-bound structures for inspection.</div>
+            </article>
+            <article class="wh-pipeline-node">
+                <div class="wh-pipeline-label">Exposure Engine</div>
+                <div class="wh-pipeline-title">Ligand SASA</div>
+                <div class="wh-pipeline-copy">Compute atom-level solvent exposure in bound context.</div>
+            </article>
+            <article class="wh-pipeline-node">
+                <div class="wh-pipeline-label">Mapping Layer</div>
+                <div class="wh-pipeline-title">Atom Mapping</div>
+                <div class="wh-pipeline-copy">Map SASA values onto ligand atom records and scaffolds.</div>
+            </article>
+            <article class="wh-pipeline-node">
+                <div class="wh-pipeline-label">Interpretation</div>
+                <div class="wh-pipeline-title">2D / 3D Viewer</div>
+                <div class="wh-pipeline-copy">Inspect atom maps, bound structures, and viewer outputs.</div>
+            </article>
+            <article class="wh-pipeline-node">
+                <div class="wh-pipeline-label">Automation</div>
+                <div class="wh-pipeline-title">API Outputs</div>
+                <div class="wh-pipeline-copy">Download bundles, manifests, structures, and curated examples.</div>
+            </article>
+        </div>
+    </section>
+
+    <section class="wh-section reveal">
+        <div class="wh-section-head">
+            <div>
+                <div class="wh-section-kicker">Launch Modes</div>
+                <h2 class="wh-section-title">Choose The Workflow That Matches Your Data</h2>
+            </div>
+            <p class="wh-section-copy">The app supports both automated job launches and manual rendering of prepared mapping files.</p>
+        </div>
+        <div class="wh-card-grid wh-card-grid-2">
+            <article class="wh-feature-card">
+                <div class="wh-card-icon">AUTO</div>
+                <h3 class="wh-card-title">Automated Warhead Scan</h3>
+                <p class="wh-card-copy">
+                    Start from a target name, structure-search query, and optional FASTA sequence. Warhead Hunter retrieves candidate structures, filters ligand-containing complexes, computes ligand atom SASA, and assembles browser-ready results.
+                </p>
+                <div class="wh-pill-row">
+                    <span class="wh-pill">Target name</span>
+                    <span class="wh-pill">Search query</span>
+                    <span class="wh-pill">FASTA-guided filtering</span>
+                </div>
+                <div class="wh-actions">
+                    <a href="{{ url_for('hunter') }}" class="tron-btn">Launch Hunter</a>
+                </div>
+            </article>
+            <article class="wh-feature-card">
+                <div class="wh-card-icon">MANUAL</div>
+                <h3 class="wh-card-title">Manual Data Upload</h3>
+                <p class="wh-card-copy">
+                    Upload prepared SASA tables, 2D-to-3D ligand mapping tables, ligand metadata, scaffold assignments, and structure files when you already have processed inputs and want to render them through the Warhead Hunter interface.
+                </p>
+                <div class="wh-pill-row">
+                    <span class="wh-pill">SASA CSV</span>
+                    <span class="wh-pill">MCS mapping</span>
+                    <span class="wh-pill">PDB / CIF structures</span>
+                </div>
+                <div class="wh-actions">
+                    <a href="{{ url_for('upload_manual') }}" class="tron-btn">Open Upload Workflow</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="wh-section reveal">
+        <div class="wh-section-head">
+            <div>
+                <div class="wh-section-kicker">Generated Outputs</div>
+                <h2 class="wh-section-title">What Users Get Back</h2>
+            </div>
+        </div>
+        <div class="wh-card-grid wh-card-grid-3">
+            <article class="wh-output-card">
+                <h3 class="wh-output-title">Prepared Structure Files</h3>
+                <p class="wh-output-copy">Cleaned protein-ligand PDB files and ligand SDF outputs for downstream structure inspection.</p>
+            </article>
+            <article class="wh-output-card">
+                <h3 class="wh-output-title">Exposure Tables</h3>
+                <p class="wh-output-copy">SASA summary tables, atom-level SASA records, ligand metadata, and merged result CSVs.</p>
+            </article>
+            <article class="wh-output-card">
+                <h3 class="wh-output-title">Visual Artifacts</h3>
+                <p class="wh-output-copy">2D SVG exposure maps, result galleries, HTML viewers, manifests, and downloadable job bundles.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="wh-cta-panel reveal">
+        <h2 class="wh-cta-title">Ready To Inspect Ligand Exposure?</h2>
+        <p class="wh-cta-copy">
+            Launch a new Warhead Hunter run, explore completed example jobs, or jump straight into the API layer for job retrieval and file automation.
+        </p>
+        <div class="wh-actions">
+            <a href="{{ url_for('hunter') }}" class="tron-btn">Launch Hunter</a>
+            <a href="{{ url_for('examples_page') }}" class="content-pill">View Examples</a>
+            <a href="{{ url_for('api_docs') }}" class="content-pill">API Docs</a>
+        </div>
     </section>
 </div>
 
