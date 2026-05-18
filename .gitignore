@@ -1,0 +1,61 @@
+# Runtime/generated data
+jobs/
+uploads/*
+!uploads/.gitkeep
+
+# Python cache/build
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Logs/temp/cache
+*.log
+*.tmp
+tmp/
+temp/
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Secrets / local config
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa*
+credentials*.json
+token*.json
+secrets*.json
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Large scientific/output files
+*.xtc
+*.trr
+*.dcd
+*.nc
+*.gro
+*.tpr
+*.edr
+*.cpt
+*.xvg
+*.pdbqt
+*.zip
+*.tar
+*.tar.gz
+*.gz

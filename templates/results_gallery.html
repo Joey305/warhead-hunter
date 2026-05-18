@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/protacable.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/protacable-2d-toggle.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid cc-wrap">
+  <h1 class="glow-text cc-title">
+    WARHEAD COMMAND CENTER:
+    <span style="color:var(--tron-yellow)">{{ job_id }}</span>
+    <span style="opacity:.55;">·</span>
+    <span class="protein-cycler">{{ target_name }}</span>
+
+
+    {% set t = (results[0].Target if results and results[0].Target is defined else '')|trim %}
+    {% if t %}
+     
+    {% endif %}
+  </h1>
+
+
+  <div class="cc-grid">
+
+    <!-- LEFT -->
+    <div id="carousel" class="cc-left">
+      {% for r in results %}
+
+        {# ---------- ID fields ---------- #}
+        {% set p_id = (r.pdb_id or r.pdb or '')|lower|trim %}
+        {% set p_chain = (r.Chain if (r.Chain is defined and r.Chain|string|lower != 'nan' and r.Chain|string|trim != '') else 'A')|upper|trim %}
+        {% set p_war = (r.Ligand_Resolved or r.Warhead or r.ligand or '')|upper|trim %}
+        {% set p_smiles = (r.SMILES or '') %}
+
+        {# ---------- numeric fields (raw) ---------- #}
+        {% set raw_exp = (r['%Exposed']|float if r['%Exposed'] is defined else 0.0) %}
+        {% set raw_bur = (r['%Buried']|float if r['%Buried'] is defined else none) %}
+        {% set p_sasa = (r.SASA_in_complex_A2|float if r.SASA_in_complex_A2 is defined else 0.0) %}
+        {% set p_tot = (r.Total_atoms|int if r.Total_atoms is defined else 0) %}
+        {% set p_expat = (r.Exposed_atoms|int if r.Exposed_atoms is defined else 0) %}
+
+        {# ---------- residue / variant ---------- #}
+        {% set resid_raw = (r.Residue_ID if r.Residue_ID is defined else '') %}
+        {% set resid = (resid_raw|string)|trim %}
+        {% if resid|lower == 'nan' %}
+          {% set resid = '' %}
+        {% endif %}
+
+        {% set varnt_raw = (r.Variant if r.Variant is defined else '') %}
+        {% set varnt = (varnt_raw|string)|trim %}
+        {% if varnt|lower == 'nan' %}
+          {% set varnt = '' %}
+        {% endif %}
+
+        {# ---------- normalize exposure to 0–100 for UI ---------- #}
+        {% set p_exp = (raw_exp * 100.0) if raw_exp <= 1.00001 else raw_exp %}
+        {% if p_exp > 100.0 %}
+          {# guard against double-multiplied values e.g. 5280 #}
+          {% set p_exp = p_exp / 100.0 %}
+        {% endif %}
+        {% if p_exp < 0.0 %}{% set p_exp = 0.0 %}{% endif %}
+        {% if p_exp > 100.0 %}{% set p_exp = 100.0 %}{% endif %}
+
+        {% if raw_bur is not none %}
+          {% set p_bur = (raw_bur * 100.0) if raw_bur <= 1.00001 else raw_bur %}
+          {% if p_bur > 100.0 %}{% set p_bur = p_bur / 100.0 %}{% endif %}
+        {% else %}
+          {% set p_bur = 100.0 - p_exp %}
+        {% endif %}
+        {% if p_bur < 0.0 %}{% set p_bur = 0.0 %}{% endif %}
+        {% if p_bur > 100.0 %}{% set p_bur = 100.0 %}{% endif %}
+
+        {# ---------- stable per-card key (prevents DOM/cache collisions) ---------- #}
+        {% set pose_id = p_id ~ '|' ~ p_chain ~ '|' ~ p_war ~ '|' ~ (resid if resid else (varnt if varnt else '0')) %}
+        {% set pose_safe = pose_id|replace('|','_')|replace(' ','') %}
+
+        <div class="glass-panel result-card pending"
+             id="card-{{ pose_safe }}"
+             role="button"
+             tabindex="0"
+
+             data-pose-id="{{ pose_id }}"
+             data-pdb="{{ p_id }}"
+             data-chain="{{ p_chain }}"
+             data-warhead="{{ p_war }}"
+             data-resid="{{ resid }}"
+             data-variant="{{ varnt }}"
+             data-smiles="{{ p_smiles|e }}"
+
+             data-exposed="{{ p_exp }}"
+             data-buried="{{ p_bur }}"
+             data-sasa="{{ p_sasa }}"
+             data-total-atoms="{{ p_tot }}"
+             data-exposed-atoms="{{ p_expat }}">
+
+          <div class="result-card-top">
+
+            <h3 class="result-card-title">{{ p_war }}</h3>
+
+            <div class="card-top-row pdb-row">
+              <span class="pdb-chip">{{ p_id }} (CHAIN {{ p_chain }})</span>
+            </div>
+
+            <div class="card-top-row exp-row">
+              <span class="exp-chip">{{ p_exp|round(1) }}% EXPOSED</span>
+            </div>
+          </div>
+
+
+
+          <!-- Metrics (NO hardcoding) -->
+          <div class="ligand-metrics">
+
+            <!-- SASA atoms fraction -->
+            <div class="metric">
+              <div class="metric-label">SASA atoms</div>
+              <div class="metric-value">
+                <span class="metric-main">{{ p_expat }}</span>
+                <span class="metric-sub">/ {{ p_tot }}</span>
+              </div>
+            </div>
+
+            <!-- % buried bar -->
+            <div class="metric" style="--p:{{ p_bur|round(1) }}%">
+              <div class="metric-label">% buried</div>
+              <div class="metric-value">
+                <span class="metric-main">{{ p_bur|round(1) }}</span><span class="metric-unit">%</span>
+              </div>
+              <div class="metric-bar"><span></span></div>
+            </div>
+
+            <!-- SASA (Å²) -->
+            <div class="metric metric-wide">
+              <div class="metric-label">SASA</div>
+              <div class="metric-value">
+                <span class="metric-main">{{ p_sasa|round(1) }}</span><span class="metric-unit">Å²</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- CENTER -->
+    <div class="glass-panel cc-center cc-viewport">
+      <div id="viewport-loading" class="viewport-loading" style="display:none;">
+        <span>Loading…</span>
+      </div>
+
+      <div id="viewport" class="viewport"></div>
+
+      <div id="hud" class="hud collapsed">
+        <button id="hud-toggle" class="hud-toggle">▸</button>
+
+        <div id="hud-content">
+          <div id="hud-pdb"></div>
+          <div id="hud-lig"></div>
+          <div id="hud-exp"></div>
+          <div id="hud-debug"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="glass-panel cc-right">
+
+      <!-- 2D MAP PANEL -->
+      <div class="mini-panel map-panel">
+
+        <div class="map-panel-header">
+          <span class="map-title">2D LIGAND MAP</span>
+
+          <div class="map-toggle">
+            <button class="toggle-btn active" id="toggle-sasa">SASA</button>
+            <button class="toggle-btn" id="toggle-normal">NORMAL</button>
+          </div>
+        </div>
+
+        <div id="map-scroll" class="map-scroll">
+          <img id="2d-map" class="map-img" alt="2D ligand map">
+        </div>
+
+        <div id="sasa-legend" class="map-legend">
+          <div class="legend-row"><span class="swatch low"></span> GREEN (15–24 Å²)</div>
+          <div class="legend-row"><span class="swatch med"></span> YELLOW (24–34 Å²)</div>
+          <div class="legend-row"><span class="swatch high"></span> RED (≥34 Å²)</div>
+          <div class="legend-note">Atoms w/ SASA below 15 Å² are not highlighted</div>
+          <div class="legend-note">Highlighted atoms show linkable attachment sites</div>
+        </div>
+
+        <div id="normal-ui" class="normal-ui" style="display:none;">
+          <div class="smiles-head">
+            <span class="panel-h">SMILES</span>
+
+            <div class="smiles-actions">
+              <button id="copy-smiles" class="copy-btn">COPY</button>
+              <button id="download-sdf" class="copy-btn secondary">SDF</button>
+              <button id="download-pdb" class="copy-btn secondary">PDB</button>
+              <button id="protac-builder" class="copy-btn secondary">PROTAC Builder</button>
+
+            </div>
+          </div>
+
+          <div id="smiles-box" class="smiles-box"></div>
+        </div>
+
+      </div>
+
+      <!-- CHEM PROPERTIES -->
+      <div class="mini-panel">
+        <div class="right-head">
+          <div class="right-head-row">
+            <h4 class="right-title">CHEMICAL PROPERTIES</h4>
+            <div id="qed-chip" class="chip">QED: —</div>
+          </div>
+
+          <div class="qed-bar-wrap">
+            <div class="qed-bar-bg">
+              <div id="qed-bar-fill" class="qed-bar-fill"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="qed-scale">
+          <span>poor</span>
+          <span>moderate</span>
+          <span>good</span>
+        </div>
+
+        <ul id="chem-props" class="props-list"></ul>
+
+        <div class="rules-wrap">
+          <h6 class="rules-title">Drug-likeness filters</h6>
+          <div id="drug-rules" class="rules"></div>
+          <p class="rules-summary">Drug-likeness heuristics (informative, not absolute)</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block page_js %}
+<script>
+  window.PROTACABLE_CONFIG = { job_id: {{ job_id|tojson }} };
+</script>
+<script defer src="https://unpkg.com/ngl@2.0.0-dev.37/dist/ngl.js"></script>
+<script defer src="{{ url_for('static', filename='js/3Drender.js') }}"></script>
+<script defer src="{{ url_for('static', filename='js/protacable.js') }}"></script>
+{% endblock %}
