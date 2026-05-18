@@ -11,48 +11,30 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tron.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     {% block page_css %}{% endblock %}
-
-    <style>
-        /* ============================
-           GLOBAL LAYOUT FIXES
-        ============================ */
-
-        html, body {
-            width: 100%;
-            max-width: 100%;
-            overflow-x: hidden !important;
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-        }
-
-        *, *::before, *::after {
-            box-sizing: inherit;
-        }
-
-        /* prevent ANY child from producing scroll */
-        img, div, section, header, footer {
-            max-width: 100%;
-        }
-
-        .header-spacer {
-            margin-top: 70px;  /* ensures content never hides behind navbar */
-        }
-    </style>
 
     <title>PROTAC Target Module</title>
 </head>
 
-<body>
+<body class="platform-body">
+
+    <div class="platform-bg" aria-hidden="true">
+        <div class="platform-bg-orb platform-bg-orb-a"></div>
+        <div class="platform-bg-orb platform-bg-orb-b"></div>
+        <div class="platform-bg-grid"></div>
+    </div>
 
     {% include "nav.html" %}
 
-    {% block content %}{% endblock %}
+    <div class="platform-shell">
+        <main class="platform-main">
+            {% block content %}{% endblock %}
+        </main>
 
-    {% include "footer.html" %}
+        {% include "footer.html" %}
+    </div>
 
 
 

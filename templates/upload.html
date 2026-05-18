@@ -1,92 +1,214 @@
 {% extends "base.html" %}
+{% block page_css %}
+<style>
+  .upload-shell {
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .upload-intro {
+    text-align: center;
+    margin-bottom: 22px;
+  }
+
+  .upload-eyebrow {
+    font-size: 0.78rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(176, 214, 238, 0.68);
+    margin-bottom: 8px;
+  }
+
+  .upload-lead {
+    max-width: 64ch;
+    margin: 0 auto;
+    color: rgba(217, 228, 239, 0.82);
+    line-height: 1.65;
+    font-size: 0.95rem;
+  }
+
+  .upload-field-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .upload-label-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .upload-field-title {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .upload-helper {
+    color: rgba(205, 219, 233, 0.7);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .upload-required {
+    color: rgba(255, 224, 102, 0.82);
+    font-size: 0.77rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .tooltip-icon-btn {
+    appearance: none;
+    -webkit-appearance: none;
+    background: none;
+    padding: 0;
+  }
+
+  .upload-actions {
+    margin-top: 8px;
+  }
+
+  @media (max-width: 640px) {
+    .upload-field-head {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .upload-helper {
+      font-size: 0.88rem;
+    }
+  }
+</style>
+{% endblock %}
 {% block content %}
 
 <div class="header-spacer"></div>
 
 <section class="upload-wrapper">
 
-    <div class="upload-container neon-panel">
+    <div class="upload-shell upload-container neon-panel">
 
         <h2 class="upload-title">Upload Input Files</h2>
         <p class="upload-subtext">Upload all PROTAC Target mapping files below.</p>
+
+        <div class="upload-intro">
+            <div class="upload-eyebrow">Manual Input Workflow</div>
+            <p class="upload-lead">
+                Use this page when you already have processed mapping tables and structure files. These uploads support Warhead Hunter visualization, atom-level SASA inspection, ligand mapping, and downstream gallery rendering without rerunning the automated search pipeline.
+            </p>
+        </div>
 
         <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
 
             <!-- SASA -->
             <div class="upload-field drop-zone" data-label="SASA Mapping File" data-required="true">
-                <label class="field-label">
-                    SASA Mapping File
+                <div class="upload-field-head">
+                    <label class="field-label upload-label-stack">
+                        <span class="upload-field-title">
+                            SASA Mapping File
+                            <span class="upload-required">Required</span>
+                        </span>
+                        <span class="upload-helper">Structure-based solvent exposure per ligand atom for downstream exposure mapping.</span>
+                    </label>
                     <span class="tooltip-wrapper">
-                        <span class="tooltip-icon">ⓘ</span>
+                        <button type="button" class="tooltip-icon tooltip-icon-btn" aria-label="SASA Mapping File help">ⓘ</button>
                         <div class="tooltip-box">
                             Contains structure-based solvent exposure per ligand atom.<br><br>
                             Must include:<br>
                             <b>atom_id, exact_atom, x, y, z, Exposure_A2</b>
                         </div>
                     </span>
-                </label>
+                </div>
                 <input type="file" name="sasa_file" class="upload-input file-input">
                 <div class="drop-overlay">Drop SASA CSV here</div>
             </div>
 
             <!-- MCS -->
             <div class="upload-field drop-zone" data-label="2D–3D MCS Mapping File" data-required="true">
-                <label class="field-label">
-                    2D–3D MCS Mapping File
+                <div class="upload-field-head">
+                    <label class="field-label upload-label-stack">
+                        <span class="upload-field-title">
+                            2D–3D MCS Mapping File
+                            <span class="upload-required">Required</span>
+                        </span>
+                        <span class="upload-helper">Atom-level correspondence between the RDKit 2D representation and the bound 3D ligand structure.</span>
+                    </label>
                     <span class="tooltip-wrapper">
-                        <span class="tooltip-icon">ⓘ</span>
+                        <button type="button" class="tooltip-icon tooltip-icon-btn" aria-label="2D–3D MCS Mapping File help">ⓘ</button>
                         <div class="tooltip-box">
                             Atom-by-atom mapping between RDKit 2D atoms and 3D crystal atoms.
                         </div>
                     </span>
-                </label>
+                </div>
                 <input type="file" name="mcs_file" class="upload-input file-input">
                 <div class="drop-overlay">Drop MCS CSV here</div>
             </div>
 
             <!-- Metadata -->
             <div class="upload-field drop-zone" data-label="Ligand Metadata CSV" data-required="true">
-                <label class="field-label">
-                    Ligand Metadata CSV
+                <div class="upload-field-head">
+                    <label class="field-label upload-label-stack">
+                        <span class="upload-field-title">
+                            Ligand Metadata CSV
+                            <span class="upload-required">Required</span>
+                        </span>
+                        <span class="upload-helper">Ligand-level annotation and property table used for downstream display and interpretation.</span>
+                    </label>
                     <span class="tooltip-wrapper">
-                        <span class="tooltip-icon">ⓘ</span>
+                        <button type="button" class="tooltip-icon tooltip-icon-btn" aria-label="Ligand Metadata CSV help">ⓘ</button>
                         <div class="tooltip-box">
                             Contains ligand phys-chem and annotation metadata.
                         </div>
                     </span>
-                </label>
+                </div>
                 <input type="file" name="metadata_file" class="upload-input file-input">
                 <div class="drop-overlay">Drop Metadata CSV here</div>
             </div>
 
             <!-- Scaffold -->
             <div class="upload-field drop-zone" data-label="Scaffold CSV" data-required="true">
-                <label class="field-label">
-                    Scaffold CSV
+                <div class="upload-field-head">
+                    <label class="field-label upload-label-stack">
+                        <span class="upload-field-title">
+                            Scaffold CSV
+                            <span class="upload-required">Required</span>
+                        </span>
+                        <span class="upload-helper">Murcko scaffold assignments and related structural grouping metadata.</span>
+                    </label>
                     <span class="tooltip-wrapper">
-                        <span class="tooltip-icon">ⓘ</span>
+                        <button type="button" class="tooltip-icon tooltip-icon-btn" aria-label="Scaffold CSV help">ⓘ</button>
                         <div class="tooltip-box">
                             Contains Murcko scaffold data and class assignments.
                         </div>
                     </span>
-                </label>
+                </div>
                 <input type="file" name="scaffold_file" class="upload-input file-input">
                 <div class="drop-overlay">Drop Scaffold CSV here</div>
             </div>
 
             <!-- Structures -->
             <div class="upload-field drop-zone" data-label="Structures ZIP or Folder" data-required="true">
-                <label class="field-label">
-                    Structures ZIP <span class="optional">(folder OR zip allowed)</span>
-                </label>
+                <div class="upload-field-head">
+                    <label class="field-label upload-label-stack">
+                        <span class="upload-field-title">
+                            Structures ZIP <span class="optional">(folder OR zip allowed)</span>
+                            <span class="upload-required">Required</span>
+                        </span>
+                        <span class="upload-helper">Provide the bound structure set as a directory upload or archive of PDB/CIF files used by the manual workflow.</span>
+                    </label>
+                </div>
                 <input type="file" name="structures_zip" class="upload-input file-input" webkitdirectory directory>
                 <div class="drop-overlay">Drop PDB/CIF folder or ZIP here</div>
             </div>
 
-            <button class="upload-btn" type="submit">Submit Files</button>
-            <form action="/upload" method="POST" enctype="multipart/form-data" onsubmit="showLoader()">
-
-
+            <div class="upload-actions">
+                <button class="upload-btn" type="submit" onclick="showLoader()">Submit Files</button>
+            </div>
         </form>
 
     </div>
