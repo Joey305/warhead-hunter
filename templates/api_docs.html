@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
+{% block title %}Warhead Hunter API Documentation — Python Automation Examples{% endblock %}
+{% block meta_description %}Warhead Hunter API documentation with copy/paste curl and Python examples for loading jobs, downloading cleaned WAR_PDB structures, retrieving SDF/SVG outputs, and preparing protein-ligand files for downstream workflows.{% endblock %}
+
 {% block page_css %}
 <style>
   .api-docs-wrap {
@@ -882,6 +885,175 @@ async function chooseWarheadHunterBase() {
     <div id="api-copy-feedback" class="api-copy-feedback"></div>
   </section>
 
+
+  <section class="api-panel">
+    <h2 class="api-section-title">Python Automation Recipes</h2>
+    <p class="api-section-copy">
+      These examples are designed for real downstream work: loading all indexed jobs, filtering completed runs, listing output files, downloading cleaned <code>WAR_PDB</code> structures, collecting ligand SDFs/SVGs/tables, and preparing job-derived structures for workflows such as PRosettaC, docking, notebooks, and molecular-dynamics setup.
+    </p>
+    <div class="api-warning">
+      Replace <code>JOB_ID</code> with a real completed job such as <code>{{ preferred_example_job_id }}</code>. For internal development, the Tailscale base URL is usually the most reliable.
+    </div>
+
+    <div class="api-grid">
+      <div class="api-example-card">
+        <h3>21. Python Client Starter</h3>
+        <p class="api-card-copy">
+          A reusable mini-client for choosing a reachable Warhead Hunter API base and making JSON/file requests.
+        </p>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-client-starter">Copy</button>
+          </div>
+          <pre id="code-python-client-starter" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>22. Load All Indexed Jobs Into Python</h3>
+        <p class="api-card-copy">
+          Pull the public job index, print a compact table, and save a local CSV for exploration in notebooks.
+        </p>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-load-indexed-jobs">Copy</button>
+          </div>
+          <pre id="code-python-load-indexed-jobs" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>23. Filter Completed Jobs By Protein Name</h3>
+        <p class="api-card-copy">
+          Search the indexed job list for available jobs matching targets such as CRBN, EGFR, KRAS, BTK, BCL-2, DYRK1A, or HIV.
+        </p>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-filter-jobs">Copy</button>
+          </div>
+          <pre id="code-python-filter-jobs" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>24. List All Files For One Job</h3>
+        <p class="api-card-copy">
+          Inspect every safe downloadable file from a completed job and summarize the output folders.
+        </p>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-list-job-files">Copy</button>
+          </div>
+          <pre id="code-python-list-job-files" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>25. Download All Cleaned WAR_PDB Structures</h3>
+        <p class="api-card-copy">
+          Download every cleaned ligand-bound PDB under <code>TARGET_RESULTS/WAR_PDB/</code> for a specific completed job.
+        </p>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-download-war-pdb">Copy</button>
+          </div>
+          <pre id="code-python-download-war-pdb" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>26. Download All Ligand SDF Files</h3>
+        <p class="api-card-copy">
+          Collect ligand SDF files from <code>MCS_Output/MCS_SDF</code> or any job-safe SDF output path.
+        </p>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-download-sdfs">Copy</button>
+          </div>
+          <pre id="code-python-download-sdfs" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>27. Download SVG Atom Maps And Result Tables</h3>
+        <p class="api-card-copy">
+          Pull exposure-colored SVG maps, plain SVGs, CSV summaries, and TSV files for manuscript figures or notebook analysis.
+        </p>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-download-figures-tables">Copy</button>
+          </div>
+          <pre id="code-python-download-figures-tables" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>28. Download A Bundle And Unzip It Locally</h3>
+        <p class="api-card-copy">
+          Use this when you want the whole cleaned public bundle rather than selecting individual PDB/SDF/SVG/table files.
+        </p>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-download-unzip-bundle">Copy</button>
+          </div>
+          <pre id="code-python-download-unzip-bundle" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>29. Batch Download WAR_PDB Files Across All Available Jobs</h3>
+        <p class="api-card-copy">
+          Build a local structure library from every indexed job with available results.
+        </p>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-batch-download-war-pdb">Copy</button>
+          </div>
+          <pre id="code-python-batch-download-war-pdb" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>30. Create A PRosettaC-Ready Structure Staging Folder</h3>
+        <p class="api-card-copy">
+          Stage cleaned PDBs and ligand SDFs into a predictable local folder layout for downstream modeling or automation.
+        </p>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-prosettac-stage">Copy</button>
+          </div>
+          <pre id="code-python-prosettac-stage" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>31. Build A Local Manifest Of Downloaded Structures</h3>
+        <p class="api-card-copy">
+          Save a CSV manifest mapping job IDs, proteins, source paths, and local downloaded files.
+        </p>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-local-manifest">Copy</button>
+          </div>
+          <pre id="code-python-local-manifest" class="api-code"></pre>
+        </div>
+      </div>
+
+      <div class="api-example-card">
+        <h3>32. Notebook Quickstart: Read Results Tables</h3>
+        <p class="api-card-copy">
+          Download result tables and load them into pandas for filtering ligand exposure summaries.
+        </p>
+        <div class="api-code-wrap">
+          <div class="api-code-actions">
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-python-notebook-tables">Copy</button>
+          </div>
+          <pre id="code-python-notebook-tables" class="api-code"></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="api-panel">
     <h2 class="api-section-title">Future API Roadmap</h2>
     <p class="api-section-copy">
@@ -974,7 +1146,467 @@ async function chooseWarheadHunterBase() {
     "code-example-files": base => `curl -s "${base}/api/examples/${PREFERRED_EXAMPLE_JOB_ID}/files" | python -m json.tool`,
     "code-example-pdb-files": base => `curl -s "${base}/api/examples/${PREFERRED_EXAMPLE_JOB_ID}/files?kind=pdb" | python -m json.tool`,
     "code-example-bundle": base => `curl -L "${base}/api/examples/${PREFERRED_EXAMPLE_JOB_ID}/bundle" -o crbn_warhead_hunter_results.zip`,
-    "code-example-file-download": base => `curl -L "${base}/api/examples/${PREFERRED_EXAMPLE_JOB_ID}/files/RELATIVE_FILE_PATH.pdb" -o cleaned_bound_structure.pdb`
+    "code-example-file-download": base => `curl -L "${base}/api/examples/${PREFERRED_EXAMPLE_JOB_ID}/files/RELATIVE_FILE_PATH.pdb" -o cleaned_bound_structure.pdb`,
+    "code-python-client-starter": base => `from pathlib import Path
+from urllib.parse import quote
+import requests
+
+BASES = [
+    "${base}",
+    "https://warheadhunter.com",
+]
+
+def choose_base():
+    for base_url in BASES:
+        try:
+            r = requests.get(f"{base_url}/api/health", timeout=5)
+            if r.ok:
+                print(f"Using Warhead Hunter API: {base_url}")
+                return base_url.rstrip("/")
+        except requests.RequestException:
+            pass
+    raise RuntimeError("No Warhead Hunter API base is reachable")
+
+BASE = choose_base()
+
+def get_json(path, **params):
+    url = f"{BASE}{path}"
+    r = requests.get(url, params=params, timeout=30)
+    r.raise_for_status()
+    return r.json()
+
+def download_file(path, out_path):
+    url = f"{BASE}{path}"
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with requests.get(url, stream=True, timeout=120) as r:
+        r.raise_for_status()
+        with open(out_path, "wb") as handle:
+            for chunk in r.iter_content(chunk_size=1024 * 1024):
+                if chunk:
+                    handle.write(chunk)
+    return out_path
+
+def safe_file_url(job_id, relative_path, example=False):
+    rel = quote(relative_path.lstrip("/"), safe="/")
+    if example:
+        return f"/api/examples/{job_id}/files/{rel}"
+    return f"/api/jobs/{job_id}/files/{rel}"
+
+print(get_json("/api/health"))`,
+    "code-python-load-indexed-jobs": base => `import csv
+import requests
+
+BASE = "${base}"
+OUT_CSV = "warhead_hunter_indexed_jobs.csv"
+
+r = requests.get(f"{BASE}/api/indexed-jobs", params={"limit": 1000}, timeout=30)
+r.raise_for_status()
+payload = r.json()
+
+jobs = payload.get("jobs", payload if isinstance(payload, list) else [])
+print(f"Loaded {len(jobs)} indexed jobs")
+
+# Print a compact terminal table.
+for job in jobs[:25]:
+    job_id = job.get("job_id") or job.get("id") or ""
+    protein = job.get("protein") or job.get("target") or ""
+    query = job.get("search_query") or job.get("query") or ""
+    available = job.get("available") or job.get("has_results") or job.get("results_available")
+    print(f"{job_id:10s} | {str(available):8s} | {protein[:35]:35s} | {query[:60]}")
+
+# Save a CSV for Excel, pandas, or downstream automation.
+fieldnames = sorted({key for job in jobs for key in job.keys()})
+with open(OUT_CSV, "w", newline="") as handle:
+    writer = csv.DictWriter(handle, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(jobs)
+
+print(f"Saved {OUT_CSV}")`,
+    "code-python-filter-jobs": base => `import requests
+
+BASE = "${base}"
+KEYWORDS = ["CRBN", "EGFR", "KRAS", "BTK", "BCL", "DYRK", "HIV"]
+
+payload = requests.get(f"{BASE}/api/indexed-jobs", params={"limit": 1000}, timeout=30).json()
+jobs = payload.get("jobs", payload if isinstance(payload, list) else [])
+
+def is_available(job):
+    value = job.get("available", job.get("has_results", job.get("results_available", False)))
+    return str(value).lower() in {"true", "1", "yes", "available"}
+
+matches = []
+for job in jobs:
+    blob = " ".join(str(job.get(k, "")) for k in ["job_id", "protein", "target", "search_query", "query"]).lower()
+    if is_available(job) and any(k.lower() in blob for k in KEYWORDS):
+        matches.append(job)
+
+print(f"Found {len(matches)} available matching jobs")
+for job in matches:
+    print(
+        job.get("job_id") or job.get("id"),
+        "|",
+        job.get("protein") or job.get("target"),
+        "|",
+        job.get("search_query") or job.get("query")
+    )`,
+    "code-python-list-job-files": base => `from collections import Counter
+from pathlib import PurePosixPath
+import requests
+
+BASE = "${base}"
+JOB_ID = "${PREFERRED_EXAMPLE_JOB_ID}"  # replace with any completed job id
+
+payload = requests.get(f"{BASE}/api/jobs/{JOB_ID}/files", timeout=30).json()
+files = payload.get("files", payload if isinstance(payload, list) else [])
+
+def relpath(item):
+    return item.get("relative_path") or item.get("path") or item.get("filename") or item.get("name") or ""
+
+paths = [relpath(f) for f in files if relpath(f)]
+print(f"Job {JOB_ID}: {len(paths)} safe downloadable files")
+
+by_ext = Counter(PurePosixPath(p).suffix.lower() or "[no extension]" for p in paths)
+by_top_folder = Counter(p.split("/", 1)[0] for p in paths)
+
+print("\\nBy extension:")
+for ext, n in by_ext.most_common():
+    print(f"{ext:12s} {n}")
+
+print("\\nBy top folder:")
+for folder, n in by_top_folder.most_common():
+    print(f"{folder:30s} {n}")
+
+print("\\nFirst 25 files:")
+for p in paths[:25]:
+    print(p)`,
+    "code-python-download-war-pdb": base => `from pathlib import Path
+from urllib.parse import quote
+import requests
+
+BASE = "${base}"
+JOB_ID = "${PREFERRED_EXAMPLE_JOB_ID}"  # replace with your job id
+OUT_DIR = Path(f"{JOB_ID}_WAR_PDB")
+OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+payload = requests.get(f"{BASE}/api/jobs/{JOB_ID}/files", timeout=30).json()
+files = payload.get("files", payload if isinstance(payload, list) else [])
+
+def relpath(item):
+    return item.get("relative_path") or item.get("path") or item.get("filename") or item.get("name") or ""
+
+war_pdbs = [
+    relpath(f) for f in files
+    if relpath(f).endswith(".pdb") and "TARGET_RESULTS/WAR_PDB/" in relpath(f)
+]
+
+print(f"Found {len(war_pdbs)} WAR_PDB files for job {JOB_ID}")
+
+for rel in war_pdbs:
+    url_path = quote(rel.lstrip("/"), safe="/")
+    url = f"{BASE}/api/jobs/{JOB_ID}/files/{url_path}"
+    out = OUT_DIR / Path(rel).name
+
+    with requests.get(url, stream=True, timeout=120) as r:
+        r.raise_for_status()
+        with open(out, "wb") as handle:
+            for chunk in r.iter_content(chunk_size=1024 * 1024):
+                if chunk:
+                    handle.write(chunk)
+
+    print(f"Downloaded {out}")
+
+print(f"Done: {OUT_DIR.resolve()}")`,
+    "code-python-download-sdfs": base => `from pathlib import Path
+from urllib.parse import quote
+import requests
+
+BASE = "${base}"
+JOB_ID = "${PREFERRED_EXAMPLE_JOB_ID}"
+OUT_DIR = Path(f"{JOB_ID}_SDF")
+OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+payload = requests.get(f"{BASE}/api/jobs/{JOB_ID}/files", timeout=30).json()
+files = payload.get("files", payload if isinstance(payload, list) else [])
+
+def relpath(item):
+    return item.get("relative_path") or item.get("path") or item.get("filename") or item.get("name") or ""
+
+sdfs = [relpath(f) for f in files if relpath(f).lower().endswith(".sdf")]
+print(f"Found {len(sdfs)} SDF files")
+
+for rel in sdfs:
+    url = f"{BASE}/api/jobs/{JOB_ID}/files/{quote(rel.lstrip('/'), safe='/')}"
+    out = OUT_DIR / Path(rel).name
+    r = requests.get(url, timeout=120)
+    r.raise_for_status()
+    out.write_bytes(r.content)
+    print(f"Downloaded {out}")`,
+    "code-python-download-figures-tables": base => `from pathlib import Path
+from urllib.parse import quote
+import requests
+
+BASE = "${base}"
+JOB_ID = "${PREFERRED_EXAMPLE_JOB_ID}"
+OUT_DIR = Path(f"{JOB_ID}_maps_and_tables")
+OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+payload = requests.get(f"{BASE}/api/jobs/{JOB_ID}/files", timeout=30).json()
+files = payload.get("files", payload if isinstance(payload, list) else [])
+
+def relpath(item):
+    return item.get("relative_path") or item.get("path") or item.get("filename") or item.get("name") or ""
+
+wanted_exts = {".svg", ".csv", ".tsv"}
+wanted = []
+for f in files:
+    rel = relpath(f)
+    suffix = Path(rel).suffix.lower()
+    if suffix in wanted_exts and "TARGET_RESULTS/" in rel:
+        wanted.append(rel)
+
+print(f"Found {len(wanted)} SVG/CSV/TSV files under TARGET_RESULTS")
+
+for rel in wanted:
+    # Preserve subfolders locally.
+    local_rel = rel.replace("TARGET_RESULTS/", "", 1)
+    out = OUT_DIR / local_rel
+    out.parent.mkdir(parents=True, exist_ok=True)
+
+    url = f"{BASE}/api/jobs/{JOB_ID}/files/{quote(rel.lstrip('/'), safe='/')}"
+    r = requests.get(url, timeout=120)
+    r.raise_for_status()
+    out.write_bytes(r.content)
+    print(f"Downloaded {out}")`,
+    "code-python-download-unzip-bundle": base => `from pathlib import Path
+import zipfile
+import requests
+
+BASE = "${base}"
+JOB_ID = "${PREFERRED_EXAMPLE_JOB_ID}"
+
+zip_path = Path(f"{JOB_ID}_warhead_hunter_results.zip")
+extract_dir = Path(f"{JOB_ID}_warhead_hunter_results")
+
+url = f"{BASE}/api/jobs/{JOB_ID}/bundle"
+with requests.get(url, stream=True, timeout=300) as r:
+    r.raise_for_status()
+    with open(zip_path, "wb") as handle:
+        for chunk in r.iter_content(chunk_size=1024 * 1024):
+            if chunk:
+                handle.write(chunk)
+
+print(f"Downloaded {zip_path}")
+
+extract_dir.mkdir(parents=True, exist_ok=True)
+with zipfile.ZipFile(zip_path, "r") as zf:
+    zf.extractall(extract_dir)
+
+print(f"Extracted to {extract_dir.resolve()}")`,
+    "code-python-batch-download-war-pdb": base => `from pathlib import Path
+from urllib.parse import quote
+import requests
+
+BASE = "${base}"
+ROOT = Path("warhead_hunter_WAR_PDB_library")
+ROOT.mkdir(parents=True, exist_ok=True)
+
+jobs_payload = requests.get(f"{BASE}/api/indexed-jobs", params={"limit": 1000}, timeout=30).json()
+jobs = jobs_payload.get("jobs", jobs_payload if isinstance(jobs_payload, list) else [])
+
+def is_available(job):
+    value = job.get("available", job.get("has_results", job.get("results_available", False)))
+    return str(value).lower() in {"true", "1", "yes", "available"}
+
+def relpath(item):
+    return item.get("relative_path") or item.get("path") or item.get("filename") or item.get("name") or ""
+
+downloaded = 0
+
+for job in jobs:
+    if not is_available(job):
+        continue
+
+    job_id = job.get("job_id") or job.get("id")
+    protein = str(job.get("protein") or job.get("target") or "unknown").replace("/", "_").replace(" ", "_")
+    if not job_id:
+        continue
+
+    try:
+        files_payload = requests.get(f"{BASE}/api/jobs/{job_id}/files", timeout=30).json()
+        files = files_payload.get("files", files_payload if isinstance(files_payload, list) else [])
+        war_pdbs = [
+            relpath(f) for f in files
+            if relpath(f).endswith(".pdb") and "TARGET_RESULTS/WAR_PDB/" in relpath(f)
+        ]
+
+        out_dir = ROOT / f"{protein}_{job_id}"
+        out_dir.mkdir(parents=True, exist_ok=True)
+
+        for rel in war_pdbs:
+            url = f"{BASE}/api/jobs/{job_id}/files/{quote(rel.lstrip('/'), safe='/')}"
+            out = out_dir / Path(rel).name
+            if out.exists() and out.stat().st_size > 0:
+                continue
+            r = requests.get(url, timeout=120)
+            r.raise_for_status()
+            out.write_bytes(r.content)
+            downloaded += 1
+
+        print(f"{job_id}: {len(war_pdbs)} WAR_PDB files")
+
+    except Exception as exc:
+        print(f"Skipped {job_id}: {exc}")
+
+print(f"Downloaded {downloaded} new PDB files into {ROOT.resolve()}")`,
+    "code-python-prosettac-stage": base => `from pathlib import Path
+from urllib.parse import quote
+import shutil
+import requests
+
+BASE = "${base}"
+JOB_ID = "${PREFERRED_EXAMPLE_JOB_ID}"
+
+STAGE = Path(f"PROSETTAC_input_from_{JOB_ID}")
+PDB_DIR = STAGE / "pdb"
+SDF_DIR = STAGE / "sdf"
+PDB_DIR.mkdir(parents=True, exist_ok=True)
+SDF_DIR.mkdir(parents=True, exist_ok=True)
+
+payload = requests.get(f"{BASE}/api/jobs/{JOB_ID}/files", timeout=30).json()
+files = payload.get("files", payload if isinstance(payload, list) else [])
+
+def relpath(item):
+    return item.get("relative_path") or item.get("path") or item.get("filename") or item.get("name") or ""
+
+def download(rel, out_dir):
+    url = f"{BASE}/api/jobs/{JOB_ID}/files/{quote(rel.lstrip('/'), safe='/')}"
+    out = out_dir / Path(rel).name
+    r = requests.get(url, timeout=120)
+    r.raise_for_status()
+    out.write_bytes(r.content)
+    return out
+
+for f in files:
+    rel = relpath(f)
+    if "TARGET_RESULTS/WAR_PDB/" in rel and rel.endswith(".pdb"):
+        print("PDB", download(rel, PDB_DIR))
+    elif rel.lower().endswith(".sdf"):
+        print("SDF", download(rel, SDF_DIR))
+
+readme = STAGE / "README.txt"
+readme.write_text(
+    f"Warhead Hunter staged inputs\\n"
+    f"Job ID: {JOB_ID}\\n"
+    f"Source API: {BASE}\\n"
+    f"PDB folder: {PDB_DIR}\\n"
+    f"SDF folder: {SDF_DIR}\\n"
+)
+
+print(f"Prepared staging folder: {STAGE.resolve()}")`,
+    "code-python-local-manifest": base => `from pathlib import Path
+from urllib.parse import quote
+import csv
+import requests
+
+BASE = "${base}"
+ROOT = Path("warhead_hunter_downloads")
+MANIFEST = ROOT / "download_manifest.csv"
+ROOT.mkdir(parents=True, exist_ok=True)
+
+jobs_payload = requests.get(f"{BASE}/api/indexed-jobs", params={"limit": 1000}, timeout=30).json()
+jobs = jobs_payload.get("jobs", jobs_payload if isinstance(jobs_payload, list) else [])
+
+def is_available(job):
+    value = job.get("available", job.get("has_results", job.get("results_available", False)))
+    return str(value).lower() in {"true", "1", "yes", "available"}
+
+def relpath(item):
+    return item.get("relative_path") or item.get("path") or item.get("filename") or item.get("name") or ""
+
+rows = []
+
+for job in jobs:
+    if not is_available(job):
+        continue
+
+    job_id = job.get("job_id") or job.get("id")
+    protein = job.get("protein") or job.get("target") or ""
+    if not job_id:
+        continue
+
+    files_payload = requests.get(f"{BASE}/api/jobs/{job_id}/files", timeout=30).json()
+    files = files_payload.get("files", files_payload if isinstance(files_payload, list) else [])
+
+    for f in files:
+        rel = relpath(f)
+        if not (rel.endswith(".pdb") and "TARGET_RESULTS/WAR_PDB/" in rel):
+            continue
+
+        local_dir = ROOT / str(job_id)
+        local_dir.mkdir(parents=True, exist_ok=True)
+        local_path = local_dir / Path(rel).name
+
+        if not local_path.exists():
+            url = f"{BASE}/api/jobs/{job_id}/files/{quote(rel.lstrip('/'), safe='/')}"
+            r = requests.get(url, timeout=120)
+            r.raise_for_status()
+            local_path.write_bytes(r.content)
+
+        rows.append({
+            "job_id": job_id,
+            "protein": protein,
+            "source_relative_path": rel,
+            "local_path": str(local_path),
+            "bytes": local_path.stat().st_size,
+        })
+
+with open(MANIFEST, "w", newline="") as handle:
+    writer = csv.DictWriter(handle, fieldnames=["job_id", "protein", "source_relative_path", "local_path", "bytes"])
+    writer.writeheader()
+    writer.writerows(rows)
+
+print(f"Wrote {MANIFEST} with {len(rows)} downloaded structures")`,
+    "code-python-notebook-tables": base => `from pathlib import Path
+from urllib.parse import quote
+import pandas as pd
+import requests
+
+BASE = "${base}"
+JOB_ID = "${PREFERRED_EXAMPLE_JOB_ID}"
+OUT_DIR = Path(f"{JOB_ID}_tables")
+OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+payload = requests.get(f"{BASE}/api/jobs/{JOB_ID}/files", timeout=30).json()
+files = payload.get("files", payload if isinstance(payload, list) else [])
+
+def relpath(item):
+    return item.get("relative_path") or item.get("path") or item.get("filename") or item.get("name") or ""
+
+table_paths = [
+    relpath(f) for f in files
+    if relpath(f).lower().endswith((".csv", ".tsv")) and "TARGET_RESULTS/" in relpath(f)
+]
+
+local_tables = []
+for rel in table_paths:
+    out = OUT_DIR / Path(rel).name
+    url = f"{BASE}/api/jobs/{JOB_ID}/files/{quote(rel.lstrip('/'), safe='/')}"
+    r = requests.get(url, timeout=120)
+    r.raise_for_status()
+    out.write_bytes(r.content)
+    local_tables.append(out)
+
+print(f"Downloaded {len(local_tables)} tables")
+
+# Example: load whichever final summary table exists.
+for table in local_tables:
+    if table.name in {"Resolved_SASA_Summary.csv", "Results_Display.csv", "Ligand_3D_Atoms_with_SASA.csv"}:
+        sep = "\\t" if table.suffix.lower() == ".tsv" else ","
+        df = pd.read_csv(table, sep=sep)
+        print("\\n", table.name, df.shape)
+        display(df.head() if "display" in globals() else df.head())
+`
   };
 
   function setStatus(base, note) {
