@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Warhead Hunter Documentation{% endblock %}
+{% block meta_description %}Documentation hub for Warhead Hunter workflows, scientific interpretation, use cases, examples, and API access.{% endblock %}
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Warhead Hunter Documentation",
+  "description": "Documentation hub for Warhead Hunter workflows, scientific interpretation, examples, and API access.",
+  "author": {
+    "@type": "Person",
+    "name": "Joseph-Michael Schulz"
+  },
+  "url": "{{ site_base }}/docs"
+}
+</script>
+{% endblock %}
+{% block content %}
+<div class="content-page">
+  <section class="content-hero">
+    <div class="content-kicker">Documentation</div>
+    <h1 class="content-title">Warhead Hunter Documentation</h1>
+    <p class="content-lead">Use this page as a central navigation layer for workflow guidance, scientific interpretation, example usage, and API-level access to Warhead Hunter outputs.</p>
+  </section>
+  <section class="content-card">
+    <h2>Documentation Map</h2>
+    <div class="content-link-row">
+      <a class="content-pill" href="{{ url_for('hunter') }}">Launch Hunter</a>
+      <a class="content-pill" href="{{ url_for('how_to_use') }}">How to Use</a>
+      <a class="content-pill" href="{{ url_for('science') }}">Science</a>
+      <a class="content-pill" href="{{ url_for('use_cases') }}">Use Cases</a>
+      <a class="content-pill" href="{{ url_for('examples_page') }}">Examples</a>
+      <a class="content-pill" href="{{ url_for('faq') }}">FAQ</a>
+      <a class="content-pill" href="/api-docs">API Docs</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

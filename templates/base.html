@@ -4,6 +4,17 @@
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Warhead Hunter — Atom-Level Solvent Exposure Mapping for Protein-Bound Ligands{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Warhead Hunter maps atom-level solvent exposure on protein-bound ligands to help researchers inspect candidate sites for warhead installation, linker attachment, chemical expansion, and PROTAC-oriented design.{% endblock %}">
+    <link rel="canonical" href="{% block canonical %}{{ site_base ~ request.path }}{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Warhead Hunter">
+    <meta property="og:title" content="{% block og_title %}Warhead Hunter — Atom-Level Solvent Exposure Mapping for Protein-Bound Ligands{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Warhead Hunter is a web-based tool for mapping atom-level solvent exposure on protein-bound ligands and helping researchers inspect candidate sites for warhead installation, linker attachment, chemical expansion, and PROTAC-oriented design.{% endblock %}">
+    <meta property="og:url" content="{{ site_base ~ request.path }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}Warhead Hunter — Atom-Level Solvent Exposure Mapping for Protein-Bound Ligands{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Warhead Hunter maps atom-level solvent exposure on protein-bound ligands for structure-guided medicinal chemistry workflows.{% endblock %}">
 
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/Target-favicon.png') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/Target-favicon.png') }}">
@@ -14,8 +25,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     {% block page_css %}{% endblock %}
-
-    <title>PROTAC Target Module</title>
+    {% block structured_data %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Warhead Hunter",
+      "applicationCategory": "ScientificApplication",
+      "operatingSystem": "Web",
+      "description": "Warhead Hunter is a web-based tool for mapping atom-level solvent exposure on protein-bound ligands and helping researchers inspect candidate ligand atoms for warhead installation, linker attachment, chemical expansion, and PROTAC-oriented design.",
+      "author": {
+        "@type": "Person",
+        "name": "Joseph-Michael Schulz"
+      },
+      "url": "{{ site_base }}/"
+    }
+    </script>
+    {% endblock %}
 </head>
 
 <body class="platform-body">

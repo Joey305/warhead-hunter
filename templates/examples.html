@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Example Warhead Hunter Workflows{% endblock %}
+{% block meta_description %}Review example Warhead Hunter workflows for kinase, viral enzyme, and E3 ligase-oriented structure-guided ligand exposure analysis.{% endblock %}
+{% block content %}
+<div class="content-page">
+  <section class="content-hero">
+    <div class="content-kicker">Example Workflows</div>
+    <h1 class="content-title">Example Warhead Hunter Workflows</h1>
+    <p class="content-lead">
+      Example workflows help show how Warhead Hunter can be used to inspect ligand exposure patterns in different target classes without claiming predictive certainty about the final design outcome.
+    </p>
+  </section>
+
+  <div class="content-grid">
+    <div class="content-stack">
+      <section class="content-card">
+        <h2>Kinase Example</h2>
+        <p>Inspect whether a kinase-bound ligand presents solvent-exposed atoms that could support further elaboration or linker hypotheses.</p>
+
+        <h2>E3 Ligase Recruiter Example</h2>
+        <p>Review exposure patterns on recruiter-like ligands in a PROTAC-oriented context while keeping the interpretation at the inspection level.</p>
+
+        <h2>Viral Enzyme Example</h2>
+        <p>Compare ligand-bound structures from a viral target class to inspect how exposure changes across related binding modes.</p>
+      </section>
+    </div>
+    <div class="content-stack">
+      <section class="content-sidebar-card">
+        <h2>Explore Through The App</h2>
+        <div class="content-link-row">
+          <a class="content-pill" href="{{ url_for('hunter') }}">Launch Hunter</a>
+          <a class="content-pill" href="{{ url_for('how_to_use') }}">How to Use</a>
+          <a class="content-pill" href="{{ url_for('science') }}">Science</a>
+          <a class="content-pill" href="{{ url_for('use_cases') }}">Use Cases</a>
+          <a class="content-pill" href="{{ url_for('docs_page') }}">Docs</a>
+          <a class="content-pill" href="/api/examples">API Example Jobs</a>
+          <a class="content-pill" href="{{ url_for('browse') }}">Browse Jobs</a>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %}

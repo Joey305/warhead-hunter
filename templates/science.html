@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}The Science Behind Ligand Solvent Exposure Mapping{% endblock %}
+{% block meta_description %}Learn how atom-level ligand solvent exposure mapping can support structure-guided medicinal chemistry inspection in protein-bound structural context.{% endblock %}
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The Science Behind Ligand Solvent Exposure Mapping",
+  "description": "Overview of why atom-level ligand solvent exposure can be useful in structure-guided medicinal chemistry workflows.",
+  "author": {
+    "@type": "Person",
+    "name": "Joseph-Michael Schulz"
+  },
+  "url": "{{ site_base }}/science"
+}
+</script>
+{% endblock %}
+{% block content %}
+<div class="content-page">
+  <section class="content-hero">
+    <div class="content-kicker">Scientific Background</div>
+    <h1 class="content-title">The Science Behind Ligand Solvent Exposure Mapping</h1>
+    <p class="content-lead">
+      When a ligand binds to a protein, some atoms are buried against the binding site while others remain exposed to solvent. Those exposed atoms can be useful starting points for medicinal chemistry inspection, especially when researchers are considering chemical expansion, covalent warhead placement, linker attachment, or PROTAC-oriented design.
+    </p>
+  </section>
+
+  <div class="content-grid">
+    <div class="content-stack">
+      <section class="content-section">
+        <h2>Protein-Bound Context Matters</h2>
+        <p>Warhead Hunter computes atom-level solvent-accessible surface area for ligands in their protein-bound context and maps those exposure values back onto interpretable 2D and 3D ligand views.</p>
+
+        <h2>What Exposure Mapping Can Support</h2>
+        <ul>
+          <li>Candidate inspection for linker attachment hypotheses.</li>
+          <li>Review of exposed ligand atoms for chemical elaboration.</li>
+          <li>Comparison of exposure patterns across related ligands or structures.</li>
+        </ul>
+
+        <h2>What Exposure Mapping Does Not Guarantee</h2>
+        <p>Exposure alone does not establish synthetic tractability, potency retention, permeability, or optimal degrader geometry. Warhead Hunter is intended as a structure-guided inspection layer, not a guarantee of final medicinal chemistry success.</p>
+      </section>
+    </div>
+    <div class="content-stack">
+      <section class="content-sidebar-card">
+        <h2>Continue Exploring</h2>
+        <div class="content-link-row">
+          <a class="content-pill" href="{{ url_for('hunter') }}">Launch Hunter</a>
+          <a class="content-pill" href="{{ url_for('how_to_use') }}">How to Use</a>
+          <a class="content-pill" href="{{ url_for('use_cases') }}">Use Cases</a>
+          <a class="content-pill" href="{{ url_for('docs_page') }}">Docs</a>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

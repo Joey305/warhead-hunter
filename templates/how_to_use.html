@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}How to Use Warhead Hunter{% endblock %}
+{% block meta_description %}Learn how to use Warhead Hunter to retrieve ligand-bound structures, compute atom-level ligand SASA, and inspect candidate modification sites in synchronized 2D and 3D views.{% endblock %}
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "How to Use Warhead Hunter",
+  "description": "Step-by-step guide to using Warhead Hunter for atom-level solvent exposure mapping on protein-bound ligands.",
+  "author": {
+    "@type": "Person",
+    "name": "Joseph-Michael Schulz"
+  },
+  "url": "{{ site_base }}/how-to-use"
+}
+</script>
+{% endblock %}
+{% block content %}
+<div class="content-page">
+  <section class="content-hero">
+    <div class="content-kicker">Workflow Guide</div>
+    <h1 class="content-title">How to Use Warhead Hunter</h1>
+    <p class="content-lead">
+      Warhead Hunter helps researchers convert ligand-bound protein structures into atom-level solvent exposure maps. A typical workflow begins with a target name, a structure-search query, and an optional FASTA sequence. The platform retrieves candidate structures, filters ligand-containing complexes, computes ligand atom SASA, and presents the results in synchronized 2D and 3D views.
+    </p>
+    <div class="content-actions">
+      <a href="{{ url_for('hunter') }}" class="tron-btn">Launch Warhead Hunter</a>
+      <a href="{{ url_for('science') }}" class="content-pill">Science</a>
+      <a href="{{ url_for('docs_page') }}" class="content-pill">Docs</a>
+    </div>
+  </section>
+
+  <div class="content-grid">
+    <div class="content-stack">
+      <section class="content-section">
+        <h2>Step 1: Choose a Target</h2>
+        <p>Enter a target name such as KRAS, BTK, EGFR, BRD4, or another protein of interest.</p>
+
+        <h2>Step 2: Define a Structure Search</h2>
+        <p>Use a search phrase that captures the target and ligand-bound structures you want to inspect.</p>
+
+        <h2>Step 3: Add FASTA Sequence When Available</h2>
+        <p>A FASTA sequence can help guide chain selection and filtering when the search term is broad or ambiguous.</p>
+
+        <h2>Step 4: Launch the Scan</h2>
+        <p>Warhead Hunter prepares the structures, computes ligand exposure, and assembles browser-ready result files.</p>
+
+        <h2>Step 5: Inspect Candidate Atoms</h2>
+        <p>Use the results gallery to compare ligand summary cards, 2D exposure maps, and 3D binding-site views.</p>
+      </section>
+    </div>
+
+    <div class="content-stack">
+      <section class="content-sidebar-card">
+        <h2>Interpretation Note</h2>
+        <p>
+          Warhead Hunter identifies solvent-exposed ligand atoms for inspection. It does not guarantee that a highlighted atom is synthetically accessible, potency-preserving, or optimal for a specific degrader or covalent inhibitor design.
+        </p>
+      </section>
+
+      <section class="content-sidebar-card">
+        <h2>Related Pages</h2>
+        <div class="content-link-row">
+          <a class="content-pill" href="{{ url_for('science') }}">Science</a>
+          <a class="content-pill" href="{{ url_for('use_cases') }}">Use Cases</a>
+          <a class="content-pill" href="{{ url_for('docs_page') }}">Docs</a>
+          <a class="content-pill" href="{{ url_for('faq') }}">FAQ</a>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

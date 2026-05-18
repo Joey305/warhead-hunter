@@ -50,6 +50,7 @@ app.config["JOBS_DIR"] = str(JOBS_DIR)
 # API docs / manifest config
 PRIMARY_API_BASE = os.getenv("WARHEAD_API_PRIMARY_BASE", "http://cartman.rove-vernier.ts.net").rstrip("/")
 SECONDARY_API_BASE = os.getenv("WARHEAD_API_SECONDARY_BASE", "https://warheadhunter.com").rstrip("/")
+PUBLIC_SITE_BASE = os.getenv("WARHEAD_PUBLIC_SITE_BASE", "https://warheadhunter.com").rstrip("/")
 API_VERSION = "0.1"
 APP_ENVIRONMENT = (
     os.getenv("WARHEAD_ENVIRONMENT")
@@ -59,6 +60,7 @@ APP_ENVIRONMENT = (
 
 app.config["PRIMARY_API_BASE"] = PRIMARY_API_BASE
 app.config["SECONDARY_API_BASE"] = SECONDARY_API_BASE
+app.config["PUBLIC_SITE_BASE"] = PUBLIC_SITE_BASE
 app.config["API_VERSION"] = API_VERSION
 app.config["APP_ENVIRONMENT"] = APP_ENVIRONMENT
 
@@ -364,7 +366,12 @@ PDB_RE = re.compile(
 # -----------------------------
 @app.context_processor
 def inject_year():
-    return {"current_year": datetime.now().year}
+    return {
+        "current_year": datetime.now().year,
+        "site_base": app.config["PUBLIC_SITE_BASE"],
+        "api_version": API_VERSION,
+        "app_environment": APP_ENVIRONMENT,
+    }
 
 
 def _utc_now_iso() -> str:
@@ -388,6 +395,13 @@ def _api_error(code: str, message: str, status: int = 400, details: Optional[Dic
         }
     })
     return resp, status
+
+
+def _public_url(path: str) -> str:
+    base = app.config["PUBLIC_SITE_BASE"].rstrip("/")
+    if not path.startswith("/"):
+        path = f"/{path}"
+    return f"{base}{path}"
 
 
 def _job_metadata_path(job_id: str) -> Path:
@@ -1235,6 +1249,46 @@ def upload_manual():
 def hunter():
     return render_template("warhead_hunter.html")
 
+
+@app.route("/how-to-use")
+def how_to_use():
+    return render_template("how_to_use.html")
+
+
+@app.route("/science")
+def science():
+    return render_template("science.html")
+
+
+@app.route("/use-cases")
+def use_cases():
+    return render_template("use_cases.html")
+
+
+@app.route("/examples")
+def examples_page():
+    return render_template("examples.html")
+
+
+@app.route("/faq")
+def faq():
+    return render_template("faq.html")
+
+
+@app.route("/docs")
+def docs_page():
+    return render_template("docs.html")
+
+
+@app.route("/publications")
+def publications():
+    return render_template("publications.html")
+
+
+@app.route("/ecosystem")
+def ecosystem():
+    return render_template("ecosystem.html")
+
 def _safe_job_id(job_id: str) -> bool:
     if not job_id:
         return False
@@ -1936,6 +1990,46 @@ def about():
 @app.route("/scout")
 def rcsb_scout():
     return render_template("rcsb_scout.html")
+
+
+@app.route("/robots.txt")
+def robots_txt():
+    body = "\n".join([
+        "User-agent: *",
+        "Allow: /",
+        f"Sitemap: {_public_url('/sitemap.xml')}",
+        "",
+    ])
+    return Response(body, mimetype="text/plain")
+
+
+@app.route("/sitemap.xml")
+def sitemap_xml():
+    urls = [
+        "/",
+        "/hunter",
+        "/scout",
+        "/how-to-use",
+        "/science",
+        "/use-cases",
+        "/examples",
+        "/faq",
+        "/docs",
+        "/api-docs",
+        "/about",
+        "/publications",
+        "/ecosystem",
+    ]
+    xml = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ]
+    for path in urls:
+        xml.append("  <url>")
+        xml.append(f"    <loc>{_public_url(path)}</loc>")
+        xml.append("  </url>")
+    xml.append("</urlset>")
+    return Response("\n".join(xml), mimetype="application/xml")
 
 
 # -----------------------------
