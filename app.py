@@ -128,7 +128,7 @@ API_DOC_CURRENT_GROUPS = [
             {
                 "method": "GET",
                 "path": "/api/jobs/<job_id>/download",
-                "note": "Downloads a ZIP bundle of the job folder.",
+                "note": "Downloads a ZIP bundle for the job, preferring a curated public results bundle when present.",
             },
             {
                 "method": "GET",
@@ -169,7 +169,7 @@ API_DOC_CURRENT_GROUPS = [
             {
                 "method": "GET",
                 "path": "/api/jobs/<job_id>/bundle",
-                "note": "Download a ZIP bundle of safe result files for the job.",
+                "note": "Download a ZIP bundle of safe result files for the job, preferring a curated public results bundle when present.",
             },
         ],
     },
@@ -283,7 +283,7 @@ API_DOC_CURRENT_GROUPS = [
             {
                 "method": "GET",
                 "path": "/api/examples/<job_id>/bundle",
-                "note": "Downloads a ZIP bundle of safe result files for a curated example job.",
+                "note": "Downloads a ZIP bundle of safe result files for a curated example job, preferring a curated public results bundle when present.",
             },
         ],
     },
@@ -1044,6 +1044,15 @@ def api_job_bundle(job_id):
     if not _safe_job_id(job_id):
         return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
 
+    public_bundle = get_preferred_public_bundle(job_id)
+    if public_bundle:
+        return send_file(
+            public_bundle,
+            mimetype="application/zip",
+            as_attachment=True,
+            download_name=public_bundle.name,
+        )
+
     mem = create_safe_job_zip(job_id, mode="example")
     if mem is None:
         return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
@@ -1146,6 +1155,15 @@ def api_example_bundle(job_id):
     item = get_curated_example_by_id(job_id)
     if not item:
         return _api_json({"ok": False, "error": f"Curated example not found: {job_id}"}), 404
+
+    public_bundle = get_preferred_public_bundle(job_id)
+    if public_bundle:
+        return send_file(
+            public_bundle,
+            mimetype="application/zip",
+            as_attachment=True,
+            download_name=public_bundle.name,
+        )
 
     mem = create_safe_job_zip(job_id, mode="example")
     if mem is None:
@@ -1454,6 +1472,23 @@ def create_safe_job_zip(job_id: str, mode: str = "example") -> Optional[io.Bytes
     return mem
 
 
+def get_preferred_public_bundle(job_id: str) -> Optional[Path]:
+    base = safe_job_dir(job_id)
+    if not base or not base.exists():
+        return None
+
+    candidate = (base / "bundles" / f"{job_id}_warhead_hunter_public_results.zip").resolve()
+    try:
+        if not str(candidate).startswith(str(base.resolve())):
+            return None
+    except Exception:
+        return None
+
+    if candidate.exists() and candidate.is_file():
+        return candidate
+    return None
+
+
 def build_job_results_manifest(job_id: str) -> Dict[str, Any]:
     files = list_safe_job_files(job_id, kind="all", namespace="jobs")
     counts: Dict[str, int] = {}
@@ -1461,6 +1496,9 @@ def build_job_results_manifest(job_id: str) -> Dict[str, Any]:
         counts[item["kind"]] = counts.get(item["kind"], 0) + 1
 
     meta = _read_job_metadata(job_id) or {}
+    public_bundle = get_preferred_public_bundle(job_id)
+    job_manifest = job_root(job_id) / "job_result_manifest.json"
+    cleanup_report = job_root(job_id) / "cleanup_report.md"
     summary = {
         "file_count": len(files),
         "counts_by_kind": counts,
@@ -1473,6 +1511,10 @@ def build_job_results_manifest(job_id: str) -> Dict[str, Any]:
             target_results_dir(job_id) / "Resolved_SASA_Summary.tsv",
         ])),
         "status_from_metadata": meta.get("status", ""),
+        "has_curated_public_bundle": bool(public_bundle),
+        "public_bundle_path": public_bundle.relative_to(job_root(job_id)).as_posix() if public_bundle else "",
+        "has_job_result_manifest": bool(job_manifest.exists()),
+        "has_cleanup_report": bool(cleanup_report.exists()),
     }
     return {
         "summary": summary,
@@ -1513,6 +1555,7 @@ def get_job_api_metadata(job_id: str) -> Optional[Dict[str, Any]]:
         data["current_step"] = live.get("current_step", data.get("current_step", ""))
         data["step_started_at"] = live.get("step_started_at", data.get("step_started_at", ""))
 
+    public_bundle = get_preferred_public_bundle(job_id)
     outputs = dict(data.get("outputs") or {})
     outputs.update({
         "job_dir": str(base),
@@ -1521,6 +1564,7 @@ def get_job_api_metadata(job_id: str) -> Optional[Dict[str, Any]]:
         "files_url": f"/api/jobs/{job_id}/files",
         "bundle_url": f"/api/jobs/{job_id}/bundle",
         "legacy_download_url": f"/api/jobs/{job_id}/download",
+        "public_bundle_path": public_bundle.relative_to(base).as_posix() if public_bundle else outputs.get("public_bundle_path", ""),
     })
     data["outputs"] = outputs
     data["updated_at"] = _utc_now_iso()
@@ -1603,6 +1647,15 @@ def api_download_job(job_id):
     base = job_root(job_id)
     if not base.exists():
         abort(404, "Job not found")
+
+    public_bundle = get_preferred_public_bundle(job_id)
+    if public_bundle:
+        return send_file(
+            public_bundle,
+            mimetype="application/zip",
+            as_attachment=True,
+            download_name=public_bundle.name,
+        )
 
     mem = create_safe_job_zip(job_id, mode="job")
     if mem is None:

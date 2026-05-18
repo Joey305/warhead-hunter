@@ -76,6 +76,9 @@ SOFT_FAIL = {
     # "11_mcsMatcher.py",
 }
 
+RUN_CLEANUP_STEP = os.environ.get("WARHEAD_RUN_CLEANUP_STEP", "1") == "1"
+CLEANUP_SCRIPT_NAME = "18_CleanJobDirNzip.py"
+
 # =============================================================================
 # LOGGING HELPERS
 # =============================================================================
@@ -265,6 +268,62 @@ def _write_inputs(job_id: str, job_dir: str, target_name: str, search_query: str
     df.to_csv(os.path.join(job_dir, "Protein_Data.csv"), index=False)
     log_message(job_id, "🧾 Wrote input.csv and Protein_Data.csv")
 
+
+def _run_cleanup_packaging(job_id: str, job_dir: str) -> None:
+    if not RUN_CLEANUP_STEP:
+        log_message(job_id, "🧹 Cleanup packaging step disabled by WARHEAD_RUN_CLEANUP_STEP=0")
+        return
+
+    script_path = os.path.join(job_dir, CLEANUP_SCRIPT_NAME)
+    if not os.path.exists(script_path):
+        log_message(job_id, f"🧹 Cleanup packaging step skipped ({CLEANUP_SCRIPT_NAME} not found in job directory)")
+        return
+
+    cmd = ["python3", "-u", CLEANUP_SCRIPT_NAME, "--job-dir", ".", "--safe-package"]
+    env = os.environ.copy()
+    env["PYTHONUNBUFFERED"] = "1"
+    env["JOB_ID"] = job_id
+
+    log_message(job_id, "🧹 Running cleanup/package step in safe mode...")
+
+    with subprocess.Popen(
+        cmd,
+        cwd=job_dir,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        bufsize=1,
+        universal_newlines=True,
+        env=env,
+    ) as proc:
+        try:
+            for line in proc.stdout or []:
+                line = line.rstrip("\n")
+                if line:
+                    log_message(job_id, f"[cleanup] {line}")
+            proc.wait()
+        finally:
+            if proc.poll() is None:
+                try:
+                    proc.kill()
+                except Exception:
+                    pass
+
+    if proc.returncode != 0:
+        raise RuntimeError(f"{CLEANUP_SCRIPT_NAME} failed with code {proc.returncode}")
+
+    public_bundle_rel = f"bundles/{job_id}_warhead_hunter_public_results.zip"
+    manifest_rel = "job_result_manifest.json"
+    report_rel = "cleanup_report.md"
+    outputs = {
+        **_default_outputs(job_id),
+        "public_bundle_path": public_bundle_rel,
+        "job_result_manifest_path": manifest_rel,
+        "cleanup_report_path": report_rel,
+    }
+    write_job_metadata(job_id, {"outputs": outputs}, job_dir=job_dir)
+    log_message(job_id, f"🧹 Safe package created: {public_bundle_rel}")
+
 def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_seq: str) -> None:
     job_dir = os.path.join(JOBS_DIR, job_id)
 
@@ -341,6 +400,11 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
             "current_step": "",
             "error": None,
         }, job_dir=job_dir)
+
+        try:
+            _run_cleanup_packaging(job_id, job_dir)
+        except Exception as cleanup_error:
+            log_message(job_id, f"⚠️ Cleanup packaging step failed: {cleanup_error}")
 
         log_message(job_id, "✅ PIPELINE FINISHED SUCCESSFULLY")
         log_message(job_id, "Access results in the Browse tab.")
