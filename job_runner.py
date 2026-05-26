@@ -94,6 +94,33 @@ def _job_log_path(job_dir: str) -> str:
 def _job_metadata_path(job_dir: str) -> str:
     return os.path.join(job_dir, "job_metadata.json")
 
+def _describe_path(path: str) -> str:
+    if os.path.isdir(path):
+        try:
+            count = sum(1 for _ in os.scandir(path))
+        except Exception:
+            count = -1
+        return f"dir exists entries={count}"
+    if os.path.isfile(path):
+        try:
+            size = os.path.getsize(path)
+        except Exception:
+            size = -1
+        return f"file exists bytes={size}"
+    return "missing"
+
+def _log_7_metadata_preflight(job_id: str, job_dir: str) -> None:
+    interesting = [
+        "Warhead_SASA_summary.csv",
+        "Resolved_SASA_Summary.csv",
+        "components-smiles-stereo-oe.smi",
+        "5CharMAP.csv",
+        "WAR_PDB",
+    ]
+    log_message(job_id, f"[7_metadata preflight] cwd={job_dir}")
+    for name in interesting:
+        log_message(job_id, f"[7_metadata preflight] {name}: {_describe_path(os.path.join(job_dir, name))}")
+
 def _metadata_timestamp() -> str:
     return datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
 
@@ -173,6 +200,8 @@ def run_script_logged(
     }, job_dir=job_dir)
 
     log_message(job_id, f"🚀 Running {script_name}...")
+    if script_name == "7_metadata.py":
+        _log_7_metadata_preflight(job_id, job_dir)
 
     env = os.environ.copy()
     env["PYTHONUNBUFFERED"] = "1"
@@ -238,6 +267,7 @@ def run_script_logged(
                     pass
 
     if proc.returncode != 0:
+        log_message(job_id, f"❌ {script_name} exited with return code {proc.returncode}")
         raise RuntimeError(f"{script_name} failed with code {proc.returncode}")
 
 
