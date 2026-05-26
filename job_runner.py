@@ -32,6 +32,10 @@ from typing import Dict, Any, List, Tuple, Optional
 ASSET_DIR = "pipeline_assets"
 JOBS_DIR = "jobs"
 os.makedirs(JOBS_DIR, exist_ok=True)
+REQUIRED_PIPELINE_ASSETS = [
+    "components-smiles-stereo-oe.smi",
+    "7_metadata.py",
+]
 
 # Global dictionary to track job status in memory
 # Structure:
@@ -279,6 +283,15 @@ def _copy_assets(job_id: str, job_dir: str) -> None:
         raise FileNotFoundError(f"ASSET_DIR not found: {ASSET_DIR}")
 
     log_message(job_id, f"📦 Copying assets from {ASSET_DIR} → {job_dir} ...")
+    missing_source_assets = [
+        name for name in REQUIRED_PIPELINE_ASSETS
+        if not os.path.exists(os.path.join(ASSET_DIR, name))
+    ]
+    if missing_source_assets:
+        raise FileNotFoundError(
+            f"Required pipeline assets missing from {ASSET_DIR}: {', '.join(missing_source_assets)}"
+        )
+
     for item in os.listdir(ASSET_DIR):
         s = os.path.join(ASSET_DIR, item)
         d = os.path.join(job_dir, item)
@@ -286,6 +299,15 @@ def _copy_assets(job_id: str, job_dir: str) -> None:
             shutil.copytree(s, d, dirs_exist_ok=True)
         else:
             shutil.copy2(s, d)
+
+    missing_job_assets = [
+        name for name in REQUIRED_PIPELINE_ASSETS
+        if not os.path.exists(os.path.join(job_dir, name))
+    ]
+    if missing_job_assets:
+        raise FileNotFoundError(
+            f"Required pipeline assets missing from job directory after copy: {', '.join(missing_job_assets)}"
+        )
 
 def _write_inputs(job_id: str, job_dir: str, target_name: str, search_query: str, fasta_seq: str) -> None:
     input_data = [{
