@@ -2616,18 +2616,53 @@ def launch_job():
 
 @app.route("/monitor/<job_id>")
 def job_monitor(job_id):
-    if job_id not in JOB_STORE:
+    live = JOB_STORE.get(job_id)
+    if live:
+        return render_template("monitor.html", job=live, job_id=job_id)
+
+    meta = get_job_api_metadata(job_id)
+    if not meta:
         return "Job not found", 404
-    return render_template("monitor.html", job=JOB_STORE[job_id], job_id=job_id)
+
+    # Cross-worker fallback for Heroku/Gunicorn where JOB_STORE is per-process.
+    fallback_job = {
+        "status": meta.get("status", "unknown"),
+        "target": meta.get("target_name", ""),
+        "created_at": meta.get("created_at", ""),
+        "started_at": meta.get("started_at", ""),
+        "finished_at": meta.get("finished_at", ""),
+        "current_step": meta.get("current_step", ""),
+        "step_started_at": "",
+        "log": [],
+    }
+    return render_template("monitor.html", job=fallback_job, job_id=job_id)
 
 
 @app.route("/api/job_log/<job_id>")
 def job_log(job_id):
-    if job_id not in JOB_STORE:
+    live = JOB_STORE.get(job_id)
+    if live:
+        return jsonify({
+            "status": live.get("status", "unknown"),
+            "log": live.get("log", []),
+        })
+
+    base = safe_job_dir(job_id)
+    if not base or not base.exists():
         return jsonify({"error": "Job not found"}), 404
+
+    meta = get_job_api_metadata(job_id) or {}
+    log_path = base / "job.log"
+    log_lines = []
+    if log_path.exists():
+        try:
+            log_lines = log_path.read_text(encoding="utf-8", errors="replace").splitlines()
+        except Exception:
+            log_lines = []
+
     return jsonify({
-        "status": JOB_STORE[job_id]["status"],
-        "log": JOB_STORE[job_id]["log"],
+        "status": str(meta.get("status") or "unknown").lower(),
+        "log": log_lines,
     })
 
 
