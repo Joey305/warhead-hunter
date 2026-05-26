@@ -26,6 +26,7 @@ import os
 import sys
 import math
 import argparse
+import traceback
 import pandas as pd
 import requests
 from tqdm import tqdm
@@ -452,13 +453,16 @@ def load_5charmap_maps(map_path="5CharMAP.csv"):
         print("ℹ️ 5CharMAP.csv has no usable rows → alias mapping disabled.")
         return {}, {}, {}, {}
 
-    # Required columns
-    if "pdb" not in alias.columns:
-        raise RuntimeError(f"5CharMAP.csv missing required column: pdb (found: {list(alias.columns)})")
-    if "ligand5" not in alias.columns:
-        raise RuntimeError(f"5CharMAP.csv missing required column: ligand5 (found: {list(alias.columns)})")
-    if "ligandx" not in alias.columns:
-        raise RuntimeError(f"5CharMAP.csv missing required column: ligandX / ligandx (found: {list(alias.columns)})")
+    # Required columns. If the file is malformed, continue without aliasing
+    # instead of killing the whole job.
+    required = {"pdb", "ligand5", "ligandx"}
+    missing = [c for c in required if c not in alias.columns]
+    if missing:
+        print(
+            f"⚠️ 5CharMAP.csv missing required columns {missing} "
+            f"(found: {list(alias.columns)}) → alias mapping disabled."
+        )
+        return {}, {}, {}, {}
 
     has_lig3 = "ligand3" in alias.columns
 
@@ -678,9 +682,13 @@ def main():
         sasa_file = choose_csv()
         print(f"📄 Using SASA file: {sasa_file}")
 
+    if not os.path.exists(sasa_file):
+        raise FileNotFoundError(f"SASA file not found: {sasa_file}")
+
     # 3) Load table
     df = pd.read_csv(sasa_file)
     print("📥 Loaded SASA table.")
+    print(f"🧾 SASA columns: {list(df.columns)}")
 
     if "Warhead" not in df.columns:
         raise KeyError("SASA table must contain 'Warhead' column (ligand code).")
@@ -882,4 +890,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception:
+        print("❌ 7_metadata.py crashed with an uncaught exception:")
+        traceback.print_exc()
+        sys.exit(1)
