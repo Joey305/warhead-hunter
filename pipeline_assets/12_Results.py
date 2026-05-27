@@ -28,7 +28,10 @@ def main():
 
     if not all(f.exists() for f in [mcs_f, sasa_f, summary_f]):
         print("❌ Critical files missing for merge.")
-        return
+        raise RuntimeError(
+            f"Step 12 missing critical files: "
+            f"MCS={mcs_f.exists()} SASA={sasa_f.exists()} SUMMARY={summary_f.exists()}"
+        )
 
     mcs = pd.read_csv(mcs_f)
     sasa = pd.read_csv(sasa_f)

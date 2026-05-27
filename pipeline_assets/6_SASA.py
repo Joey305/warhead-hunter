@@ -14,6 +14,7 @@ import multiprocessing
 ATOM_CSV = "Warhead_SASA_atoms.csv"
 SUMMARY_CSV = "Warhead_SASA_summary.csv"
 LOG_FILE = "Warhead_SASA.log"
+FAILURE_CSV = "SASA_Failure.csv"
 
 DEFAULT_PROBE = 1.4
 THRESHOLD = 0.1
@@ -146,14 +147,28 @@ def main():
         raise RuntimeError(f"ERROR: Directory not found: {pdb_root}")
 
     print(f"\n📁 Scanning WARHEAD PDB ROOT: {pdb_root}")
+    print(f"📁 Step 6 input root resolved: {Path(pdb_root).resolve()}")
 
     # Collect ALL pdb files under WAR_PDB/*/*.pdb
     pdb_files = list(Path(pdb_root).rglob("*.pdb"))
 
     print(f"🔎 Found {len(pdb_files)} PDB files")
+    if pdb_files:
+        print(f"🧾 Step 6 sample PDBs: {[str(p.relative_to(pdb_root)) for p in pdb_files[:10]]}")
     print(f"🧠 Using {multiprocessing.cpu_count()-1} cores\n")
 
     write_headers()
+
+    if not pdb_files:
+        pd.DataFrame([{
+            "reason": "No PDB files found for SASA analysis",
+            "pdb_root": str(Path(pdb_root).resolve()),
+            "discovered_pdb_count": 0,
+        }]).to_csv(FAILURE_CSV, index=False)
+        raise RuntimeError(
+            f"Step 6 found 0 PDB files under {Path(pdb_root).resolve()}. "
+            f"Wrote {FAILURE_CSV}."
+        )
 
     with ProcessPoolExecutor(max_workers=multiprocessing.cpu_count()-1) as exe:
         futures = {exe.submit(process_file, p, args.probe): p for p in pdb_files}

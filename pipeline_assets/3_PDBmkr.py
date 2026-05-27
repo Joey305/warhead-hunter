@@ -153,6 +153,7 @@ def main():
     cif_base = str(cifinfo.iloc[0]["outdir"])
     output_root = f"{cif_base}_PDB"
     os.makedirs(output_root, exist_ok=True)
+    print(f"📁 Step 3 output root: {Path(output_root).resolve()}")
 
     # Merge
     merged = filtered_df.merge(sim_df, on=["protein", "pdb", "chain"], how="inner")
@@ -326,6 +327,7 @@ def main():
 
     print(f"\n🚀 BUILDING {len(jobs)} PDB CHAINS...\n")
     results = {}
+    failures = []
 
     with ProcessPoolExecutor(max_workers=MAX_WORKERS) as exe:
         futmap = {exe.submit(build_single_pdb, j): j["job_index"] for j in jobs}
@@ -335,8 +337,26 @@ def main():
                 _k, pdbtext, err = fut.result()
                 if pdbtext:
                     results[idx] = pdbtext
-            except Exception:
-                pass
+                else:
+                    failures.append({
+                        "job_index": idx,
+                        "protein": jobs[idx]["protein"],
+                        "pdb": jobs[idx]["pdb"],
+                        "chain": jobs[idx]["orig_chain"],
+                        "ligand": jobs[idx]["ligand"],
+                        "cif_path": jobs[idx]["cif_path"],
+                        "error": err or "unknown worker failure",
+                    })
+            except Exception as exc:
+                failures.append({
+                    "job_index": idx,
+                    "protein": jobs[idx]["protein"],
+                    "pdb": jobs[idx]["pdb"],
+                    "chain": jobs[idx]["orig_chain"],
+                    "ligand": jobs[idx]["ligand"],
+                    "cif_path": jobs[idx]["cif_path"],
+                    "error": f"executor exception: {exc}",
+                })
 
     # Write PDB outputs
     for idx, pdb_text in results.items():
@@ -344,6 +364,26 @@ def main():
         os.makedirs(os.path.dirname(out_path), exist_ok=True)
         with open(out_path, "w") as f:
             f.write(pdb_text)
+
+    built_files = sorted(Path(output_root).rglob("*.pdb"))
+    print(f"📁 Step 3 output root resolved: {Path(output_root).resolve()}")
+    print(f"📊 Step 3 requested={len(jobs)} built={len(results)} on_disk={len(built_files)}")
+    if built_files:
+        print(f"🧾 Step 3 sample PDBs: {[str(p.relative_to(output_root)) for p in built_files[:10]]}")
+    if failures:
+        fail_df = pd.DataFrame(failures)
+        fail_df.to_csv("PDB_BUILD_FAILURES.csv", index=False)
+        print(f"⚠️ Step 3 build failures: {len(failures)} rows written to PDB_BUILD_FAILURES.csv")
+        for row in failures[:10]:
+            print(
+                f"⚠️ PDB build miss: pdb={row['pdb']} chain={row['chain']} "
+                f"ligand={row['ligand']} error={row['error']}"
+            )
+    if len(built_files) == 0:
+        raise RuntimeError(
+            f"Step 3 produced zero PDB files under {Path(output_root).resolve()}. "
+            "See PDB_BUILD_FAILURES.csv for details."
+        )
 
     # -----------------------------------------------------------------------------
     # Final writes (key change: 5CharMAP headers-only if no 5-letter ligands)
@@ -355,7 +395,10 @@ def main():
 
     pd.DataFrame(chainmap_rows, columns=CHAINMAP_COLS).drop_duplicates().to_csv(CHAINMAP_FILE, index=False)
 
-    print("\n✅ All PDBs built successfully.")
+    if len(built_files) == len(jobs) and not failures:
+        print("\n✅ All PDBs built successfully.")
+    else:
+        print(f"\n⚠️ Step 3 completed with partial output: built {len(built_files)} of {len(jobs)} requested PDBs.")
     if has_five_letter:
         print(f"✅ Wrote {LIGMAP_FILE} with mapping rows (5-letter ligands detected).")
     else:

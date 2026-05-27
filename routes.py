@@ -7,6 +7,7 @@ import os
 
 import pandas as pd
 from flask import Blueprint, current_app, render_template, abort
+import job_state as disk_jobs
 
 bp = Blueprint("routes", __name__)
 
@@ -291,7 +292,28 @@ def _read_protein_for_job(job_id: str) -> str:
 def view_results(job_id: str):
     df = build_pose_rows(job_id)
     if df is None or df.empty:
-        abort(404, description="Resolved_SASA_Summary (csv/tsv) not found or empty for this job.")
+        job = disk_jobs.hydrate_job_from_disk(job_id, current_app.config.get("JOBS_DIR"))
+        if job is None:
+            abort(404, description="Job not found.")
+
+        status = str(job.get("status") or "unknown").lower()
+        if status in {"queued", "pending", "running"}:
+            return render_template(
+                "error.html",
+                message=f"Job {job_id} is still running. Results are not ready yet."
+            ), 409
+        if status == "failed":
+            err = job.get("error") or {}
+            reason = err.get("message") if isinstance(err, dict) else str(err or "")
+            message = f"Job {job_id} failed before producing result artifacts."
+            if reason:
+                message = f"{message} {reason}"
+            return render_template("error.html", message=message), 409
+
+        return render_template(
+            "error.html",
+            message=f"Job {job_id} completed without a readable Resolved_SASA_Summary artifact."
+        ), 404
 
     # Pull Target directly (no inference)
     target_col = "Target" if "Target" in df.columns else None

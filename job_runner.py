@@ -28,6 +28,7 @@ from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, List, Tuple, Optional
 from api.sdf_resolver import resolve_sdf_path, row_sdf_key
+from job_state import append_job_log, write_job_metadata as write_job_metadata_disk, results_ready_from_disk
 
 # =============================================================================
 # CONFIG
@@ -132,25 +133,13 @@ def _default_outputs(job_id: str) -> Dict[str, Any]:
 def write_job_metadata(job_id: str, patch: Dict[str, Any], job_dir: Optional[str] = None) -> None:
     job_dir = job_dir or os.path.join(JOBS_DIR, job_id)
     os.makedirs(job_dir, exist_ok=True)
-    fp = _job_metadata_path(job_dir)
-
+    payload = dict(patch or {})
+    payload.setdefault("outputs", _default_outputs(job_id))
+    payload.setdefault("error", None)
+    payload["job_dir"] = job_dir
+    payload["results_ready"] = results_ready_from_disk(job_id)
     with JOB_LOCK:
-        data: Dict[str, Any] = {}
-        if os.path.exists(fp):
-            try:
-                with open(fp, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-            except Exception:
-                data = {}
-
-        data.update(patch or {})
-        data["job_id"] = job_id
-        data["updated_at"] = _metadata_timestamp()
-        data.setdefault("outputs", _default_outputs(job_id))
-        data.setdefault("error", None)
-
-        with open(fp, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, sort_keys=True)
+        write_job_metadata_disk(job_id, payload)
 
 def log_message(job_id: str, message: str) -> None:
     entry = f"[{_now()}] {message}"
@@ -162,10 +151,7 @@ def log_message(job_id: str, message: str) -> None:
 
     # Also persist to disk if possible
     try:
-        job_dir = os.path.join(JOBS_DIR, job_id)
-        os.makedirs(job_dir, exist_ok=True)
-        with open(_job_log_path(job_dir), "a", encoding="utf-8") as f:
-            f.write(entry + "\n")
+        append_job_log(job_id, entry)
     except Exception:
         pass
 
@@ -194,6 +180,7 @@ def run_script_logged(
         "status": JOB_STORE.get(job_id, {}).get("status", "running"),
         "current_step": script_name,
         "step_started_at": _now(),
+        "last_log_at": _metadata_timestamp(),
     }, job_dir=job_dir)
 
     log_message(job_id, f"🚀 Running {script_name}...")
@@ -237,8 +224,7 @@ def run_script_logged(
                         JOB_STORE[job_id]["log"].append(line)
                     # also persist
                     try:
-                        with open(_job_log_path(job_dir), "a", encoding="utf-8") as f:
-                            f.write(line + "\n")
+                        append_job_log(job_id, line)
                     except Exception:
                         pass
 
@@ -515,18 +501,21 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
         "current_step": "",
         "step_started_at": "",
         "error": None,
+        "target": target_name,
+        "results_ready": False,
     }, job_dir=job_dir)
 
     try:
         log_message(job_id, f"Initializing workspace for {target_name}...")
         os.makedirs(job_dir, exist_ok=True)
 
-        # Reset persistent log file for this run
+        # Preserve the creation line and append a run-start marker.
         try:
-            with open(_job_log_path(job_dir), "w", encoding="utf-8") as f:
+            with open(_job_log_path(job_dir), "a", encoding="utf-8") as f:
                 f.write(f"[{_now()}] Job {job_id} started: {_timestamp()}\n")
         except Exception:
             pass
+        write_job_metadata(job_id, {"last_log_at": _metadata_timestamp()}, job_dir=job_dir)
 
         _copy_assets(job_id, job_dir)
         _write_inputs(job_id, job_dir, target_name, search_query, fasta_seq)
@@ -581,6 +570,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
             "finished_at": _timestamp(),
             "current_step": "",
             "error": None,
+            "results_ready": True,
         }, job_dir=job_dir)
 
         try:
@@ -601,6 +591,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
             "error": {
                 "message": str(e),
             },
+            "results_ready": results_ready_from_disk(job_id),
         }, job_dir=job_dir)
 
         log_message(job_id, f"❌ CRITICAL ERROR: {str(e)}")
@@ -631,7 +622,13 @@ def start_job(
         }
     write_job_metadata(job_id, {
         "status": "queued",
+        "target": target_name,
         "created_at": _metadata_timestamp(),
+        "started_at": "",
+        "finished_at": "",
+        "current_step": "",
+        "step_started_at": "",
+        "last_log_at": _metadata_timestamp(),
         "source": source,
         "request": request_payload or {
             "target_name": target_name,
@@ -640,7 +637,14 @@ def start_job(
         },
         "outputs": _default_outputs(job_id),
         "error": None,
+        "results_ready": False,
     }, job_dir=job_dir)
+    try:
+        with open(_job_log_path(job_dir), "w", encoding="utf-8") as handle:
+            handle.write(f"[{_now()}] Job {job_id} created for target: {target_name}\n")
+        write_job_metadata(job_id, {"last_log_at": _metadata_timestamp()}, job_dir=job_dir)
+    except Exception:
+        pass
 
     thread = threading.Thread(
         target=run_pipeline_task,

@@ -27,6 +27,7 @@ from flask import (
 )
 
 from job_runner import start_job, JOB_STORE
+import job_state as disk_jobs
 from api.sasa_api import bp as sasa_bp
 from routes import bp as routes_bp
 from api.handoff_server import hand_bp
@@ -502,26 +503,11 @@ def _job_metadata_path(job_id: str) -> Path:
 
 
 def _read_job_metadata(job_id: str) -> Optional[Dict[str, Any]]:
-    fp = _job_metadata_path(job_id)
-    if not fp.exists():
-        return None
-    try:
-        return json.loads(fp.read_text(encoding="utf-8"))
-    except Exception:
-        return None
+    return disk_jobs.load_job_metadata(job_id, JOBS_DIR)
 
 
 def _write_job_metadata_local(job_id: str, patch: Dict[str, Any]) -> Dict[str, Any]:
-    fp = _job_metadata_path(job_id)
-    fp.parent.mkdir(parents=True, exist_ok=True)
-    data = _read_job_metadata(job_id) or {}
-    data.update(patch or {})
-    data["job_id"] = job_id
-    data["updated_at"] = _utc_now_iso()
-    data.setdefault("outputs", {})
-    data.setdefault("error", None)
-    fp.write_text(json.dumps(data, indent=2, sort_keys=True), encoding="utf-8")
-    return data
+    return disk_jobs.write_job_metadata(job_id, patch or {}, JOBS_DIR)
 
 
 def _fetch_fasta_for_pdb(pdb_id: str) -> Optional[str]:
@@ -1580,14 +1566,7 @@ def _read_protein_data_csv(job_path: Path) -> Optional[Dict[str, str]]:
 
 
 def _job_has_results(job_path: Path) -> bool:
-    # a few “likely exists” checks
-    candidates = [
-        job_path / "TARGET_RESULTS" / "Results_Display.csv",
-        job_path / "Results_Display.csv",
-        job_path / "TARGET_RESULTS",
-        job_path / "Target_Table",
-    ]
-    return any(p.exists() for p in candidates)
+    return disk_jobs.results_ready_from_disk(job_path.name, JOBS_DIR)
 
 
 def get_jobs_root() -> Path:
@@ -1595,16 +1574,10 @@ def get_jobs_root() -> Path:
 
 
 def safe_job_dir(job_id: str) -> Optional[Path]:
-    if not _safe_job_id(job_id):
-        return None
-    p = (get_jobs_root() / job_id).resolve()
     try:
-        root = get_jobs_root().resolve()
-        if not str(p).startswith(str(root)):
-            return None
+        return disk_jobs.job_dir_for(job_id, get_jobs_root())
     except Exception:
         return None
-    return p
 
 
 def _fasta_length(fasta: str) -> int:
@@ -1618,6 +1591,7 @@ def _fasta_length(fasta: str) -> int:
 def _job_meta_from_dir(job_dir: Path) -> Dict[str, Any]:
     protein_meta = _read_protein_data_csv(job_dir) or {}
     disk_meta = _read_job_metadata(job_dir.name) or {}
+    hydrated = disk_jobs.hydrate_job_from_disk(job_dir.name, get_jobs_root(), JOB_STORE.get(job_dir.name)) or {}
     request_meta = disk_meta.get("request") or {}
     fasta = (
         str(request_meta.get("fasta_seq") or "").strip()
@@ -1648,9 +1622,9 @@ def _job_meta_from_dir(job_dir: Path) -> Dict[str, Any]:
         "search_query": search_query,
         "fasta": fasta,
         "fasta_len": _fasta_length(fasta),
-        "has_results": _job_has_results(job_dir),
-        "available": _job_has_results(job_dir),
-        "status": str(disk_meta.get("status") or ("completed" if _job_has_results(job_dir) else "unknown")).lower(),
+        "has_results": bool(hydrated.get("results_ready")),
+        "available": bool(hydrated.get("results_ready")),
+        "status": str(hydrated.get("status") or disk_meta.get("status") or "unknown").lower(),
         "created_at": str(disk_meta.get("created_at") or created_s),
         "modified_at": modified_s,
         "mtime": modified_s,
@@ -1942,6 +1916,7 @@ def get_job_api_metadata(job_id: str) -> Optional[Dict[str, Any]]:
     if not base or not base.exists():
         return None
 
+    hydrated = disk_jobs.hydrate_job_from_disk(job_id, get_jobs_root(), JOB_STORE.get(job_id)) or {}
     data = _read_job_metadata(job_id) or {}
     live = JOB_STORE.get(job_id, {})
     protein_meta = _read_protein_data_csv(base) or {}
@@ -1972,12 +1947,11 @@ def get_job_api_metadata(job_id: str) -> Optional[Dict[str, Any]]:
         }
 
     if live:
-        data["status"] = live.get("status", data.get("status", "unknown"))
         data["created_at"] = data.get("created_at") or live.get("created_at", "")
-        data["started_at"] = live.get("started_at", data.get("started_at", ""))
-        data["finished_at"] = live.get("finished_at", data.get("finished_at", ""))
-        data["current_step"] = live.get("current_step", data.get("current_step", ""))
-        data["step_started_at"] = live.get("step_started_at", data.get("step_started_at", ""))
+        data["started_at"] = data.get("started_at") or live.get("started_at", "")
+        data["finished_at"] = data.get("finished_at") or live.get("finished_at", "")
+        data["current_step"] = data.get("current_step") or live.get("current_step", "")
+        data["step_started_at"] = data.get("step_started_at") or live.get("step_started_at", "")
 
     public_bundle = get_preferred_public_bundle(job_id)
     outputs = dict(data.get("outputs") or {})
@@ -1991,7 +1965,7 @@ def get_job_api_metadata(job_id: str) -> Optional[Dict[str, Any]]:
     }
     outputs.update({
         "job_dir": str(base),
-        "has_results": _job_has_results(base),
+        "has_results": bool(hydrated.get("results_ready")),
         "results_url": f"/api/jobs/{job_id}/results",
         "files_url": f"/api/jobs/{job_id}/files",
         "bundle_url": f"/api/jobs/{job_id}/bundle",
@@ -2003,23 +1977,24 @@ def get_job_api_metadata(job_id: str) -> Optional[Dict[str, Any]]:
     data["updated_at"] = _utc_now_iso()
     return {
         "job_id": job_id,
-        "status": str(data.get("status") or ("completed" if _job_has_results(base) else "unknown")).lower(),
+        "status": str(hydrated.get("status") or data.get("status") or ("completed" if _job_has_results(base) else "unknown")).lower(),
         "target_name": target_name,
         "search_query": search_query,
-        "created_at": data.get("created_at", ""),
-        "started_at": data.get("started_at", ""),
-        "finished_at": data.get("finished_at", ""),
-        "current_step": data.get("current_step", ""),
+        "created_at": hydrated.get("created_at", data.get("created_at", "")),
+        "started_at": hydrated.get("started_at", data.get("started_at", "")),
+        "finished_at": hydrated.get("finished_at", data.get("finished_at", "")),
+        "current_step": hydrated.get("current_step", data.get("current_step", "")),
         "source": data.get("source", "web"),
         "request": data.get("request", {}),
         "outputs": outputs,
-        "error": data.get("error"),
+        "error": hydrated.get("error", data.get("error")),
         "monitor_url": f"/monitor/{job_id}",
         "results_url": f"/api/jobs/{job_id}/results",
         "files_url": f"/api/jobs/{job_id}/files",
         "bundle_url": f"/api/jobs/{job_id}/bundle",
         "browser_results_url": f"/results/{job_id}",
-        "has_results": _job_has_results(base),
+        "has_results": bool(hydrated.get("results_ready")),
+        "results_ready": bool(hydrated.get("results_ready")),
         "available_artifacts": artifact_counts,
     }
 
@@ -2213,20 +2188,14 @@ def open_job(job_id):
     if not _safe_job_id(job_id):
         abort(400, "Invalid job_id")
 
-    # If it’s an in-memory active job, use monitor (live logs)
-    if job_id in JOB_STORE:
-        return redirect(url_for("job_monitor", job_id=job_id))
-
-    # If it exists on disk, prefer results view if available
-    jp = job_root(job_id)
-    if not jp.exists():
+    job = disk_jobs.hydrate_job_from_disk(job_id, get_jobs_root(), JOB_STORE.get(job_id))
+    if job is None:
         abort(404, "Job not found on disk.")
 
-    if _job_has_results(jp):
+    if job.get("results_ready"):
         return redirect(f"/results/{job_id}")
 
-    # Otherwise: could optionally show a “job summary” page, but keep it simple
-    return render_template("error.html", message="This job exists on disk but has no results to display yet."), 404
+    return redirect(url_for("job_monitor", job_id=job_id))
 
 @app.get("/api/jobs/<job_id>/download")
 def api_download_job(job_id):
@@ -2611,18 +2580,32 @@ def launch_job():
 
 @app.route("/monitor/<job_id>")
 def job_monitor(job_id):
-    if job_id not in JOB_STORE:
+    if not _safe_job_id(job_id):
         return "Job not found", 404
-    return render_template("monitor.html", job=JOB_STORE[job_id], job_id=job_id)
+    job = disk_jobs.hydrate_job_from_disk(job_id, get_jobs_root(), JOB_STORE.get(job_id))
+    if job is None:
+        return "Job not found", 404
+    return render_template("monitor.html", job=job, job_id=job_id)
 
 
 @app.route("/api/job_log/<job_id>")
 def job_log(job_id):
-    if job_id not in JOB_STORE:
-        return jsonify({"error": "Job not found"}), 404
+    if not _safe_job_id(job_id):
+        return jsonify({"ok": False, "error": "Job not found", "job_id": job_id}), 404
+
+    job = disk_jobs.hydrate_job_from_disk(job_id, get_jobs_root(), JOB_STORE.get(job_id))
+    if job is None:
+        return jsonify({"ok": False, "error": "Job not found", "job_id": job_id}), 404
+
     return jsonify({
-        "status": JOB_STORE[job_id]["status"],
-        "log": JOB_STORE[job_id]["log"],
+        "ok": True,
+        "job_id": job_id,
+        "status": job.get("status", "unknown"),
+        "target": job.get("target", ""),
+        "current_step": job.get("current_step", ""),
+        "results_ready": bool(job.get("results_ready")),
+        "log": job.get("log", []),
+        "error": job.get("error"),
     })
 
 

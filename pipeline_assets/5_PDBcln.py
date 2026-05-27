@@ -3,6 +3,7 @@
 
 import os
 import pandas as pd
+from pathlib import Path
 
 # -----------------------------------------------------------
 # Utils
@@ -138,11 +139,15 @@ def main():
 
     base_outdir = str(df.iloc[0]["outdir"]).rstrip("/")
     pdb_root = base_outdir + "_PDB"
+    pdb_root_path = Path(pdb_root)
 
     if not os.path.isdir(pdb_root):
         raise FileNotFoundError(f"❌ PDB directory not found: {pdb_root}")
 
-    print(f"\n📁 ROOT DIRECTORY: {pdb_root}\n")
+    pre_scan = sorted(pdb_root_path.rglob("*.pdb"))
+    print(f"\n📁 ROOT DIRECTORY: {pdb_root}")
+    print(f"📁 Step 5 input root resolved: {pdb_root_path.resolve()}")
+    print(f"📊 Step 5 input PDB count before cleaning: {len(pre_scan)}\n")
 
     dropped = 0
     cleaned = 0
@@ -171,7 +176,9 @@ def main():
                 else:
                     cleaned += 1
 
-    print(f"\n🎉 DONE — cleaned={cleaned}, dropped={dropped}\n")
+    post_scan = sorted(pdb_root_path.rglob("*.pdb"))
+    print(f"\n📊 Step 5 remaining PDB count after cleaning: {len(post_scan)}")
+    print(f"🎉 DONE — cleaned={cleaned}, dropped={dropped}\n")
 
 
 if __name__ == "__main__":

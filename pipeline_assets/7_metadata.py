@@ -153,6 +153,18 @@ def safe_chiral_atoms(mol):
             return math.nan
 
 
+def fail_metadata_step(message, df=None, artifact="Metadata_Failure_Report.csv"):
+    payload = {
+        "reason": [message],
+        "row_count": [0 if df is None else len(df)],
+        "columns": ["" if df is None else "|".join(map(str, df.columns.tolist()))],
+    }
+    pd.DataFrame(payload).to_csv(artifact, index=False)
+    print(f"❌ {message}", flush=True)
+    print(f"🧾 Wrote {artifact}", flush=True)
+    raise RuntimeError(message)
+
+
 def druglikeness_rules(d):
     mw, logp, tpsa = d["MW"], d["LogP"], d["TPSA"]
     hbd, hba, rot = d["HBD"], d["HBA"], d["Rotatable_Bonds"]
@@ -702,9 +714,20 @@ def main():
     # 3) Load table
     df = pd.read_csv(sasa_file)
     print("📥 Loaded SASA table.")
+    print(f"📊 Step 7 input row count: {len(df)}")
+    print(f"🧾 Step 7 input columns: {list(df.columns)}")
+
+    if df.empty:
+        fail_metadata_step(
+            f"Step 7 cannot continue because {sasa_file} is empty.",
+            df=df,
+        )
 
     if "Warhead" not in df.columns:
-        raise KeyError("SASA table must contain 'Warhead' column (ligand code).")
+        fail_metadata_step(
+            f"Step 7 cannot continue because {sasa_file} is missing required column 'Warhead'.",
+            df=df,
+        )
 
     # 4) Detect PDB column
     if "pdb_id" in df.columns:
@@ -712,7 +735,10 @@ def main():
     elif "pdb" in df.columns:
         PDB_COL = "pdb"
     else:
-        raise KeyError("SASA table must contain 'pdb_id' or 'pdb' column.")
+        fail_metadata_step(
+            f"Step 7 cannot continue because {sasa_file} is missing both 'pdb_id' and 'pdb'.",
+            df=df,
+        )
 
     df[PDB_COL] = df[PDB_COL].astype(str).str.strip().str.lower()
     df["Warhead"] = df["Warhead"].astype(str).str.strip().str.upper()
@@ -826,6 +852,17 @@ def main():
     # 4) Save filtered SASA summary
     df.to_csv("Resolved_SASA_Summary.csv", index=False)
     print("💾 Saved Resolved_SASA_Summary.csv")
+
+    if df.empty:
+        fail_metadata_step(
+            "Step 7 removed all rows before ligand grouping; no structures survived metadata filtering.",
+            df=df,
+        )
+    if "Ligand_Resolved" not in df.columns:
+        fail_metadata_step(
+            "Step 7 expected column 'Ligand_Resolved' after resolution, but it is missing.",
+            df=df,
+        )
 
 
     # 8) Ligand frequency index (by Ligand_Resolved, which now uses 5-letter when available)
