@@ -11,6 +11,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 import job_state
+from debug_cif_handoff_contract import analyze_job
 
 
 def count_rows(path: Path) -> int | None:
@@ -52,6 +53,8 @@ def main() -> int:
         print("FAIL: job folder does not exist")
         return 1
 
+    cif_result = analyze_job(args.job_id)
+
     cifdata = job_dir / "CIFdata.csv"
     step3_root = None
     if cifdata.exists():
@@ -84,6 +87,13 @@ def main() -> int:
     ])
 
     print(f"Job: {args.job_id}")
+    print(
+        "CIF handoff summary: "
+        f"manifest_rows={cif_result['manifest_rows']} "
+        f"verified_manifest={cif_result['verified_manifest_rows']} "
+        f"step3_candidates={cif_result['candidate_rows']} "
+        f"resolvable_candidates={cif_result['resolvable_candidates']}"
+    )
     print(f"Step 3 expected WAR_PDB root: {raw_war_root}")
     print(f"Step 5/6 input WAR_PDB root exists: {raw_war_root.exists()}")
     print(f"Step 3 raw PDB count: {len(raw_pdbs)}")
@@ -99,6 +109,7 @@ def main() -> int:
     print(f"Results_Display.csv rows: {count_rows(results_display) if results_display else None}")
 
     failures: list[str] = []
+    failures.extend(cif_result["failures"])
     if step3_root and not raw_pdbs:
         failures.append("FAIL: Step 3 reported PDB build but no PDB files are present under WAR_PDB.")
     if raw_pdbs and not target_pdbs:
