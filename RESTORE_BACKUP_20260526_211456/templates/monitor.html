@@ -1,0 +1,845 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  .monitor-wrap{ max-width:1100px; margin:0 auto; }
+  .monitor-top{
+    display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+    margin-bottom:16px;
+  }
+  .monitor-title h1{ margin:0; }
+  .subtle{ opacity:.85; font-size:.95rem; margin-top:6px; color:#bfefff; }
+
+  .pill{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:10px 14px; border-radius:999px;
+    border:1px solid rgba(0,255,255,.35);
+    background:rgba(0,0,0,.55);
+    box-shadow: 0 0 18px rgba(0,255,255,.12);
+    font-weight:700; letter-spacing:.03em;
+    user-select:none;
+  }
+  .dot{
+    width:10px; height:10px; border-radius:50%;
+    background: var(--tron-yellow);
+    box-shadow:0 0 14px rgba(255, 230, 0, .6);
+  }
+  .dot.running{ animation:pulse 1s infinite; }
+  @keyframes pulse{
+    0%{ transform:scale(1); opacity:.7;}
+    50%{ transform:scale(1.45); opacity:1;}
+    100%{ transform:scale(1); opacity:.7;}
+  }
+
+  .pill.running{ color: var(--tron-yellow); }
+  .pill.completed{
+    color: var(--tron-cyan);
+    border-color: rgba(0,255,255,.65);
+    box-shadow:0 0 22px rgba(0,255,255,.20);
+  }
+  .pill.failed{
+    color:#ff5b5b;
+    border-color: rgba(255, 91, 91,.55);
+    box-shadow:0 0 22px rgba(255, 91, 91,.15);
+  }
+
+  .actions{
+    display:flex; align-items:center; gap:10px; justify-content:flex-end;
+    flex-wrap:wrap;
+  }
+  .mini-btn{
+    padding:8px 10px; border-radius:10px;
+    border:1px solid rgba(0,255,255,.35);
+    background:rgba(0,0,0,.55);
+    color:#d9ffff;
+    cursor:pointer;
+  }
+  .mini-btn:hover{ border-color: rgba(0,255,255,.7); }
+
+  .progress-sheen{
+    position:relative;
+    height:10px; border-radius:999px;
+    border:1px solid rgba(0,255,255,.35);
+    background:rgba(0,0,0,.55);
+    overflow:hidden;
+    margin:10px 0 16px 0;
+  }
+  .progress-sheen::before{
+    content:"";
+    position:absolute; top:0; left:-40%;
+    height:100%; width:40%;
+    background: linear-gradient(90deg, transparent, rgba(0,255,255,.55), transparent);
+    animation: sheen 1.2s linear infinite;
+  }
+  @keyframes sheen{
+    0%{ left:-40%; }
+    100%{ left:110%; }
+  }
+  .progress-sheen.hidden{ display:none; }
+
+  #console{
+    background:black;
+    border:2px solid var(--tron-cyan);
+    height:520px;
+    overflow-y:auto;
+    padding:18px 18px;
+    font-family:'Courier New', monospace;
+    color:#00ff00;
+    box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.2);
+    border-radius:16px;
+  }
+  .logline{ padding:2px 0; opacity:.95; }
+  .logline.new{
+    background: rgba(0,255,255,.08);
+    border-left: 3px solid rgba(0,255,255,.65);
+    padding-left:10px;
+    animation: popin .25s ease-out;
+  }
+  @keyframes popin{
+    from{ transform:translateY(4px); opacity:.2; }
+    to{ transform:translateY(0); opacity:1; }
+  }
+
+  /* Results reveal panel */
+  .reveal{
+    margin-top:16px;
+    border-radius:18px;
+    border:1px solid rgba(0,255,255,.45);
+    background: rgba(0,0,0,.55);
+    box-shadow: 0 0 26px rgba(0,255,255,.14);
+    overflow:hidden;
+    display:none;
+  }
+  .reveal.show{ display:block; animation: slideDown .35s ease-out; }
+  @keyframes slideDown{
+    from{ transform:translateY(-8px); opacity:0; }
+    to{ transform:translateY(0); opacity:1; }
+  }
+  .reveal-head{
+    padding:14px 16px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    border-bottom:1px solid rgba(0,255,255,.18);
+  }
+  .reveal-title{
+    font-weight:800;
+    color: var(--tron-cyan);
+    letter-spacing:.04em;
+  }
+  .reveal-body{
+    padding:14px 16px 18px 16px;
+    color:#d9ffff;
+  }
+  .statrow{
+    display:grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap:10px;
+    margin:10px 0 14px 0;
+  }
+  .stat{
+    border:1px solid rgba(0,255,255,.18);
+    border-radius:14px;
+    padding:10px 12px;
+    background: rgba(0,0,0,.35);
+  }
+  .stat .k{ font-size:.8rem; opacity:.8; }
+  .stat .v{ font-size:1.15rem; font-weight:800; margin-top:4px; }
+
+  /* Summary panel under reveal */
+  #summary-wrap{ display:none; margin-top:14px; }
+
+  /* Toast */
+  .toast{
+    position:fixed;
+    right:18px; bottom:18px;
+    z-index:9999;
+    min-width:280px; max-width:380px;
+    border-radius:16px;
+    border:1px solid rgba(0,255,255,.35);
+    background: rgba(0,0,0,.78);
+    color:#e9ffff;
+    box-shadow: 0 0 28px rgba(0,255,255,.16);
+    padding:12px 14px;
+    display:none;
+  }
+  .toast.show{ display:block; animation: toastIn .25s ease-out; }
+  @keyframes toastIn{
+    from{ transform:translateY(10px); opacity:0; }
+    to{ transform:translateY(0); opacity:1; }
+  }
+  .toast strong{ display:block; margin-bottom:4px; }
+  .toast small{ opacity:.85; }
+
+  /* Finish modal */
+  #finish-modal{ display:none; position:fixed; inset:0; z-index:99999; }
+  #finish-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.75); }
+  #finish-card{
+    position:relative;
+    max-width: 760px;
+    margin: 8vh auto 0 auto;
+    border-radius: 22px;
+    border: 1px solid rgba(0,255,255,.55);
+    background: rgba(0,0,0,.88);
+    box-shadow: 0 0 40px rgba(0,255,255,.18);
+    overflow:hidden;
+  }
+  #fireworks{
+    display:block;
+    width:100%;
+    height:260px;
+    background:radial-gradient(circle at 50% 50%, rgba(0,255,255,.12), rgba(0,0,0,.95));
+  }
+  #finish-body{ padding: 16px 18px 18px 18px; color:#e9ffff; }
+  #finish-header{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  #finish-title{
+    font-weight:900;
+    letter-spacing:.05em;
+    font-size:1.1rem;
+    color: var(--tron-cyan);
+  }
+  #finish-summary{
+    display:grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap:10px;
+    margin: 12px 0 14px 0;
+  }
+  .finish-stat{
+    border:1px solid rgba(0,255,255,.18);
+    border-radius:14px;
+    padding:10px 12px;
+    background: rgba(0,0,0,.35);
+  }
+  .finish-stat .k{ font-size:.8rem; opacity:.8; }
+  .finish-stat .v{ font-size:1.15rem; font-weight:900; margin-top:4px; }
+
+
+
+  
+</style>
+<style>
+  .mini-btn{
+    padding:8px 10px; border-radius:10px;
+    border:1px solid rgba(0,255,255,.35);
+    background:rgba(0,0,0,.55);
+    color:#d9ffff;
+    cursor:pointer;
+  }
+  .mini-btn:hover{ border-color: rgba(0,255,255,.7); }
+</style>
+
+
+<div class="container monitor-wrap">
+  <div class="monitor-top">
+    <div class="monitor-title">
+      <h1 class="glow-text">
+        JOB MONITOR: <span style="color:white">{{ job.target }}</span>
+      </h1>
+      <div class="subtle">
+        Keep this tab open — it will celebrate when your results are ready.
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="mini-btn" id="notify-btn" title="Enable a browser notification when it finishes">
+        🔔 Notify me
+      </button>
+      <button class="mini-btn" id="autoscroll-btn" title="Toggle autoscroll">
+        🧲 Autoscroll: <span id="autoscroll-state">ON</span>
+      </button>
+
+      <div id="status-pill" class="pill running">
+        <span id="status-dot" class="dot running"></span>
+        <span id="status-text">STATUS: {{ job.status|upper }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="progress" class="progress-sheen {% if job.status in ['completed','failed'] %}hidden{% endif %}"></div>
+
+  <div id="console">
+    {% for line in job.log %}
+      <div class="logline">{{ line }}</div>
+    {% endfor %}
+  </div>
+
+  <div id="reveal" class="reveal">
+    <div class="reveal-head">
+      <div class="reveal-title">📬 You got results</div>
+      <a id="results-link" href="/results/{{ job_id }}" class="tron-btn">ACCESS TARGET GALLERY</a>
+    </div>
+    <div class="reveal-body">
+      <div style="opacity:.9;">
+        Here’s a quick recap pulled from your summary endpoint:
+      </div>
+
+      <div class="statrow" id="reveal-statrow">
+        <div class="stat">
+          <div class="k">Target</div>
+          <div class="v">{{ job.target }}</div>
+        </div>
+        <div class="stat">
+          <div class="k">Job ID</div>
+          <div class="v" style="font-size:1rem;">{{ job_id }}</div>
+        </div>
+        <div class="stat">
+          <div class="k">Status</div>
+          <div class="v" id="reveal-status">COMPLETED</div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a href="/results/{{ job_id }}" class="tron-btn">Open results</a>
+        <button class="mini-btn" id="copy-job">📋 Copy Job ID</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clean summary panel (optional) -->
+  <div id="summary-wrap" class="reveal show">
+    <div class="reveal-head">
+      <div class="reveal-title">📊 Run Summary</div>
+    </div>
+    <div class="reveal-body">
+      <div id="summary-table" style="display:grid; grid-template-columns: 220px 1fr; gap:8px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast" role="status" aria-live="polite">
+  <strong id="toast-title"></strong>
+  <small id="toast-msg"></small>
+</div>
+
+<!-- Finish Celebration Modal -->
+<div id="finish-modal" aria-hidden="true">
+  <div id="finish-backdrop"></div>
+  <div id="finish-card">
+    <canvas id="fireworks" width="760" height="260"></canvas>
+    <div id="finish-body">
+      <div id="finish-header">
+        <div id="finish-title">🎉 JOB FINISHED — RESULTS READY</div>
+        <button id="finish-close" class="mini-btn">Close</button>
+      </div>
+
+      <div style="margin-top:10px; opacity:.9;">
+        Here’s what you got:
+      </div>
+
+      <div id="finish-summary"></div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <a id="finish-open-results" class="tron-btn" href="#">OPEN RESULTS</a>
+        <button id="finish-copy-id" class="mini-btn">📋 Copy Job ID</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // =========================================================
+  // JOB MONITOR JS (copy/paste complete)
+  // - Safe on HTTP (in-tab alerts) vs HTTPS (OS notifications)
+  // - No const reassignment crashes
+  // - Only-once finish announcement
+  // =========================================================
+
+  const jobId = "{{ job_id }}";
+
+  const consoleDiv = document.getElementById("console");
+  const statusText = document.getElementById("status-text");
+  const pill = document.getElementById("status-pill");
+  const dot = document.getElementById("status-dot");
+  const progress = document.getElementById("progress");
+  const reveal = document.getElementById("reveal");
+
+  // IMPORTANT: LET because we re-hook it after innerHTML overwrite
+  let revealStatus = document.getElementById("reveal-status");
+
+  const toast = document.getElementById("toast");
+  const toastTitle = document.getElementById("toast-title");
+  const toastMsg = document.getElementById("toast-msg");
+
+  const notifyBtn = document.getElementById("notify-btn");
+  const autoscrollBtn = document.getElementById("autoscroll-btn");
+  const autoscrollState = document.getElementById("autoscroll-state");
+
+  const copyJobBtn = document.getElementById("copy-job");
+
+  // Finish modal elements
+  const finishModal = document.getElementById("finish-modal");
+  const finishBackdrop = document.getElementById("finish-backdrop");
+  const finishClose = document.getElementById("finish-close");
+  const finishOpen = document.getElementById("finish-open-results");
+  const finishCopy = document.getElementById("finish-copy-id");
+  const finishSummary = document.getElementById("finish-summary");
+  const fireworksCanvas = document.getElementById("fireworks");
+  const fwCtx = fireworksCanvas ? fireworksCanvas.getContext("2d") : null;
+
+  const summaryWrap = document.getElementById("summary-wrap");
+  const summaryTable = document.getElementById("summary-table");
+  const revealStatRow = document.getElementById("reveal-statrow");
+
+  // ---- state ----
+  let lastLogLen = {{ job.log|length }};
+  let lastStatus = String("{{ job.status }}").toLowerCase();
+  let autoscroll = true;
+
+  // OS notification permission is separate from in-tab alerts
+  let notificationsEnabled = false; // means OS notifications granted
+  let finishedAnnounced = (lastStatus === "completed" || lastStatus === "failed");
+
+  let titleFlashTimer = null;
+  const originalTitle = document.title;
+
+  // Initial scroll
+  if (consoleDiv) consoleDiv.scrollTop = consoleDiv.scrollHeight;
+
+  // -----------------------------
+  // Helpers
+  // -----------------------------
+  function nearBottom(el, px=40){
+    return (el.scrollHeight - el.scrollTop - el.clientHeight) < px;
+  }
+
+  function escapeHtml(s){
+    return String(s)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function showToast(title, msg){
+    if (!toast) return;
+    toastTitle.textContent = title;
+    toastMsg.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 4200);
+  }
+
+  function setStatusUI(status){
+    const s = (status || "").toLowerCase();
+    if (statusText) statusText.innerText = "STATUS: " + (status || "").toUpperCase();
+
+    pill?.classList.remove("running","completed","failed");
+    dot?.classList.remove("running");
+
+    if (s === "completed"){
+      pill?.classList.add("completed");
+      if (dot){
+        dot.style.background = "var(--tron-cyan)";
+        dot.style.boxShadow = "0 0 14px rgba(0,255,255,.7)";
+      }
+      progress?.classList.add("hidden");
+    } else if (s === "failed"){
+      pill?.classList.add("failed");
+      if (dot){
+        dot.style.background = "#ff5b5b";
+        dot.style.boxShadow = "0 0 14px rgba(255,91,91,.6)";
+      }
+      progress?.classList.add("hidden");
+    } else {
+      pill?.classList.add("running");
+      dot?.classList.add("running");
+      if (dot){
+        dot.style.background = "var(--tron-yellow)";
+        dot.style.boxShadow = "0 0 14px rgba(255,230,0,.6)";
+      }
+      progress?.classList.remove("hidden");
+    }
+  }
+
+  function renderLog(logLines){
+    if (!consoleDiv) return;
+
+    const shouldStick = autoscroll || nearBottom(consoleDiv);
+    const html = (logLines || []).map((line, i) => {
+      const cls = (i >= lastLogLen) ? "logline new" : "logline";
+      return `<div class="${cls}">${escapeHtml(line)}</div>`;
+    }).join("");
+
+    consoleDiv.innerHTML = html;
+
+    if (shouldStick){
+      consoleDiv.scrollTop = consoleDiv.scrollHeight;
+    }
+    lastLogLen = (logLines || []).length;
+  }
+
+  function revealResults(status){
+    if (revealStatus) revealStatus.innerText = (status || "COMPLETED").toUpperCase();
+    reveal?.classList.add("show");
+  }
+
+  // -----------------------------
+  // Title flashing (works across tabs)
+  // -----------------------------
+  function flashTitle(msgA="✅ Job Finished!", msgB="📬 Results Ready!", ms=850){
+    if (titleFlashTimer) return;
+    let toggle = false;
+
+    titleFlashTimer = setInterval(() => {
+      document.title = toggle ? msgA : msgB;
+      toggle = !toggle;
+    }, ms);
+
+    const stop = () => stopFlashTitle();
+    window.addEventListener("focus", stop, { once:true });
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) stopFlashTitle();
+    }, { once:true });
+  }
+
+  function stopFlashTitle(){
+    if (titleFlashTimer){
+      clearInterval(titleFlashTimer);
+      titleFlashTimer = null;
+      document.title = originalTitle;
+    }
+  }
+
+  // ------------------------------
+  // Notifications: OS vs In-tab
+  // ------------------------------
+  function isSecureEnoughForOSNotifs(){
+    const isLocalhost =
+      location.hostname === "localhost" ||
+      location.hostname === "127.0.0.1" ||
+      location.hostname === "[::1]";
+    return (window.isSecureContext === true) || isLocalhost || (location.protocol === "https:");
+  }
+
+  function setNotifyBtnState(){
+    if (!notifyBtn) return;
+
+    if (!("Notification" in window)){
+      notifyBtn.innerText = "🔕 Not supported";
+      notifyBtn.disabled = true;
+      return;
+    }
+
+    // On HTTP (non-secure), show truthful UX: in-tab alerts only
+    if (!isSecureEnoughForOSNotifs()){
+      notifyBtn.innerText = "🔔 In-tab alerts ON";
+      notifyBtn.disabled = false;
+      notificationsEnabled = false; // OS not possible here
+      return;
+    }
+
+    const perm = Notification.permission; // "default" | "granted" | "denied"
+    if (perm === "granted"){
+      notifyBtn.innerText = "🔔 Notifications ON";
+      notificationsEnabled = true;
+    } else if (perm === "denied"){
+      notifyBtn.innerText = "🔕 Blocked";
+      notificationsEnabled = false;
+    } else {
+      notifyBtn.innerText = "🔔 Notify me";
+      notificationsEnabled = false;
+    }
+  }
+
+  // Best-effort notifier:
+  // - Always does in-tab signals (toast + title flash)
+  // - Tries OS notification only if granted + secure
+  function maybeNotify(title, body){
+    showToast(title, body);
+    flashTitle();
+
+    if ("Notification" in window && isSecureEnoughForOSNotifs() && Notification.permission === "granted"){
+      try { new Notification(title, { body }); } catch(e) {}
+    }
+  }
+
+  // Click: enable in-tab alerts always; OS notifications only on HTTPS/secure
+  notifyBtn?.addEventListener("click", async () => {
+    showToast("In-tab alerts enabled", "This page will toast + flash when the job finishes.");
+
+    if (!("Notification" in window)){
+      showToast("Notifications unavailable", "This browser doesn't support OS notifications.");
+      setNotifyBtnState();
+      return;
+    }
+
+    if (!isSecureEnoughForOSNotifs()){
+      showToast(
+        "OS notifications need HTTPS",
+        "You’re on HTTP, so Chrome marks OS notifications as blocked. In-page alerts still work."
+      );
+      setNotifyBtnState();
+      return;
+    }
+
+    try{
+      const perm = await Notification.requestPermission();
+      notificationsEnabled = (perm === "granted");
+
+      if (perm === "granted"){
+        showToast("Notifications enabled", "We’ll alert you when it finishes.");
+      } else if (perm === "denied"){
+        showToast("Blocked by browser", "Allow notifications in site settings to enable OS alerts.");
+      } else {
+        showToast("Not enabled", "You can enable OS notifications any time.");
+      }
+      setNotifyBtnState();
+    } catch(e){
+      notificationsEnabled = false;
+      showToast("Notification error", "Browser prevented notification permission.");
+      setNotifyBtnState();
+    }
+  });
+
+  // -----------------------------
+  // Clipboard
+  // -----------------------------
+  async function copyText(txt){
+    try{
+      await navigator.clipboard.writeText(txt);
+      showToast("Copied", "Job ID copied to clipboard.");
+    } catch(e){
+      showToast("Copy failed", "Could not access clipboard.");
+    }
+  }
+
+  copyJobBtn?.addEventListener("click", () => copyText(jobId));
+  finishCopy?.addEventListener("click", () => copyText(jobId));
+
+  // -----------------------------
+  // Autoscroll
+  // -----------------------------
+  consoleDiv?.addEventListener("scroll", () => {
+    if (!nearBottom(consoleDiv)) autoscroll = false;
+    if (autoscrollState) autoscrollState.innerText = autoscroll ? "ON" : "OFF";
+  });
+
+  autoscrollBtn?.addEventListener("click", () => {
+    autoscroll = !autoscroll;
+    if (autoscrollState) autoscrollState.innerText = autoscroll ? "ON" : "OFF";
+    if (autoscroll && consoleDiv) consoleDiv.scrollTop = consoleDiv.scrollHeight;
+  });
+
+  // -----------------------------
+  // Finish modal + summary rendering
+  // -----------------------------
+  function renderFinishSummary(summary){
+    const total   = summary?.total_warheads ?? "—";
+    const uniq    = summary?.unique_warheads ?? "—";
+    const jid = summary?.job_id || jobId;
+    const idcol   = summary?.warhead_id_col ?? "—";
+
+    if (finishSummary){
+        finishSummary.innerHTML = `
+            <div class="finish-stat">
+            <div class="k">Total warheads</div>
+            <div class="v">${escapeHtml(total)}</div>
+            </div>
+            <div class="finish-stat">
+            <div class="k">Unique warheads</div>
+            <div class="v">${escapeHtml(uniq)}</div>
+            </div>
+            <div class="finish-stat">
+            <div class="k">Job ID</div>
+            <div class="v" style="font-size:1rem;">${escapeHtml(jid)}</div>
+            </div>
+        `;
+        }
+
+
+    if (revealStatRow){
+      revealStatRow.innerHTML = `
+        <div class="stat">
+          <div class="k">Target</div>
+          <div class="v">{{ job.target }}</div>
+        </div>
+        <div class="stat">
+          <div class="k">Job ID</div>
+          <div class="v" style="font-size:1rem;">{{ job_id }}</div>
+        </div>
+        <div class="stat">
+          <div class="k">Status</div>
+          <div class="v" id="reveal-status">COMPLETED</div>
+        </div>
+        <div class="stat">
+          <div class="k">Total warheads</div>
+          <div class="v">${escapeHtml(total)}</div>
+        </div>
+        <div class="stat">
+          <div class="k">Unique warheads</div>
+          <div class="v">${escapeHtml(uniq)}</div>
+        </div>
+        <div class="stat">
+            <div class="k">Job ID</div>
+            <div class="v" style="font-size:1rem;">${escapeHtml(jid)}</div>
+        </div>
+      `;
+
+      // re-hook revealStatus pointer (we overwrote it)
+      revealStatus = document.getElementById("reveal-status");
+    }
+
+    if (summaryWrap && summaryTable){
+        summaryWrap.style.display = "block";
+        summaryTable.innerHTML = `
+            <div style="opacity:.8;">Target</div><div style="font-weight:800;">${escapeHtml(summary?.target || "{{ job.target }}")}</div>
+            <div style="opacity:.8;">Job ID</div><div style="font-weight:800;">${escapeHtml(jid)}</div>
+            <div style="opacity:.8;">Status</div><div style="font-weight:800; color: var(--tron-cyan);">COMPLETED</div>
+            <div style="opacity:.8;">Total warheads</div><div style="font-weight:800;">${escapeHtml(total)}</div>
+            <div style="opacity:.8;">Unique warheads</div><div style="font-weight:800;">${escapeHtml(uniq)}</div>
+        `;
+        }
+
+  }
+
+  function openFinishModal(summary){
+    if (finishOpen) finishOpen.href = `/results/${jobId}`;
+    renderFinishSummary(summary);
+    if (finishModal){
+      finishModal.style.display = "block";
+      finishModal.setAttribute("aria-hidden","false");
+    }
+    startFireworks(1800);
+  }
+
+  function closeFinishModal(){
+    if (finishModal){
+      finishModal.style.display = "none";
+      finishModal.setAttribute("aria-hidden","true");
+    }
+  }
+
+  finishClose?.addEventListener("click", closeFinishModal);
+  finishBackdrop?.addEventListener("click", closeFinishModal);
+
+  // -----------------------------
+  // Fireworks
+  // -----------------------------
+  function startFireworks(durationMs=1500){
+    if (!fireworksCanvas || !fwCtx) return;
+
+    const cssW = fireworksCanvas.clientWidth || 760;
+    const cssH = fireworksCanvas.clientHeight || 260;
+    const dpr = window.devicePixelRatio || 1;
+
+    fireworksCanvas.width = Math.floor(cssW * dpr);
+    fireworksCanvas.height = Math.floor(cssH * dpr);
+    fwCtx.setTransform(dpr,0,0,dpr,0,0);
+
+    const particles = [];
+    const now = () => performance.now();
+    const t0 = now();
+
+    function burst(){
+      const cx = Math.random() * cssW;
+      const cy = 40 + Math.random() * 160;
+      const n = 60 + Math.floor(Math.random() * 40);
+      for (let i=0;i<n;i++){
+        const a = (Math.PI * 2) * (i / n);
+        const sp = 1.6 + Math.random() * 3.2;
+        particles.push({
+          x: cx, y: cy,
+          vx: Math.cos(a) * sp,
+          vy: Math.sin(a) * sp,
+          life: 60 + Math.random() * 35,
+          r: 1 + Math.random() * 1.7
+        });
+      }
+    }
+
+    burst();
+    setTimeout(burst, 220);
+    setTimeout(burst, 480);
+
+    function frame(){
+      const t = now();
+      fwCtx.clearRect(0,0,cssW,cssH);
+
+      for (let i=particles.length-1;i>=0;i--){
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.025;
+        p.life -= 1;
+
+        fwCtx.beginPath();
+        fwCtx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        fwCtx.fillStyle = "rgba(0,255,255,0.92)";
+        fwCtx.fill();
+
+        if (p.life <= 0) particles.splice(i,1);
+      }
+
+      if (t - t0 < durationMs || particles.length > 0){
+        requestAnimationFrame(frame);
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // -----------------------------
+  // Poll loop
+  // -----------------------------
+  async function pollOnce(){
+    try{
+      const r = await fetch(`/api/job_log/${jobId}`, { cache: "no-store" });
+      const data = await r.json();
+
+      const status = String(data.status || "").toLowerCase();
+      renderLog(data.log || []);
+      setStatusUI(status);
+
+      if (!finishedAnnounced && (status === "completed" || status === "failed")){
+        finishedAnnounced = true;
+
+        if (status === "completed"){
+          showToast("✅ Job completed", "Your target gallery is ready!");
+          flashTitle();
+          maybeNotify("Job completed ✅", "Your results are ready.");
+          revealResults("completed");
+
+          fetch(`/api/job_summary/${jobId}`, { cache: "no-store" })
+            .then(r => r.json())
+            .then(summary => openFinishModal(summary))
+            .catch(() => openFinishModal({
+              total_warheads:"—",
+              unique_warheads:"—",
+              structures_downloaded:"—",
+              warhead_id_col:"—"
+            }));
+
+        } else {
+          showToast("❌ Job failed", "Open the log to see what happened.");
+          flashTitle("❌ Job Failed", "Check the monitor", 900);
+          maybeNotify("Job failed ❌", "Check the log for details.");
+          revealResults("failed");
+        }
+      }
+
+      lastStatus = status;
+    } catch(e){
+      // network hiccup
+    }
+  }
+
+  // -----------------------------
+  // Init
+  // -----------------------------
+  setNotifyBtnState();
+  setStatusUI(lastStatus);
+
+  // If page loads already completed/failed, reveal immediately
+  if (!finishedAnnounced && (lastStatus === "completed" || lastStatus === "failed")){
+    finishedAnnounced = true;
+    revealResults(lastStatus);
+    progress?.classList.add("hidden");
+  }
+
+  // Start polling
+  setInterval(pollOnce, 2000);
+  pollOnce();
+</script>
+
+
+
+{% endblock %}

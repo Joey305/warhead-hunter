@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Explore Structures</h1>
+
+<p>Select a PDB file to visualize:</p>
+
+<ul>
+{% for f in files %}
+    <li>
+        <a class="tron-btn" href="/viewer/{{ f }}">{{ f }}</a>
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock %}

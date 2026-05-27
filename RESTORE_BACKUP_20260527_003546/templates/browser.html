@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Available Uploaded Files</h1>
+
+<ul>
+    {% for folder, items in data.items() %}
+    <h2>{{ folder }}</h2>
+    <ul>
+        {% for f in items %}
+            <li>{{ f }}</li>
+        {% endfor %}
+    </ul>
+    {% endfor %}
+</ul>
+
+{% endblock %}

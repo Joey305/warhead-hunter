@@ -30,6 +30,7 @@ from job_runner import start_job, JOB_STORE
 from api.sasa_api import bp as sasa_bp
 from routes import bp as routes_bp
 from api.handoff_server import hand_bp
+from api.sdf_resolver import resolve_sdf_path
 from pathlib import Path
 from flask import render_template, current_app
 import time
@@ -54,6 +55,10 @@ app.config["JOBS_DIR"] = str(JOBS_DIR)
 PRIMARY_API_BASE = os.getenv("WARHEAD_API_PRIMARY_BASE", "http://cartman.rove-vernier.ts.net").rstrip("/")
 SECONDARY_API_BASE = os.getenv("WARHEAD_API_SECONDARY_BASE", "https://warheadhunter.com").rstrip("/")
 PUBLIC_SITE_BASE = os.getenv("WARHEAD_PUBLIC_SITE_BASE", "https://warheadhunter.com").rstrip("/")
+PROTAC_BUILDER_BASE = os.getenv(
+    "PROTAC_BUILDER_BASE",
+    "https://protacbuilder.com/copy/COPYindex",
+).rstrip("/")
 API_VERSION = "0.1"
 APP_ENVIRONMENT = (
     os.getenv("WARHEAD_ENVIRONMENT")
@@ -64,6 +69,7 @@ APP_ENVIRONMENT = (
 app.config["PRIMARY_API_BASE"] = PRIMARY_API_BASE
 app.config["SECONDARY_API_BASE"] = SECONDARY_API_BASE
 app.config["PUBLIC_SITE_BASE"] = PUBLIC_SITE_BASE
+app.config["PROTAC_BUILDER_BASE"] = PROTAC_BUILDER_BASE
 app.config["API_VERSION"] = API_VERSION
 app.config["APP_ENVIRONMENT"] = APP_ENVIRONMENT
 
@@ -411,6 +417,7 @@ def inject_year():
     return {
         "current_year": datetime.now().year,
         "site_base": app.config["PUBLIC_SITE_BASE"],
+        "protac_builder_base": app.config["PROTAC_BUILDER_BASE"],
         "api_version": API_VERSION,
         "app_environment": APP_ENVIRONMENT,
     }
@@ -876,20 +883,8 @@ def lookup_pdb_file(job_id: str, pdb: str, chain: str, warhead: str) -> Optional
 # Ligand SDF (authoritative)
 # -----------------------------
 def ligand_sdf_path(job_id: str, pdb: str, chain: str, warhead: str) -> Optional[Path]:
-    pdb = pdb.lower().strip()
-    chain = chain.upper().strip()
-    warhead = warhead.upper().strip()
-
-    candidates = [
-        target_results_dir(job_id) / "LIGAND_SDF" / f"{pdb}_{chain}_{warhead}.sdf",
-        job_root(job_id) / "TARGET_RESULTS" / "LIGAND_SDF" / f"{pdb}_{chain}_{warhead}.sdf",
-        job_root(job_id) / "LIGAND_SDF" / f"{pdb}_{chain}_{warhead}.sdf",
-    ]
-
-    for p in candidates:
-        if p.exists() and _is_under(job_root(job_id), p):
-            return p
-    return None
+    fp, _diag = resolve_sdf_path(job_root(job_id), pdb, chain, warhead)
+    return fp
 
 
 # -----------------------------
@@ -2616,53 +2611,18 @@ def launch_job():
 
 @app.route("/monitor/<job_id>")
 def job_monitor(job_id):
-    live = JOB_STORE.get(job_id)
-    if live:
-        return render_template("monitor.html", job=live, job_id=job_id)
-
-    meta = get_job_api_metadata(job_id)
-    if not meta:
+    if job_id not in JOB_STORE:
         return "Job not found", 404
-
-    # Cross-worker fallback for Heroku/Gunicorn where JOB_STORE is per-process.
-    fallback_job = {
-        "status": meta.get("status", "unknown"),
-        "target": meta.get("target_name", ""),
-        "created_at": meta.get("created_at", ""),
-        "started_at": meta.get("started_at", ""),
-        "finished_at": meta.get("finished_at", ""),
-        "current_step": meta.get("current_step", ""),
-        "step_started_at": "",
-        "log": [],
-    }
-    return render_template("monitor.html", job=fallback_job, job_id=job_id)
+    return render_template("monitor.html", job=JOB_STORE[job_id], job_id=job_id)
 
 
 @app.route("/api/job_log/<job_id>")
 def job_log(job_id):
-    live = JOB_STORE.get(job_id)
-    if live:
-        return jsonify({
-            "status": live.get("status", "unknown"),
-            "log": live.get("log", []),
-        })
-
-    base = safe_job_dir(job_id)
-    if not base or not base.exists():
+    if job_id not in JOB_STORE:
         return jsonify({"error": "Job not found"}), 404
-
-    meta = get_job_api_metadata(job_id) or {}
-    log_path = base / "job.log"
-    log_lines = []
-    if log_path.exists():
-        try:
-            log_lines = log_path.read_text(encoding="utf-8", errors="replace").splitlines()
-        except Exception:
-            log_lines = []
-
     return jsonify({
-        "status": str(meta.get("status") or "unknown").lower(),
-        "log": log_lines,
+        "status": JOB_STORE[job_id]["status"],
+        "log": JOB_STORE[job_id]["log"],
     })
 
 
@@ -2711,6 +2671,43 @@ def proxy_fasta(pdb_id):
 # ----------------------------
 # SVG
 # ----------------------------
+SVG_CANVAS_BG = "#020607"
+
+
+def _serve_themed_svg(fp: Path):
+    try:
+        svg = fp.read_text(encoding="utf-8", errors="replace")
+    except Exception:
+        return send_file(fp)
+
+    # RDKit emits a full-canvas background rect near the top of the SVG. Keep
+    # molecule/highlight colors untouched and theme only that canvas rect.
+    bg_rect = re.compile(
+        r"(<rect\b(?=[^>]*\bwidth=['\"](?:100%|[0-9.]+)['\"])(?=[^>]*\bheight=['\"](?:100%|[0-9.]+)['\"])[^>]*\b(?:fill\s*:\s*(?:#fff(?:fff)?|white)|fill=['\"](?:#fff(?:fff)?|white)['\"])[^>]*>)",
+        re.IGNORECASE,
+    )
+
+    def replace_rect(match):
+        rect = match.group(1)
+        if re.search(r"fill\s*:\s*(?:#fff(?:fff)?|white)", rect, flags=re.IGNORECASE):
+            rect = re.sub(r"fill\s*:\s*(?:#fff(?:fff)?|white)", f"fill:{SVG_CANVAS_BG}", rect, flags=re.IGNORECASE)
+        else:
+            rect = re.sub(r"fill=['\"](?:#fff(?:fff)?|white)['\"]", f"fill='{SVG_CANVAS_BG}'", rect, flags=re.IGNORECASE)
+        return rect
+
+    themed, count = bg_rect.subn(replace_rect, svg, count=1)
+    if count == 0:
+        themed = re.sub(
+            r"(<svg\b[^>]*>)",
+            rf"\1<rect width='100%' height='100%' x='0' y='0' fill='{SVG_CANVAS_BG}'/>",
+            svg,
+            count=1,
+            flags=re.IGNORECASE,
+        )
+
+    return Response(themed, mimetype="image/svg+xml")
+
+
 @app.route("/api/svg/<job_id>/<pdb>/<chain>/<warhead>")
 @app.route("/api/svg/<job_id>/<pdb>/<warhead>")
 def api_svg(job_id, pdb, warhead, chain=None):
@@ -2731,12 +2728,12 @@ def api_svg(job_id, pdb, warhead, chain=None):
             fname = f"{pdb}_{chain}_{warhead}_{resid}_exposed.svg"
             fp = (mcs_dir / fname)
             if fp.exists():
-                return send_file(fp)
+                return _serve_themed_svg(fp)
 
         # 2) fallback: wildcard any residue
         hits = sorted(mcs_dir.glob(f"{pdb}_{chain}_{warhead}_*_exposed.svg"))
         if hits:
-            return send_file(hits[0])
+            return _serve_themed_svg(hits[0])
 
     # --- Legacy fallback (old LIGAND_SVGS behavior) ---
     base_dir = ligand_svgs_dir(job_id)
@@ -2746,7 +2743,7 @@ def api_svg(job_id, pdb, warhead, chain=None):
     fname = f"{pdb}_{chain}_{warhead}_exposed.svg"
     fp = base_dir / fname
     if fp.exists():
-        return send_from_directory(base_dir, fname)
+        return _serve_themed_svg(fp)
 
     abort(404, description="Exposed SVG not found")
 
@@ -2771,12 +2768,12 @@ def api_svg_plain(job_id, pdb, warhead, chain=None):
             fname = f"{pdb}_{chain}_{warhead}_{resid}_plain.svg"
             fp = (mcs_dir / fname)
             if fp.exists():
-                return send_file(fp)
+                return _serve_themed_svg(fp)
 
         # 2) fallback: wildcard any residue
         hits = sorted(mcs_dir.glob(f"{pdb}_{chain}_{warhead}_*_plain.svg"))
         if hits:
-            return send_file(hits[0])
+            return _serve_themed_svg(hits[0])
 
     # --- Legacy fallback (old LIGAND_SVGS behavior) ---
     base_dir = ligand_svgs_dir(job_id)
@@ -2786,11 +2783,11 @@ def api_svg_plain(job_id, pdb, warhead, chain=None):
     fname = f"{pdb}_{chain}_{warhead}_plain.svg"
     fp = base_dir / fname
     if fp.exists():
-        return send_from_directory(base_dir, fname)
+        return _serve_themed_svg(fp)
 
     legacy = base_dir / f"{pdb}_{chain}_{warhead}.svg"
     if legacy.exists():
-        return send_from_directory(base_dir, legacy.name)
+        return _serve_themed_svg(legacy)
 
     abort(404, description="Plain SVG not found")
 
@@ -2879,6 +2876,9 @@ def api_ligand_props(job_id, ligand_code):
 
     ligand_code_u = str(ligand_code).upper().strip()
     smiles = (request.args.get("smiles") or "").strip()
+    pdb_id = (request.args.get("pdb_id") or request.args.get("pdb") or "").strip().lower()
+    chain = (request.args.get("chain") or "A").strip().upper()
+    resid = (request.args.get("resid") or request.args.get("residue_id") or "").strip()
 
     # ---------- helper: compute from SMILES ----------
     def compute_from_smiles(smiles_str: str) -> Dict[str, Any]:
@@ -2935,6 +2935,24 @@ def api_ligand_props(job_id, ligand_code):
             "Muegge_Pass": bool(muegge),
         }
 
+    def metadata_has_descriptors(d: Dict[str, Any]) -> bool:
+        required = [
+            "QED",
+            "MW",
+            "LogP",
+            "TPSA",
+            "HBA",
+            "HBD",
+            "Rotatable_Bonds",
+            "Ring_Count",
+            "Aromatic_Rings",
+        ]
+        for key in required:
+            value = d.get(key)
+            if value not in (None, "", "None"):
+                return True
+        return False
+
     # ---------- helper: normalize CSV row keys to what JS expects ----------
     def normalize_keys(d: Dict[str, Any]) -> Dict[str, Any]:
         # map common alternatives -> canonical keys your JS renders
@@ -2966,6 +2984,109 @@ def api_ligand_props(job_id, ligand_code):
                     break
         return out
 
+    def coerce_props(d: Dict[str, Any]) -> Dict[str, Any]:
+        out = dict(d)
+        bool_keys = {"Lipinski_Pass", "Veber_Pass", "Ghose_Pass", "Muegge_Pass", "Egan_Pass"}
+        int_keys = {"HBA", "HBD", "Rotatable_Bonds", "Ring_Count", "Aromatic_Rings"}
+        float_keys = {"QED", "MW", "LogP", "TPSA"}
+
+        for key in bool_keys:
+            value = out.get(key)
+            if isinstance(value, str):
+                low = value.strip().lower()
+                if low in {"true", "1"}:
+                    out[key] = True
+                elif low in {"false", "0"}:
+                    out[key] = False
+
+        for key in int_keys:
+            value = out.get(key)
+            if isinstance(value, str) and value.strip():
+                try:
+                    out[key] = int(float(value))
+                except Exception:
+                    pass
+
+        for key in float_keys:
+            value = out.get(key)
+            if isinstance(value, str) and value.strip():
+                try:
+                    out[key] = float(value)
+                except Exception:
+                    pass
+        return out
+
+    def resolve_smiles_from_job_context() -> str:
+        if smiles:
+            return smiles
+
+        candidates = [
+            target_results_dir(job_id) / "Resolved_SASA_Summary.csv",
+            job_root(job_id) / "TARGET_RESULTS" / "Resolved_SASA_Summary.csv",
+            job_root(job_id) / "Resolved_SASA_Summary.csv",
+            target_results_dir(job_id) / "Results_Display.csv",
+            job_root(job_id) / "TARGET_RESULTS" / "Results_Display.csv",
+            job_root(job_id) / "Results_Display.csv",
+        ]
+
+        for path in candidates:
+            if not path or not path.exists():
+                continue
+            try:
+                df = pd.read_csv(path, dtype=str).fillna("")
+            except Exception:
+                continue
+            if df.empty:
+                continue
+
+            ligand_cols = [c for c in df.columns if c.lower() in ("ligand_resolved", "warhead", "ligand", "resname", "ligand_code")]
+            smiles_cols = [c for c in df.columns if c.lower() in ("smiles", "canonical_smiles", "parent_smiles")]
+            if not ligand_cols or not smiles_cols:
+                continue
+
+            mask = pd.Series(True, index=df.index)
+            ligand_mask = pd.Series(False, index=df.index)
+            for col in ligand_cols:
+                ligand_mask = ligand_mask | (df[col].astype(str).str.upper().str.strip() == ligand_code_u)
+            mask = mask & ligand_mask
+
+            if pdb_id:
+                pdb_cols = [c for c in df.columns if c.lower() in ("pdb_id", "pdb")]
+                if pdb_cols:
+                    pdb_mask = pd.Series(False, index=df.index)
+                    for col in pdb_cols:
+                        pdb_mask = pdb_mask | (df[col].astype(str).str.lower().str.strip() == pdb_id)
+                    mask = mask & pdb_mask
+
+            if chain:
+                chain_cols = [c for c in df.columns if c.lower() == "chain"]
+                if chain_cols:
+                    chain_mask = pd.Series(False, index=df.index)
+                    for col in chain_cols:
+                        chain_mask = chain_mask | (df[col].astype(str).str.upper().str.strip() == chain)
+                    mask = mask & chain_mask
+
+            if resid:
+                resid_norm = str(resid).strip()
+                resid_cols = [c for c in df.columns if c.lower() in ("residue_id", "resid")]
+                if resid_cols:
+                    resid_mask = pd.Series(False, index=df.index)
+                    for col in resid_cols:
+                        vals = df[col].astype(str).str.strip()
+                        resid_mask = resid_mask | (vals == resid_norm) | (vals == f"{resid_norm}.0")
+                    mask = mask & resid_mask
+
+            subset = df[mask]
+            if subset.empty:
+                continue
+
+            row = subset.iloc[0].to_dict()
+            for col in smiles_cols:
+                value = str(row.get(col) or "").strip()
+                if value:
+                    return value
+        return ""
+
     # ---------- 1) Try metadata lookup ----------
     if meta and meta.exists():
         try:
@@ -2994,15 +3115,34 @@ def api_ligand_props(job_id, ligand_code):
                     if v == "" or (isinstance(v, float) and pd.isna(v)):
                         d[k] = None
                 d = normalize_keys(d)
-                return jsonify(d)
+                d = coerce_props(d)
+                if metadata_has_descriptors(d):
+                    return jsonify(d)
 
     # ---------- 2) Fallback: compute from SMILES ----------
-    if smiles:
-        d = compute_from_smiles(smiles)
+    resolved_smiles = resolve_smiles_from_job_context()
+    if resolved_smiles:
+        d = compute_from_smiles(resolved_smiles)
         if d:
+            d["Ligand"] = ligand_code_u
+            if pdb_id:
+                d["pdb_id"] = pdb_id
+            if chain:
+                d["Chain"] = chain
+            if resid:
+                d["Residue_ID"] = resid
             return jsonify(d)
 
-    return jsonify({})
+    return jsonify({
+        "ok": False,
+        "error": "Ligand properties unavailable",
+        "job_id": job_id,
+        "ligand_code": ligand_code_u,
+        "pdb_id": pdb_id or None,
+        "chain": chain or None,
+        "resid": resid or None,
+        "metadata_found": bool(meta and meta.exists()),
+    })
 
 
 
@@ -3021,36 +3161,25 @@ def mcs_sdf_dir(job_id: str) -> Optional[Path]:
 @app.route("/api/sdf/<job_id>/<pdb>/<chain>/<ligand>")
 @app.route("/api/sdf/<job_id>/<pdb>/<ligand>")
 def api_sdf(job_id, pdb, ligand, chain=None):
-    pdb = str(pdb).lower().strip()
-    ligand = str(ligand).upper().strip()
-    chain = (chain or infer_chain_from_results(job_id, pdb, ligand) or "A").upper()
+    if not _safe_job_id(job_id):
+        return jsonify({"ok": False, "error": "Invalid job_id"}), 400
 
-    # --- NEW: try MCS SDF first ---
-    mcs_dir = mcs_sdf_dir(job_id)
-    if mcs_dir:
-        resid = (request.args.get("resid") or "").strip()
-        if not resid:
-            resid = infer_residue_from_mcs(job_id, pdb, chain, ligand) or ""
+    pdb_n = str(pdb).lower().strip()
+    ligand_n = str(ligand).upper().strip()
+    chain_n = (chain or infer_chain_from_results(job_id, pdb_n, ligand_n) or "A").upper().strip()
 
-        # exact if resid known
-        if resid:
-            fp = mcs_dir / f"{pdb}_{chain}_{ligand}_{resid}.sdf"
-            if fp.exists():
-                return send_file(fp)
+    resid = (request.args.get("resid") or request.args.get("residue_id") or "").strip()
+    fp, diag = resolve_sdf_path(job_root(job_id), pdb_n, chain_n, ligand_n, resid)
+    if fp:
+        if diag.get("ambiguous"):
+            app.logger.warning("Ambiguous SDF match for %s/%s/%s/%s: %s", job_id, pdb_n, chain_n, ligand_n, diag.get("matching_candidates"))
+        return send_file(fp, mimetype="chemical/x-mdl-sdfile")
 
-        # wildcard fallback
-        hits = sorted(mcs_dir.glob(f"{pdb}_{chain}_{ligand}_*.sdf"))
-        if hits:
-            return send_file(hits[0])
-
-    # --- Legacy fallback (whatever you had before) ---
-    base_dir = ligand_sdf_dir(job_id)  # your existing legacy helper
-    if base_dir:
-        fp = base_dir / f"{pdb}_{chain}_{ligand}.sdf"
-        if fp.exists():
-            return send_file(fp)
-
-    abort(404, description="SDF not found")
+    return jsonify({
+        "ok": False,
+        "error": "SDF not found",
+        **diag,
+    }), 404
 
 
 

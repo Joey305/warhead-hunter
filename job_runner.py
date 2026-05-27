@@ -22,20 +22,40 @@ import subprocess
 import threading
 import uuid
 import time
+import sys
 import pandas as pd
+from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, List, Tuple, Optional
+from api.sdf_resolver import resolve_sdf_path, row_sdf_key
 
 # =============================================================================
 # CONFIG
 # =============================================================================
 ASSET_DIR = "pipeline_assets"
 JOBS_DIR = "jobs"
+
+
+def _default_python_bin() -> str:
+    explicit = os.environ.get("PYTHON_BIN")
+    if explicit:
+        return explicit
+
+    conda_prefix = os.environ.get("CONDA_PREFIX")
+    if conda_prefix and os.path.basename(conda_prefix) == "warhead":
+        candidate = os.path.join(conda_prefix, "bin", "python")
+        if os.path.exists(candidate):
+            return candidate
+
+    warhead_candidate = os.path.expanduser("~/miniconda3/envs/warhead/bin/python")
+    if os.path.exists(warhead_candidate):
+        return warhead_candidate
+
+    return sys.executable or "python3"
+
+
+PYTHON_BIN = _default_python_bin()
 os.makedirs(JOBS_DIR, exist_ok=True)
-REQUIRED_PIPELINE_ASSETS = [
-    "components-smiles-stereo-oe.smi",
-    "7_metadata.py",
-]
 
 # Global dictionary to track job status in memory
 # Structure:
@@ -97,33 +117,6 @@ def _job_log_path(job_dir: str) -> str:
 
 def _job_metadata_path(job_dir: str) -> str:
     return os.path.join(job_dir, "job_metadata.json")
-
-def _describe_path(path: str) -> str:
-    if os.path.isdir(path):
-        try:
-            count = sum(1 for _ in os.scandir(path))
-        except Exception:
-            count = -1
-        return f"dir exists entries={count}"
-    if os.path.isfile(path):
-        try:
-            size = os.path.getsize(path)
-        except Exception:
-            size = -1
-        return f"file exists bytes={size}"
-    return "missing"
-
-def _log_7_metadata_preflight(job_id: str, job_dir: str) -> None:
-    interesting = [
-        "Warhead_SASA_summary.csv",
-        "Resolved_SASA_Summary.csv",
-        "components-smiles-stereo-oe.smi",
-        "5CharMAP.csv",
-        "WAR_PDB",
-    ]
-    log_message(job_id, f"[7_metadata preflight] cwd={job_dir}")
-    for name in interesting:
-        log_message(job_id, f"[7_metadata preflight] {name}: {_describe_path(os.path.join(job_dir, name))}")
 
 def _metadata_timestamp() -> str:
     return datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
@@ -204,15 +197,14 @@ def run_script_logged(
     }, job_dir=job_dir)
 
     log_message(job_id, f"🚀 Running {script_name}...")
-    if script_name == "7_metadata.py":
-        _log_7_metadata_preflight(job_id, job_dir)
+    log_message(job_id, f"🐍 Pipeline Python: {PYTHON_BIN}")
 
     env = os.environ.copy()
     env["PYTHONUNBUFFERED"] = "1"
     env["JOB_ID"] = job_id  # ✅ critical: Step 11 can rely on this anywhere
 
     # python -u forces unbuffered output (so logs stream)
-    cmd = ["python3", "-u", script_name] + args
+    cmd = [PYTHON_BIN, "-u", script_name] + args
 
     start = time.time()
     last_output = time.time()
@@ -271,7 +263,6 @@ def run_script_logged(
                     pass
 
     if proc.returncode != 0:
-        log_message(job_id, f"❌ {script_name} exited with return code {proc.returncode}")
         raise RuntimeError(f"{script_name} failed with code {proc.returncode}")
 
 
@@ -283,15 +274,6 @@ def _copy_assets(job_id: str, job_dir: str) -> None:
         raise FileNotFoundError(f"ASSET_DIR not found: {ASSET_DIR}")
 
     log_message(job_id, f"📦 Copying assets from {ASSET_DIR} → {job_dir} ...")
-    missing_source_assets = [
-        name for name in REQUIRED_PIPELINE_ASSETS
-        if not os.path.exists(os.path.join(ASSET_DIR, name))
-    ]
-    if missing_source_assets:
-        raise FileNotFoundError(
-            f"Required pipeline assets missing from {ASSET_DIR}: {', '.join(missing_source_assets)}"
-        )
-
     for item in os.listdir(ASSET_DIR):
         s = os.path.join(ASSET_DIR, item)
         d = os.path.join(job_dir, item)
@@ -299,15 +281,6 @@ def _copy_assets(job_id: str, job_dir: str) -> None:
             shutil.copytree(s, d, dirs_exist_ok=True)
         else:
             shutil.copy2(s, d)
-
-    missing_job_assets = [
-        name for name in REQUIRED_PIPELINE_ASSETS
-        if not os.path.exists(os.path.join(job_dir, name))
-    ]
-    if missing_job_assets:
-        raise FileNotFoundError(
-            f"Required pipeline assets missing from job directory after copy: {', '.join(missing_job_assets)}"
-        )
 
 def _write_inputs(job_id: str, job_dir: str, target_name: str, search_query: str, fasta_seq: str) -> None:
     input_data = [{
@@ -331,7 +304,7 @@ def _run_cleanup_packaging(job_id: str, job_dir: str) -> None:
         log_message(job_id, f"🧹 Cleanup packaging step skipped ({CLEANUP_SCRIPT_NAME} not found in job directory)")
         return
 
-    cmd = ["python3", "-u", CLEANUP_SCRIPT_NAME, "--job-dir", ".", "--safe-package"]
+    cmd = [PYTHON_BIN, "-u", CLEANUP_SCRIPT_NAME, "--job-dir", ".", "--safe-package"]
     env = os.environ.copy()
     env["PYTHONUNBUFFERED"] = "1"
     env["JOB_ID"] = job_id
@@ -375,6 +348,156 @@ def _run_cleanup_packaging(job_id: str, job_dir: str) -> None:
     }
     write_job_metadata(job_id, {"outputs": outputs}, job_dir=job_dir)
     log_message(job_id, f"🧹 Safe package created: {public_bundle_rel}")
+
+
+def _csv_path(job_dir: Path, filename: str) -> Optional[Path]:
+    for candidate in [
+        job_dir / filename,
+        job_dir / "TARGET_RESULTS" / filename,
+    ]:
+        if candidate.exists():
+            return candidate
+    return None
+
+
+def _list_target_result_files(job_dir: Path, limit: int = 80) -> List[str]:
+    root = job_dir / "TARGET_RESULTS"
+    if not root.exists():
+        return []
+    files = []
+    for fp in sorted(root.rglob("*")):
+        if fp.is_file():
+            files.append(str(fp.relative_to(job_dir)))
+        if len(files) >= limit:
+            break
+    return files
+
+
+def _expected_keys_from_ligand_atoms(job_path: Path) -> List[Tuple[str, str, str, str]]:
+    ligand_atoms = _csv_path(job_path, "Ligand_3D_Atoms.csv")
+    if ligand_atoms is None:
+        raise RuntimeError("Required SDF source artifact missing: Ligand_3D_Atoms.csv")
+
+    df = pd.read_csv(ligand_atoms, dtype=str).fillna("")
+    required = {"pdb_id", "Chain", "Warhead", "Residue_ID"}
+    if not required.issubset(df.columns):
+        raise RuntimeError(f"Ligand_3D_Atoms.csv missing required SDF key columns: {sorted(required - set(df.columns))}")
+
+    keys = []
+    grouped = df.groupby(["pdb_id", "Chain", "Warhead", "Residue_ID"], dropna=False)
+    for pdb, chain, ligand, resid in grouped.groups.keys():
+        keys.append(row_sdf_key({"pdb_id": pdb, "Chain": chain, "Warhead": ligand, "Residue_ID": resid}))
+    return sorted(set(keys))
+
+
+def _residue_lookup_from_summary(job_path: Path) -> Dict[Tuple[str, str, str], str]:
+    lookup: Dict[Tuple[str, str, str], str] = {}
+    for filename in ["Ligand_3D_Atoms.csv", "Resolved_SASA_Summary.csv"]:
+        path = _csv_path(job_path, filename)
+        if path is None:
+            continue
+        df = pd.read_csv(path, dtype=str).fillna("")
+        for _, row in df.iterrows():
+            pdb, chain, ligand, resid = row_sdf_key(row.to_dict())
+            if pdb and chain and ligand and resid:
+                lookup.setdefault((pdb, chain, ligand), resid)
+    return lookup
+
+
+def validate_mcs_sdf_checkpoint(job_id: str, job_dir: str, *, copied: bool) -> None:
+    job_path = Path(job_dir)
+    sdf_dir = (
+        job_path / "TARGET_RESULTS" / "MCS_Output" / "MCS_SDF"
+        if copied else
+        job_path / "MCS_Output" / "MCS_SDF"
+    )
+    if not sdf_dir.exists():
+        raise RuntimeError(f"Required MCS SDF folder missing: {sdf_dir}")
+
+    sdf_files = sorted(sdf_dir.glob("*.sdf"))
+    expected_keys = _expected_keys_from_ligand_atoms(job_path)
+    if not sdf_files:
+        raise RuntimeError(
+            f"Required MCS SDF folder contains zero SDF files: {sdf_dir}. "
+            f"First expected keys: {expected_keys[:20]}"
+        )
+
+    missing = []
+    for pdb, chain, ligand, resid in expected_keys:
+        expected = sdf_dir / f"{pdb}_{chain}_{ligand}_{resid}.sdf"
+        if not expected.exists():
+            missing.append((pdb, chain, ligand, resid))
+
+    if missing:
+        raise RuntimeError(
+            f"MCS SDF checkpoint failed for {sdf_dir}: expected={len(expected_keys)} "
+            f"sdf_files={len(sdf_files)} first_missing={missing[:20]} "
+            f"sample_files={[p.name for p in sdf_files[:20]]}"
+        )
+
+    label = "TARGET_RESULTS/MCS_Output/MCS_SDF" if copied else "MCS_Output/MCS_SDF"
+    log_message(job_id, f"✅ SDF validation PASS after {'12_Results.py' if copied else '11_mcsMatcher.py'}: {label} files={len(sdf_files)} expected={len(expected_keys)}")
+
+
+def validate_required_display_artifacts(job_id: str, job_dir: str) -> None:
+    job_path = Path(job_dir)
+    results_path = _csv_path(job_path, "Results_Display.csv")
+    if results_path is None:
+        raise RuntimeError("Required display artifact missing: Results_Display.csv")
+
+    try:
+        results = pd.read_csv(results_path, dtype=str).fillna("")
+    except Exception as exc:
+        raise RuntimeError(f"Could not read Results_Display.csv: {exc}") from exc
+
+    if results.empty:
+        raise RuntimeError("Results_Display.csv exists but has zero displayed rows")
+
+    sdf_dir = job_path / "TARGET_RESULTS" / "MCS_Output" / "MCS_SDF"
+    if not sdf_dir.exists():
+        raise RuntimeError(f"Required copied MCS SDF folder missing: {sdf_dir}")
+
+    sdf_files = sorted(sdf_dir.glob("*.sdf"))
+    if not sdf_files:
+        raise RuntimeError(
+            "Required copied MCS SDF folder contains zero SDF files. "
+            f"Expected folder: {sdf_dir}. "
+            f"First display keys: {[row_sdf_key(r.to_dict()) for _, r in results.head(20).iterrows()]}. "
+            f"Actual TARGET_RESULTS files: {_list_target_result_files(job_path)}"
+        )
+
+    residue_lookup = _residue_lookup_from_summary(job_path)
+    missing = []
+    matched = 0
+    for _, row in results.iterrows():
+        pdb, chain, ligand, resid = row_sdf_key(row.to_dict())
+        if not resid:
+            resid = residue_lookup.get((pdb, chain, ligand), "")
+        resolved, _diag = resolve_sdf_path(job_path, pdb, chain, ligand, resid)
+        if resolved:
+            matched += 1
+        else:
+            missing.append((pdb, chain, ligand, resid))
+
+    required_csvs = ["Warhead_SASA_atoms.csv"]
+    for filename in required_csvs:
+        if _csv_path(job_path, filename) is None:
+            raise RuntimeError(f"Required display artifact missing: {filename}")
+
+    ligand_sasa = _csv_path(job_path, "Ligand_3D_Atoms_with_SASA.csv")
+    if ligand_sasa is None:
+        raise RuntimeError("Required display artifact missing: Ligand_3D_Atoms_with_SASA.csv")
+
+    if missing:
+        raise RuntimeError(
+            "SDF contract failed: at least one Results_Display row does not resolve to an SDF. "
+            f"Rows={len(results)}, SDF files={len(sdf_files)}, "
+            f"First missing keys={missing[:20]}, "
+            f"Sample SDF files={[str(p.relative_to(job_path)) for p in sdf_files[:20]]}, "
+            f"Actual TARGET_RESULTS files={_list_target_result_files(job_path)}"
+        )
+
+    log_message(job_id, f"✅ final SDF validation PASS: rows={len(results)} matched={matched} sdf_files={len(sdf_files)} dir={sdf_dir}")
 
 def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_seq: str) -> None:
     job_dir = os.path.join(JOBS_DIR, job_id)
@@ -442,6 +565,13 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
                     log_message(job_id, f"⚠️ {script_name} failed but continuing (soft-fail): {e}")
                     continue
                 raise
+
+            if script_name == "11_mcsMatcher.py":
+                validate_mcs_sdf_checkpoint(job_id, job_dir, copied=False)
+            elif script_name == "12_Results.py":
+                validate_mcs_sdf_checkpoint(job_id, job_dir, copied=True)
+
+        validate_required_display_artifacts(job_id, job_dir)
 
         with JOB_LOCK:
             JOB_STORE[job_id]["status"] = "completed"

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>PDB Viewer</title>
+  <script src="https://unpkg.com/ngl@2.0.0-dev.38/dist/ngl.js"></script>
+  <style>
+    body { margin: 0; background: #000; color: #fff; }
+    #viewport { width: 100vw; height: 100vh; }
+  </style>
+</head>
+<body>
+
+<div id="viewport"></div>
+
+<script>
+  const stage = new NGL.Stage("viewport", { backgroundColor: "black" });
+
+  window.addEventListener("resize", () => stage.handleResize(), false);
+
+  stage.loadFile("{{ pdb_url }}", { defaultRepresentation: false })
+    .then(function (component) {
+
+      // Protein
+      component.addRepresentation("cartoon", {
+        sele: "protein",
+        color: "residueindex"
+      });
+
+      // Ligand (warhead)
+      component.addRepresentation("ball+stick", {
+        sele: "hetero",
+        multipleBond: true
+      });
+
+      component.autoView();
+    });
+</script>
+
+</body>
+</html>

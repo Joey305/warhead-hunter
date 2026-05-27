@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/Target-favicon.png') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/Target-favicon.png') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tron.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+    {% block page_css %}{% endblock %}
+
+    <style>
+        /* ============================
+           GLOBAL LAYOUT FIXES
+        ============================ */
+
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden !important;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+
+        /* prevent ANY child from producing scroll */
+        img, div, section, header, footer {
+            max-width: 100%;
+        }
+
+        .header-spacer {
+            margin-top: 70px;  /* ensures content never hides behind navbar */
+        }
+    </style>
+
+    <title>PROTAC Target Module</title>
+</head>
+
+<body>
+
+    {% include "nav.html" %}
+
+    {% block content %}{% endblock %}
+
+    {% include "footer.html" %}
+
+
+
+    <div id="tronLoader" class="tron-loading-overlay">
+        <div class="tron-spinner"></div>
+    </div>
+    
+    <script>
+    function showLoader() {
+        document.getElementById("tronLoader").style.display = "flex";
+    }
+    </script>
+
+    <script>
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 10) {
+            document.body.classList.add('scrolled');
+        } else {
+            document.body.classList.remove('scrolled');
+        }
+    });
+    </script>
+    {% block page_js %}{% endblock %}
+
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}The Science Behind Ligand Solvent Exposure Mapping{% endblock %}
+{% block meta_description %}Learn how atom-level ligand solvent exposure mapping can support structure-guided medicinal chemistry inspection in protein-bound structural context.{% endblock %}
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The Science Behind Ligand Solvent Exposure Mapping",
+  "description": "Overview of why atom-level ligand solvent exposure can be useful in structure-guided medicinal chemistry workflows.",
+  "author": {
+    "@type": "Person",
+    "name": "Joseph-Michael Schulz"
+  },
+  "url": "{{ site_base }}/science"
+}
+</script>
+{% endblock %}
+{% block content %}
+<div class="content-page">
+  <section class="wh-hero wh-scanline-panel reveal">
+    <div class="wh-hero-copy">
+      <div class="wh-kicker">Scientific Background</div>
+      <h1 class="wh-hero-title">The Science Behind Ligand Solvent Exposure Mapping</h1>
+      <p class="wh-hero-lead">
+      When a ligand binds to a protein, some atoms are buried against the binding site while others remain exposed to solvent. Those exposed atoms can be useful starting points for medicinal chemistry inspection, especially when researchers are considering chemical expansion, covalent warhead placement, linker attachment, or PROTAC-oriented design.
+      </p>
+      <div class="wh-actions">
+        <a href="{{ url_for('how_to_use') }}" class="tron-btn">How It Works</a>
+        <a href="{{ url_for('use_cases') }}" class="content-pill">Use Cases</a>
+        <a href="{{ url_for('docs_page') }}" class="content-pill">Docs</a>
+      </div>
+    </div>
+    <div class="wh-hero-visual">
+      <div class="wh-card-grid">
+        <article class="wh-mini-metric">
+          <h3 class="wh-metric-title">Buried Atoms</h3>
+          <span class="wh-mini-metric-value">Protein-facing</span>
+          <span class="wh-mini-metric-label">Often more shielded in the binding site</span>
+        </article>
+        <article class="wh-mini-metric">
+          <h3 class="wh-metric-title">Exposed Atoms</h3>
+          <span class="wh-mini-metric-value">Solvent-facing</span>
+          <span class="wh-mini-metric-label">Useful starting points for inspection</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="wh-section reveal">
+    <div class="wh-section-head">
+      <div>
+        <div class="wh-section-kicker">Interpretation Layer</div>
+        <h2 class="wh-section-title">Key Structural Concepts</h2>
+      </div>
+    </div>
+    <div class="wh-card-grid wh-card-grid-3">
+      <article class="wh-feature-card">
+        <div class="wh-card-icon">BUR</div>
+        <h3 class="wh-card-title">Buried Atoms</h3>
+        <p class="wh-card-copy">Atoms packed against the protein surface can become less accessible for elaboration in the bound state.</p>
+      </article>
+      <article class="wh-feature-card">
+        <div class="wh-card-icon">EXP</div>
+        <h3 class="wh-card-title">Solvent-Exposed Atoms</h3>
+        <p class="wh-card-copy">Atoms that remain solvent facing can be useful starting points for structure-guided inspection and hypothesis generation.</p>
+      </article>
+      <article class="wh-feature-card">
+        <div class="wh-card-icon">MOD</div>
+        <h3 class="wh-card-title">Candidate Modification Positions</h3>
+        <p class="wh-card-copy">Exposure maps help frame where chemical growth, linker attachment, or warhead-oriented elaboration might be inspected next.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="wh-section reveal">
+    <div class="wh-card-grid wh-card-grid-2">
+      <article class="wh-output-card">
+        <h3 class="wh-output-title">What Exposure Mapping Can Support</h3>
+        <div class="wh-output-list">
+          <div class="wh-output-item"><span class="wh-output-bullet">◎</span><span>Candidate inspection for linker attachment hypotheses.</span></div>
+          <div class="wh-output-item"><span class="wh-output-bullet">◎</span><span>Review of exposed ligand atoms for chemical elaboration.</span></div>
+          <div class="wh-output-item"><span class="wh-output-bullet">◎</span><span>Comparison of exposure patterns across related ligands or structures.</span></div>
+        </div>
+      </article>
+      <article class="wh-output-card">
+        <h3 class="wh-output-title">What It Does Not Guarantee</h3>
+        <p class="wh-output-copy">Exposure alone does not establish synthetic tractability, potency retention, permeability, or optimal degrader geometry.</p>
+        <div class="wh-warning">
+          Exposure is a structural filter, not a guarantee of synthetic feasibility or potency retention.
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="wh-cta-panel reveal">
+    <h2 class="wh-cta-title">Move From Scientific Context To Actual Job Outputs</h2>
+    <p class="wh-cta-copy">Use the workflow guide, launch a new scan, or inspect completed example jobs to see how exposure mapping is presented in practice.</p>
+    <div class="wh-actions">
+      <a href="{{ url_for('hunter') }}" class="tron-btn">Launch Hunter</a>
+      <a href="{{ url_for('how_to_use') }}" class="content-pill">How to Use</a>
+      <a href="{{ url_for('examples_page') }}" class="content-pill">Examples</a>
+      <a href="{{ url_for('docs_page') }}" class="content-pill">Docs</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="header-spacer"></div>
+
+<section class="upload-wrapper">
+
+    <div class="upload-container neon-panel">
+
+        <h2 class="upload-title">Upload Input Files</h2>
+        <p class="upload-subtext">Upload all PROTAC Target mapping files below.</p>
+
+        <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+
+            <!-- SASA -->
+            <div class="upload-field drop-zone" data-label="SASA Mapping File" data-required="true">
+                <label class="field-label">
+                    SASA Mapping File
+                    <span class="tooltip-wrapper">
+                        <span class="tooltip-icon">ⓘ</span>
+                        <div class="tooltip-box">
+                            Contains structure-based solvent exposure per ligand atom.<br><br>
+                            Must include:<br>
+                            <b>atom_id, exact_atom, x, y, z, Exposure_A2</b>
+                        </div>
+                    </span>
+                </label>
+                <input type="file" name="sasa_file" class="upload-input file-input">
+                <div class="drop-overlay">Drop SASA CSV here</div>
+            </div>
+
+            <!-- MCS -->
+            <div class="upload-field drop-zone" data-label="2D–3D MCS Mapping File" data-required="true">
+                <label class="field-label">
+                    2D–3D MCS Mapping File
+                    <span class="tooltip-wrapper">
+                        <span class="tooltip-icon">ⓘ</span>
+                        <div class="tooltip-box">
+                            Atom-by-atom mapping between RDKit 2D atoms and 3D crystal atoms.
+                        </div>
+                    </span>
+                </label>
+                <input type="file" name="mcs_file" class="upload-input file-input">
+                <div class="drop-overlay">Drop MCS CSV here</div>
+            </div>
+
+            <!-- Metadata -->
+            <div class="upload-field drop-zone" data-label="Ligand Metadata CSV" data-required="true">
+                <label class="field-label">
+                    Ligand Metadata CSV
+                    <span class="tooltip-wrapper">
+                        <span class="tooltip-icon">ⓘ</span>
+                        <div class="tooltip-box">
+                            Contains ligand phys-chem and annotation metadata.
+                        </div>
+                    </span>
+                </label>
+                <input type="file" name="metadata_file" class="upload-input file-input">
+                <div class="drop-overlay">Drop Metadata CSV here</div>
+            </div>
+
+            <!-- Scaffold -->
+            <div class="upload-field drop-zone" data-label="Scaffold CSV" data-required="true">
+                <label class="field-label">
+                    Scaffold CSV
+                    <span class="tooltip-wrapper">
+                        <span class="tooltip-icon">ⓘ</span>
+                        <div class="tooltip-box">
+                            Contains Murcko scaffold data and class assignments.
+                        </div>
+                    </span>
+                </label>
+                <input type="file" name="scaffold_file" class="upload-input file-input">
+                <div class="drop-overlay">Drop Scaffold CSV here</div>
+            </div>
+
+            <!-- Structures -->
+            <div class="upload-field drop-zone" data-label="Structures ZIP or Folder" data-required="true">
+                <label class="field-label">
+                    Structures ZIP <span class="optional">(folder OR zip allowed)</span>
+                </label>
+                <input type="file" name="structures_zip" class="upload-input file-input" webkitdirectory directory>
+                <div class="drop-overlay">Drop PDB/CIF folder or ZIP here</div>
+            </div>
+
+            <button class="upload-btn" type="submit">Submit Files</button>
+            <form action="/upload" method="POST" enctype="multipart/form-data" onsubmit="showLoader()">
+
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- ====================== -->
+<!--  SUCCESS MODAL         -->
+<!-- ====================== -->
+<div id="successModal" class="success-modal hidden">
+    <div class="success-box">
+        <h2>✔ Upload Successful</h2>
+        <p>Your files have been processed. You may now continue.</p>
+        <button onclick="closeSuccess()" class="modal-btn">Continue</button>
+    </div>
+</div>
+
+
+<!-- ====================== -->
+<!--  PAGE SCRIPTS          -->
+<!-- ====================== -->
+<script>
+// ========================
+// Drag & Drop Support
+// ========================
+document.querySelectorAll(".drop-zone").forEach(zone => {
+
+    const input = zone.querySelector(".file-input");
+
+    zone.addEventListener("dragover", e => {
+        e.preventDefault();
+        zone.classList.add("drag-active");
+    });
+
+    zone.addEventListener("dragleave", () => {
+        zone.classList.remove("drag-active");
+    });
+
+    zone.addEventListener("drop", e => {
+        e.preventDefault();
+        zone.classList.remove("drag-active");
+
+        const files = e.dataTransfer.files;
+        input.files = files;
+        zone.classList.add("uploaded");
+    });
+
+    // Normal file select
+    input.addEventListener("change", () => {
+        if (input.files.length > 0) {
+            zone.classList.add("uploaded");
+        }
+    });
+});
+
+// ========================
+// Validation Before Submit
+// ========================
+document.getElementById("uploadForm").addEventListener("submit", function(e) {
+
+    let invalid = [];
+
+    document.querySelectorAll(".drop-zone").forEach(zone => {
+        const required = zone.dataset.required === "true";
+        const input = zone.querySelector(".file-input");
+
+        if (required && (!input.files || input.files.length === 0)) {
+            invalid.push(zone.dataset.label);
+            zone.classList.add("missing");
+        }
+    });
+
+    if (invalid.length > 0) {
+        e.preventDefault();
+        alert("Missing required files:\n\n" + invalid.join("\n"));
+        return false;
+    }
+
+    // Show success modal after validation
+    document.getElementById("successModal").classList.remove("hidden");
+    return true;
+});
+
+// Close modal
+function closeSuccess() {
+    document.getElementById("successModal").classList.add("hidden");
+}
+</script>
+
+{% endblock %}

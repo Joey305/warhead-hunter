@@ -1,0 +1,793 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  /* ------------------------------------------------------------
+     OPTION C: Mode selector + panels that fade/slide nicely
+     + Active mode is ELECTRIC TRON BLUE
+     + Viewer focus pulse when selecting a hit
+     ------------------------------------------------------------ */
+
+  /* Mode bar */
+  .mode-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    margin-top: 12px;
+  }
+
+  .mode-pills {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .mode-pill {
+    padding: 8px 14px;
+    font-size: 0.95em;
+    opacity: 0.75;
+    transition: opacity 180ms ease, transform 180ms ease, box-shadow 200ms ease, border-color 200ms ease, color 200ms ease, background 200ms ease;
+  }
+  .mode-pill:hover { opacity: 0.95; transform: translateY(-1px); }
+
+  /* ✅ Active = Electric TRON BLUE */
+  .mode-pill.active {
+    opacity: 1;
+    color: var(--tron-cyan);
+    border: 1px solid var(--tron-cyan);
+    background: rgba(0,255,255,0.08);
+    box-shadow:
+      0 0 18px rgba(0,255,255,0.20),
+      inset 0 0 12px rgba(0,255,255,0.10);
+    transform: translateY(-1px);
+  }
+
+  /* Panels fade/blend */
+  .mode-panel {
+    overflow: hidden;
+    max-height: 1200px;
+    opacity: 1;
+    transform: translateY(0px);
+    filter: blur(0px);
+    transition:
+      opacity 260ms ease,
+      transform 260ms ease,
+      max-height 260ms ease,
+      filter 260ms ease;
+    margin-top: 10px;
+  }
+
+  .mode-panel.hidden {
+    max-height: 0px;
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(2px);
+    pointer-events: none;
+    margin-top: 0px;
+  }
+
+  .search-panel {
+    display: flex;
+    gap: 10px;
+    padding: 20px;
+    align-items: center;
+  }
+
+  .hint-text {
+    color: #888;
+    font-size: 0.9em;
+    margin-top: 6px;
+    padding-left: 8px;
+  }
+
+  /* Hit rows */
+  .hit-row {
+    padding: 10px;
+    border-bottom: 1px solid #222;
+    cursor: pointer;
+    transition: background 160ms ease, transform 160ms ease;
+  }
+  .hit-row:hover {
+    background: rgba(0,255,255,0.06);
+    transform: translateX(2px);
+  }
+  .hit-id {
+    color: var(--tron-cyan);
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  .hit-sub {
+    color: #777;
+    font-size: 0.85em;
+    margin-top: 2px;
+  }
+
+  .hit-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+
+  /* Viewer focus pulse */
+  .viewer-pulse {
+    animation: viewerPulse 900ms ease-out 1;
+  }
+  @keyframes viewerPulse {
+    0%   { box-shadow: 0 0 0 rgba(0,255,255,0.00); }
+    30%  { box-shadow: 0 0 28px rgba(0,255,255,0.35); }
+    100% { box-shadow: 0 0 0 rgba(0,255,255,0.00); }
+  }
+</style>
+
+<div class="container" style="max-width: 1400px;">
+  <h1 class="glow-text">RCSB TARGET SCOUT</h1>
+
+  <!-- MODE SELECTOR -->
+  <div class="glass-panel mode-bar">
+    <div style="display:flex; flex-direction:column;">
+      <div style="color:#aaa; font-weight:700;">SEARCH MODE</div>
+      <div style="color:#666; font-size:0.85em;">Pick how you want to query RCSB</div>
+    </div>
+
+    <div class="mode-pills">
+      <button id="btnModeDirect" class="tron-btn mode-pill active" onclick="setMode('direct')">
+        🔍 PDB ID
+      </button>
+      <button id="btnModeSearch" class="tron-btn mode-pill" onclick="setMode('search')">
+        🧠 Protein / Keyword
+      </button>
+    </div>
+  </div>
+
+  <!-- PANEL A: DIRECT PDB LOOKUP -->
+  <div id="panelDirect" class="mode-panel">
+    <div class="glass-panel search-panel">
+      <div style="font-size: 1.5em; color: var(--tron-cyan);">🔍</div>
+      <input type="text" id="pdbInput" placeholder="Enter PDB ID (e.g. 4CI3, 3EKY)"
+             style="flex-grow: 1; padding: 15px; background: black; border: 1px solid var(--tron-cyan); color: white; font-size: 1.2em; border-radius: 5px;"
+             onkeypress="handleEnter(event)">
+      <button onclick="fetchPDB()" class="tron-btn" style="width: 200px;">FETCH DATA</button>
+    </div>
+    <div class="hint-text">Tip: This is fastest when you already know the PDB ID.</div>
+  </div>
+
+  <!-- PANEL B: KEYWORD SEARCH -->
+  <div id="panelSearch" class="mode-panel hidden">
+    <div class="glass-panel search-panel">
+      <div style="font-size: 1.5em; color: var(--tron-yellow);">🧠</div>
+      <input type="text" id="queryInput" placeholder="Search by protein name, gene, UniProt, ligand text…"
+             style="flex-grow:1; padding:15px; background:black; border:1px solid var(--tron-yellow); color:white; font-size:1.2em; border-radius:5px;"
+             onkeypress="if(event.key==='Enter') searchRCSB(true)">
+      <button onclick="searchRCSB(true)" class="tron-btn" style="width:200px;">SEARCH RCSB</button>
+    </div>
+
+    <div class="hint-text">
+      Examples: <span style="color:#aaa;">HIV-1 protease</span>,
+      <span style="color:#aaa;">EGFR kinase</span>,
+      <span style="color:#aaa;">BRD4 bromodomain</span>,
+      <span style="color:#aaa;">uniprot:P00533</span>
+    </div>
+
+    <div id="hitList" class="glass-panel" style="display:none; margin-top:15px;">
+      <h3 style="color: var(--tron-yellow); margin-top:0;">MATCHES</h3>
+      <div id="hitItems" style="max-height:260px; overflow:auto;"></div>
+
+      <div class="hit-actions">
+        <button id="btnMoreHits" class="tron-btn" style="padding:6px 12px; font-size:0.85em; display:none;" onclick="moreHits()">
+          LOAD MORE
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="resultsArea" class="grid-container"
+       style="display: none; margin-top: 20px; grid-template-columns: 1fr 1fr; gap: 20px;">
+
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div class="glass-panel" style="border-left: 5px solid var(--tron-yellow);">
+        <h2 id="pdbTitle" style="color: var(--tron-yellow); margin-top: 0; font-size: 1.4em;">-</h2>
+        <div style="display: flex; gap: 20px; color: #aaa; font-size: 0.9em; margin-top: 10px;">
+          <div>📅 <span id="pdbDate" style="color: white;">-</span></div>
+          <div>📏 <span id="pdbRes" style="color: white;">-</span></div>
+          <div>🧬 <span id="pdbOrg" style="color: white;">-</span></div>
+        </div>
+      </div>
+
+      <div class="glass-panel">
+        <h3 style="color: var(--tron-cyan); border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0;">
+          MOLECULAR COMPOSITION
+        </h3>
+        <div id="compositionList" style="max-height: 300px; overflow-y: auto;"></div>
+      </div>
+
+      <div class="glass-panel">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <h3 style="color: var(--tron-cyan); margin: 0;">FASTA SEQUENCE</h3>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <button onclick="copyFasta()" class="tron-btn" style="padding: 5px 15px; font-size: 0.8em;">COPY</button>
+          </div>
+        </div>
+
+        <textarea id="pdbFasta" readonly
+                  style="width: 100%; height: 150px; background: #050505; border: 1px solid #333; color: #00ff00; font-family: 'Courier New', monospace; padding: 10px; font-size: 0.9em; resize: vertical;"></textarea>
+
+        <!-- ✅ NEW: Hunt for Warhead -->
+        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:12px;">
+          <button id="btnHuntWarhead"
+                  onclick="huntForWarhead()"
+                  class="tron-btn"
+                  style="padding: 10px 14px; font-weight: 900;">
+            🧨 Hunt for Warhead
+          </button>
+        </div>
+
+        <div id="huntStatus" style="margin-top:8px; color:#777; font-size:0.85em; display:none;"></div>
+      </div>
+
+    </div>
+
+    <div id="viewerCard" class="glass-panel"
+         style="padding: 0; overflow: hidden; border: 2px solid var(--tron-cyan); height: 800px; position: relative; background: black;">
+      <div id="viewer" style="width: 100%; height: 100%; position: relative;"></div>
+
+      <div style="position: absolute; bottom: 10px; left: 10px; z-index: 10; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 5px;">
+        <span style="color: var(--tron-cyan);">■ Protein (By Chain)</span> &nbsp;
+        <span style="color: var(--tron-yellow);">■ Ligands (Sticks)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.5/3Dmol-min.js"></script>
+
+<script>
+  let viewer = null;
+
+  // -----------------------------
+  // Progressive loading controls
+  // -----------------------------
+  let currentLoadAbort = null;
+
+
+  function resetCurrent(pdbId){
+  CURRENT.pdbId = pdbId || null;
+  CURRENT.meta = null;
+  CURRENT.entities = null;
+
+  // UX: disable hunt button until molecules arrive
+  const btn = document.getElementById("btnHuntWarhead");
+  if (btn) btn.disabled = true;
+
+  const hs = document.getElementById("huntStatus");
+  if (hs) hs.style.display = "none";
+}
+
+  // Optional caches (helpful if clicking same entries repeatedly)
+  const CACHE = {
+    meta: new Map(),
+    mol:  new Map()
+  };
+
+  // -----------------------------
+  // Mode switching (fade/blend)
+  // -----------------------------
+
+  let CURRENT = {
+    pdbId: null,
+    entities: null, // pdbe molecules entities
+    meta: null      // rcsb core entry meta
+  };
+
+  function _setHuntStatus(msg, isError=false) {
+  const el = document.getElementById("huntStatus");
+  if (!el) return;
+  el.style.display = "block";
+  el.style.color = isError ? "#f66" : "#777";
+  el.innerHTML = msg;
+}
+
+function _firstPolypeptide(entities) {
+  if (!Array.isArray(entities)) return null;
+  return entities.find(e => String(e.molecule_type || "").includes("polypeptide")) || null;
+}
+
+function _extractTargetNameFromEntities(entities) {
+  const poly = _firstPolypeptide(entities);
+  if (!poly) return "";
+  const name = (poly.molecule_name && poly.molecule_name[0]) ? poly.molecule_name[0] : "";
+  // You wanted "Protease" (no emoji). This returns just the name.
+  return String(name || "").trim();
+}
+
+function _extractSearchQueryFromEntities(entities) {
+  // You wanted: 🧬 HIV-1 M:B_ARV2/SF2 (no emoji) -> use organism_scientific_name
+  const poly = _firstPolypeptide(entities);
+  const org = poly?.source?.[0]?.organism_scientific_name || "";
+  return String(org || "").trim();
+}
+
+async function huntForWarhead() {
+  try {
+    const btn = document.getElementById("btnHuntWarhead");
+    if (btn) btn.disabled = true;
+
+    // Must have loaded a PDB
+    const pdbId = (CURRENT.pdbId || "").trim();
+    const fasta = (document.getElementById("pdbFasta")?.value || "").trim();
+    const entities = CURRENT.entities;
+
+    if (!pdbId || pdbId.length !== 4) {
+      _setHuntStatus("Load a PDB first (4-character ID).", true);
+      if (btn) btn.disabled = false;
+      return;
+    }
+    if (!entities || !entities.length) {
+      _setHuntStatus("Molecular entities not loaded yet. Try again in a moment.", true);
+      if (btn) btn.disabled = false;
+      return;
+    }
+    if (!fasta) {
+      _setHuntStatus("FASTA is empty — cannot launch scan.", true);
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    const target_name = _extractTargetNameFromEntities(entities);
+    const search_query = _extractSearchQueryFromEntities(entities);
+
+    if (!target_name) {
+      _setHuntStatus("Could not determine Target Identifier from this PDB.", true);
+      if (btn) btn.disabled = false;
+      return;
+    }
+    if (!search_query) {
+      _setHuntStatus("Could not determine Search Query (organism) from this PDB.", true);
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    _setHuntStatus(
+      `Launching Warhead Hunter…<br>
+       <span style="color:#aaa;">Target:</span> <span style="color:white;">${escapeHtml(target_name)}</span><br>
+       <span style="color:#aaa;">Query:</span> <span style="color:white;">${escapeHtml(search_query)}</span>`
+    );
+
+    // ✅ POST to your existing launcher (same as WH page form)
+    const form = new URLSearchParams();
+    form.set("target_name", target_name);
+    form.set("search_query", search_query);
+    form.set("fasta_seq", fasta);
+
+    const res = await fetch("/launch_job", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: form.toString()
+    });
+
+    // If backend redirects to monitor, follow it
+    if (res.redirected) {
+      window.location.href = res.url;
+      return;
+    }
+
+    // If backend returns JSON, try to interpret it
+    const ct = res.headers.get("content-type") || "";
+    if (ct.includes("application/json")) {
+      const data = await res.json();
+
+      // Common patterns:
+      // { redirect: "/monitor/<jobid>" } or { monitor_url: "..."}
+      const redirectUrl = data.redirect || data.monitor_url || data.url;
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+        return;
+      }
+
+      _setHuntStatus("Job launched, but no redirect URL returned by server.", true);
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    // Otherwise assume server returned HTML of monitor or a page—swap body
+    const html = await res.text();
+    document.open();
+    document.write(html);
+    document.close();
+
+  } catch (e) {
+    console.error(e);
+    _setHuntStatus("Failed to launch scan. Check console/server logs.", true);
+    const btn = document.getElementById("btnHuntWarhead");
+    if (btn) btn.disabled = false;
+  }
+}
+
+
+  function setMode(mode) {
+    const direct = document.getElementById("panelDirect");
+    const search = document.getElementById("panelSearch");
+    const bA = document.getElementById("btnModeDirect");
+    const bB = document.getElementById("btnModeSearch");
+
+    if (mode === "direct") {
+      direct.classList.remove("hidden");
+      search.classList.add("hidden");
+      bA.classList.add("active");
+      bB.classList.remove("active");
+      setTimeout(() => document.getElementById("pdbInput")?.focus(), 140);
+    } else {
+      search.classList.remove("hidden");
+      direct.classList.add("hidden");
+      bB.classList.add("active");
+      bA.classList.remove("active");
+      setTimeout(() => document.getElementById("queryInput")?.focus(), 140);
+    }
+  }
+
+  // -----------------------------
+  // Utils
+  // -----------------------------
+  function escapeHtml(s) {
+    return String(s || "")
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+  }
+
+  function handleEnter(e) {
+    if (e.key === 'Enter') fetchPDB();
+  }
+
+  function showResultsLoading() {
+    document.getElementById('resultsArea').style.display = "grid";
+    document.getElementById('compositionList').innerHTML = '<div style="color:#888;">Loading composition…</div>';
+    document.getElementById('pdbFasta').value = "Loading sequences…";
+    document.getElementById('pdbTitle').innerText = "Loading…";
+    document.getElementById('pdbDate').innerText  = "—";
+    document.getElementById('pdbRes').innerText   = "—";
+    document.getElementById('pdbOrg').innerText   = "—";
+  }
+
+  function focusViewerSmooth() {
+    // Ensure results are visible
+    document.getElementById('resultsArea').style.display = "grid";
+
+    // Smooth scroll viewer into view
+    const card = document.getElementById("viewerCard");
+    if (card) card.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    // Pulse highlight
+    card.classList.remove("viewer-pulse");
+    void card.offsetWidth; // reflow to restart animation
+    card.classList.add("viewer-pulse");
+  }
+
+  // -----------------------------
+  // Fetch helpers (abort + cache)
+  // -----------------------------
+  async function fetchMeta(pdbId, signal) {
+    if (CACHE.meta.has(pdbId)) return CACHE.meta.get(pdbId);
+
+    const r = await fetch(`https://data.rcsb.org/rest/v1/core/entry/${pdbId}`, { signal });
+    if (!r.ok) return null;
+    const meta = await r.json();
+    CACHE.meta.set(pdbId, meta);
+    return meta;
+  }
+
+  async function fetchMolecules(pdbId, signal) {
+    if (CACHE.mol.has(pdbId)) return CACHE.mol.get(pdbId);
+
+    const r = await fetch(`https://www.ebi.ac.uk/pdbe/api/pdb/entry/molecules/${pdbId}`, { signal });
+    if (!r.ok) return null;
+    const data = await r.json();
+    const entities = data[pdbId] || null;
+    CACHE.mol.set(pdbId, entities);
+    return entities;
+  }
+
+  // -----------------------------
+  // 3D render (start ASAP)
+  // -----------------------------
+  function render3D(pdbId) {
+    if (!viewer) viewer = $3Dmol.createViewer("viewer", { backgroundColor: "black" });
+
+    viewer.clear();
+
+    const pdbUpper = pdbId.toUpperCase();
+    $3Dmol.download(`url:https://files.rcsb.org/download/${pdbUpper}.pdb`, viewer, { format: 'pdb' }, function() {
+      viewer.setStyle({}, {});
+
+      // Protein ribbons by chain
+      viewer.addStyle({ hetflag: false }, {
+        cartoon: { colorscheme: 'chain', thickness: 1.0, opacity: 1.0 }
+      });
+
+      // Ligands (includes ions; water hidden below)
+      viewer.addStyle({ hetflag: true }, {
+        stick:  { colorscheme: 'greenCarbon', radius: 0.25 },
+        sphere: { scale: 0.3 }
+      });
+
+      // Hide waters
+      viewer.setStyle({ resn: 'HOH' }, { hidden: true });
+
+      viewer.zoomTo();
+      viewer.render();
+    });
+  }
+
+  // -----------------------------------------
+  // ENTRY LOADER (progressive + parallel)
+  // -----------------------------------------
+  async function loadEntry(pdbId, opts = {}) {
+    pdbId = String(pdbId || "").trim().toLowerCase();
+    if (!pdbId || pdbId.length !== 4) {
+      alert("Please enter a valid 4-character PDB ID.");
+      return;
+    }
+    resetCurrent(pdbId); // ✅ IMPORTANT: update CURRENT for this entry
+
+
+    // Cancel any in-flight loads (prevents late-overwrite)
+    if (currentLoadAbort) currentLoadAbort.abort();
+    currentLoadAbort = new AbortController();
+    const { signal } = currentLoadAbort;
+
+    showResultsLoading();
+
+    // ✅ Start 3D FIRST (don’t await)
+    render3D(pdbId);
+
+    // ✅ Optionally focus viewer immediately when clicking a hit
+    if (opts.focusViewer) focusViewerSmooth();
+
+    // Meta + molecules in parallel, update UI as each arrives
+    const metaP = fetchMeta(pdbId, signal).then(meta => {
+      if (!meta) {
+        document.getElementById('pdbTitle').innerText = "Metadata unavailable";
+        document.getElementById('pdbDate').innerText  = "N/A";
+        document.getElementById('pdbRes').innerText   = "N/A";
+        return;
+      }
+      CURRENT.meta = meta; // ✅ SAVE IT
+
+      document.getElementById('pdbTitle').innerText = meta.struct?.title || "Untitled Structure";
+      const dep = meta.rcsb_accession_info?.deposit_date || "";
+      document.getElementById('pdbDate').innerText = dep ? dep.substring(0, 10) : "N/A";
+      const resArr = meta.rcsb_entry_info?.resolution_combined;
+      document.getElementById('pdbRes').innerText = (resArr && resArr.length) ? (resArr[0] + " Å") : "N/A";
+    }).catch(err => {
+      if (err?.name === "AbortError") return;
+      console.error("RCSB Meta Error:", err);
+      document.getElementById('pdbTitle').innerText = "Metadata failed to load";
+    });
+
+    const molP = fetchMolecules(pdbId, signal).then(entities => {
+      if (!entities || !entities.length) {
+        document.getElementById('compositionList').innerHTML = '<div style="color:#888;">No molecule entities found.</div>';
+        document.getElementById('pdbFasta').value = "No polymer sequences found.";
+        document.getElementById('pdbOrg').innerText = "N/A";
+        return;
+      }
+
+      CURRENT.entities = entities; // ✅ SAVE IT
+
+      // ✅ enable hunt button now that entities are ready
+      const btn = document.getElementById("btnHuntWarhead");
+      if (btn) btn.disabled = false;
+
+      // Composition first (fast feedback)
+      renderComposition(entities);
+
+      // Organism from first polypeptide
+      const poly = entities.find(e => String(e.molecule_type || "").includes("polypeptide"));
+      if (poly?.source?.[0]?.organism_scientific_name) {
+        document.getElementById('pdbOrg').innerText = poly.source[0].organism_scientific_name;
+      } else {
+        document.getElementById('pdbOrg').innerText = "N/A";
+      }
+
+      // FASTA next frame (lets UI paint first)
+      requestAnimationFrame(() => {
+        const fastaString = generateCustomFasta(pdbId, entities);
+        document.getElementById('pdbFasta').value = fastaString || "No polymer sequences found.";
+      });
+    }).catch(err => {
+      if (err?.name === "AbortError") return;
+      console.error("EBI Mol Error:", err);
+      document.getElementById('compositionList').innerHTML = "Could not load molecular details.";
+      document.getElementById('pdbFasta').value = "Error generating FASTA.";
+    });
+
+    await Promise.allSettled([metaP, molP]);
+  }
+
+  // Keep your existing entry point
+  async function fetchPDB() {
+    const pdbId = document.getElementById('pdbInput').value;
+    return loadEntry(pdbId, { focusViewer: true });
+  }
+
+  // -----------------------------
+  // RCSB keyword search
+  // -----------------------------
+  let searchStart = 0;
+  const searchRows = 25;
+
+  async function searchRCSB(reset = true) {
+    const q = document.getElementById('queryInput').value.trim();
+    if (!q) return;
+
+    if (reset) searchStart = 0;
+
+    document.getElementById("hitList").style.display = "block";
+    document.getElementById("btnMoreHits").style.display = "none";
+    document.getElementById("hitItems").innerHTML =
+      `<div style="color:#888;">Searching for <strong style="color:white;">${escapeHtml(q)}</strong>…</div>`;
+
+    try {
+      const body = {
+        query: {
+          type: "terminal",
+          service: "full_text",
+          parameters: { value: q }
+        },
+        return_type: "entry",
+        request_options: {
+          paginate: { start: searchStart, rows: searchRows },
+          scoring_strategy: "combined",
+          results_content_type: ["experimental"]
+        }
+      };
+
+      const res = await fetch("https://search.rcsb.org/rcsbsearch/v2/query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+
+      if (!res.ok) {
+        document.getElementById("hitItems").innerHTML =
+          `<div style="color:#f66;">Search failed (${res.status}).</div>`;
+        return;
+      }
+
+      const data = await res.json();
+      const hits = (data.result_set || []).map(r => r.identifier);
+
+      if (!hits.length) {
+        document.getElementById("hitItems").innerHTML =
+          `<div style="color:#888;">No hits found.</div>`;
+        return;
+      }
+
+      renderHitList(hits, reset);
+
+      if (hits.length >= searchRows) {
+        document.getElementById("btnMoreHits").style.display = "inline-block";
+      }
+    } catch (e) {
+      console.error("RCSB Search Error:", e);
+      document.getElementById("hitItems").innerHTML =
+        `<div style="color:#f66;">Search error. Check console.</div>`;
+    }
+  }
+
+  function moreHits() {
+    searchStart += searchRows;
+    searchRCSB(false);
+  }
+
+  // ✅ Clicking a hit row loads AND scrolls to viewer immediately
+  function renderHitList(pdbIds, reset) {
+    const el = document.getElementById("hitItems");
+    if (reset) el.innerHTML = "";
+
+    pdbIds.forEach(id => {
+      const row = document.createElement("div");
+      row.className = "hit-row";
+      row.innerHTML = `
+        <div class="hit-id">${escapeHtml(id)}</div>
+        <div class="hit-sub">Click to load + jump to viewer</div>
+      `;
+      row.onclick = () => {
+        document.getElementById("pdbInput").value = id;
+        loadEntry(id, { focusViewer: true }); // ✅ jump to viewer
+      };
+      el.appendChild(row);
+    });
+  }
+
+  // -----------------------------
+  // FASTA helpers (yours)
+  // -----------------------------
+  function generateCustomFasta(pdbId, entities) {
+    let output = "";
+
+    entities.forEach(e => {
+      if (!String(e.molecule_type || "").includes("polypeptide")) return;
+
+      const entityId = e.entity_id;
+      const chains = e.in_chains ? e.in_chains.join(", ") : "?";
+      const name = e.molecule_name ? e.molecule_name[0] : "Unknown Protein";
+      const seq = e.sequence || "";
+
+      let organism = "Unknown";
+      let taxId = "";
+      if (e.source && e.source[0]) {
+        organism = e.source[0].organism_scientific_name || "Unknown";
+        if (e.source[0].tax_id) taxId = `(${e.source[0].tax_id})`;
+      }
+
+      const header = `>${pdbId.toUpperCase()}_${entityId}|Chains ${chains}|${name}|${organism} ${taxId}`;
+      output += header + "\n" + seq + "\n\n";
+    });
+
+    return output.trim();
+  }
+
+  function renderComposition(entities) {
+    const container = document.getElementById('compositionList');
+    container.innerHTML = "";
+
+    entities.forEach(entity => {
+      const type = entity.molecule_type;
+      const names = entity.molecule_name || ["Unknown"];
+      if (type === 'water') return;
+
+      const row = document.createElement("div");
+      row.style.borderBottom = "1px solid #222";
+      row.style.padding = "10px 0";
+      row.style.display = "flex";
+      row.style.justifyContent = "space-between";
+      row.style.alignItems = "center";
+
+      let icon = "❓";
+      let color = "white";
+      let extraInfo = "";
+
+      if (String(type || "").includes("polypeptide")) {
+        icon = "🧬";
+        color = "var(--tron-cyan)";
+        const chains = entity.in_chains ? entity.in_chains.join(", ") : "?";
+        const len = entity.length || 0;
+        extraInfo = `<div style="font-size:0.8em; color:#666;">Chains: ${escapeHtml(chains)} | Length: ${len}aa</div>`;
+      } else if (type === "bound") {
+        icon = "💊";
+        color = "var(--tron-yellow)";
+        if (entity.chem_comp_ids) {
+          extraInfo = `<div style="font-size:0.8em; color:#888;">ID: <strong style="color:white">${escapeHtml(entity.chem_comp_ids.join(", "))}</strong></div>`;
+        }
+      }
+
+      row.innerHTML = `
+        <div style="flex-grow:1;">
+          <div style="color:${color}; font-weight:bold;">${icon} ${escapeHtml(names[0])}</div>
+          ${extraInfo}
+        </div>
+      `;
+      container.appendChild(row);
+    });
+  }
+
+  // Copy FASTA (modern clipboard; fallback included)
+  async function copyFasta() {
+    const text = document.getElementById("pdbFasta").value || "";
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (e) {
+      const copyText = document.getElementById("pdbFasta");
+      copyText.select();
+      document.execCommand("copy");
+    }
+  }
+</script>
+
+{% endblock %}

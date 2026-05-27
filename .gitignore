@@ -28,6 +28,14 @@ temp/
 .mypy_cache/
 .ipynb_checkpoints/
 
+
+Q0dex/
+Qodex.summary.md
+ORIGINAL/
+RESTORE_BACKUP*/
+experimental_broken_attempts/
+
+
 # Secrets / local config
 .env
 .env.*

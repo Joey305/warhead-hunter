@@ -1,0 +1,726 @@
+{% extends "base.html" %}
+{% block title %}About — PROTAC Target Module{% endblock %}
+{% block content %}
+
+<!-- ================================ -->
+<!-- TRON SCROLL PROGRESS BAR -->
+<!-- ================================ -->
+<div id="scrollProgress"
+     class="fixed top-0 left-0 w-0 h-[3px] bg-gradient-to-r from-yellow-400 to-green-400 z-50 transition-[width] duration-150"></div>
+
+<div class="tron-container mx-auto px-4 md:px-6">
+    <section class="text-gray-200 leading-relaxed space-y-24 max-w-6xl mx-auto">
+
+        <!-- ========================================================= -->
+        <!-- 1. HERO -->
+        <!-- ========================================================= -->
+        <div class="fade-section tron-card p-6 md:p-10 rounded-3xl relative overflow-hidden">
+            <div class="hero-shell grid grid-cols-1 xl:grid-cols-[1.08fr_0.92fr] gap-10 xl:gap-12 items-center">
+
+                <!-- LEFT SIDE -->
+                <div class="hero-copy text-left">
+                    <p class="hero-kicker">TRON Structural Intelligence Layer</p>
+
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-yellow-300 tracking-tight drop-shadow-xl leading-tight">
+                        The PROTAC Target Module
+                    </h1>
+
+                    <p class="mt-6 max-w-2xl text-gray-300 text-lg leading-relaxed">
+                        A TRON-engineered preprocessing system unifying metadata, structures,
+                        SASA exposure, scaffold intelligence, and MCS atom graphs into a deterministic
+                        computational foundation for degrader science.
+                    </p>
+
+                    <div class="mt-8 flex flex-wrap gap-4">
+                        <a href="https://protacbuilder.com"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="hero-cta-primary">
+                            Open PROTAC Builder
+                        </a>
+
+                        <a href="#publications"
+                           class="hero-cta-secondary">
+                            Explore Publications
+                        </a>
+                    </div>
+                </div>
+
+                <!-- RIGHT SIDE -->
+                <div class="hero-dashboard">
+                    <div class="metrics-grid">
+                        <div class="tron-metric metric-card">
+                            <div class="metric-top">
+                                <p class="metric-kicker">Pipeline Activity</p>
+                                <span class="metric-icon">⚙️</span>
+                            </div>
+                            <div class="metric-value" id="jobsCount">{{ total_jobs }}</div>
+                            <p class="metric-label">Jobs Run</p>
+                        </div>
+
+                        <div class="tron-metric metric-card">
+                            <div class="metric-top">
+                                <p class="metric-kicker">Atom Mapping</p>
+                                <span class="metric-icon">🧩</span>
+                            </div>
+                            <div class="metric-value" id="mcsCount">{{ total_mcs }}</div>
+                            <p class="metric-label">MCS Models Generated</p>
+                        </div>
+
+                        <div class="tron-metric metric-card">
+                            <div class="metric-top">
+                                <p class="metric-kicker">Exposure Engine</p>
+                                <span class="metric-icon">🌊</span>
+                            </div>
+                            <div class="metric-value" id="sasaCount">{{ total_sasa }}</div>
+                            <p class="metric-label">SASA Profiles Parsed</p>
+                        </div>
+
+                        <div class="tron-metric metric-card">
+                            <div class="metric-top">
+                                <p class="metric-kicker">Structure Prep</p>
+                                <span class="metric-icon">🏗️</span>
+                            </div>
+                            <div class="metric-value" id="structCount">{{ struct_count }}</div>
+                            <p class="metric-label">Structures Prepared</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- 2. CORE CAPABILITIES -->
+        <!-- ========================================================= -->
+        <div class="fade-section tron-card p-10 rounded-3xl">
+            <h2 class="text-3xl font-bold text-yellow-300 mb-4">Core Capabilities</h2>
+
+            <p class="text-gray-300 mb-4">
+                The Target Module acts as the structural intelligence loader for the entire degrader pipeline.
+                Every ligand uploaded is normalized, aligned, and mapped into a unified computational format.
+            </p>
+
+            <ul class="list-disc list-inside text-gray-400 space-y-2">
+                <li><strong>MCS Atom Mapping:</strong> 2D→3D deterministic atom correspondence.</li>
+                <li><strong>SASA Extraction:</strong> Interface exposure & warhead positioning heuristics.</li>
+                <li><strong>Scaffold Assignment:</strong> Generic + chemotype-level grouping.</li>
+                <li><strong>Attachment Vector Computation:</strong> Warhead geometry constraints.</li>
+                <li><strong>PDB/CIF Harmonization:</strong> Chain fixing, atom renumbering, residue normalization.</li>
+                <li><strong>Packaged System Export:</strong> Ready for scoring, MD, docking, and PRosettaC.</li>
+            </ul>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- 3. TECHNICAL ARCHITECTURE -->
+        <!-- ========================================================= -->
+        <div class="fade-section tron-card p-10 rounded-3xl">
+            <h2 class="text-3xl font-bold text-green-300 mb-4">Technical Architecture</h2>
+
+            <p class="text-gray-300 mb-4">
+                The pipeline ensures every ligand + receptor pair is computed with complete reproducibility,
+                regardless of user input format.
+            </p>
+
+            <ul class="list-disc list-inside text-gray-400 space-y-2">
+                <li><strong>Metadata Harvester:</strong> SMILES, scaffolds, names, IDs, chemotype tags.</li>
+                <li><strong>Structure Ingestion:</strong> Multi-format support (PDB, CIF, SDF, MOL2).</li>
+                <li><strong>MCS Engine:</strong> RDKit-driven deterministic topology mapping.</li>
+                <li><strong>Exposure Engine:</strong> SASA, warhead solvent vectors, rigid site classification.</li>
+                <li><strong>CHEM AI Prep:</strong> Embedding ligand metadata for future ML models.</li>
+            </ul>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- 4. SCIENTIFIC FOUNDATION -->
+        <!-- ========================================================= -->
+        <div class="fade-section tron-card p-10 rounded-3xl">
+            <h2 class="text-3xl font-bold text-cyan-300 mb-4">Scientific Foundation</h2>
+
+            <p class="text-gray-300 mb-4">
+                Degrader modeling is sensitive to warhead geometry, linker orientation, and interface exposure.
+                The module ensures these remain consistent through:
+            </p>
+
+            <ul class="list-disc list-inside text-gray-400 space-y-2">
+                <li>Attachment vectors and SASA heuristics</li>
+                <li>MCS atom anchoring for multi-target comparisons</li>
+                <li>Scaffold similarity + chemotype clustering</li>
+                <li>Interaction density benchmarking</li>
+                <li>Support for AF3 and PRosettaC structural constraints</li>
+            </ul>
+
+            <p class="mt-6 text-gray-400">
+                📄 <strong>Scientific Reports (2025):</strong>
+                <a href="https://www.nature.com/articles/s41598-025-21502-8"
+                   target="_blank"
+                   class="text-yellow-300 hover:text-yellow-200">
+                    PRosettaC outperforms AlphaFold3 for modeling PROTAC ternary complexes
+                </a>
+            </p>
+
+            <p class="mt-4 text-gray-400">
+                📄 <strong>Drug Discovery Today (2023):</strong>
+                <a href="https://pubmed.ncbi.nlm.nih.gov/38029836/"
+                   target="_blank"
+                   class="text-yellow-300 hover:text-yellow-200">
+                    Viral degrader strategies & SARS-CoV-2 PROTAC review
+                </a>
+            </p>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- 5. ECOSYSTEM -->
+        <!-- ========================================================= -->
+        <section class="ecosystem-section fade-section">
+            <h2 class="section-title">Part of the Unified PROTAC Design Ecosystem</h2>
+
+            <div class="ecosystem-grid">
+
+                <div class="eco-card">
+                    <div class="eco-icon">🧬</div>
+                    <h3>V-LiSEMOD</h3>
+                    <p>Solvent-exposed viral chemotype atlas.</p>
+                    <a href="https://vlisemod.com"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="eco-link">
+                        Explore Module →
+                    </a>
+                </div>
+
+                <div class="eco-card">
+                    <div class="eco-icon">🧪</div>
+                    <h3>PROTAC Builder</h3>
+                    <p>Anchor-aligned linker prototyping for degrader scaffolds.</p>
+                    <a href="https://protacbuilder.com"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="eco-link">
+                        Open Builder →
+                    </a>
+                </div>
+
+                <div class="eco-card">
+                    <div class="eco-icon">🔬</div>
+                    <h3>Ligandalizer</h3>
+                    <p>E3 recruiter chemotype analytics & similarity scoring.</p>
+                    <a href="https://e3ligandalyzer.com"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="eco-link">
+                        Analyze Recruiters →
+                    </a>
+                </div>
+
+                <div class="eco-card">
+                    <div class="eco-icon">🤖</div>
+                    <h3>AutoDock Server</h3>
+                    <p>Batch docking, receptor prep, & grid automation.</p>
+                    <a href="https://butters.rove-vernier.ts.net/"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="eco-link">
+                        Launch Docking →
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="ecosystem-links mt-10">
+                <div class="eco-line"></div>
+            </div>
+        </section>
+
+       <!-- ========================================================= -->
+        <!-- 6. PUBLICATIONS -->
+        <!-- ========================================================= -->
+        <div id="publications" class="fade-section tron-card p-10 rounded-3xl">
+            <h2 class="text-3xl font-bold text-yellow-300 mb-6">Publications</h2>
+
+            <div class="space-y-8">
+
+                <div>
+                    <h3 class="text-xl font-semibold text-green-300">2025 — Scientific Reports</h3>
+                    <p class="mt-2">
+                        <a href="https://www.nature.com/articles/s41598-025-21502-8"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-gray-300 italic hover:text-green-200 transition-colors">
+                            PRosettaC outperforms AlphaFold3 for modeling PROTAC ternary complexes
+                        </a>
+                    </p>
+                    <p class="text-gray-400 mt-1">
+                        Open-access benchmarking study comparing PRosettaC and AlphaFold3 for PROTAC ternary complex modeling.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold text-yellow-300">2024 — Drug Discovery Today</h3>
+                    <p class="mt-2">
+                        <a href="https://www.sciencedirect.com/science/article/abs/pii/S135964462300363X"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-gray-300 italic hover:text-yellow-200 transition-colors">
+                            Targeted degrader technologies as prospective SARS-CoV-2 therapies
+                        </a>
+                    </p>
+                    <p class="text-gray-400 mt-1">
+                        Review article on degrader-based therapeutic strategies for SARS-CoV-2, including targeted protein degradation approaches.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold text-cyan-300">Under Review</h3>
+                    <p class="mt-2">
+                        <a href="https://github.com/schurerlab/Pymacs"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-gray-300 italic hover:text-cyan-200 transition-colors">
+                        PyMACS: A Python-Based Automation Suite for GROMACS Molecular Dynamics Setup, Simulation, and Analysis
+                        </a>
+                    </p>
+                    <p class="text-gray-400 mt-1">
+                        Repository available on GitHub while manuscript development and review are ongoing.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <!-- ========================================================= -->
+        <!-- 7. ONGOING PROJECTS -->
+        <!-- ========================================================= -->
+        <div class="fade-section tron-card p-10 rounded-3xl">
+            <h2 class="text-3xl font-bold text-green-300 mb-4">Ongoing Research Projects</h2>
+
+            <ul class="list-disc list-inside text-gray-400 space-y-2">
+                <li>Eph/Ephrin degrader modeling & receptor–ligand dynamics</li>
+                <li>AI-guided scaffold inference using enriched MCS graphs</li>
+                <li>DockQ MD benchmarking pipeline (automated across 5,000+ frames)</li>
+                <li>Ligand recruiter atlas for PROTAC design</li>
+                <li>Integrated viral PROTAC screening workflows</li>
+            </ul>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- 8. CONTACT -->
+        <!-- ========================================================= -->
+        <div class="fade-section tron-card p-10 rounded-3xl text-center">
+            <h2 class="text-3xl font-semibold text-yellow-300 mb-4">Contact</h2>
+
+            <p class="text-gray-400">For collaborations or feature requests:</p>
+
+            <p class="mt-3 text-yellow-300 font-bold text-lg">
+                📧 <a href="mailto:jxs794@miami.edu" class="hover:text-yellow-200">jxs794@miami.edu</a>
+            </p>
+
+            <p class="mt-6 text-gray-500">
+                Developed by <strong>Joseph-Michael Schulz</strong><br>
+                University of Miami — Schürer Lab<br>
+                Built with curiosity, clarity, and TRON-grade computational science ⚡
+            </p>
+        </div>
+
+    </section>
+</div>
+
+<!-- ========================================================= -->
+<!-- BACK TO TOP BUTTON -->
+<!-- ========================================================= -->
+<button id="backToTop"
+        class="fixed bottom-6 right-6 bg-yellow-500 hover:bg-yellow-400 text-black p-3 rounded-full shadow-lg opacity-0 pointer-events-none transition-all duration-300">
+    ⬆️
+</button>
+
+<!-- ========================================================= -->
+<!-- UNIVERSAL JS -->
+<!-- ========================================================= -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const sections = document.querySelectorAll(".fade-section");
+    const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add("fade-visible");
+        });
+    }, { threshold: 0.15 });
+
+    sections.forEach(sec => obs.observe(sec));
+
+    window.addEventListener("scroll", () => {
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+        document.getElementById("scrollProgress").style.width = pct + "%";
+    });
+
+    const topBtn = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+        const show = window.scrollY > 300;
+        topBtn.classList.toggle("opacity-100", show);
+        topBtn.classList.toggle("pointer-events-none", !show);
+    });
+
+    topBtn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    const counters = {
+        jobsCount: {{ total_jobs|default(0)|int }},
+        mcsCount: {{ total_mcs|default(0)|int }},
+        sasaCount: {{ total_sasa|default(0)|int }},
+        structCount: {{ struct_count|default(0)|int }}
+    };
+
+    Object.entries(counters).forEach(([id, target]) => animateCounter(id, target));
+
+    function animateCounter(id, target) {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        if (target <= 0) {
+            el.textContent = "0";
+            return;
+        }
+
+        let current = 0;
+        const frames = 50;
+        const increment = Math.max(1, Math.ceil(target / frames));
+
+        function step() {
+            current += increment;
+            if (current < target) {
+                el.textContent = current.toLocaleString();
+                requestAnimationFrame(step);
+            } else {
+                el.textContent = target.toLocaleString();
+            }
+        }
+
+        step();
+    }
+});
+</script>
+
+<!-- ========================================================= -->
+<!-- PAGE CSS -->
+<!-- ========================================================= -->
+<style>
+html {
+    scroll-behavior: smooth;
+}
+
+#publications {
+    scroll-margin-top: 96px;
+}
+
+/* ================================
+   TRON PANELS
+================================ */
+.tron-card {
+    background: rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,0,0.35);
+    backdrop-filter: blur(6px) saturate(150%);
+    border-radius: 18px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 0 22px rgba(255,255,0,0.25),
+        inset 0 0 18px rgba(0,255,150,0.15);
+    transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+}
+
+.tron-card::before {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    background: conic-gradient(
+        from 0deg,
+        transparent,
+        rgba(255,255,180,0.12),
+        transparent 50%
+    );
+    animation: holo-spin 12s linear infinite;
+    pointer-events: none;
+}
+
+.tron-card:hover {
+    transform: translateY(-4px);
+    border-color: #39ff14;
+    box-shadow:
+        0 0 35px rgba(255,255,0,0.35),
+        inset 0 0 25px rgba(0,255,150,0.22);
+}
+
+@keyframes holo-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* ================================
+   HERO
+================================ */
+.hero-shell {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-copy {
+    max-width: 720px;
+}
+
+.hero-kicker {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(190,190,190,0.92);
+}
+
+.hero-cta-primary,
+.hero-cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0.85rem 1.2rem;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.hero-cta-primary {
+    background: linear-gradient(90deg, rgba(255,230,90,0.95), rgba(140,255,90,0.95));
+    color: #090909;
+    box-shadow: 0 0 18px rgba(255,230,90,0.22);
+}
+
+.hero-cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 24px rgba(255,230,90,0.34);
+}
+
+.hero-cta-secondary {
+    border: 1px solid rgba(255,255,0,0.24);
+    color: #e5e7eb;
+    background: rgba(255,255,255,0.03);
+}
+
+.hero-cta-secondary:hover {
+    transform: translateY(-2px);
+    border-color: rgba(57,255,20,0.45);
+    color: #fff;
+}
+
+/* ================================
+   METRICS
+================================ */
+.hero-dashboard {
+    position: relative;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.metric-card {
+    min-height: 220px;
+    padding: 1.35rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+}
+
+.tron-metric {
+    position: relative;
+    background: linear-gradient(180deg, rgba(0,0,0,0.58), rgba(0,0,0,0.36));
+    border: 1px solid rgba(255,255,0,0.20);
+    box-shadow:
+        0 0 18px rgba(255,255,0,0.10),
+        inset 0 0 18px rgba(0,255,150,0.06);
+    overflow: hidden;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.tron-metric::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.05) 0%,
+        transparent 38%,
+        transparent 100%
+    );
+    pointer-events: none;
+}
+
+.tron-metric::after {
+    content: "";
+    position: absolute;
+    right: -36px;
+    bottom: -36px;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(57,255,20,0.12), transparent 68%);
+    pointer-events: none;
+}
+
+.tron-metric:hover {
+    transform: translateY(-4px);
+    border-color: rgba(57,255,20,0.45);
+    box-shadow:
+        0 0 28px rgba(255,255,0,0.18),
+        inset 0 0 24px rgba(0,255,150,0.12);
+}
+
+.metric-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.metric-kicker {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: #9ca3af;
+}
+
+.metric-icon {
+    font-size: 1.25rem;
+    opacity: 0.78;
+}
+
+.metric-value {
+    font-size: clamp(2.75rem, 4vw, 4.5rem);
+    line-height: 1;
+    font-weight: 900;
+    color: #fde047;
+    letter-spacing: -0.04em;
+    text-shadow: 0 0 16px rgba(253,224,71,0.16);
+}
+
+.metric-label {
+    margin-top: 0.9rem;
+    font-size: 1rem;
+    color: #e5e7eb;
+}
+
+@media (min-width: 768px) {
+    .metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* ================================
+   FADE-IN
+================================ */
+.fade-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .7s ease-out, transform .7s ease-out;
+}
+
+.fade-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ================================
+   ECOSYSTEM
+================================ */
+.ecosystem-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 2.2rem;
+    margin-bottom: 35px;
+    color: var(--tron-yellow, #ffee58);
+}
+
+.ecosystem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+.eco-card {
+    background: rgba(0, 0, 0, 0.65);
+    border: 2px solid #39ff14;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 0 12px #39ff14, inset 0 0 10px #39ff14;
+    transition: .25s ease;
+}
+
+.eco-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0 25px #ffee58, inset 0 0 18px #39ff14;
+}
+
+.eco-icon {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+.eco-card h3 {
+    color: #ffee58;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px #ffee58;
+}
+
+.eco-card p {
+    color: #eee;
+    opacity: .85;
+}
+
+.eco-link {
+    display: inline-block;
+    margin-top: 12px;
+    font-weight: bold;
+    color: #39ff14;
+}
+
+.eco-line {
+    width: 85%;
+    height: 3px;
+    margin: 0 auto;
+    background: #ffee58;
+    border-radius: 40px;
+    box-shadow: 0 0 15px #ffee58;
+}
+
+/* ================================
+   BACKGROUND
+================================ */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at center, rgba(0,255,180,0.06) 0%, transparent 70%),
+        url('/static/tron-circuit.svg');
+    background-size: cover, 800px;
+    opacity: 0.35;
+    animation: circuit-fade 18s ease-in-out infinite alternate;
+    z-index: -1;
+}
+
+@keyframes circuit-fade {
+    0%   { opacity: 0.15; filter: hue-rotate(0deg); }
+    50%  { opacity: 0.40; filter: hue-rotate(45deg); }
+    100% { opacity: 0.25; filter: hue-rotate(-45deg); }
+}
+</style>
+
+{% endblock %}

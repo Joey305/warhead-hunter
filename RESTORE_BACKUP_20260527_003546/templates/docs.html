@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Warhead Hunter Documentation{% endblock %}
+{% block meta_description %}Documentation hub for Warhead Hunter workflows, scientific interpretation, use cases, examples, and API access.{% endblock %}
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Warhead Hunter Documentation",
+  "description": "Documentation hub for Warhead Hunter workflows, scientific interpretation, examples, and API access.",
+  "author": {
+    "@type": "Person",
+    "name": "Joseph-Michael Schulz"
+  },
+  "url": "{{ site_base }}/docs"
+}
+</script>
+{% endblock %}
+{% block content %}
+<div class="content-page">
+  <section class="wh-hero wh-scanline-panel reveal">
+    <div class="wh-hero-copy">
+      <div class="wh-kicker">Documentation</div>
+      <h1 class="wh-hero-title">Warhead Hunter Documentation</h1>
+      <p class="wh-hero-lead">Use this page as a central navigation layer for workflow guidance, scientific interpretation, example usage, and API-level access to Warhead Hunter outputs.</p>
+      <div class="wh-actions">
+        <a href="{{ url_for('hunter') }}" class="tron-btn">Launch Hunter</a>
+        <a href="{{ url_for('api_docs') }}" class="content-pill">API Docs</a>
+        <a href="{{ url_for('examples_page') }}" class="content-pill">Examples</a>
+      </div>
+    </div>
+    <div class="wh-hero-visual">
+      <div class="wh-orbit-visual" aria-hidden="true">
+        <div class="wh-orbit-core">Docs</div>
+        <div class="wh-orbit-node wh-orbit-node-a">Workflow</div>
+        <div class="wh-orbit-node wh-orbit-node-b">Science</div>
+        <div class="wh-orbit-node wh-orbit-node-c">API</div>
+        <div class="wh-orbit-node wh-orbit-node-d">Examples</div>
+        <div class="wh-orbit-tag">Public navigation layer</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wh-section reveal">
+    <div class="wh-section-head">
+      <div>
+        <div class="wh-section-kicker">Start Here</div>
+        <h2 class="wh-section-title">Documentation Map</h2>
+      </div>
+    </div>
+    <div class="wh-card-grid wh-card-grid-2">
+      <a class="wh-feature-card wh-link-card" href="{{ url_for('how_to_use') }}">
+        <div class="wh-card-icon">01</div>
+        <h3 class="wh-card-title">Workflow Guide</h3>
+        <p class="wh-card-copy">Learn the step-by-step path from target input to synchronized 2D and 3D result inspection.</p>
+      </a>
+      <a class="wh-feature-card wh-link-card" href="{{ url_for('science') }}">
+        <div class="wh-card-icon">02</div>
+        <h3 class="wh-card-title">Scientific Interpretation</h3>
+        <p class="wh-card-copy">Review what buried and solvent-exposed ligand atoms can and cannot imply in structural context.</p>
+      </a>
+      <a class="wh-feature-card wh-link-card" href="{{ url_for('use_cases') }}">
+        <div class="wh-card-icon">03</div>
+        <h3 class="wh-card-title">Use Cases</h3>
+        <p class="wh-card-copy">See how the output can support PROTAC-oriented inspection, warhead exploration, and comparative analysis.</p>
+      </a>
+      <a class="wh-feature-card wh-link-card" href="{{ url_for('examples_page') }}">
+        <div class="wh-card-icon">04</div>
+        <h3 class="wh-card-title">Example Workflows</h3>
+        <p class="wh-card-copy">Explore representative kinase, viral enzyme, and E3-oriented output patterns.</p>
+      </a>
+      <a class="wh-feature-card wh-link-card" href="{{ url_for('faq') }}">
+        <div class="wh-card-icon">05</div>
+        <h3 class="wh-card-title">FAQ</h3>
+        <p class="wh-card-copy">Quick answers about inputs, outputs, interpretation, and scientific scope.</p>
+      </a>
+      <a class="wh-feature-card wh-link-card" href="{{ url_for('api_docs') }}">
+        <div class="wh-card-icon">06</div>
+        <h3 class="wh-card-title">API & Automation</h3>
+        <p class="wh-card-copy">Use job, file, bundle, and curated example endpoints for retrieval and notebook workflows.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="wh-section reveal">
+    <div class="wh-card-grid wh-card-grid-3">
+      <article class="wh-output-card">
+        <h3 class="wh-output-title">Start Here</h3>
+        <p class="wh-output-copy">Launch the app, learn the workflow, and understand what inputs are expected before running a job.</p>
+      </article>
+      <article class="wh-output-card">
+        <h3 class="wh-output-title">Scientific Interpretation</h3>
+        <p class="wh-output-copy">Use the science and use-case pages to frame output as inspection guidance rather than guaranteed prediction.</p>
+      </article>
+      <article class="wh-output-card">
+        <h3 class="wh-output-title">Example Outputs</h3>
+        <p class="wh-output-copy">Move into curated examples, browsable jobs, and API bundle downloads when you need concrete artifacts.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="wh-cta-panel reveal">
+    <h2 class="wh-cta-title">Need Workflow Guidance Or Programmatic Access?</h2>
+    <p class="wh-cta-copy">Open the launch flow, inspect examples, or go directly to the API documentation for bundles, manifests, and prepared structure files.</p>
+    <div class="wh-actions">
+      <a href="{{ url_for('hunter') }}" class="tron-btn">Launch Hunter</a>
+      <a href="{{ url_for('examples_page') }}" class="content-pill">Examples</a>
+      <a href="{{ url_for('api_docs') }}" class="content-pill">API Docs</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

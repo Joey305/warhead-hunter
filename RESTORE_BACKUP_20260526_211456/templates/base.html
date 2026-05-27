@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Warhead Hunter — Atom-Level Solvent Exposure Mapping for Protein-Bound Ligands{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Warhead Hunter maps atom-level solvent exposure on protein-bound ligands to help researchers inspect candidate sites for warhead installation, linker attachment, chemical expansion, and PROTAC-oriented design.{% endblock %}">
+    <link rel="canonical" href="{% block canonical %}{{ site_base ~ request.path }}{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Warhead Hunter">
+    <meta property="og:title" content="{% block og_title %}Warhead Hunter — Atom-Level Solvent Exposure Mapping for Protein-Bound Ligands{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Warhead Hunter is a web-based tool for mapping atom-level solvent exposure on protein-bound ligands and helping researchers inspect candidate sites for warhead installation, linker attachment, chemical expansion, and PROTAC-oriented design.{% endblock %}">
+    <meta property="og:url" content="{{ site_base ~ request.path }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}Warhead Hunter — Atom-Level Solvent Exposure Mapping for Protein-Bound Ligands{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Warhead Hunter maps atom-level solvent exposure on protein-bound ligands for structure-guided medicinal chemistry workflows.{% endblock %}">
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/Target-favicon.png') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/Target-favicon.png') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tron.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    {% block page_css %}{% endblock %}
+    {% block structured_data %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Warhead Hunter",
+      "applicationCategory": "ScientificApplication",
+      "operatingSystem": "Web",
+      "description": "Warhead Hunter is a web-based tool for mapping atom-level solvent exposure on protein-bound ligands and helping researchers inspect candidate ligand atoms for warhead installation, linker attachment, chemical expansion, and PROTAC-oriented design.",
+      "author": {
+        "@type": "Person",
+        "name": "Joseph-Michael Schulz"
+      },
+      "url": "{{ site_base }}/"
+    }
+    </script>
+    {% endblock %}
+</head>
+
+<body class="platform-body">
+
+    <div class="platform-bg" aria-hidden="true">
+        <div class="platform-bg-orb platform-bg-orb-a"></div>
+        <div class="platform-bg-orb platform-bg-orb-b"></div>
+        <div class="platform-bg-grid"></div>
+    </div>
+
+    {% include "nav.html" %}
+
+    <div class="platform-shell">
+        <main class="platform-main">
+            {% block content %}{% endblock %}
+        </main>
+
+        {% include "footer.html" %}
+    </div>
+
+
+
+    <div id="tronLoader" class="tron-loading-overlay">
+        <div class="tron-spinner"></div>
+    </div>
+    
+    <script>
+    function showLoader() {
+        document.getElementById("tronLoader").style.display = "flex";
+    }
+    </script>
+
+    <script>
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 10) {
+            document.body.classList.add('scrolled');
+        } else {
+            document.body.classList.remove('scrolled');
+        }
+    });
+    </script>
+    <script src="{{ url_for('static', filename='js/site_fx.js') }}" defer></script>
+    {% block page_js %}{% endblock %}
+
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}PROTAC Design Software Ecosystem{% endblock %}
+{% block meta_description %}Explore the Warhead Hunter ecosystem alongside PROTAC Builder, E3 Ligandalyzer, V-LiSEMOD, and related structure-guided medicinal chemistry tools.{% endblock %}
+{% block content %}
+<div class="content-page">
+  <section class="content-hero">
+    <div class="content-kicker">Connected Tools</div>
+    <h1 class="content-title">PROTAC Design Software Ecosystem</h1>
+    <p class="content-lead">Warhead Hunter is part of a broader toolkit for structure-guided medicinal chemistry and targeted protein degradation research.</p>
+  </section>
+  <section class="content-card">
+    <h2>Companion Tools</h2>
+    <ul>
+      <li><a href="https://protacbuilder.com" target="_blank" rel="noopener noreferrer">PROTAC Builder</a> for linker- and degrader-oriented design workflows.</li>
+      <li><a href="https://e3ligandalyzer.com" target="_blank" rel="noopener noreferrer">E3 Ligandalyzer</a> for recruiter-side ligand analysis.</li>
+      <li><a href="https://vlisemod.com" target="_blank" rel="noopener noreferrer">V-LiSEMOD</a> for related structural-analysis workflows.</li>
+      <li><a href="https://github.com/schurerlab/Pymacs" target="_blank" rel="noopener noreferrer">PyMACS</a> for molecular dynamics preparation and analysis workflows.</li>
+    </ul>
+    <p>Within this ecosystem, Warhead Hunter focuses on atom-level ligand solvent exposure mapping and candidate modification-site inspection in protein-bound context.</p>
+  </section>
+  <section class="content-sidebar-card">
+    <h2>Explore More</h2>
+    <div class="content-link-row">
+      <a class="content-pill" href="{{ url_for('hunter') }}">Launch Hunter</a>
+      <a class="content-pill" href="{{ url_for('how_to_use') }}">How to Use</a>
+      <a class="content-pill" href="{{ url_for('science') }}">Science</a>
+      <a class="content-pill" href="{{ url_for('use_cases') }}">Use Cases</a>
+      <a class="content-pill" href="{{ url_for('docs_page') }}">Docs</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

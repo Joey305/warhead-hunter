@@ -266,7 +266,27 @@ _TWO_LETTER_ELEMENTS = {
     "K":  "K",
     "LI": "Li",
 }
-_ORGANIC_FIRST_LETTERS = set(list("CNOSPFIB")) | {"I"}
+_ORGANIC_FIRST_LETTERS = set(list("HCNOSPFIB")) | {"I"}
+
+
+def normalize_sdf_residue_id(value) -> str:
+    s = str(value).strip()
+    try:
+        f = float(s)
+        if f.is_integer():
+            return str(int(f))
+    except Exception:
+        pass
+    return s
+
+
+def sdf_basename_from_group_key(key) -> str:
+    ligand, target, pdb_id, resid, chain = key
+    pid = str(pdb_id).lower().strip()
+    ch = str(chain).upper().strip()
+    lig = normalize_warhead_id(ligand).upper().strip()
+    rid = normalize_sdf_residue_id(resid)
+    return f"{pid}_{ch}_{lig}_{rid}"
 
 
 def infer_element_from_atom_name(atom_name: str) -> str:
@@ -287,6 +307,8 @@ def infer_element_from_atom_name(atom_name: str) -> str:
             return "C"
         return _TWO_LETTER_ELEMENTS[tok]
 
+    # PDB ligand hydrogens often arrive as HN1, HNC, HOL, etc. The leading H is
+    # the element; the remaining characters are atom-name context, not "Hn".
     if tok[0] in _ORGANIC_FIRST_LETTERS:
         return tok[0]
 
@@ -743,7 +765,10 @@ def compute_mcs(key, grouped):
     # ----------------------------
     set_step("GET_GROUP")
     try:
-        df = grouped.get_group(key).copy().reset_index(drop=True)
+        if hasattr(grouped, "get_group"):
+            df = grouped.get_group(key).copy().reset_index(drop=True)
+        else:
+            df = grouped[key].copy().reset_index(drop=True)
     except KeyError:
         dbg(f"END key={key} (no group) dt={time.perf_counter()-t_start:.2f}s")
         return [], [], [[ligand, pdb_id, "No 3D atom group found"]]
@@ -776,12 +801,7 @@ def compute_mcs(key, grouped):
     # ----------------------------
     set_step("SDF_BLOCK")
     if WRITE_SDF:
-        pid = str(pdb_id).lower().strip()
-        ch  = str(chain).upper().strip()
-        lig = str(ligand).strip()
-        rid = str(resid).strip()
-
-        base = f"{pid}_{ch}_{lig}_{rid}"
+        base = sdf_basename_from_group_key(key)
         out_sdf = SDF_DIR / f"{base}.sdf"
 
         # 🔥 this is the “why didn’t it skip?” truth line
@@ -953,16 +973,15 @@ def compute_mcs(key, grouped):
     dbg(f"END key={key} mode={mode} mapped={len(map_3d_to_2d)} dt={dt_total:.2f}s")
     return rows_mcs, rows_all, (errs if errs else None)
 
-# will be set in __main__ (works great with Linux fork)
-GROUPED = None
 PER_KEY_TIMEOUT = 8  # seconds; tune as needed
 
-def compute_mcs_timed(key):
+def compute_mcs_timed(key, group_df):
     ligand, target, pdb_id, resid, chain = key
     try:
         # hard cutoff for the whole ligand instance
         with time_limit(PER_KEY_TIMEOUT):
-            return compute_mcs(key, GROUPED)
+            grouped_one = {key: group_df}
+            return compute_mcs(key, grouped_one)
     except TimeoutException:
         return [], [], [[ligand, pdb_id, f"TIMEOUT (>{PER_KEY_TIMEOUT}s)"]]
     except Exception as e:
@@ -1087,10 +1106,6 @@ if __name__ == "__main__":
 
     print("⚙️ Using hard timeout (5s per ligand) via SIGALRM")
 
-    # IMPORTANT: set global for forked workers (Linux default start method)
-    GROUPED = grouped
-
-
     HARD_GIVEUP_SEC = 10  # <- choose: 20–60 is reasonable
 
     with Pool(processes=NPROC, maxtasksperchild=50) as pool:
@@ -1098,7 +1113,7 @@ if __name__ == "__main__":
         submitted_at = {}
 
         for k in keys:
-            pending[k] = pool.apply_async(compute_mcs_timed, (k,))
+            pending[k] = pool.apply_async(compute_mcs_timed, (k, grouped.get_group(k).copy()))
             submitted_at[k] = time.perf_counter()
 
         done = 0
@@ -1159,6 +1174,18 @@ if __name__ == "__main__":
         pool.join()
 
     print("✅ POOL COMPLETE (or aborted) — proceeding to write CSVs + SVG", flush=True)
+
+    if WRITE_SDF:
+        sdf_count = len(list(SDF_DIR.glob("*.sdf")))
+        expected_sdfs = sorted(f"{sdf_basename_from_group_key(k)}.sdf" for k in keys)
+        actual_sdfs = {p.name for p in SDF_DIR.glob("*.sdf")}
+        missing_sdfs = [name for name in expected_sdfs if name not in actual_sdfs]
+        failed_sdf_groups = len(missing_sdfs)
+        print(f"🧪 SDF expected groups: {len(expected_sdfs)}", flush=True)
+        print(f"🧪 SDF files generated: {sdf_count} → {SDF_DIR}", flush=True)
+        print(f"🧪 SDF failed groups: {failed_sdf_groups}", flush=True)
+        if missing_sdfs:
+            print(f"⚠️ First missing SDFs: {missing_sdfs[:20]}", flush=True)
 
 
 

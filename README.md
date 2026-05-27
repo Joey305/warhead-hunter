@@ -72,6 +72,24 @@ Many molecular design workflows begin with a high-confidence ligand-bound struct
 
 Warhead Hunter addresses that question by combining protein-ligand structural context, ligand atom mapping, solvent-accessible surface area analysis, and interactive visual interpretation.
 
+### PROTAC Builder handoff URL
+
+`PROTAC_BUILDER_BASE` controls the external PROTAC Builder handoff target.
+
+Default:
+
+```text
+https://protacbuilder.com/copy/COPYindex
+```
+
+For private development only, override it with:
+
+```text
+PROTAC_BUILDER_BASE=https://your-private-builder/copy/COPYindex
+```
+
+Do not hardcode private builder URLs in source.
+
 ---
 
 <a id="why-warhead-hunter"></a>

@@ -26,7 +26,6 @@ import os
 import sys
 import math
 import argparse
-import traceback
 import pandas as pd
 import requests
 from tqdm import tqdm
@@ -133,6 +132,27 @@ def safe_bertz(mol):
             return math.nan
 
 
+def safe_chiral_atoms(mol):
+    try:
+        Chem.AssignStereochemistry(mol, force=True, cleanIt=True)
+    except Exception:
+        pass
+
+    try:
+        return int(rdMolDescriptors.CalcNumAtomStereoCenters(mol))
+    except Exception:
+        try:
+            centers = Chem.FindMolChiralCenters(
+                mol,
+                includeUnassigned=True,
+                force=True,
+                useLegacyImplementation=False,
+            )
+            return int(len(centers))
+        except Exception:
+            return math.nan
+
+
 def druglikeness_rules(d):
     mw, logp, tpsa = d["MW"], d["LogP"], d["TPSA"]
     hbd, hba, rot = d["HBD"], d["HBA"], d["Rotatable_Bonds"]
@@ -184,7 +204,7 @@ def compute_descriptors(mol):
         "Aromatic_Rings": rdMolDescriptors.CalcNumAromaticRings(mol),
         "Fraction_CSP3": rdMolDescriptors.CalcFractionCSP3(mol),
         "Heavy_Atom_Count": mol.GetNumHeavyAtoms(),
-        "Chiral_Atoms": rdMolDescriptors.CalcNumAtomStereoCenters(mol),
+        "Chiral_Atoms": safe_chiral_atoms(mol),
         "Formal_Charge": Chem.GetFormalCharge(mol),
         "QED": QED.qed(mol),
         "BertzCT": safe_bertz(mol),
@@ -441,7 +461,7 @@ def load_5charmap_maps(map_path="5CharMAP.csv"):
     alias = alias.copy()
     alias.columns = [str(c).strip().lower() for c in alias.columns]
     alias = alias.fillna("")
-    alias = alias.applymap(lambda x: str(x).strip() if x is not None else "")
+    alias = alias.apply(lambda col: col.map(lambda x: str(x).strip() if x is not None else ""))
 
     # Drop rows that are entirely blank (header-only CSVs / whitespace rows)
     if len(alias.columns) == 0 or alias.empty:
@@ -453,16 +473,13 @@ def load_5charmap_maps(map_path="5CharMAP.csv"):
         print("ℹ️ 5CharMAP.csv has no usable rows → alias mapping disabled.")
         return {}, {}, {}, {}
 
-    # Required columns. If the file is malformed, continue without aliasing
-    # instead of killing the whole job.
-    required = {"pdb", "ligand5", "ligandx"}
-    missing = [c for c in required if c not in alias.columns]
-    if missing:
-        print(
-            f"⚠️ 5CharMAP.csv missing required columns {missing} "
-            f"(found: {list(alias.columns)}) → alias mapping disabled."
-        )
-        return {}, {}, {}, {}
+    # Required columns
+    if "pdb" not in alias.columns:
+        raise RuntimeError(f"5CharMAP.csv missing required column: pdb (found: {list(alias.columns)})")
+    if "ligand5" not in alias.columns:
+        raise RuntimeError(f"5CharMAP.csv missing required column: ligand5 (found: {list(alias.columns)})")
+    if "ligandx" not in alias.columns:
+        raise RuntimeError(f"5CharMAP.csv missing required column: ligandX / ligandx (found: {list(alias.columns)})")
 
     has_lig3 = "ligand3" in alias.columns
 
@@ -682,13 +699,9 @@ def main():
         sasa_file = choose_csv()
         print(f"📄 Using SASA file: {sasa_file}")
 
-    if not os.path.exists(sasa_file):
-        raise FileNotFoundError(f"SASA file not found: {sasa_file}")
-
     # 3) Load table
     df = pd.read_csv(sasa_file)
     print("📥 Loaded SASA table.")
-    print(f"🧾 SASA columns: {list(df.columns)}")
 
     if "Warhead" not in df.columns:
         raise KeyError("SASA table must contain 'Warhead' column (ligand code).")
@@ -861,6 +874,12 @@ def main():
                 results.append(row)
 
     out_df = pd.DataFrame(results)
+    if out_df.empty:
+        print("❌ No ligand metadata rows were generated.")
+        out_df.to_csv("Ligand_Metadata.csv", index=False)
+        out_df.to_csv("Ligand_Metadata_Failures.csv", index=False)
+        return
+
     fails = out_df[out_df.columns.intersection(["Error"])].notna().any(axis=1)
     out_df[fails].to_csv("Ligand_Metadata_Failures.csv", index=False)
     out_df[~fails].to_csv("Ligand_Metadata.csv", index=False)
@@ -885,14 +904,18 @@ def main():
     out_df = out_df[[c for c in header if c in out_df.columns]]
     out_df.to_csv("Ligand_Metadata.csv", index=False)
 
+    success_count = int((~fails).sum())
+    failure_count = int(fails.sum())
+    print(f"📊 Ligand metadata rows: total={len(out_df)} success={success_count} failures={failure_count}")
+    if failure_count:
+        preview_cols = [c for c in ["Ligand", "SMILES", "Error"] if c in pd.DataFrame(results).columns]
+        if preview_cols:
+            print("⚠️ Metadata failures (first 10):")
+            print(pd.DataFrame(results).loc[fails, preview_cols].head(10).to_string(index=False))
+
     print("\n🎉 COMPLETE → Ligand_Metadata.csv")
     print("===================================================================")
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception:
-        print("❌ 7_metadata.py crashed with an uncaught exception:")
-        traceback.print_exc()
-        sys.exit(1)
+    main()

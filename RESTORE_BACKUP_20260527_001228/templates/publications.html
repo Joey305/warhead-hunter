@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Warhead Hunter Publications and Scientific Background{% endblock %}
+{% block meta_description %}Scientific background, related publications, and companion software context relevant to Warhead Hunter and structure-guided medicinal chemistry workflows.{% endblock %}
+{% block content %}
+<div class="content-page">
+  <section class="content-hero">
+    <div class="content-kicker">Scientific Background</div>
+    <h1 class="content-title">Publications and Scientific Background</h1>
+    <p class="content-lead">Warhead Hunter sits within a broader structure-guided medicinal chemistry and PROTAC-design ecosystem. This page gathers related publications and connected software efforts.</p>
+  </section>
+  <section class="content-card">
+    <h2>Selected Publications</h2>
+    <h3>Scientific Reports (2025)</h3>
+    <p><a href="https://www.nature.com/articles/s41598-025-21502-8" target="_blank" rel="noopener noreferrer">PRosettaC outperforms AlphaFold3 for modeling PROTAC ternary complexes</a></p>
+    <h3>Drug Discovery Today (2023)</h3>
+    <p><a href="https://pubmed.ncbi.nlm.nih.gov/38029836/" target="_blank" rel="noopener noreferrer">Targeted degrader technologies as prospective SARS-CoV-2 therapies</a></p>
+    <h3>Related Software Work</h3>
+    <p><a href="https://github.com/schurerlab/Pymacs" target="_blank" rel="noopener noreferrer">PyMACS: a Python-based automation suite for GROMACS molecular dynamics setup, simulation, and analysis</a></p>
+  </section>
+  <section class="content-sidebar-card">
+    <h2>Explore More</h2>
+    <div class="content-link-row">
+      <a class="content-pill" href="{{ url_for('hunter') }}">Launch Hunter</a>
+      <a class="content-pill" href="{{ url_for('how_to_use') }}">How to Use</a>
+      <a class="content-pill" href="{{ url_for('science') }}">Science</a>
+      <a class="content-pill" href="{{ url_for('use_cases') }}">Use Cases</a>
+      <a class="content-pill" href="{{ url_for('docs_page') }}">Docs</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

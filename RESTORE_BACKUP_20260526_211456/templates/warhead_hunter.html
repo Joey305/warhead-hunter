@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  .wh-wrap { max-width: 980px; margin: 0 auto; padding: 10px; }
+
+  .wh-header {
+    display:flex;
+    flex-direction:column;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .wh-subtitle {
+    color:#777;
+    font-size: 0.95em;
+    line-height: 1.4;
+  }
+
+  .wh-card { padding: 22px; }
+
+  .wh-grid {
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 860px){
+    .wh-grid { grid-template-columns: 1fr; }
+  }
+
+  .wh-field { display:flex; flex-direction:column; gap: 8px; }
+
+  .wh-label {
+    color: #aaa;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    font-size: 0.88em;
+    text-transform: uppercase;
+  }
+
+  .wh-help {
+    color:#666;
+    font-size: 0.85em;
+    margin-top: -2px;
+    line-height: 1.4;
+  }
+
+  .wh-input, .wh-textarea {
+    width: 100%;
+    padding: 12px 12px;
+    background: #000;
+    border: 1px solid rgba(0,255,255,0.35);
+    border-radius: 8px;
+    color: #fff;
+    outline: none;
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  }
+
+  .wh-input:focus, .wh-textarea:focus {
+    border-color: var(--tron-cyan);
+    box-shadow: 0 0 16px rgba(0,255,255,0.15);
+    transform: translateY(-1px);
+  }
+
+  .wh-textarea {
+    min-height: 170px;
+    resize: vertical;
+    color: var(--tron-yellow);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+    line-height: 1.35;
+  }
+
+  .wh-divider {
+    height: 1px;
+    background: #1e1e1e;
+    margin: 18px 0;
+  }
+
+  .wh-chips {
+    display:flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .wh-chip {
+    border: 1px solid #222;
+    background: rgba(255,255,255,0.02);
+    color: #bbb;
+    padding: 6px 10px;
+    border-radius: 999px;
+    cursor:pointer;
+    font-size: 0.85em;
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    user-select:none;
+  }
+  .wh-chip:hover {
+    transform: translateY(-1px);
+    border-color: rgba(0,255,255,0.25);
+    background: rgba(0,255,255,0.05);
+    color: #e9ffff;
+  }
+
+  .wh-actions {
+    display:flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .wh-secondary {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #222;
+    background: rgba(255,255,255,0.02);
+    color:#bbb;
+    font-weight: 800;
+    cursor:pointer;
+    transition: transform 160ms ease, border-color 160ms ease;
+  }
+  .wh-secondary:hover { transform: translateY(-1px); border-color:#3a3a3a; }
+
+  .wh-primary {
+    flex: 1;
+    min-width: 240px;
+  }
+
+  .wh-note {
+    color:#666;
+    font-size: 0.85em;
+    line-height: 1.4;
+  }
+</style>
+
+<div class="wh-wrap">
+  <div class="wh-header">
+    <h1 class="glow-text" style="margin:0;">WARHEAD HUNTER PROTOCOL</h1>
+    <div class="wh-subtitle">
+      Provide a target label + an RCSB search phrase. FASTA is optional but improves specificity when matching proteins.
+    </div>
+  </div>
+
+  <div class="glass-panel wh-card">
+    <form action="/launch_job" method="POST" id="whForm">
+
+      <!-- TOP: two-column inputs -->
+      <div class="wh-grid">
+        <div class="wh-field">
+          <div class="wh-label">Target Identifier</div>
+          <input class="wh-input" type="text" name="target_name" id="target_name"
+                 placeholder="e.g. KRAS, BTK, SMARCA2" required>
+          <div class="wh-help">Short label used to name and organize outputs.</div>
+
+          <div class="wh-chips" aria-label="Target examples">
+            <div class="wh-chip" onclick="setField('target_name','KRAS')">KRAS</div>
+            <div class="wh-chip" onclick="setField('target_name','BTK')">BTK</div>
+            <div class="wh-chip" onclick="setField('target_name','SMARCA2')">SMARCA2</div>
+            <div class="wh-chip" onclick="setField('target_name','EGFR')">EGFR</div>
+          </div>
+        </div>
+
+        <div class="wh-field">
+          <div class="wh-label">RCSB Search Query</div>
+          <input class="wh-input" type="text" name="search_query" id="search_query"
+                 placeholder="e.g. KRAS covalently bound" required>
+          <div class="wh-help">Natural language is fine. Include “covalent”, “bound”, inhibitor names, etc.</div>
+
+          <div class="wh-chips" aria-label="Query examples">
+            <div class="wh-chip" onclick="setField('search_query','KRAS covalent inhibitor bound')">KRAS covalent inhibitor bound</div>
+            <div class="wh-chip" onclick="setField('search_query','BTK covalently bound inhibitor')">BTK covalently bound inhibitor</div>
+            <div class="wh-chip" onclick="setField('search_query','SMARCA2 bromodomain ligand bound')">SMARCA2 bromodomain ligand bound</div>
+            <div class="wh-chip" onclick="setField('search_query','EGFR kinase inhibitor bound')">EGFR kinase inhibitor bound</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wh-divider"></div>
+
+      <!-- FASTA -->
+      <div class="wh-field">
+        <div class="wh-label">Sequence (FASTA) — Optional</div>
+        <textarea class="wh-textarea" name="fasta_seq" id="fasta_seq"
+                  placeholder=">MyTarget
+MSEQNNTEMTFQIQRIYTKDISFEAPNAPHVFQKDW..."></textarea>
+        <div class="wh-help">
+          Recommended when your search term is broad. If you paste FASTA, include the header line starting with “&gt;”.
+        </div>
+      </div>
+
+      <div class="wh-divider"></div>
+
+      <!-- ACTIONS -->
+      <div class="wh-actions">
+        <div class="wh-note">
+          This will start a scan job and generate outputs in your jobs directory.
+        </div>
+
+        <div style="display:flex; gap:10px; margin-left:auto;">
+          <button type="button" class="wh-secondary" onclick="clearForm()">Clear</button>
+          <button type="submit" class="tron-btn wh-primary">INITIATE SCAN</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+  function setField(id, value){
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = value;
+    el.focus();
+  }
+
+  function clearForm(){
+    document.getElementById("target_name").value = "";
+    document.getElementById("search_query").value = "";
+    document.getElementById("fasta_seq").value = "";
+    document.getElementById("target_name").focus();
+  }
+</script>
+
+{% endblock %}

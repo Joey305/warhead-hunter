@@ -245,7 +245,12 @@
 
 {% block page_js %}
 <script>
-  window.PROTACABLE_CONFIG = { job_id: {{ job_id|tojson }} };
+  window.PROTACABLE_CONFIG = Object.assign(
+    {},
+    window.PROTACABLE_CONFIG || {},
+    { job_id: {{ job_id|tojson }} }
+  );
+  window.PROTAC_BUILDER_BASE = {{ (protac_builder_base or 'https://protacbuilder.com/copy/COPYindex')|tojson }};
 </script>
 <script defer src="https://unpkg.com/ngl@2.0.0-dev.37/dist/ngl.js"></script>
 <script defer src="{{ url_for('static', filename='js/3Drender.js') }}"></script>

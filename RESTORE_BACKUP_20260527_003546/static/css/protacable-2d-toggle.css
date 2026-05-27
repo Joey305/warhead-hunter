@@ -1,0 +1,190 @@
+/* Toggle buttons */
+.map-toggle {
+  display: flex;
+  gap: 6px;
+}
+
+.toggle-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #aaa;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-btn.active {
+  color: #000;
+  background: var(--tron-yellow);
+  border-color: var(--tron-yellow);
+  box-shadow: 0 0 12px #ffd60055;
+}
+
+/* Legend */
+.map-legend {
+  margin-top: 10px;
+  font-size: 0.7rem;
+  opacity: 0.85;
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.swatch.low { background:#00c853; }
+.swatch.med { background:#ffd600; }
+.swatch.high { background:#d50000; }
+
+/* Normal mode UI */
+.normal-ui {
+  margin-top: 10px;
+}
+
+.copy-btn {
+  background: none;
+  border: 1px solid #ffd600;
+  color: #ffd600;
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.copy-btn:active {
+  background: #4fc3f7;
+  border-color: #4fc3f7;
+  color: #000;
+  box-shadow: 0 0 10px #4fc3f7aa;
+}
+
+
+/* ============================
+   SASA LEGEND – LARGE & CLEAR
+   ============================ */
+
+.map-legend {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.06),
+    rgba(255,255,255,0.02)
+  );
+  font-size: 1.55rem;          /* ⬆ larger text */
+  letter-spacing: 0.05em;
+}
+
+/* Rows */
+.map-legend .legend-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;                   /* ⬆ spacing */
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Color squares */
+.map-legend .swatch {
+  width: 20px;                 /* ⬆ bigger */
+  height: 20px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+/* Colors with glow */
+.map-legend .swatch.low {
+  background: #00e676;
+  box-shadow: 0 0 14px #00e676cc;
+}
+
+.map-legend .swatch.med {
+  background: #ffea00;
+  box-shadow: 0 0 14px #ffea00cc;
+}
+
+.map-legend .swatch.high {
+  background: #ff1744;
+  box-shadow: 0 0 14px #ff1744cc;
+}
+
+/* Note text */
+.map-legend .legend-note {
+  margin-top: 10px;
+  font-size: 0.75rem;
+  color: #e0e0e0;
+  letter-spacing: 0.04em;
+  opacity: 0.95;
+}
+
+.rule-chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+
+.rule-chip.ok {
+  color: #00e676;
+  border-color: #00e67655;
+  background: rgba(0, 230, 118, 0.08);
+}
+
+.rule-chip.bad {
+  color: #ff5252;
+  border-color: #ff525255;
+  background: rgba(255, 82, 82, 0.08);
+}
+
+.rules-summary {
+  font-size: 0.65rem;
+  color: #888;
+  margin-bottom: 6px;
+}
+
+.qed-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6rem;
+  color: #777;
+  margin-top: 4px;
+}
+
+#qed-chip {
+  font-size: 1.4rem;
+  padding: 4px 8px;
+}
+
+.smiles-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.copy-btn.secondary {
+  color: #4fc3f7;
+  border-color: #4fc3f755;
+}
+
+.copy-btn.secondary:hover {
+  background: rgba(79, 195, 247, 0.15);
+}
+
+
+.copy-btn.flash {
+  background: linear-gradient(90deg, #ffd600, #4fc3f7);
+  color: #000;
+  box-shadow: 0 0 12px #4fc3f7aa;
+}

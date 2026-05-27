@@ -121,6 +121,23 @@
   border-left-color: var(--tron-yellow);
 }
 
+.result-card.sdf-missing {
+  cursor: default;
+  border-left-color: #ff5252;
+  opacity: 0.72;
+}
+
+.artifact-warning {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 82, 82, 0.45);
+  color: #ffb3b3;
+  background: rgba(80, 0, 0, 0.34);
+  font-family: monospace;
+  font-size: 0.72rem;
+  line-height: 1.25;
+}
+
 .result-card-top {
   display: flex;
   justify-content: space-between;
@@ -262,12 +279,14 @@
 
   border-radius: 12px;
   border: 1px solid rgba(0,255,255,0.10);
-  background: rgba(0,0,0,0.25);
+  background: #020607;
 }
 
 .map-img {
+  display: block;
   width: 100%;
   height: auto;
+  background: #020607;
 }
 
 /* Optional zoom mode */

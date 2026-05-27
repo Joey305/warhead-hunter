@@ -1,0 +1,68 @@
+{% set path = request.path %}
+{% set home_active = path == '/' %}
+{% set hunter_active = path.startswith('/hunter') %}
+{% set scout_active = path.startswith('/scout') %}
+{% set howto_active = path.startswith('/how-to-use') %}
+{% set science_active = path.startswith('/science') %}
+{% set usecases_active = path.startswith('/use-cases') %}
+{% set examples_active = path.startswith('/examples') %}
+{% set docs_active = path.startswith('/docs') %}
+{% set api_active = path == '/api' or path.startswith('/api-docs') %}
+{% set about_active = path.startswith('/about') %}
+
+<header class="platform-header">
+    <div class="platform-header-inner platform-header-compact">
+        <a href="{{ url_for('home') }}" class="brand-lockup brand-lockup-compact" aria-label="Warhead Hunter home">
+            <span class="brand-name">Warhead Hunter</span>
+            <span class="brand-kicker">PROTAC Target Module</span>
+        </a>
+
+        <button
+            type="button"
+            class="platform-nav-toggle"
+            id="platform-nav-toggle"
+            aria-expanded="false"
+            aria-controls="platform-nav-panel"
+            aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+        </button>
+
+        <div class="platform-nav-panel platform-nav-panel-compact" id="platform-nav-panel">
+            <nav class="nav-strip nav-strip-core" aria-label="Primary">
+                <a class="nav-link {% if home_active %}active{% endif %}" href="{{ url_for('home') }}">Home</a>
+                <a class="nav-link {% if hunter_active %}active{% endif %}" href="{{ url_for('hunter') }}">Launch Hunter</a>
+                <a class="nav-link {% if scout_active %}active{% endif %}" href="{{ url_for('rcsb_scout') }}">RCSB Scout</a>
+                <a class="nav-link {% if howto_active %}active{% endif %}" href="{{ url_for('how_to_use') }}">How to Use</a>
+                <a class="nav-link {% if science_active %}active{% endif %}" href="{{ url_for('science') }}">Science</a>
+                <a class="nav-link {% if usecases_active %}active{% endif %}" href="{{ url_for('use_cases') }}">Use Cases</a>
+                <a class="nav-link {% if examples_active %}active{% endif %}" href="{{ url_for('examples_page') }}">Examples</a>
+                <a class="nav-link {% if docs_active %}active{% endif %}" href="{{ url_for('docs_page') }}">Docs</a>
+                <a class="nav-link {% if api_active %}active{% endif %}" href="/api-docs">API</a>
+                <a class="nav-link {% if about_active %}active{% endif %}" href="{{ url_for('about') }}">About</a>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<script>
+(function () {
+    const toggle = document.getElementById("platform-nav-toggle");
+    const panel = document.getElementById("platform-nav-panel");
+    if (!toggle || !panel) return;
+
+    toggle.addEventListener("click", function () {
+        const next = !panel.classList.contains("nav-open");
+        panel.classList.toggle("nav-open", next);
+        toggle.setAttribute("aria-expanded", next ? "true" : "false");
+        document.body.classList.toggle("nav-panel-open", next);
+    });
+
+    window.addEventListener("resize", function () {
+        if (window.innerWidth > 980) {
+            panel.classList.remove("nav-open");
+            toggle.setAttribute("aria-expanded", "false");
+            document.body.classList.remove("nav-panel-open");
+        }
+    });
+})();
+</script>

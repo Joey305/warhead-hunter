@@ -6,7 +6,7 @@ import math
 import time
 import hashlib
 from dataclasses import dataclass
-from typing import Dict, Tuple, List, Any
+from typing import Dict, Tuple, List, Any, Optional
 
 from flask import Blueprint, request, jsonify, current_app, abort, make_response
 
@@ -43,14 +43,46 @@ def _job_csv_path(job_id: str) -> str:
         raise RuntimeError("Set app.config['JOBS_DIR'] to your jobs directory.")
 
     candidates = [
-        os.path.join(job_root, job_id, "MCS_OUTPUT", "Ligand_MCS_SASA_ALL_ATOMS.csv"),
+        os.path.join(job_root, job_id, "TARGET_RESULTS", "Warhead_SASA_atoms.csv"),
+        os.path.join(job_root, job_id, "Warhead_SASA_atoms.csv"),
+        os.path.join(job_root, job_id, "TARGET_RESULTS", "Ligand_3D_Atoms_with_SASA.csv"),
+        os.path.join(job_root, job_id, "Ligand_3D_Atoms_with_SASA.csv"),
         os.path.join(job_root, job_id, "MCS_Output", "Ligand_MCS_SASA_ALL_ATOMS.csv"),
+        os.path.join(job_root, job_id, "MCS_OUTPUT", "Ligand_MCS_SASA_ALL_ATOMS.csv"),
     ]
     for p in candidates:
-        if os.path.exists(p):
+        if not os.path.exists(p):
+            continue
+        try:
+            with open(p, "r", newline="") as f:
+                reader = csv.DictReader(f)
+                if any(True for _ in reader):
+                    return p
+        except Exception:
             return p
     # default (helps your 404 message show the likely path)
     return candidates[0]
+
+
+def _field(row: Dict[str, str], *names: str) -> str:
+    lower = {str(k).lower(): v for k, v in row.items()}
+    for name in names:
+        if name in row:
+            return row.get(name) or ""
+        v = lower.get(name.lower())
+        if v is not None:
+            return v or ""
+    return ""
+
+
+def _pick_field(fieldnames: List[str], *names: str) -> Optional[str]:
+    lowered = {f.lower(): f for f in fieldnames}
+    for name in names:
+        if name in fieldnames:
+            return name
+        if name.lower() in lowered:
+            return lowered[name.lower()]
+    return None
 
 def _norm_resid(v: str) -> str:
     s = str(v or "").strip()
@@ -89,23 +121,25 @@ def _build_store(csv_path: str) -> JobSasaStore:
 
     with open(csv_path, "r", newline="") as f:
         reader = csv.DictReader(f)
-
-        required = {
-            "pdb_id", "Chain", "Residue_ID",
-            "AtomSymbol", "atom_id", "atom_name",
-            "x", "y", "z", "Exposure_A2",
-            "Ligand",
-            "AtomIndex",
+        fieldnames = list(reader.fieldnames or [])
+        required_any = {
+            "pdb_id": _pick_field(fieldnames, "pdb_id", "pdb"),
+            "Chain": _pick_field(fieldnames, "Chain", "chain"),
+            "Residue_ID": _pick_field(fieldnames, "Residue_ID", "residue_id", "resid"),
+            "x": _pick_field(fieldnames, "x"),
+            "y": _pick_field(fieldnames, "y"),
+            "z": _pick_field(fieldnames, "z"),
+            "Exposure_A2": _pick_field(fieldnames, "Exposure_A2", "exposure", "exposure_a2"),
         }
-        missing = required - set(reader.fieldnames or [])
+        missing = [name for name, value in required_any.items() if not value]
         if missing:
             raise RuntimeError(f"SASA CSV missing columns: {sorted(missing)}")
 
         for row in reader:
-            pdb   = (row.get("pdb_id") or "").strip().lower()
-            chain = (row.get("Chain") or "").strip().upper()
-            resid = _norm_resid(row.get("Residue_ID"))
-            lig   = (row.get("Ligand") or "").strip().upper()
+            pdb   = _field(row, "pdb_id", "pdb").strip().lower()
+            chain = _field(row, "Chain", "chain").strip().upper()
+            resid = _norm_resid(_field(row, "Residue_ID", "residue_id", "resid"))
+            lig   = _field(row, "Ligand", "Warhead", "ligand", "warhead").strip().upper()
 
             if not pdb or not chain or not resid:
                 continue
@@ -118,35 +152,42 @@ def _build_store(csv_path: str) -> JobSasaStore:
 
             # exposure
             try:
-                exposure = float(row.get("Exposure_A2") or 0.0)
+                exposure = float(_field(row, "Exposure_A2", "exposure", "exposure_a2") or 0.0)
             except Exception:
                 exposure = 0.0
 
             # rdkit atom index
             rdkit_idx = None
             try:
-                if row.get("AtomIndex") not in (None, "", "nan", "NaN"):
-                    rdkit_idx = int(float(row["AtomIndex"]))
+                atom_index_raw = _field(row, "AtomIndex", "atom_index", "rdkit_atom_index")
+                if atom_index_raw not in (None, "", "nan", "NaN"):
+                    rdkit_idx = int(float(atom_index_raw))
             except Exception:
                 rdkit_idx = None
 
             # atom_id
             atom_id = None
             try:
-                if row.get("atom_id") not in (None, "", "nan", "NaN"):
-                    atom_id = int(float(row["atom_id"]))
+                atom_id_raw = _field(row, "atom_id", "serial", "pdb_serial")
+                if atom_id_raw not in (None, "", "nan", "NaN"):
+                    atom_id = int(float(atom_id_raw))
             except Exception:
                 atom_id = None
 
             # coords
             try:
-                x = float(row["x"]); y = float(row["y"]); z = float(row["z"])
+                x = float(_field(row, "x")); y = float(_field(row, "y")); z = float(_field(row, "z"))
             except Exception:
                 continue  # cannot plot without coords
 
+            atom_name = _field(row, "atom_name", "exact_atom", "AtomName").strip()
+            element = _field(row, "AtomSymbol", "element", "atom_symbol").strip()
+            if not element and atom_name:
+                element = "".join(ch for ch in atom_name if ch.isalpha())[:2].strip().title()
+
             atom = {
-                "atom_name": (row.get("atom_name") or "").strip(),
-                "element": (row.get("AtomSymbol") or "").strip(),
+                "atom_name": atom_name,
+                "element": element,
                 "atom_id": atom_id,
                 "x": x, "y": y, "z": z,
                 "exposure": exposure,        # frontend-friendly
@@ -190,7 +231,7 @@ def _get_store(job_id: str) -> JobSasaStore:
     cached = _JOB_CACHE.get(job_id)
 
     # Reload if missing or changed
-    if (cached is None) or (cached.mtime != st.st_mtime) or (cached.size != st.st_size):
+    if (cached is None) or (cached.path != csv_path) or (cached.mtime != st.st_mtime) or (cached.size != st.st_size):
         _JOB_CACHE[job_id] = _build_store(csv_path)
 
     return _JOB_CACHE[job_id]
@@ -336,4 +377,3 @@ def sasa_residue_for_ligand(job_id: str):
     resp.headers["ETag"] = f"\"{store.etag}\""
     resp.headers["Cache-Control"] = "public, max-age=3600"
     return resp
-

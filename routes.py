@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Optional, Iterable, Dict, Any
+import os
 
 import pandas as pd
 from flask import Blueprint, current_app, render_template, abort
@@ -303,6 +304,9 @@ def view_results(job_id: str):
         "results_gallery.html",
         job_id=job_id,
         target_name=target_name,
-        results=results
+        results=results,
+        protac_builder_base=os.environ.get(
+            "PROTAC_BUILDER_BASE",
+            current_app.config.get("PROTAC_BUILDER_BASE", "https://protacbuilder.com/copy/COPYindex"),
+        ),
     )
-

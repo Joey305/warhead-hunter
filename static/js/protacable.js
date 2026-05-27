@@ -4,6 +4,24 @@
   // ============================================================================
   const CFG = window.PROTACABLE_CONFIG || {};
   const JOB_ID = CFG.job_id;
+  const DEFAULT_PROTAC_BUILDER_BASE = "https://protacbuilder.com/copy/COPYindex";
+
+  function getProtacBuilderBase() {
+    const raw =
+      String(window.PROTAC_BUILDER_BASE || "").trim() ||
+      String(window.PROTACSUITE || "").trim() ||
+      DEFAULT_PROTAC_BUILDER_BASE;
+
+    return raw.replace(/\/+$/, "");
+  }
+
+  function getProtacBuilderOrigin() {
+    try {
+      return new URL(getProtacBuilderBase()).origin;
+    } catch {
+      return "https://protacbuilder.com";
+    }
+  }
 
   // ============================================================================
   // 1) STATE (UI-only)
@@ -291,14 +309,17 @@
     }).join(" ");
   }
 
-  async function loadLigandProps(ligandCode, smiles="") {
+  async function loadLigandProps(ligandCode, smiles="", pdbId="", chain="", resid="") {
     const qs = new URLSearchParams();
     if (smiles && String(smiles).trim()) qs.set("smiles", String(smiles).trim());
+    if (pdbId && String(pdbId).trim()) qs.set("pdb_id", String(pdbId).trim().toLowerCase());
+    if (chain && String(chain).trim()) qs.set("chain", String(chain).trim().toUpperCase());
+    if (resid && String(resid).trim()) qs.set("resid", String(resid).trim());
 
     const url = `/api/ligand_props/${JOB_ID}/${encodeURIComponent(ligandCode)}?${qs.toString()}`;
     const r = await fetchJSON(url);
 
-    if (!r.ok || !r.data || Object.keys(r.data).length === 0) {
+    if (!r.ok || !r.data || r.data.ok === false || Object.keys(r.data).length === 0) {
       renderProperties({}, ligandCode);
       renderRules({});
       setQEDChip(null);
@@ -402,8 +423,21 @@
     }
   }
 
+  function markCardArtifactMissing(card, message) {
+    card.classList.remove("pending");
+    card.classList.add("sdf-missing");
+    card.dataset.renderable = "false";
+    if (!card.querySelector(".artifact-warning")) {
+      const warning = document.createElement("div");
+      warning.className = "artifact-warning";
+      warning.textContent = message;
+      card.appendChild(warning);
+    }
+  }
+
   async function filterRenderableCards() {
     const cards = Array.from(document.querySelectorAll(".result-card"));
+    const renderable = [];
 
     for (const card of cards) {
       const pdb = String(card.dataset.pdb || "").trim().toLowerCase();
@@ -412,27 +446,35 @@
       let resid = String(card.dataset.resid || "").trim();
 
       if (!pdb || !chain || !warhead) {
-        card.remove();
+        markCardArtifactMissing(card, "SDF missing — pipeline artifact incomplete");
         continue;
       }
+
+      resid = await resolveResid(pdb, chain, warhead, resid);
+      if (resid) card.dataset.resid = resid;
 
       const proteinUrl =
         `/api/protein/${encodeURIComponent(JOB_ID)}/${encodeURIComponent(pdb)}/${encodeURIComponent(chain)}`;
 
+      const sdfQs = new URLSearchParams();
+      if (resid) sdfQs.set("resid", resid);
+      const sdfQuery = sdfQs.toString() ? `?${sdfQs.toString()}` : "";
       const sdfUrl =
-        `/api/sdf/${encodeURIComponent(JOB_ID)}/${encodeURIComponent(pdb)}/${encodeURIComponent(chain)}/${encodeURIComponent(warhead)}`;
+        `/api/sdf/${encodeURIComponent(JOB_ID)}/${encodeURIComponent(pdb)}/${encodeURIComponent(chain)}/${encodeURIComponent(warhead)}${sdfQuery}`;
 
       const okProtein = await headOrGetOk(proteinUrl);
       const okSdf = await headOrGetOk(sdfUrl);
 
-      if (!okProtein || !okSdf) {
-        card.remove();
+      if (!okSdf) {
+        console.warn("SDF missing for result card:", { job: JOB_ID, pdb, chain, warhead, resid, url: sdfUrl });
+        markCardArtifactMissing(card, "SDF missing — pipeline artifact incomplete");
         continue;
       }
 
-      if (!resid) {
-        resid = await resolveResid(pdb, chain, warhead, "");
-        if (resid) card.dataset.resid = resid;
+      if (!okProtein) {
+        console.warn("Protein artifact missing for result card:", { job: JOB_ID, pdb, chain, warhead, url: proteinUrl });
+        markCardArtifactMissing(card, "Protein artifact missing — pipeline artifact incomplete");
+        continue;
       }
 
       if (resid) {
@@ -445,20 +487,29 @@
         const okSasa = await headOrGetOk(sasaUrl);
 
         if (!okSasa) {
-          card.remove();
-          continue;
+          console.warn("SASA atoms unavailable for result card; keeping card without deleting it:", {
+            job: JOB_ID, pdb, chain, warhead, resid, url: sasaUrl
+          });
         }
       }
 
       card.classList.remove("pending");
+      card.dataset.renderable = "true";
+      renderable.push(card);
     }
 
-    return Array.from(document.querySelectorAll(".result-card"));
+    if (!renderable.length) {
+      console.warn("No result cards have required SDF artifacts. SDF is a required display contract.");
+    }
+
+    return renderable;
   }
 
   function bindCards() {
     document.querySelectorAll(".result-card").forEach(card => {
       card.addEventListener("click", () => {
+        if (card.dataset.renderable === "false") return;
+
         const pdb     = card.dataset.pdb;
         const chain   = card.dataset.chain;
         const warhead = card.dataset.warhead;
@@ -539,10 +590,19 @@
 
  // ✅ FIXED: top-level function (not nested)
   function bindProtacBuilder() {
-    const btn = $("protac-builder");
-    if (!btn) return;
-  
-    btn.addEventListener("click", async () => {
+    const buttons = [
+      $("protac-builder"),
+      $("use-as-protac-btn")
+    ].filter(Boolean);
+    if (!buttons.length) return;
+
+    buttons.forEach((btn) => {
+      if (btn.dataset.protacBuilderBound === "1") return;
+      btn.dataset.protacBuilderBound = "1";
+
+      btn.addEventListener("click", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
       const { pdb, chain, warhead } = State.current;
       if (!pdb || !chain || !warhead) return;
   
@@ -565,18 +625,14 @@
       // ------------------------------------------------------------
       // 2) LOG THE BUILDER CLICK TO builderjobs.csv
       // ------------------------------------------------------------
-      await logBuilderClick(smiles, CFG.job_id);
+      try {
+        await logBuilderClick(smiles, CFG.job_id);
+      } catch (err) {
+        console.warn("Builder click logging failed:", err);
+      }
       openProtacBuilderWithSmiles(smiles);
-  
-      // ------------------------------------------------------------
-      // 3) OPEN PROTAC BUILDER
-      // ------------------------------------------------------------
-      // const builderUrl = `https://protacbuilder.com/copy?smiles=${encodeURIComponent(smiles)}`;
-      // console.log("🧬 Opening PROTAC Builder with URL:", builderUrl);
-      // window.open(builderUrl, "_blank", "noopener,noreferrer");
     });
-
-    
+    });
   }
 
 
@@ -593,7 +649,7 @@ function openProtacBuilderWithSmiles(smiles, options = {}) {
         return;
     }
 
-    const BUILDER_ORIGIN = options.origin || "https://kyle.rove-vernier.ts.net";
+    const builderOrigin = options.origin || getProtacBuilderOrigin();
  
     // Optional explicit session:
     // openProtacBuilderWithSmiles(smiles, { session: "b837..." })
@@ -619,7 +675,7 @@ function openProtacBuilderWithSmiles(smiles, options = {}) {
     appendSmilesToOpenBuilderSession(cleanSmiles, {
         targetSession,
         targetClientId: activeClientId,
-        fallbackOrigin: BUILDER_ORIGIN,
+        fallbackOrigin: builderOrigin,
         fallbackHref: activeHref
     });
 }
@@ -628,7 +684,7 @@ function appendSmilesToOpenBuilderSession(smiles, opts = {}) {
     const cleanSmiles = String(smiles || "").trim();
     const targetSession = String(opts.targetSession || "").trim();
     const targetClientId = String(opts.targetClientId || "").trim();
-    const fallbackOrigin = opts.fallbackOrigin || "https://kyle.rove-vernier.ts.net";
+    const fallbackOrigin = opts.fallbackOrigin || getProtacBuilderOrigin();
     const fallbackHref = String(opts.fallbackHref || "").trim();
 
     const CHANNEL_NAME = "protac_builder_session_bus";
@@ -702,7 +758,7 @@ function appendSmilesToOpenBuilderSession(smiles, opts = {}) {
 
 function openBuilderFallback(smiles, opts = {}) {
     const cleanSmiles = String(smiles || "").trim();
-    const origin = opts.origin || "https://kyle.rove-vernier.ts.net";
+    const origin = opts.origin || getProtacBuilderOrigin();
     const session = String(opts.session || "").trim();
     const fallbackHref = String(opts.href || "").trim();
 
@@ -714,6 +770,9 @@ function openBuilderFallback(smiles, opts = {}) {
     if (fallbackHref) {
         try {
             const u = new URL(fallbackHref);
+            if (u.origin !== getProtacBuilderOrigin()) {
+                throw new Error("Ignoring stale builder session from a different origin.");
+            }
 
             u.searchParams.set("lig_smi", cleanSmiles);
             u.searchParams.set("smiles", cleanSmiles);
@@ -738,13 +797,16 @@ function openBuilderFallback(smiles, opts = {}) {
     // Final fallback.
     if (!builderUrl) {
         builderUrl =
-            `${origin}/copy/COPYindex` +
+            `${getProtacBuilderBase()}` +
             `?lig_smi=${encoded}` +
             `&smiles=${encoded}` +
             `#lig_smi=${encoded}&smiles=${encoded}`;
     }
 
     console.log("🪟 Opening fallback PROTAC Builder:", builderUrl);
+    try {
+        localStorage.setItem("protacBuilder.lastOpenedUrl", builderUrl);
+    } catch {}
 
     // Named window prevents infinite tab spam on fallback.
     // If browser can reuse it, it will.
@@ -768,7 +830,6 @@ function openBuilderFallback(smiles, opts = {}) {
 
   async function resolveResid(pdb, chain, warhead, residFromCard) {
     const raw = String(residFromCard || "").trim();
-    if (raw) return raw;
 
     const url =
       `/api/jobs/${encodeURIComponent(JOB_ID)}/sasa/residue_for_ligand?` +
@@ -778,7 +839,7 @@ function openBuilderFallback(smiles, opts = {}) {
 
     const r = await fetchJSON(url);
     if (r.ok && r.data && r.data.residue_id) return String(r.data.residue_id).trim();
-    return "";
+    return raw;
   }
 
   // ============================================================================
@@ -799,7 +860,7 @@ function openBuilderFallback(smiles, opts = {}) {
     renderSmiles(smiles || "");
     setHUD(PDB, chain, WAR, exposedValue, "Loading…");
 
-    loadLigandProps(WAR, smiles || "");
+    loadLigandProps(WAR, smiles || "", PDB, chain, RESID);
     await load2DMap(PDB, chain, WAR, RESID);
 
     if (window.Render3D && typeof window.Render3D.load === "function") {
@@ -863,207 +924,3 @@ function openBuilderFallback(smiles, opts = {}) {
     }
   });
 })();
-
-
-// ============================================================================
-// 🧬 PROTAC BUILDER BUTTON + SESSION-AWARE HANDOFF
-// Self-contained: fixes missing click binding + missing helper functions.
-// ============================================================================
-
-function normalizeProtacSuiteBase() {
-  // Preferred explicit config from page.
-  // Should be something like:
-  // https://kyle.rove-vernier.ts.net/copy/COPYindex
-  const raw =
-    String(window.PROTACSUITE || "").trim() ||
-    "https://kyle.rove-vernier.ts.net/copy/COPYindex";
-
-  return raw.replace(/\/+$/, "");
-}
-
-function getActiveProtacBuilderSession() {
-  return (
-    localStorage.getItem("protacBuilder.activeSession") ||
-    sessionStorage.getItem("protacBuilder.activeSession") ||
-    ""
-  ).trim();
-}
-
-function buildProtacSessionUrl(sessionId, smiles = "") {
-  const base = normalizeProtacSuiteBase();
-  const cleanSession = String(sessionId || "").trim();
-  const cleanSmiles = String(smiles || "").trim();
-
-  let url;
-
-  if (cleanSession) {
-    url = `${base}/build?session=${encodeURIComponent(cleanSession)}`;
-  } else {
-    url = `${base}`;
-  }
-
-  if (cleanSmiles) {
-    const encoded = encodeURIComponent(cleanSmiles);
-    const sep = url.includes("?") ? "&" : "?";
-
-    url += `${sep}lig_smi=${encoded}&smiles=${encoded}`;
-    url += `#lig_smi=${encoded}&smiles=${encoded}`;
-  }
-
-  return url;
-}
-
-
-
-// ============================================================================
-// 🧬 OPEN BUILDER WITH WARHEAD SMILES + ACTIVE LIGASE SESSION
-// Backend active-session bridge is the source of truth.
-// ============================================================================
-async function openProtacBuilderWithSmiles(smiles) {
-  const cleanSmiles = String(smiles || "").trim();
-
-  if (!cleanSmiles) {
-    alert("No SMILES found for PROTAC Builder.");
-    return;
-  }
-
-  const activeSession = await fetchActiveProtacBuilderSession();
-
-  const base = normalizeProtacSuiteBase();
-  const encodedSmiles = encodeURIComponent(cleanSmiles);
-
-  let builderUrl;
-
-  if (activeSession) {
-    builderUrl =
-      `${base}/build` +
-      `?session=${encodeURIComponent(activeSession)}` +
-      `&lig_smi=${encodedSmiles}` +
-      `&smiles=${encodedSmiles}` +
-      `#lig_smi=${encodedSmiles}&smiles=${encodedSmiles}`;
-
-    console.log("🧬 Opening Builder with active ligase session + warhead SMILES:", {
-      session: activeSession,
-      smiles: cleanSmiles,
-      url: builderUrl
-    });
-  } else {
-    builderUrl =
-      `${base}` +
-      `?lig_smi=${encodedSmiles}` +
-      `&smiles=${encodedSmiles}` +
-      `#lig_smi=${encodedSmiles}&smiles=${encodedSmiles}`;
-
-    console.warn("⚠️ No active ligase session found. Opening Builder with warhead only:", builderUrl);
-  }
-
-  window.open(builderUrl, "PROTAC_BUILDER_LIVE");
-}
-
-function normalizeProtacSuiteBase() {
-  const raw =
-    String(window.PROTACSUITE || "").trim() ||
-    "https://kyle.rove-vernier.ts.net/copy/COPYindex";
-
-  return raw.replace(/\/+$/, "");
-}
-
-async function fetchActiveProtacBuilderSession() {
-  const jobId =
-    window.PROTACABLE_CONFIG?.job_id ||
-    CFG?.job_id ||
-    "global";
-
-  const urls = [
-    `/api/protac-builder/active-session?job_id=${encodeURIComponent(jobId)}`,
-    `/api/protac-builder/active-session?job_id=global`
-  ];
-
-  for (const url of urls) {
-    try {
-      const res = await fetch(url, {
-        headers: {
-          "Accept": "application/json"
-        }
-      });
-
-      const data = await res.json();
-
-      if (res.ok && data.ok && data.session_id) {
-        console.log("✅ Active Builder session fetched from backend:", data);
-        return String(data.session_id).trim();
-      }
-
-    } catch (err) {
-      console.warn("⚠️ Failed fetching active Builder session from:", url, err);
-    }
-  }
-
-  // Last-resort browser fallback.
-  const local =
-    localStorage.getItem("protacBuilder.activeSession") ||
-    sessionStorage.getItem("protacBuilder.activeSession") ||
-    "";
-
-  return String(local || "").trim();
-}
-
-function bindProtacBuilder() {
-  // Support BOTH possible button IDs.
-  const buttons = [
-    $("protac-builder"),
-    $("use-as-protac-btn")
-  ].filter(Boolean);
-
-  if (!buttons.length) {
-    console.warn("⚠️ No PROTAC Builder button found. Expected #protac-builder or #use-as-protac-btn.");
-    return;
-  }
-
-  buttons.forEach((btn) => {
-    // Avoid duplicate listeners if script hot-reloads.
-    if (btn.dataset.protacBuilderBound === "1") return;
-    btn.dataset.protacBuilderBound = "1";
-
-    btn.addEventListener("click", async (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      console.log("🧬 PROTAC Builder button clicked.");
-
-      const { pdb, chain, warhead } = State.current || {};
-
-      if (!pdb || !chain || !warhead) {
-        console.warn("⚠️ Missing current ligand selection:", State.current);
-        alert("Please select a ligand/card first.");
-        return;
-      }
-
-      const smiles = ($("smiles-box")?.innerText || "").trim();
-
-      if (!smiles) {
-        alert("No SMILES found for PROTAC Builder.");
-        return;
-      }
-
-      // Keep your existing backend materialize behavior.
-      fetch(
-        `/api/handoff/materialize/${CFG.job_id}/${pdb}/${chain}/${warhead}`,
-        { method: "POST" }
-      ).catch(err => {
-        console.warn("Hunter handoff failed:", err);
-      });
-
-      // Log click, but do NOT let logging failure block the builder.
-      try {
-        await logBuilderClick(smiles, CFG.job_id);
-      } catch (err) {
-        console.warn("Builder click logging failed:", err);
-      }
-
-      await openProtacBuilderWithSmiles(smiles);
-    });
-  });
-
-  console.log("✅ PROTAC Builder button listener attached:", buttons.map(b => b.id));
-}

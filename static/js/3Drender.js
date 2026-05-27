@@ -390,9 +390,20 @@
   // ============================================================================
   // 11B) Ligand loading
   // ============================================================================
-  async function loadLigand(pdb, chain, warhead) {
-    const url = `/api/sdf/${JOB_ID}/${pdb}/${chain}/${warhead}`;
-    const comp = await State.stage.loadFile(url, { ext: "sdf", defaultRepresentation: false });
+  async function loadLigand(pdb, chain, warhead, resid) {
+    const qs = new URLSearchParams();
+    if (resid) qs.set("resid", resid);
+    const suffix = qs.toString() ? `?${qs.toString()}` : "";
+    const url = `/api/sdf/${JOB_ID}/${pdb}/${chain}/${warhead}${suffix}`;
+    const check = await fetch(url, { method: "GET", cache: "no-store" });
+    if (!check.ok) {
+      const msg = `Ligand SDF missing for ${pdb}/${chain}/${warhead}.`;
+      setHudDebug(msg);
+      throw new Error(msg);
+    }
+    const sdfText = await check.text();
+    const blob = new Blob([sdfText], { type: "chemical/x-mdl-sdfile" });
+    const comp = await State.stage.loadFile(blob, { ext: "sdf", defaultRepresentation: false });
 
     const LIG_NO_H = "not hydrogen";
 
@@ -738,7 +749,7 @@
     }
 
     try {
-      State.ligandComp = await loadLigand(PDB, CH, WAR);
+      State.ligandComp = await loadLigand(PDB, CH, WAR, RES);
     } catch (e) {
       console.warn("Ligand load failed", e);
       setHudDebug(`Ligand load failed: ${e.message || e}`);
@@ -790,6 +801,4 @@
     debugProteinResnames
   };
 })();
-
-
 

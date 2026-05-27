@@ -1,0 +1,884 @@
+{% extends "base.html" %}
+
+{% block title %}Warhead Hunter API Documentation — Active Job, Batch, And Structure Retrieval Endpoints{% endblock %}
+{% block meta_description %}Warhead Hunter API documentation for active job submission, batch submission, job monitoring, results manifests, WAR_PDB downloads, curated examples, and Python automation workflows.{% endblock %}
+
+{% block page_css %}
+<style>
+  .api-docs-wrap {
+    width: min(1240px, 100%);
+    margin: 0 auto;
+    display: grid;
+    gap: 20px;
+  }
+
+  .api-hero,
+  .api-panel,
+  .api-code-card {
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)),
+      rgba(4, 8, 16, 0.84);
+    border: 1px solid rgba(125, 249, 255, 0.14);
+    border-radius: 24px;
+    box-shadow:
+      0 18px 44px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255,255,255,0.03);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .api-hero::before,
+  .api-panel::before,
+  .api-code-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at top right, rgba(125, 249, 255, 0.12), transparent 24%),
+      radial-gradient(circle at bottom left, rgba(255, 215, 0, 0.08), transparent 24%);
+  }
+
+  .api-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.9fr);
+    gap: 24px;
+    padding: clamp(26px, 4vw, 40px);
+  }
+
+  .api-hero-copy,
+  .api-hero-side,
+  .api-panel-inner,
+  .api-code-card-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .api-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(125, 249, 255, 0.18);
+    background: rgba(125, 249, 255, 0.05);
+    color: rgba(215, 248, 255, 0.82);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.72rem;
+  }
+
+  .api-title {
+    margin: 0;
+    color: #f4fbff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 4.6vw, 3.4rem);
+    line-height: 1.04;
+  }
+
+  .api-subtitle {
+    margin: 16px 0 0;
+    color: rgba(220, 232, 242, 0.84);
+    line-height: 1.75;
+    max-width: 72ch;
+  }
+
+  .api-actions,
+  .api-inline-actions,
+  .api-card-actions,
+  .api-link-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .api-actions {
+    margin-top: 22px;
+  }
+
+  .api-btn,
+  .api-btn-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 9px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    color: rgba(235, 243, 252, 0.88);
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 160ms ease, box-shadow 180ms ease, border-color 180ms ease, color 180ms ease;
+  }
+
+  .api-btn:hover,
+  .api-btn-link:hover {
+    transform: translateY(-2px);
+    color: var(--tron-cyan);
+    border-color: rgba(125, 249, 255, 0.26);
+    box-shadow: 0 0 18px rgba(125, 249, 255, 0.08);
+  }
+
+  .api-btn-primary {
+    border-color: rgba(255, 215, 0, 0.22);
+    background: rgba(255, 215, 0, 0.08);
+    color: #ffe694;
+  }
+
+  .api-btn-subtle {
+    min-height: 34px;
+    padding: 7px 12px;
+    font-size: 0.9rem;
+  }
+
+  .api-status-box {
+    padding: 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(125, 249, 255, 0.16);
+    background: rgba(0, 0, 0, 0.28);
+    display: grid;
+    gap: 10px;
+  }
+
+  .api-status-label,
+  .api-section-kicker {
+    color: rgba(176, 214, 238, 0.68);
+    font-size: 0.76rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .api-selected-base,
+  .api-base-url,
+  .api-inline-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  }
+
+  .api-selected-base,
+  .api-base-url {
+    color: #fff4b2;
+    word-break: break-all;
+  }
+
+  .api-note,
+  .api-copy-feedback,
+  .api-status-note,
+  .api-panel-copy,
+  .api-card-copy {
+    color: rgba(214, 227, 239, 0.8);
+    line-height: 1.7;
+  }
+
+  .api-warning {
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 215, 0, 0.22);
+    background: rgba(255, 215, 0, 0.06);
+    color: rgba(246, 237, 192, 0.92);
+    line-height: 1.68;
+  }
+
+  .api-panel,
+  .api-code-card {
+    padding: 22px;
+  }
+
+  .api-section-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: end;
+    margin-bottom: 18px;
+  }
+
+  .api-section-title {
+    margin: 6px 0 0;
+    color: #f4fbff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.35rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .api-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .api-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .api-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .api-grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .api-card,
+  .api-route-group,
+  .api-example-card,
+  .api-feature-card {
+    padding: 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.025);
+  }
+
+  .api-card-title {
+    margin: 0;
+    color: #f4fbff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.98rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .api-route-list {
+    list-style: none;
+    padding: 0;
+    margin: 14px 0 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  .api-route-item {
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.34);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .api-route-method {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+    padding: 4px 8px;
+    margin-right: 10px;
+    border-radius: 999px;
+    background: rgba(30, 144, 255, 0.14);
+    color: #8ec5ff;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+
+  .api-route-path {
+    color: #f5f7ff;
+    word-break: break-word;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  }
+
+  .api-route-note {
+    margin: 8px 0 0;
+    color: #bcbcbc;
+    font-size: 0.93rem;
+    line-height: 1.6;
+  }
+
+  .api-code-wrap {
+    display: grid;
+    gap: 8px;
+  }
+
+  .api-code-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .api-code-title {
+    margin: 0;
+    color: #f4fbff;
+    font-size: 0.96rem;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .api-code {
+    margin: 0;
+    padding: 16px;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.46);
+    border: 1px solid rgba(125, 249, 255, 0.12);
+    color: #dffcff;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    font-size: 0.9rem;
+    line-height: 1.64;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  }
+
+  .api-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255, 215, 0, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    color: #ffe694;
+    font-size: 0.82rem;
+  }
+
+  .api-example-meta {
+    display: grid;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .api-example-meta-row {
+    display: grid;
+    grid-template-columns: 108px 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+
+  .api-example-meta-label {
+    color: #9bfaff;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .api-example-meta-value {
+    color: rgba(235, 243, 252, 0.88);
+    word-break: break-word;
+  }
+
+  .api-availability {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .api-availability-yes {
+    background: rgba(0, 255, 127, 0.12);
+    color: #a7ffcf;
+    border: 1px solid rgba(0, 255, 127, 0.18);
+  }
+
+  .api-availability-no {
+    background: rgba(255, 122, 122, 0.12);
+    color: #ffc7c7;
+    border: 1px solid rgba(255, 122, 122, 0.18);
+  }
+
+  @media (max-width: 1040px) {
+    .api-hero,
+    .api-grid-4,
+    .api-grid-3,
+    .api-grid-2 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="api-docs-wrap">
+  <section class="api-hero reveal">
+    <div class="api-hero-copy">
+      <div class="api-kicker">API Version {{ api_version }} · {{ environment }}</div>
+      <h1 class="api-title">Warhead Hunter API</h1>
+      <p class="api-subtitle">
+        Active programmatic access for job submission, batch submission, job monitoring, results manifests, cleaned ligand-bound structure retrieval, and downloadable Warhead Hunter outputs.
+      </p>
+      <div class="api-actions">
+        <button type="button" class="api-btn api-btn-primary" id="hero-test-api">Test API</button>
+        <button type="button" class="api-btn" id="hero-copy-base">Copy Base URL</button>
+        <a href="/browse" class="api-btn-link">Open Job Browser</a>
+        <a href="/hunter" class="api-btn-link">Open Warhead Hunter</a>
+      </div>
+      <div class="api-warning">
+        Everything shown below is active on this deployment unless marked unavailable for a specific curated example job.
+      </div>
+    </div>
+    <div class="api-hero-side">
+      <div class="api-status-box">
+        <div class="api-status-label">Selected API Base</div>
+        <div id="selected-api-base" class="api-selected-base">{{ primary_api_base }}</div>
+        <div id="api-status-note" class="api-status-note">Internal / Tailscale is preferred first. Use Auto-detect to confirm browser reachability.</div>
+        <div class="api-inline-actions">
+          <button type="button" class="api-btn api-btn-subtle" id="test-primary-btn">Test Internal API</button>
+          <button type="button" class="api-btn api-btn-subtle" id="test-secondary-btn">Test Public API</button>
+          <button type="button" class="api-btn api-btn-subtle" id="auto-detect-btn">Auto-detect Best API Base</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wh-section reveal">
+    <div class="wh-section-head">
+      <div>
+        <div class="wh-section-kicker">Workflow Story</div>
+        <h2 class="wh-section-title">API Workflow At A Glance</h2>
+      </div>
+      <p class="wh-section-copy">Submit jobs with target_name and search_query, monitor status, retrieve file manifests, download WAR_PDB structures, and automate downstream structure collection.</p>
+    </div>
+    <div class="wh-pipeline">
+      <article class="wh-pipeline-node">
+        <div class="wh-pipeline-label">Input</div>
+        <div class="wh-pipeline-title">Submit Job</div>
+        <div class="wh-pipeline-copy">POST target_name, search_query, and optional fasta_seq.</div>
+      </article>
+      <article class="wh-pipeline-node">
+        <div class="wh-pipeline-label">Status</div>
+        <div class="wh-pipeline-title">Monitor</div>
+        <div class="wh-pipeline-copy">Poll active job status and browser monitor URLs.</div>
+      </article>
+      <article class="wh-pipeline-node">
+        <div class="wh-pipeline-label">Results</div>
+        <div class="wh-pipeline-title">Manifest</div>
+        <div class="wh-pipeline-copy">Inspect key outputs, counts, and result paths.</div>
+      </article>
+      <article class="wh-pipeline-node">
+        <div class="wh-pipeline-label">Artifacts</div>
+        <div class="wh-pipeline-title">Files</div>
+        <div class="wh-pipeline-copy">List WAR_PDB, SDF, SVG, table, HTML, and manifest files.</div>
+      </article>
+      <article class="wh-pipeline-node">
+        <div class="wh-pipeline-label">Download</div>
+        <div class="wh-pipeline-title">ZIP Bundles</div>
+        <div class="wh-pipeline-copy">Download curated result bundles or WAR_PDB-only ZIP archives.</div>
+      </article>
+      <article class="wh-pipeline-node">
+        <div class="wh-pipeline-label">Scale</div>
+        <div class="wh-pipeline-title">Batch API</div>
+        <div class="wh-pipeline-copy">Launch multiple jobs sequentially and monitor them as one batch.</div>
+      </article>
+    </div>
+  </section>
+
+  <section class="api-panel reveal">
+    <div class="api-panel-inner">
+      <div class="api-section-head">
+        <div>
+          <div class="api-section-kicker">Base URLs</div>
+          <h2 class="api-section-title">Connection Options</h2>
+        </div>
+        <p class="api-panel-copy">Browser reachability can differ from terminal reachability because of CORS or mixed-content rules. Terminal curl may still work even when the in-browser tester fails.</p>
+      </div>
+      <div class="api-grid api-grid-2">
+        {% for base in api_base_options %}
+        <article class="api-card">
+          <span class="api-pill">{{ base.label }}</span>
+          <div class="api-base-url">{{ base.value }}</div>
+          <p class="api-card-copy">{{ base.description }}</p>
+          <div class="api-card-actions">
+            <button type="button" class="api-btn api-btn-subtle" data-copy-text="{{ base.value }}">Copy URL</button>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="api-panel reveal">
+    <div class="api-panel-inner">
+      <div class="api-section-head">
+        <div>
+          <div class="api-section-kicker">Active Endpoints</div>
+          <h2 class="api-section-title">Implemented Route Groups</h2>
+        </div>
+      </div>
+      <div class="api-grid api-grid-2">
+        {% for group in api_doc_current_groups %}
+        <article class="api-route-group">
+          <h3 class="api-card-title">{{ group.title }}</h3>
+          <p class="api-card-copy">{{ group.description }}</p>
+          <ul class="api-route-list">
+            {% for route in group.routes %}
+            <li class="api-route-item">
+              <span class="api-route-method">{{ route.method }}</span>
+              <span class="api-route-path">{{ route.path }}</span>
+              <p class="api-route-note">{{ route.note }}</p>
+            </li>
+            {% endfor %}
+          </ul>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="api-panel reveal">
+    <div class="api-panel-inner">
+      <div class="api-section-head">
+        <div>
+          <div class="api-section-kicker">Verified Command-Line Workflow</div>
+          <h2 class="api-section-title">Submit A Real Job Using The Active Input Model</h2>
+        </div>
+      </div>
+      <div class="api-code-wrap">
+        <div class="api-code-head">
+          <h3 class="api-code-title">1. Submit A Single Job</h3>
+          <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-submit-job">Copy</button>
+        </div>
+        <pre id="code-submit-job" class="api-code"></pre>
+      </div>
+      <div class="api-grid api-grid-2" style="margin-top:16px;">
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">2. Monitor Job Status</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-status">Copy</button>
+          </div>
+          <pre id="code-job-status" class="api-code"></pre>
+        </div>
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">3. Read Job Log</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-log">Copy</button>
+          </div>
+          <pre id="code-job-log" class="api-code"></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="api-panel reveal">
+    <div class="api-panel-inner">
+      <div class="api-section-head">
+        <div>
+          <div class="api-section-kicker">Results And Files</div>
+          <h2 class="api-section-title">Manifest, Artifact Listing, And Download Routes</h2>
+        </div>
+      </div>
+      <div class="api-grid api-grid-2">
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">4. Results Manifest</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-results">Copy</button>
+          </div>
+          <pre id="code-job-results" class="api-code"></pre>
+        </div>
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">5. List Job Files</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-files">Copy</button>
+          </div>
+          <pre id="code-job-files" class="api-code"></pre>
+        </div>
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">6. List WAR_PDB Files</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-war-pdbs">Copy</button>
+          </div>
+          <pre id="code-job-war-pdbs" class="api-code"></pre>
+        </div>
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">7. Download WAR_PDB ZIP</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-war-pdbs-zip">Copy</button>
+          </div>
+          <pre id="code-job-war-pdbs-zip" class="api-code"></pre>
+        </div>
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">8. List SDF Files</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-sdf-files">Copy</button>
+          </div>
+          <pre id="code-job-sdf-files" class="api-code"></pre>
+        </div>
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">9. List SVG Files</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-svg-files">Copy</button>
+          </div>
+          <pre id="code-job-svg-files" class="api-code"></pre>
+        </div>
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">10. Download Result Bundle</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-job-bundle">Copy</button>
+          </div>
+          <pre id="code-job-bundle" class="api-code"></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="api-panel reveal">
+    <div class="api-panel-inner">
+      <div class="api-section-head">
+        <div>
+          <div class="api-section-kicker">Curated Examples</div>
+          <h2 class="api-section-title">Read-Only Example Jobs</h2>
+        </div>
+        <p class="api-panel-copy">These examples are useful for testing output formats, downloading prepared structures, and building automation workflows without launching a new job.</p>
+      </div>
+      <div class="api-warning">
+        Example availability depends on the deployment. Unavailable examples remain documented but return <code class="api-inline-code">available: false</code> rather than crashing.
+      </div>
+      <div class="api-grid api-grid-2" style="margin-top:16px;">
+        {% for example in curated_examples %}
+        <article class="api-example-card">
+          <h3 class="api-card-title">{{ example.label }}</h3>
+          <div class="api-example-meta">
+            <div class="api-example-meta-row">
+              <div class="api-example-meta-label">Job ID</div>
+              <div class="api-example-meta-value">{{ example.job_id }}</div>
+            </div>
+            <div class="api-example-meta-row">
+              <div class="api-example-meta-label">Protein</div>
+              <div class="api-example-meta-value">{{ example.protein }}</div>
+            </div>
+            <div class="api-example-meta-row">
+              <div class="api-example-meta-label">Use Case</div>
+              <div class="api-example-meta-value">{{ example.use_case }}</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;">
+            <span class="api-availability {% if example.available %}api-availability-yes{% else %}api-availability-no{% endif %}">
+              {% if example.available %}Available{% else %}Unavailable{% endif %}
+            </span>
+          </div>
+          <div class="api-card-actions" style="margin-top:14px;">
+            <a href="{{ example.urls.metadata }}" class="api-btn-link">Metadata</a>
+            <a href="{{ example.urls.files }}" class="api-btn-link">Files</a>
+            <a href="{{ example.urls.bundle }}" class="api-btn-link">Bundle</a>
+            <a href="{{ example.urls.war_pdbs }}" class="api-btn-link">WAR_PDB</a>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      <div class="api-grid api-grid-2" style="margin-top:16px;">
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">11. List Curated Examples</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-example-list">Copy</button>
+          </div>
+          <pre id="code-example-list" class="api-code"></pre>
+        </div>
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">12. Download Example WAR_PDB ZIP</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-example-war-pdbs-zip">Copy</button>
+          </div>
+          <pre id="code-example-war-pdbs-zip" class="api-code"></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="api-panel reveal">
+    <div class="api-panel-inner">
+      <div class="api-section-head">
+        <div>
+          <div class="api-section-kicker">Batch API</div>
+          <h2 class="api-section-title">Launch Multiple Jobs Sequentially</h2>
+        </div>
+        <p class="api-panel-copy">The batch API reuses the same job submission logic as <code class="api-inline-code">POST /api/jobs</code> and stores lightweight batch metadata on disk.</p>
+      </div>
+      <div class="api-code-wrap">
+        <div class="api-code-head">
+          <h3 class="api-code-title">13. Submit A Batch</h3>
+          <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-submit-batch">Copy</button>
+        </div>
+        <pre id="code-submit-batch" class="api-code"></pre>
+      </div>
+      <div class="api-grid api-grid-2" style="margin-top:16px;">
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">14. Monitor Batch Status</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-batch-status">Copy</button>
+          </div>
+          <pre id="code-batch-status" class="api-code"></pre>
+        </div>
+        <div class="api-code-wrap">
+          <div class="api-code-head">
+            <h3 class="api-code-title">15. Batch Results Summary</h3>
+            <button type="button" class="api-btn api-btn-subtle api-copy-code" data-target="code-batch-results">Copy</button>
+          </div>
+          <pre id="code-batch-results" class="api-code"></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="api-panel reveal">
+    <div class="api-panel-inner">
+      <div class="api-section-head">
+        <div>
+          <div class="api-section-kicker">Python Automation</div>
+          <h2 class="api-section-title">Reusable Workflows</h2>
+        </div>
+        <p class="api-panel-copy">Use the example scripts in <code class="api-inline-code">docs/examples/</code> for reproducible submissions, WAR_PDB retrieval, bundle downloads, structure-library assembly, and PRosettaC staging.</p>
+      </div>
+      <div class="api-grid api-grid-3">
+        <article class="api-feature-card">
+          <h3 class="api-card-title">Submit And Monitor</h3>
+          <p class="api-card-copy">Submit one job, poll status, inspect the manifest, and optionally download the result bundle.</p>
+        </article>
+        <article class="api-feature-card">
+          <h3 class="api-card-title">Build Structure Libraries</h3>
+          <p class="api-card-copy">Filter indexed jobs, collect WAR_PDB, SDF, SVG, and table outputs, and stage them for notebook analysis.</p>
+        </article>
+        <article class="api-feature-card">
+          <h3 class="api-card-title">Stage PROTAC Inputs</h3>
+          <p class="api-card-copy">Retrieve cleaned ligand-bound PDBs and pair them with ligand SDFs for downstream modeling workflows such as PRosettaC staging.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="api-panel reveal">
+    <div class="api-panel-inner">
+      <div class="api-section-head">
+        <div>
+          <div class="api-section-kicker">Companion Ecosystem</div>
+          <h2 class="api-section-title">Where The Outputs Can Flow Next</h2>
+        </div>
+      </div>
+      <div class="api-link-row">
+        {% for tool in companion_tool_links %}
+        <a href="{{ tool.url }}" target="_blank" rel="noopener noreferrer" class="api-btn-link">{{ tool.name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <div id="api-copy-feedback" class="api-copy-feedback" aria-live="polite"></div>
+</div>
+{% endblock %}
+
+{% block page_js %}
+<script>
+(() => {
+  const PRIMARY_BASE = {{ primary_api_base | tojson }};
+  const SECONDARY_BASE = {{ secondary_api_base | tojson }};
+  const PREFERRED_EXAMPLE_JOB_ID = {{ preferred_example_job_id | tojson }};
+  const BASES = [PRIMARY_BASE, SECONDARY_BASE];
+
+  const codeGenerators = {
+    "code-submit-job": base => `curl -s -X POST "${base}/api/jobs" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "target_name": "OGA",
+    "search_query": "O-GlcNAcase 9BA9 6PM9 5UN9 5M7T",
+    "fasta_seq": ">FASTA_SEQUENCE"
+  }' | python -m json.tool`,
+    "code-job-status": base => `curl -s "${base}/api/jobs/JOB_ID" | python -m json.tool`,
+    "code-job-log": base => `curl -s "${base}/api/job_log/JOB_ID" | python -m json.tool`,
+    "code-job-results": base => `curl -s "${base}/api/jobs/JOB_ID/results" | python -m json.tool`,
+    "code-job-files": base => `curl -s "${base}/api/jobs/JOB_ID/files?limit=1000" | python -m json.tool`,
+    "code-job-war-pdbs": base => `curl -s "${base}/api/jobs/JOB_ID/war-pdbs" | python -m json.tool`,
+    "code-job-war-pdbs-zip": base => `curl -L "${base}/api/jobs/JOB_ID/war-pdbs.zip" -o JOB_ID_WAR_PDB.zip`,
+    "code-job-sdf-files": base => `curl -s "${base}/api/jobs/JOB_ID/artifacts?kind=sdf" | python -m json.tool`,
+    "code-job-svg-files": base => `curl -s "${base}/api/jobs/JOB_ID/artifacts?kind=svg" | python -m json.tool`,
+    "code-job-bundle": base => `curl -L "${base}/api/jobs/JOB_ID/bundle" -o JOB_ID_warhead_hunter_results.zip`,
+    "code-example-list": base => `curl -s "${base}/api/examples" | python -m json.tool`,
+    "code-example-war-pdbs-zip": base => `curl -L "${base}/api/examples/${PREFERRED_EXAMPLE_JOB_ID}/war-pdbs.zip" -o ${PREFERRED_EXAMPLE_JOB_ID}_WAR_PDB.zip`,
+    "code-submit-batch": base => `curl -s -X POST "${base}/api/batches" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "jobs": [
+      {
+        "target_name": "OGA",
+        "search_query": "O-GlcNAcase 9BA9 6PM9 5UN9 5M7T",
+        "fasta_seq": ">FASTA_SEQUENCE"
+      },
+      {
+        "target_name": "DYRK1A",
+        "search_query": "DYRK1A 3ANR 4MQ2 6EIF 7AKL",
+        "fasta_seq": ">FASTA_SEQUENCE"
+      }
+    ],
+    "delay_seconds": 2
+  }' | python -m json.tool`,
+    "code-batch-status": base => `curl -s "${base}/api/batches/BATCH_ID" | python -m json.tool`,
+    "code-batch-results": base => `curl -s "${base}/api/batches/BATCH_ID/results" | python -m json.tool`
+  };
+
+  let selectedBase = PRIMARY_BASE;
+
+  const selectedBaseEl = document.getElementById("selected-api-base");
+  const statusEl = document.getElementById("api-status-note");
+  const feedbackEl = document.getElementById("api-copy-feedback");
+
+  function setStatus(base, message) {
+    selectedBase = String(base || PRIMARY_BASE).replace(/\/+$/, "");
+    if (selectedBaseEl) selectedBaseEl.textContent = selectedBase;
+    if (statusEl) statusEl.textContent = message;
+    renderCodeBlocks();
+  }
+
+  function setFeedback(message) {
+    if (feedbackEl) feedbackEl.textContent = message;
+  }
+
+  function renderCodeBlocks() {
+    Object.entries(codeGenerators).forEach(([id, fn]) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = fn(selectedBase);
+    });
+  }
+
+  async function copyText(text) {
+    await navigator.clipboard.writeText(text);
+    setFeedback("Copied to clipboard.");
+  }
+
+  async function testBase(base, label) {
+    const cleaned = String(base).replace(/\/+$/, "");
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 4500);
+    try {
+      const res = await fetch(`${cleaned}/api/health`, { signal: controller.signal });
+      clearTimeout(timer);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setStatus(cleaned, `${label} responded successfully via /api/health.`);
+      return true;
+    } catch (err) {
+      clearTimeout(timer);
+      setStatus(cleaned, `${label} did not respond in-browser. The endpoint may still work from terminal curl depending on CORS or network path.`);
+      return false;
+    }
+  }
+
+  async function autoDetect() {
+    for (const base of BASES) {
+      const ok = await testBase(base, base === PRIMARY_BASE ? "Internal API" : "Public API");
+      if (ok) return;
+    }
+    setStatus(PRIMARY_BASE, "Neither API base responded in-browser. Check server/network access or try the curl commands from your terminal.");
+  }
+
+  document.querySelectorAll("[data-copy-text]").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      await copyText(btn.getAttribute("data-copy-text") || "");
+    });
+  });
+
+  document.querySelectorAll(".api-copy-code").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const target = document.getElementById(btn.getAttribute("data-target"));
+      if (target) await copyText(target.textContent || "");
+    });
+  });
+
+  document.getElementById("hero-copy-base")?.addEventListener("click", async () => copyText(selectedBase));
+  document.getElementById("test-primary-btn")?.addEventListener("click", () => testBase(PRIMARY_BASE, "Internal API"));
+  document.getElementById("test-secondary-btn")?.addEventListener("click", () => testBase(SECONDARY_BASE, "Public API"));
+  document.getElementById("auto-detect-btn")?.addEventListener("click", autoDetect);
+  document.getElementById("hero-test-api")?.addEventListener("click", autoDetect);
+
+  setStatus(PRIMARY_BASE, "Internal / Tailscale is preferred first. Use Auto-detect to confirm browser reachability.");
+})();
+</script>
+{% endblock %}
