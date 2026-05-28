@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% set canonical_api_base = "https://warheadhunter.com" %}
 
 {% block title %}Warhead Hunter API Documentation — Active Job, Batch, And Structure Retrieval Endpoints{% endblock %}
 {% block meta_description %}Warhead Hunter API documentation for active job submission, batch submission, job monitoring, results manifests, WAR_PDB downloads, curated examples, and Python automation workflows.{% endblock %}
@@ -394,30 +395,29 @@
 <div class="api-docs-wrap">
   <section class="api-hero reveal">
     <div class="api-hero-copy">
-      <div class="api-kicker">API Version {{ api_version }} · {{ environment }}</div>
+      <div class="api-kicker">API Version {{ api_version }} · Production</div>
       <h1 class="api-title">Warhead Hunter API</h1>
       <p class="api-subtitle">
         Active programmatic access for job submission, batch submission, job monitoring, results manifests, cleaned ligand-bound structure retrieval, and downloadable Warhead Hunter outputs.
       </p>
       <div class="api-actions">
-        <button type="button" class="api-btn api-btn-primary" id="hero-test-api">Test API</button>
-        <button type="button" class="api-btn" id="hero-copy-base">Copy Base URL</button>
-        <a href="/browse" class="api-btn-link">Open Job Browser</a>
-        <a href="/hunter" class="api-btn-link">Open Warhead Hunter</a>
+        <button type="button" class="api-btn api-btn-primary" id="hero-test-api">Test Production API</button>
+        <button type="button" class="api-btn" id="hero-copy-base">Copy Production Base URL</button>
+        <a href="{{ canonical_api_base }}/browse" class="api-btn-link">Open Job Browser</a>
+        <a href="{{ canonical_api_base }}/hunter" class="api-btn-link">Open Warhead Hunter</a>
       </div>
       <div class="api-warning">
-        Everything shown below is active on this deployment unless marked unavailable for a specific curated example job.
+        Everything shown below is configured for the production domain at <code class="api-inline-code">https://warheadhunter.com</code> unless marked unavailable for a specific curated example job.
       </div>
     </div>
     <div class="api-hero-side">
       <div class="api-status-box">
         <div class="api-status-label">Selected API Base</div>
-        <div id="selected-api-base" class="api-selected-base">{{ primary_api_base }}</div>
-        <div id="api-status-note" class="api-status-note">Internal / Tailscale is preferred first. Use Auto-detect to confirm browser reachability.</div>
+        <div id="selected-api-base" class="api-selected-base">{{ canonical_api_base }}</div>
+        <div id="api-status-note" class="api-status-note">Production domain selected. All generated calls use https://warheadhunter.com.</div>
         <div class="api-inline-actions">
-          <button type="button" class="api-btn api-btn-subtle" id="test-primary-btn">Test Internal API</button>
-          <button type="button" class="api-btn api-btn-subtle" id="test-secondary-btn">Test Public API</button>
-          <button type="button" class="api-btn api-btn-subtle" id="auto-detect-btn">Auto-detect Best API Base</button>
+          <button type="button" class="api-btn api-btn-subtle" id="test-production-btn">Test Production API</button>
+          <button type="button" class="api-btn api-btn-subtle" id="copy-production-btn">Copy Production Base</button>
         </div>
       </div>
     </div>
@@ -472,19 +472,27 @@
           <div class="api-section-kicker">Base URLs</div>
           <h2 class="api-section-title">Connection Options</h2>
         </div>
-        <p class="api-panel-copy">Browser reachability can differ from terminal reachability because of CORS or mixed-content rules. Terminal curl may still work even when the in-browser tester fails.</p>
+        <p class="api-panel-copy">The production domain is now the canonical base for both the web app and API. The in-page tester calls <code class="api-inline-code">/api/health</code> on <code class="api-inline-code">https://warheadhunter.com</code>.</p>
       </div>
       <div class="api-grid api-grid-2">
-        {% for base in api_base_options %}
         <article class="api-card">
-          <span class="api-pill">{{ base.label }}</span>
-          <div class="api-base-url">{{ base.value }}</div>
-          <p class="api-card-copy">{{ base.description }}</p>
+          <span class="api-pill">Production API</span>
+          <div class="api-base-url">{{ canonical_api_base }}</div>
+          <p class="api-card-copy">Canonical Warhead Hunter API base. Use this for browser requests, terminal curl, Python automation, batch jobs, examples, and artifact downloads.</p>
           <div class="api-card-actions">
-            <button type="button" class="api-btn api-btn-subtle" data-copy-text="{{ base.value }}">Copy URL</button>
+            <button type="button" class="api-btn api-btn-subtle" data-copy-text="{{ canonical_api_base }}">Copy URL</button>
+            <a href="{{ canonical_api_base }}/api/health" class="api-btn-link" target="_blank" rel="noopener noreferrer">Open Health Check</a>
           </div>
         </article>
-        {% endfor %}
+        <article class="api-card">
+          <span class="api-pill">Same-Origin App</span>
+          <div class="api-base-url">{{ canonical_api_base }}</div>
+          <p class="api-card-copy">The web app, job browser, Warhead Hunter form, curated examples, and downloadable results should all resolve through the same production host.</p>
+          <div class="api-card-actions">
+            <a href="{{ canonical_api_base }}/browse" class="api-btn-link">Open Job Browser</a>
+            <a href="{{ canonical_api_base }}/hunter" class="api-btn-link">Open Warhead Hunter</a>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -649,10 +657,10 @@
             </span>
           </div>
           <div class="api-card-actions" style="margin-top:14px;">
-            <a href="{{ example.urls.metadata }}" class="api-btn-link">Metadata</a>
-            <a href="{{ example.urls.files }}" class="api-btn-link">Files</a>
-            <a href="{{ example.urls.bundle }}" class="api-btn-link">Bundle</a>
-            <a href="{{ example.urls.war_pdbs }}" class="api-btn-link">WAR_PDB</a>
+            <a href="{{ canonical_api_base }}/api/examples/{{ example.job_id }}/metadata" class="api-btn-link">Metadata</a>
+            <a href="{{ canonical_api_base }}/api/examples/{{ example.job_id }}/files" class="api-btn-link">Files</a>
+            <a href="{{ canonical_api_base }}/api/examples/{{ example.job_id }}/bundle" class="api-btn-link">Bundle</a>
+            <a href="{{ canonical_api_base }}/api/examples/{{ example.job_id }}/war-pdbs" class="api-btn-link">WAR_PDB</a>
           </div>
         </article>
         {% endfor %}
@@ -760,10 +768,8 @@
 {% block page_js %}
 <script>
 (() => {
-  const PRIMARY_BASE = {{ primary_api_base | tojson }};
-  const SECONDARY_BASE = {{ secondary_api_base | tojson }};
+  const PRODUCTION_API_BASE = {{ canonical_api_base | tojson }};
   const PREFERRED_EXAMPLE_JOB_ID = {{ preferred_example_job_id | tojson }};
-  const BASES = [PRIMARY_BASE, SECONDARY_BASE];
 
   const codeGenerators = {
     "code-submit-job": base => `curl -s -X POST "${base}/api/jobs" \\
@@ -805,7 +811,7 @@
     "code-batch-results": base => `curl -s "${base}/api/batches/BATCH_ID/results" | python -m json.tool`
   };
 
-  let selectedBase = PRIMARY_BASE;
+  let selectedBase = PRODUCTION_API_BASE;
 
   const selectedBaseEl = document.getElementById("selected-api-base");
   const statusEl = document.getElementById("api-status-note");
@@ -846,17 +852,13 @@
       return true;
     } catch (err) {
       clearTimeout(timer);
-      setStatus(cleaned, `${label} did not respond in-browser. The endpoint may still work from terminal curl depending on CORS or network path.`);
+      setStatus(cleaned, `${label} did not respond in-browser. Confirm the Flask app is serving the production route and that /api/health is reachable.`);
       return false;
     }
   }
 
   async function autoDetect() {
-    for (const base of BASES) {
-      const ok = await testBase(base, base === PRIMARY_BASE ? "Internal API" : "Public API");
-      if (ok) return;
-    }
-    setStatus(PRIMARY_BASE, "Neither API base responded in-browser. Check server/network access or try the curl commands from your terminal.");
+    await testBase(PRODUCTION_API_BASE, "Production API");
   }
 
   document.querySelectorAll("[data-copy-text]").forEach(btn => {
@@ -873,12 +875,11 @@
   });
 
   document.getElementById("hero-copy-base")?.addEventListener("click", async () => copyText(selectedBase));
-  document.getElementById("test-primary-btn")?.addEventListener("click", () => testBase(PRIMARY_BASE, "Internal API"));
-  document.getElementById("test-secondary-btn")?.addEventListener("click", () => testBase(SECONDARY_BASE, "Public API"));
-  document.getElementById("auto-detect-btn")?.addEventListener("click", autoDetect);
+  document.getElementById("copy-production-btn")?.addEventListener("click", async () => copyText(PRODUCTION_API_BASE));
+  document.getElementById("test-production-btn")?.addEventListener("click", () => testBase(PRODUCTION_API_BASE, "Production API"));
   document.getElementById("hero-test-api")?.addEventListener("click", autoDetect);
 
-  setStatus(PRIMARY_BASE, "Internal / Tailscale is preferred first. Use Auto-detect to confirm browser reachability.");
+  setStatus(PRODUCTION_API_BASE, "Production domain selected. All generated calls use https://warheadhunter.com.");
 })();
 </script>
 {% endblock %}
