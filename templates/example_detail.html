@@ -1,0 +1,338 @@
+{% extends "base.html" %}
+{% block title %}{% if example %}{{ example.label }} Example | Warhead Hunter{% else %}Example Not Found | Warhead Hunter{% endif %}{% endblock %}
+{% block meta_description %}{% if example %}Read-only Warhead Hunter example page for {{ example.label }} with metadata, artifact counts, structure downloads, and ligand-exposure gallery links.{% else %}Requested curated Warhead Hunter example could not be found.{% endif %}{% endblock %}
+
+{% block page_css %}
+<style>
+  .example-detail-wrap {
+    width: min(1240px, 100%);
+    margin: 0 auto;
+    display: grid;
+    gap: 20px;
+  }
+
+  .detail-shell,
+  .detail-panel,
+  .detail-card {
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)),
+      rgba(4, 8, 16, 0.84);
+    border: 1px solid rgba(125, 249, 255, 0.14);
+    border-radius: 24px;
+    box-shadow:
+      0 18px 44px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+
+  .detail-shell,
+  .detail-panel {
+    padding: clamp(24px, 4vw, 34px);
+  }
+
+  .detail-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+    gap: 22px;
+  }
+
+  .detail-kicker,
+  .detail-label,
+  .detail-table th {
+    color: rgba(176, 214, 238, 0.74);
+    font-size: 0.76rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .detail-title,
+  .detail-section-title {
+    margin: 0;
+    color: #f4fbff;
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  .detail-title {
+    font-size: clamp(2rem, 4.2vw, 3rem);
+    line-height: 1.08;
+  }
+
+  .detail-copy,
+  .detail-status,
+  .detail-table td,
+  .detail-list {
+    color: rgba(220, 232, 242, 0.84);
+    line-height: 1.75;
+  }
+
+  .detail-actions,
+  .detail-grid,
+  .detail-metrics,
+  .detail-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detail-link,
+  .detail-link-muted {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 9px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    color: rgba(235, 243, 252, 0.88);
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 160ms ease, box-shadow 180ms ease, border-color 180ms ease, color 180ms ease;
+  }
+
+  .detail-link:hover,
+  .detail-link-muted:hover {
+    transform: translateY(-2px);
+    color: var(--tron-cyan);
+    border-color: rgba(125, 249, 255, 0.26);
+    box-shadow: 0 0 18px rgba(125, 249, 255, 0.08);
+  }
+
+  .detail-link {
+    border-color: rgba(255, 215, 0, 0.22);
+    background: rgba(255, 215, 0, 0.08);
+    color: #ffe694;
+  }
+
+  .detail-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .detail-badge-available {
+    background: rgba(0, 255, 127, 0.12);
+    color: #a7ffcf;
+    border: 1px solid rgba(0, 255, 127, 0.18);
+  }
+
+  .detail-badge-partial {
+    background: rgba(255, 215, 0, 0.12);
+    color: #ffe694;
+    border: 1px solid rgba(255, 215, 0, 0.18);
+  }
+
+  .detail-badge-unavailable {
+    background: rgba(255, 122, 122, 0.12);
+    color: #ffc7c7;
+    border: 1px solid rgba(255, 122, 122, 0.18);
+  }
+
+  .detail-metric {
+    min-width: 120px;
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .detail-metric-value {
+    margin-top: 6px;
+    color: #f5fbff;
+    font-size: 1.34rem;
+    font-weight: 700;
+  }
+
+  .detail-card {
+    padding: 18px;
+  }
+
+  .detail-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .detail-table th,
+  .detail-table td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .detail-list {
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  @media (max-width: 980px) {
+    .detail-shell,
+    .detail-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="example-detail-wrap">
+  {% if example %}
+  <section class="detail-shell reveal">
+    <div>
+      <div class="detail-kicker">Curated Example</div>
+      <h1 class="detail-title">{{ example.label }}</h1>
+      <p class="detail-copy">{{ example.use_case }}</p>
+      <div style="margin-top:12px;">
+        <span class="detail-badge detail-badge-{{ example.status }}">{{ example.status|capitalize }}</span>
+      </div>
+      <p class="detail-status" style="margin-top:14px;">{{ example.status_reason }}</p>
+      <div class="detail-actions" style="margin-top:22px;">
+        <a href="/examples" class="detail-link">Back To Examples</a>
+        <a href="{{ example.links.metadata }}" class="detail-link-muted">API Metadata</a>
+        <a href="{{ example.links.files }}" class="detail-link-muted">Files</a>
+        <a href="{{ example.links.bundle }}" class="detail-link-muted">Bundle</a>
+        <a href="{{ example.links.war_pdbs_zip }}" class="detail-link-muted">WAR_PDB ZIP</a>
+        {% if example.links.results %}
+        <a href="{{ example.links.results }}" class="detail-link-muted">Results Gallery</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="detail-panel" style="padding:20px;">
+      <div class="detail-grid">
+        <div>
+          <div class="detail-label">Job ID</div>
+          <div class="detail-copy">{{ example.job_id }}</div>
+        </div>
+        <div>
+          <div class="detail-label">Protein</div>
+          <div class="detail-copy">{{ example.protein or "Unknown" }}</div>
+        </div>
+        <div>
+          <div class="detail-label">Search Query</div>
+          <div class="detail-copy">{{ example.search_query or "Not recorded" }}</div>
+        </div>
+        <div>
+          <div class="detail-label">Bundle</div>
+          <div class="detail-copy">{% if example.counts.bundle_available %}Public ZIP ready{% else %}Not available{% endif %}</div>
+        </div>
+      </div>
+      <div class="detail-metrics" style="margin-top:18px;">
+        <div class="detail-metric">
+          <div class="detail-label">Rows</div>
+          <div class="detail-metric-value">{{ example.counts.result_rows }}</div>
+        </div>
+        <div class="detail-metric">
+          <div class="detail-label">WAR_PDB</div>
+          <div class="detail-metric-value">{{ example.counts.war_pdb_count }}</div>
+        </div>
+        <div class="detail-metric">
+          <div class="detail-label">SDF</div>
+          <div class="detail-metric-value">{{ example.counts.sdf_count }}</div>
+        </div>
+        <div class="detail-metric">
+          <div class="detail-label">SVG</div>
+          <div class="detail-metric-value">{{ example.counts.svg_count }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="detail-panel reveal">
+    <div class="detail-grid">
+      <article class="detail-card">
+        <h2 class="detail-section-title" style="font-size:1.18rem;">What You Can Do With This Example</h2>
+        <ul class="detail-list" style="margin-top:14px;">
+          {% for item in example.what_you_can_do %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </article>
+      <article class="detail-card">
+        <h2 class="detail-section-title" style="font-size:1.18rem;">Key Outputs</h2>
+        <ul class="detail-list" style="margin-top:14px;">
+          <li>Results display: {{ example.key_outputs.results_display or "Unavailable" }}</li>
+          <li>Resolved SASA summary: {{ example.key_outputs.resolved_sasa_summary or "Unavailable" }}</li>
+          <li>Ligand metadata: {{ example.key_outputs.ligand_metadata or "Unavailable" }}</li>
+          <li>WAR_PDB directory: {{ example.key_outputs.war_pdb_dir or "Unavailable" }}</li>
+          <li>MCS SDF directory: {{ example.key_outputs.mcs_sdf_dir or "Unavailable" }}</li>
+          <li>MCS SVG directory: {{ example.key_outputs.mcs_svg_dir or "Unavailable" }}</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="detail-panel reveal">
+    <h2 class="detail-section-title" style="font-size:1.3rem;">Primary API And Download Actions</h2>
+    <div class="detail-card-actions" style="margin-top:16px;">
+      <a href="{{ example.links.metadata }}" class="detail-link-muted">Metadata JSON</a>
+      <a href="{{ example.links.metadata_legacy }}" class="detail-link-muted">Legacy Metadata URL</a>
+      <a href="{{ example.links.files }}" class="detail-link-muted">Files Manifest</a>
+      <a href="{{ example.links.artifacts }}" class="detail-link-muted">Artifact Listing</a>
+      <a href="{{ example.links.bundle }}" class="detail-link-muted">Bundle ZIP</a>
+      <a href="{{ example.links.war_pdbs }}" class="detail-link-muted">WAR_PDB List</a>
+      <a href="{{ example.links.war_pdbs_zip }}" class="detail-link-muted">WAR_PDB ZIP</a>
+      <a href="{{ example.links.api_docs }}" class="detail-link-muted">API Docs</a>
+    </div>
+  </section>
+
+  <section class="detail-panel reveal">
+    <h2 class="detail-section-title" style="font-size:1.3rem;">Example Display Gallery Preview</h2>
+    <p class="detail-copy">These rows are a quick read-only preview of the example display gallery. Open the full results page to click through poses, 2D ligand maps, and structure downloads.</p>
+    {% if example.preview_rows %}
+    <div class="detail-card" style="margin-top:16px; overflow-x:auto;">
+      <table class="detail-table">
+        <thead>
+          <tr>
+            <th>PDB</th>
+            <th>Chain</th>
+            <th>Ligand</th>
+            <th>% Exposed</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in example.preview_rows %}
+          <tr>
+            <td>{{ row.pdb_id }}</td>
+            <td>{{ row.chain or "—" }}</td>
+            <td>{{ row.warhead or "—" }}</td>
+            <td>{{ row.exposed_percent }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="detail-card" style="margin-top:16px;">
+      <p class="detail-copy">No result preview rows are available for this example on the current deployment.</p>
+    </div>
+    {% endif %}
+  </section>
+  {% else %}
+  <section class="detail-shell reveal">
+    <div>
+      <div class="detail-kicker">Curated Example</div>
+      <h1 class="detail-title">Example Not Found</h1>
+      <p class="detail-copy">No curated example is configured for <code>{{ requested_job_id }}</code>. Use the examples index to open one of the available public showcase jobs.</p>
+      <div class="detail-actions" style="margin-top:22px;">
+        <a href="/examples" class="detail-link">Open Examples Index</a>
+        <a href="/api/examples" class="detail-link-muted">Example API Index</a>
+        <a href="/api-docs" class="detail-link-muted">API Docs</a>
+      </div>
+    </div>
+    <div class="detail-panel" style="padding:20px;">
+      <div class="detail-label">Requested Job ID</div>
+      <div class="detail-copy" style="margin-top:8px;">{{ requested_job_id }}</div>
+      <p class="detail-copy" style="margin-top:18px;">This route only serves configured, read-only curated examples. Unknown IDs return a friendly 404 instead of a stack trace.</p>
+    </div>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

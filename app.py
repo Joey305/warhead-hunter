@@ -316,7 +316,12 @@ API_DOC_CURRENT_GROUPS = [
             {
                 "method": "GET",
                 "path": "/api/examples/<job_id>",
-                "note": "Returns metadata for one curated example job.",
+                "note": "Returns metadata for one curated example job. Alias: /api/examples/<job_id>/metadata",
+            },
+            {
+                "method": "GET",
+                "path": "/api/examples/<job_id>/metadata",
+                "note": "Backward-compatible metadata alias for one curated example job.",
             },
             {
                 "method": "GET",
@@ -1248,6 +1253,7 @@ def api_examples():
     })
 
 
+@app.get("/api/examples/<job_id>/metadata")
 @app.get("/api/examples/<job_id>")
 def api_example_detail(job_id):
     item = get_curated_example_by_id(job_id)
@@ -1494,7 +1500,31 @@ def use_cases():
 
 @app.route("/examples")
 def examples_page():
-    return render_template("examples.html")
+    examples = get_curated_examples()
+    available_count = len([example for example in examples if example.get("available")])
+    return render_template(
+        "examples.html",
+        curated_examples=examples,
+        available_examples=available_count,
+        total_examples=len(examples),
+    )
+
+
+@app.route("/examples/<job_id>")
+def example_detail_page(job_id):
+    item = get_curated_example_by_id(job_id)
+    if not item:
+        return render_template(
+            "example_detail.html",
+            example=None,
+            requested_job_id=job_id,
+        ), 404
+
+    return render_template(
+        "example_detail.html",
+        example=build_curated_example_entry(item, include_preview=True),
+        requested_job_id=job_id,
+    )
 
 
 @app.route("/faq")
@@ -2006,35 +2036,214 @@ def get_curated_example_by_id(job_id: str) -> Optional[Dict[str, Any]]:
     return None
 
 
-def build_curated_example_entry(item: Dict[str, Any]) -> Dict[str, Any]:
+def _preferred_existing_path(candidates: List[Path]) -> Optional[Path]:
+    return _first_existing(candidates)
+
+
+def _preferred_example_paths(job_id: str) -> Dict[str, Optional[Path]]:
+    return {
+        "results_display": _preferred_existing_path([
+            target_results_dir(job_id) / "Results_Display.csv",
+            job_root(job_id) / "Results_Display.csv",
+        ]),
+        "resolved_sasa_summary": _preferred_existing_path([
+            target_results_dir(job_id) / "Resolved_SASA_Summary.csv",
+            target_results_dir(job_id) / "Resolved_SASA_Summary.tsv",
+            job_root(job_id) / "Resolved_SASA_Summary.csv",
+            job_root(job_id) / "Resolved_SASA_Summary.tsv",
+        ]),
+        "ligand_metadata": _preferred_existing_path([
+            target_results_dir(job_id) / "Ligand_Metadata.csv",
+            job_root(job_id) / "Ligand_Metadata.csv",
+        ]),
+        "war_pdb_dir": _preferred_existing_path([
+            target_results_dir(job_id) / "WAR_PDB",
+            job_root(job_id) / "WAR_PDB",
+        ]),
+        "mcs_sdf_dir": _preferred_existing_path([
+            target_results_dir(job_id) / "MCS_Output" / "MCS_SDF",
+            job_root(job_id) / "MCS_Output" / "MCS_SDF",
+        ]),
+        "mcs_svg_dir": _preferred_existing_path([
+            target_results_dir(job_id) / "MCS_Output" / "MCS_SVG",
+            job_root(job_id) / "MCS_Output" / "MCS_SVG",
+        ]),
+        "target_results_dir": _preferred_existing_path([
+            target_results_dir(job_id),
+            job_root(job_id) / "TARGET_RESULTS",
+        ]),
+        "public_bundle": get_preferred_public_bundle(job_id),
+    }
+
+
+def _count_dir_files(path: Optional[Path], suffixes: tuple[str, ...]) -> int:
+    if not path or not path.exists() or not path.is_dir():
+        return 0
+    wanted = tuple(s.lower() for s in suffixes)
+    return len([fp for fp in path.rglob("*") if fp.is_file() and fp.suffix.lower() in wanted])
+
+
+def _count_results_rows(job_id: str) -> int:
+    df = load_results_display(job_id)
+    if df is None or df.empty:
+        return 0
+    return len(df.index)
+
+
+def _example_pose_preview(job_id: str, limit: int = 8) -> List[Dict[str, Any]]:
+    df = load_results_display(job_id)
+    if df is None or df.empty:
+        return []
+
+    if "pdb_id" not in df.columns and "pdb" in df.columns:
+        df["pdb_id"] = df["pdb"]
+    for col in ("Chain", "Warhead", "SMILES", "Target"):
+        if col not in df.columns:
+            df[col] = ""
+    if "%Exposed" not in df.columns:
+        df["%Exposed"] = "0"
+
+    preview = df.copy()
+    preview["Target"] = preview["Target"].astype(str).fillna("").str.strip()
+    preview["pdb_id"] = preview["pdb_id"].astype(str).fillna("").str.lower()
+    preview["Chain"] = preview["Chain"].astype(str).fillna("").str.upper()
+    preview["Warhead"] = preview["Warhead"].astype(str).fillna("").str.upper()
+    preview["%Exposed_num"] = pd.to_numeric(preview["%Exposed"], errors="coerce").fillna(0.0)
+    preview = preview.sort_values("%Exposed_num", ascending=False).head(limit)
+
+    rows: List[Dict[str, Any]] = []
+    for row in preview.to_dict(orient="records"):
+        rows.append({
+            "target": str(row.get("Target") or "").strip(),
+            "pdb_id": str(row.get("pdb_id") or "").strip(),
+            "chain": str(row.get("Chain") or "").strip(),
+            "warhead": str(row.get("Warhead") or "").strip(),
+            "smiles": str(row.get("SMILES") or "").strip(),
+            "exposed_percent": round(float(row.get("%Exposed_num") or 0.0), 1),
+        })
+    return rows
+
+
+def _example_status_reason(available: bool, has_results: bool, counts: Dict[str, Any], paths: Dict[str, Optional[Path]]) -> str:
+    if not available:
+        return "This curated example is configured, but its job artifacts are not present on this deployment."
+    if not has_results:
+        return "The job folder is present, but the result display artifacts are not ready for browsing yet."
+
+    missing = []
+    if not paths.get("results_display"):
+        missing.append("Results_Display.csv")
+    if not paths.get("resolved_sasa_summary"):
+        missing.append("Resolved SASA summary")
+    if counts.get("war_pdb_count", 0) == 0:
+        missing.append("WAR_PDB structures")
+    if counts.get("sdf_count", 0) == 0:
+        missing.append("SDF structures")
+    if counts.get("svg_count", 0) == 0:
+        missing.append("SVG ligand maps")
+
+    if missing:
+        return "Partial example availability. Missing or empty artifacts: " + ", ".join(missing) + "."
+    return "Ready for read-only browsing, downloads, and API inspection."
+
+
+def build_curated_example_entry(item: Dict[str, Any], include_preview: bool = False) -> Dict[str, Any]:
     job_id = item["job_id"]
     base = safe_job_dir(job_id)
     available = bool(base and base.exists())
     meta = _job_meta_from_dir(base) if available else {}
+    paths = _preferred_example_paths(job_id) if available else {}
+    has_results = bool(meta.get("has_results")) if available else False
+    counts = {
+        "result_rows": _count_results_rows(job_id) if available else 0,
+        "war_pdb_count": _count_dir_files(paths.get("war_pdb_dir"), (".pdb",)) if available else 0,
+        "sdf_count": _count_dir_files(paths.get("mcs_sdf_dir"), (".sdf",)) if available else 0,
+        "svg_count": _count_dir_files(paths.get("mcs_svg_dir"), (".svg",)) if available else 0,
+        "table_count": 0,
+        "csv_count": 0,
+        "bundle_available": bool(paths.get("public_bundle")) if available else False,
+    }
+    if available:
+        safe_files = list_safe_job_files(job_id, kind="all", namespace="examples")
+        counts["table_count"] = len([f for f in safe_files if f["kind"] == "table"])
+        counts["csv_count"] = len([f for f in safe_files if f["kind"] == "csv"])
+        counts["downloadable_file_count"] = len(safe_files)
+    else:
+        counts["downloadable_file_count"] = 0
 
-    return {
+    status_reason = _example_status_reason(available, has_results, counts, paths)
+    partial = available and has_results and (
+        counts["war_pdb_count"] == 0
+        or counts["sdf_count"] == 0
+        or counts["svg_count"] == 0
+        or not paths.get("results_display")
+    )
+    status = "unavailable"
+    if available and has_results and not partial:
+        status = "available"
+    elif available:
+        status = "partial"
+
+    links = {
+        "page": f"/examples/{job_id}",
+        "results": f"/results/{job_id}" if has_results else "",
+        "metadata": f"/api/examples/{job_id}/metadata",
+        "metadata_legacy": f"/api/examples/{job_id}",
+        "files": f"/api/examples/{job_id}/files",
+        "bundle": f"/api/examples/{job_id}/bundle",
+        "war_pdbs": f"/api/examples/{job_id}/war-pdbs",
+        "war_pdbs_zip": f"/api/examples/{job_id}/war-pdbs.zip",
+        "artifacts": f"/api/examples/{job_id}/artifacts",
+        "api_docs": "/api-docs",
+    }
+    key_outputs = {
+        "results_display": paths.get("results_display").name if available and paths.get("results_display") else "",
+        "resolved_sasa_summary": paths.get("resolved_sasa_summary").name if available and paths.get("resolved_sasa_summary") else "",
+        "ligand_metadata": paths.get("ligand_metadata").name if available and paths.get("ligand_metadata") else "",
+        "war_pdb_dir": "TARGET_RESULTS/WAR_PDB" if available and paths.get("war_pdb_dir") and "TARGET_RESULTS" in paths["war_pdb_dir"].as_posix() else ("WAR_PDB" if available and paths.get("war_pdb_dir") else ""),
+        "mcs_sdf_dir": "TARGET_RESULTS/MCS_Output/MCS_SDF" if available and paths.get("mcs_sdf_dir") and "TARGET_RESULTS" in paths["mcs_sdf_dir"].as_posix() else ("MCS_Output/MCS_SDF" if available and paths.get("mcs_sdf_dir") else ""),
+        "mcs_svg_dir": "TARGET_RESULTS/MCS_Output/MCS_SVG" if available and paths.get("mcs_svg_dir") and "TARGET_RESULTS" in paths["mcs_svg_dir"].as_posix() else ("MCS_Output/MCS_SVG" if available and paths.get("mcs_svg_dir") else ""),
+    }
+
+    entry = {
         "job_id": job_id,
         "label": item.get("label", job_id),
         "protein": (meta.get("protein") or item.get("protein") or "").strip(),
         "search_query": (meta.get("search_query") or "").strip(),
         "use_case": item.get("use_case", ""),
         "available": available,
-        "has_results": bool(meta.get("has_results")) if available else False,
+        "has_results": has_results,
+        "status": status,
+        "status_reason": status_reason,
+        "counts": counts,
+        "key_outputs": key_outputs,
+        "links": links,
         "urls": {
-            "browser": f"/results/{job_id}" if available else "",
-            "metadata": f"/api/examples/{job_id}",
-            "files": f"/api/examples/{job_id}/files",
-            "bundle": f"/api/examples/{job_id}/bundle",
-            "war_pdbs": f"/api/examples/{job_id}/war-pdbs",
-            "war_pdbs_zip": f"/api/examples/{job_id}/war-pdbs.zip",
-            "artifacts": f"/api/examples/{job_id}/artifacts",
+            "browser": links["results"],
+            "metadata": links["metadata"],
+            "files": links["files"],
+            "bundle": links["bundle"],
+            "war_pdbs": links["war_pdbs"],
+            "war_pdbs_zip": links["war_pdbs_zip"],
+            "artifacts": links["artifacts"],
+            "page": links["page"],
         },
-        "job_url": f"/api/examples/{job_id}",
-        "files_url": f"/api/examples/{job_id}/files",
-        "bundle_url": f"/api/examples/{job_id}/bundle",
-        "browser_url": f"/results/{job_id}" if available else "",
+        "job_url": links["metadata"],
+        "files_url": links["files"],
+        "bundle_url": links["bundle"],
+        "browser_url": links["results"],
+        "page_url": links["page"],
         "api_curl": f'curl -s "$BASE/api/examples/{job_id}" | python -m json.tool',
+        "what_you_can_do": [
+            "Inspect read-only example outputs before launching a new job.",
+            "Download prepared WAR_PDB, SDF, SVG, CSV, and ZIP bundle artifacts when available.",
+            "Open the normal results gallery to browse ligand-exposure poses in the app.",
+            "Use the metadata and files endpoints as stable examples for automation scripts.",
+        ],
     }
+    if include_preview:
+        entry["preview_rows"] = _example_pose_preview(job_id)
+    return entry
 
 
 def get_curated_examples() -> List[Dict[str, Any]]:

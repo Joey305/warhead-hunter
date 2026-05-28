@@ -382,6 +382,12 @@ Recommended to commit:
 - documentation,
 - small curated examples, if needed.
 
+Curated example routes:
+
+- `/examples` lists the public read-only showcase jobs.
+- `/examples/<job_id>` opens a browsable example detail page.
+- `/api/examples`, `/api/examples/<job_id>/metadata`, `/api/examples/<job_id>/files`, `/api/examples/<job_id>/bundle`, and `/api/examples/<job_id>/war-pdbs.zip` expose the matching API contract.
+
 Recommended to exclude:
 
 - full job output folders,

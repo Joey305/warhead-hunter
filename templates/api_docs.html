@@ -653,14 +653,25 @@
           </div>
           <div style="margin-top:12px;">
             <span class="api-availability {% if example.available %}api-availability-yes{% else %}api-availability-no{% endif %}">
-              {% if example.available %}Available{% else %}Unavailable{% endif %}
+              {{ example.status|capitalize }}
             </span>
           </div>
+          <p class="api-card-copy" style="margin-top:12px;">{{ example.status_reason }}</p>
+          <div class="api-link-row" style="margin-top:10px;">
+            <span class="api-pill">Rows {{ example.counts.result_rows }}</span>
+            <span class="api-pill">WAR_PDB {{ example.counts.war_pdb_count }}</span>
+            <span class="api-pill">SDF {{ example.counts.sdf_count }}</span>
+            <span class="api-pill">SVG {{ example.counts.svg_count }}</span>
+          </div>
           <div class="api-card-actions" style="margin-top:14px;">
-            <a href="{{ canonical_api_base }}/api/examples/{{ example.job_id }}/metadata" class="api-btn-link">Metadata</a>
-            <a href="{{ canonical_api_base }}/api/examples/{{ example.job_id }}/files" class="api-btn-link">Files</a>
-            <a href="{{ canonical_api_base }}/api/examples/{{ example.job_id }}/bundle" class="api-btn-link">Bundle</a>
-            <a href="{{ canonical_api_base }}/api/examples/{{ example.job_id }}/war-pdbs" class="api-btn-link">WAR_PDB</a>
+            <a href="{{ canonical_api_base }}{{ example.page_url }}" class="api-btn-link">Open Example Page</a>
+            <a href="{{ canonical_api_base }}{{ example.links.metadata }}" class="api-btn-link">Metadata</a>
+            <a href="{{ canonical_api_base }}{{ example.links.files }}" class="api-btn-link">Files</a>
+            <a href="{{ canonical_api_base }}{{ example.links.bundle }}" class="api-btn-link">Bundle</a>
+            <a href="{{ canonical_api_base }}{{ example.links.war_pdbs }}" class="api-btn-link">WAR_PDB</a>
+            {% if example.links.results %}
+            <a href="{{ canonical_api_base }}{{ example.links.results }}" class="api-btn-link">Results</a>
+            {% endif %}
           </div>
         </article>
         {% endfor %}
@@ -818,7 +829,7 @@
   const feedbackEl = document.getElementById("api-copy-feedback");
 
   function setStatus(base, message) {
-    selectedBase = String(base || PRIMARY_BASE).replace(/\/+$/, "");
+    selectedBase = String(base || PRODUCTION_API_BASE).replace(/\/+$/, "");
     if (selectedBaseEl) selectedBaseEl.textContent = selectedBase;
     if (statusEl) statusEl.textContent = message;
     renderCodeBlocks();
