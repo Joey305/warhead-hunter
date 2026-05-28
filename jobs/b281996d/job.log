@@ -1,0 +1,2543 @@
+[13:18:57] Job b281996d started: 2026-04-28 13:18:57
+[13:18:57] 📦 Copying assets from pipeline_assets → jobs/b281996d ...
+[13:18:57] 🧾 Wrote input.csv and Protein_Data.csv
+[13:18:57] 🚀 Running 1_GRABBER.py...
+🤖 AUTOMATED MODE: Processing input.csv
+=== Processing CRBN ===
+    🔄 Switching to EBI Backup Search for 'Protein cereblon'...
+  → Found 162 candidates
+  → Downloaded 162 CIFs
+=== DONE ===
+✅ Wrote queries.csv with MW_min=250.0, MW_max=700.0, MinID=90.0
+[13:19:23] 🚀 Running 2_SQchk.py...
+🚀 Running Sequence Identity Analysis...
+   Proteins missing fasta/name rows skipped: 0
+   MW_min=250.0  MW_max=700.0  (MW filters currently ignored for ligand debug)
+   Total PDB jobs to process: 162
+  0%|          | 0/162 [00:00<?, ?it/s]DEBUG: 4ci3 Chain(s) ['A'] -> Match: 22.1%
+DEBUG: 3wx1 Chain(s) ['A', 'B'] -> Match: 91.9%
+DEBUG: 4ci3 Chain(s) ['B'] -> Match: 100.0%
+  1%|          | 1/162 [00:00<01:19,  2.02it/s]DEBUG: 5amh Chain(s) ['A'] -> Match: 67.2%
+DEBUG: 4tzc Chain(s) ['A', 'B', 'C', 'D'] -> Match: 91.7%
+DEBUG: 4v2y Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 3wx2 Chain(s) ['A', 'B'] -> Match: 91.9%
+DEBUG: 4v32 Chain(s) ['A', 'B', 'C'] -> Match: 68.0%
+DEBUG: 4v2z Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 4ci1 Chain(s) ['A'] -> Match: 22.1%
+DEBUG: 4ci1 Chain(s) ['B'] -> Match: 100.0%
+DEBUG: 4ci2 Chain(s) ['A'] -> Match: 22.1%
+DEBUG: 4tz4 Chain(s) ['A'] -> Match: 22.3%
+DEBUG: 4m91 Chain(s) ['A'] -> Match: 56.5%
+DEBUG: 4ci2 Chain(s) ['B'] -> Match: 100.0%
+DEBUG: 4m91 Chain(s) ['B'] -> Match: 100.0%
+DEBUG: 4tz4 Chain(s) ['C'] -> Match: 89.2%
+DEBUG: 5ami Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+  8%|▊         | 13/162 [00:00<00:09, 15.44it/s]DEBUG: 10ay Chain(s) ['A', 'D'] -> Match: 51.0%
+DEBUG: 10ay Chain(s) ['B', 'E'] -> Match: 87.9%
+DEBUG: 10ay Chain(s) ['C', 'F'] -> Match: 22.4%
+DEBUG: 4v31 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 5amj Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 4tzu Chain(s) ['A', 'B', 'C', 'D'] -> Match: 91.7%
+DEBUG: 5amk Chain(s) ['A', 'B', 'C', 'D'] -> Match: 67.2%
+DEBUG: 5oh4 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%DEBUG: 5oh9 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 5oh3 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 5oh2 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 4v30 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+ 14%|█▍        | 23/162 [00:01<00:04, 27.91it/s]DEBUG: 5oha Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 5fqd Chain(s) ['A', 'D'] -> Match: 26.6%
+DEBUG: 5fqd Chain(s) ['B', 'E'] -> Match: 88.5%
+DEBUG: 5fqd Chain(s) ['C', 'F'] -> Match: 41.3%
+DEBUG: 5yiz Chain(s) ['A', 'D', 'G', 'J', 'M', 'P', 'S', 'V', 'Y', 'b', 'e', 'h', 'k', 'n', 'q', 't'] -> Match: 91.9%
+DEBUG: 5oh7 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 5v3o Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 5v3o Chain(s) ['C'] -> Match: 87.7%
+DEBUG: 5oh1 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+ 18%|█▊        | 29/162 [00:01<00:06, 19.45it/s]DEBUG: 5yj0 Chain(s) ['A', 'D', 'G', 'J', 'M', 'P', 'S', 'V', 'Y', 'b', 'e', 'h', 'k', 'n', 'q', 't'] -> Match: 91.9%
+DEBUG: 5yj1 Chain(s) ['A', 'D', 'G', 'J', 'M', 'P', 'S', 'V', 'Y', 'b', 'e', 'h', 'k', 'n', 'q', 't'] -> Match: 91.9%
+DEBUG: 5hxb Chain(s) ['A', 'X'] -> Match: 51.8%
+DEBUG: 5hxb Chain(s) ['B', 'Y'] -> Match: 22.4%
+DEBUG: 5hxb Chain(s) ['C', 'Z'] -> Match: 87.7%
+DEBUG: 6bn8 Chain(s) ['A'] -> Match: 26.0%
+DEBUG: 6bn8 Chain(s) ['B'] -> Match: 85.1%
+DEBUG: 6bn8 Chain(s) ['C'] -> Match: 63.8%
+DEBUG: 6bnb Chain(s) ['A'] -> Match: 26.0%
+DEBUG: 6bnb Chain(s) ['B'] -> Match: 85.1%
+DEBUG: 6bnb Chain(s) ['C'] -> Match: 63.8%
+DEBUG: 6bn7 Chain(s) ['A'] -> Match: 26.0%
+DEBUG: 6bn7 Chain(s) ['B'] -> Match: 85.1%
+DEBUG: 6bn7 Chain(s) ['C'] -> Match: 63.8%
+DEBUG: 6r0u Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+ 22%|██▏       | 36/162 [00:01<00:06, 19.43it/s]DEBUG: 6boy Chain(s) ['A'] -> Match: 26.0%
+DEBUG: 6boy Chain(s) ['B'] -> Match: 85.1%
+DEBUG: 6boy Chain(s) ['C'] -> Match: 63.8%
+DEBUG: 6r13 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 6r12 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 6r0v Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 6r11 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+ 25%|██▍       | 40/162 [00:02<00:05, 21.04it/s]DEBUG: 6r1a Chain(s) ['A', 'B', 'C'] -> Match: 67.2%DEBUG: 6r18 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 6r19 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 6r1c Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 6bn9 Chain(s) ['A'] -> Match: 26.0%
+DEBUG: 6bn9 Chain(s) ['B'] -> Match: 85.1%
+DEBUG: 6bn9 Chain(s) ['C'] -> Match: 63.8%
+DEBUG: 6r1d Chain(s) ['A', 'B'] -> Match: 67.2%
+ 29%|██▉       | 47/162 [00:02<00:05, 20.44it/s]DEBUG: 5ohb Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 6uml Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 6uml Chain(s) ['C'] -> Match: 87.7%
+DEBUG: 6uml Chain(s) ['E'] -> Match: 92.9%
+DEBUG: 6r1x Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 6r1w Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+ 31%|███       | 50/162 [00:02<00:05, 20.40it/s]DEBUG: 7bqu Chain(s) ['A'] -> Match: 91.2%
+DEBUG: 7bqu Chain(s) ['B'] -> Match: 92.9%
+DEBUG: 6wwb Chain(s) ['A'] -> Match: 63.5%
+DEBUG: 6h0f Chain(s) ['A', 'D', 'G', 'J'] -> Match: 26.6%
+DEBUG: 6h0f Chain(s) ['B', 'E', 'H', 'K'] -> Match: 88.5%
+DEBUG: 6h0f Chain(s) ['C', 'F', 'I', 'L'] -> Match: 89.5%
+DEBUG: 7ps9 Chain(s) ['A', 'B', 'C'] -> Match: 67.7%
+DEBUG: 5oh8 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 7bqv Chain(s) ['A'] -> Match: 90.8%
+DEBUG: 7bqv Chain(s) ['B'] -> Match: 95.8%
+DEBUG: 7pjk Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+ 35%|███▌      | 57/162 [00:02<00:03, 26.88it/s]DEBUG: 6xk9 Chain(s) ['A', 'X'] -> Match: 51.8%
+DEBUG: 6xk9 Chain(s) ['B', 'Y'] -> Match: 22.4%
+DEBUG: 6xk9 Chain(s) ['C', 'Z'] -> Match: 87.7%
+DEBUG: 8aop Chain(s) ['A', 'B', 'C'] -> Match: 67.7%
+DEBUG: 7pso Chain(s) ['A', 'B', 'C'] -> Match: 67.7%
+ 38%|███▊      | 61/162 [00:03<00:04, 20.39it/s]DEBUG: 8bc6 Chain(s) ['A', 'B', 'C'] -> Match: 67.7%
+DEBUG: 8bc6 Chain(s) ['D', 'E'] -> Match: 100.0%
+DEBUG: 8bc7 Chain(s) ['A', 'B', 'C'] -> Match: 67.7%
+DEBUG: 8bc7 Chain(s) ['D'] -> Match: 100.0%
+DEBUG: 8c3h Chain(s) ['A', 'B', 'C'] -> Match: 67.7%
+DEBUG: 8c3h Chain(s) ['D', 'E'] -> Match: 100.0%
+DEBUG: 6r1k Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 7u8f Chain(s) ['A', 'D'] -> Match: 87.7%
+DEBUG: 7u8f Chain(s) ['B', 'E'] -> Match: 26.6%
+DEBUG: 7u8f Chain(s) ['C', 'F'] -> Match: 96.4%
+DEBUG: 8d7u Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 8d7u Chain(s) ['B'] -> Match: 86.2%
+ 41%|████▏     | 67/162 [00:03<00:03, 26.04it/s]DEBUG: 6h0g Chain(s) ['A', 'D'] -> Match: 26.6%
+DEBUG: 6h0g Chain(s) ['B', 'E'] -> Match: 88.5%
+DEBUG: 6h0g Chain(s) ['C', 'F'] -> Match: 87.1%
+DEBUG: 8d7v Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 6r0q Chain(s) ['A', 'B', 'C', 'D'] -> Match: 66.1%
+DEBUG: 8d7v Chain(s) ['B'] -> Match: 86.2%
+DEBUG: 8d7x Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 8d7w Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 8d7x Chain(s) ['B'] -> Match: 86.2%
+DEBUG: 8d7w Chain(s) ['B'] -> Match: 86.2%
+ 44%|████▍     | 71/162 [00:03<00:04, 21.17it/s]DEBUG: 8d7y Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 8d7y Chain(s) ['B'] -> Match: 86.2%
+DEBUG: 7shh Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+ 46%|████▌     | 74/162 [00:03<00:04, 21.91it/s]DEBUG: 8d7z Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 8d81 Chain(s) ['A'] -> Match: 26.6%
+DEBUG: 8d7z Chain(s) ['B'] -> Match: 86.2%
+DEBUG: 8d81 Chain(s) ['B'] -> Match: 86.2%
+DEBUG: 8d7z Chain(s) ['C'] -> Match: 72.4%
+DEBUG: 8aoq Chain(s) ['A', 'B', 'C'] -> Match: 67.7%
+DEBUG: 8cvp Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 8cvp Chain(s) ['B'] -> Match: 86.2%
+DEBUG: 8oiz Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 8oiz Chain(s) ['B'] -> Match: 87.5%
+ 49%|████▉     | 79/162 [00:03<00:03, 25.37it/s]DEBUG: 8d80 Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 8d80 Chain(s) ['B'] -> Match: 86.2%
+DEBUG: 8d80 Chain(s) ['C'] -> Match: 72.4%
+DEBUG: 8dey Chain(s) ['A', 'D'] -> Match: 87.7%
+DEBUG: 8dey Chain(s) ['B', 'E'] -> Match: 26.6%
+DEBUG: 8dey Chain(s) ['C', 'F'] -> Match: 84.2%
+DEBUG: 6r0s Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 8ou6 Chain(s) ['A', 'B', 'C'] -> Match: 67.6%
+DEBUG: 8ou4 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+ 51%|█████     | 83/162 [00:03<00:03, 22.40it/s]DEBUG: 8ou7 Chain(s) ['A', 'B', 'C'] -> Match: 67.7%
+DEBUG: 8oua Chain(s) ['A', 'B'] -> Match: 67.6%
+DEBUG: 8oua Chain(s) ['C'] -> Match: 67.9%
+DEBUG: 8g66 Chain(s) ['A', 'D'] -> Match: 26.9%
+ 53%|█████▎    | 86/162 [00:04<00:03, 21.91it/s]DEBUG: 8g66 Chain(s) ['B', 'E'] -> Match: 88.5%
+DEBUG: 8g66 Chain(s) ['C', 'F'] -> Match: 41.3%
+DEBUG: 8ou3 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 8rdp Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 8ojh Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 8ojh Chain(s) ['B'] -> Match: 87.5%
+DEBUG: 8ou5 Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+ 56%|█████▌    | 91/162 [00:04<00:02, 25.89it/s]DEBUG: 8rdq Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 8rdr Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 7lps Chain(s) ['A', 'D', 'G', 'J'] -> Match: 22.4%
+DEBUG: 7lps Chain(s) ['B', 'E', 'H', 'K'] -> Match: 88.5%
+DEBUG: 7lps Chain(s) ['C', 'F', 'I', 'L'] -> Match: 93.1%
+DEBUG: 8rds Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+ 59%|█████▊    | 95/162 [00:04<00:02, 22.33it/s]DEBUG: 8rq8 Chain(s) ['A'] -> Match: 88.1%
+DEBUG: 8rq1 Chain(s) ['A'] -> Match: 88.1%
+DEBUG: 8rqa Chain(s) ['A'] -> Match: 88.1%
+DEBUG: 8ou9 Chain(s) ['A', 'B', 'C'] -> Match: 67.9%
+ 60%|██████    | 98/162 [00:04<00:02, 22.19it/s]DEBUG: 8rdt Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 8rq9 Chain(s) ['A', 'C'] -> Match: 88.1%
+DEBUG: 8rq9 Chain(s) ['B', 'D'] -> Match: 60.0%
+DEBUG: 8rqc Chain(s) ['A', 'D'] -> Match: 88.1%
+DEBUG: 8rqc Chain(s) ['B', 'E'] -> Match: 88.9%
+DEBUG: 8tnr Chain(s) ['A'] -> Match: 26.9%
+DEBUG: 8tnr Chain(s) ['B'] -> Match: 82.1%
+DEBUG: 8tnr Chain(s) ['C'] -> Match: 35.8%
+ 64%|██████▎   | 103/162 [00:04<00:02, 24.94it/s]DEBUG: 8uh6 Chain(s) ['A'] -> Match: 22.2%
+DEBUG: 8uh6 Chain(s) ['B'] -> Match: 86.3%
+DEBUG: 8uh6 Chain(s) ['C'] -> Match: 43.2%
+DEBUG: 8tnp Chain(s) ['B'] -> Match: 82.1%
+DEBUG: 8tnp Chain(s) ['A'] -> Match: 26.9%
+DEBUG: 8tnp Chain(s) ['C'] -> Match: 35.8%
+DEBUG: 8tnq Chain(s) ['A'] -> Match: 26.9%
+DEBUG: 8tnq Chain(s) ['B'] -> Match: 82.1%
+DEBUG: 8tnq Chain(s) ['C'] -> Match: 35.8%
+DEBUG: 8u15 Chain(s) ['A', 'D'] -> Match: 87.7%
+DEBUG: 8u15 Chain(s) ['B', 'E'] -> Match: 26.6%
+DEBUG: 8u15 Chain(s) ['C', 'F'] -> Match: 80.0%
+DEBUG: 8tzx Chain(s) ['A', 'D'] -> Match: 87.7%
+ 66%|██████▌   | 107/162 [00:04<00:02, 22.15it/s]DEBUG: 8tzx Chain(s) ['B', 'E'] -> Match: 26.6%
+DEBUG: 8tzx Chain(s) ['C', 'F'] -> Match: 90.0%
+DEBUG: 8u17 Chain(s) ['A', 'D'] -> Match: 87.7%
+DEBUG: 9cuo Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 92.9%
+DEBUG: 9dom Chain(s) ['A', 'C', 'E', 'G'] -> Match: 91.0%
+DEBUG: 9dom Chain(s) ['B', 'D', 'F', 'H'] -> Match: 93.3%
+ 68%|██████▊   | 110/162 [00:05<00:02, 23.09it/s]DEBUG: 8u17 Chain(s) ['B', 'E'] -> Match: 26.6%
+DEBUG: 8u17 Chain(s) ['C', 'F'] -> Match: 67.4%
+DEBUG: 8u16 Chain(s) ['A', 'D'] -> Match: 87.7%
+DEBUG: 8u16 Chain(s) ['B', 'E'] -> Match: 26.6%
+DEBUG: 8u16 Chain(s) ['C', 'F'] -> Match: 80.0%
+DEBUG: 9dqd Chain(s) ['A'] -> Match: 82.9%
+DEBUG: 9d0x Chain(s) ['B'] -> Match: 87.7%
+DEBUG: 9dqd Chain(s) ['B'] -> Match: 26.6%
+DEBUG: 9d0x Chain(s) ['C'] -> Match: 45.0%
+DEBUG: 9d0x Chain(s) ['D'] -> Match: 46.2%
+DEBUG: 9gjq Chain(s) ['A'] -> Match: 67.9%
+ 71%|███████   | 115/162 [00:05<00:01, 25.47it/s]DEBUG: 9dur Chain(s) ['B'] -> Match: 82.1%
+DEBUG: 9dur Chain(s) ['C'] -> Match: 60.4%
+DEBUG: 9djt Chain(s) ['A', 'D'] -> Match: 87.7%
+DEBUG: 9djt Chain(s) ['B', 'E'] -> Match: 26.6%
+DEBUG: 9djt Chain(s) ['C', 'F'] -> Match: 90.0%
+DEBUG: 9dww Chain(s) ['C'] -> Match: 85.8%
+DEBUG: 9dww Chain(s) ['D'] -> Match: 26.5%
+DEBUG: 9dww Chain(s) ['P'] -> Match: 57.2%
+DEBUG: 9d0w Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 9d0w Chain(s) ['B'] -> Match: 87.7%
+DEBUG: 9d0w Chain(s) ['C'] -> Match: 45.0%
+DEBUG: 9d0w Chain(s) ['D'] -> Match: 46.2%
+ 73%|███████▎  | 119/162 [00:05<00:01, 22.92it/s]DEBUG: 9fjx Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 9fjx Chain(s) ['B'] -> Match: 87.5%
+DEBUG: 9gy3 Chain(s) ['A', 'C'] -> Match: 88.1%
+DEBUG: 9djx Chain(s) ['A', 'D'] -> Match: 87.7%
+DEBUG: 9hne Chain(s) ['A', 'D'] -> Match: 51.8%
+DEBUG: 9hpi Chain(s) ['A'] -> Match: 26.6%
+DEBUG: 9djx Chain(s) ['B', 'E'] -> Match: 26.6%
+DEBUG: 9djx Chain(s) ['C', 'F'] -> Match: 90.0%
+ 75%|███████▌  | 122/162 [00:05<00:01, 23.15it/s]DEBUG: 9hpi Chain(s) ['B', 'C'] -> Match: 87.8%
+DEBUG: 9hne Chain(s) ['B', 'E'] -> Match: 22.4%
+DEBUG: 9hne Chain(s) ['C', 'F'] -> Match: 87.9%
+DEBUG: 9dwv Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 9dwv Chain(s) ['B'] -> Match: 85.8%
+DEBUG: 9dwv Chain(s) ['C'] -> Match: 70.7%
+DEBUG: 9h59 Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 9h59 Chain(s) ['C'] -> Match: 44.1%
+DEBUG: 9h59 Chain(s) ['B'] -> Match: 84.5%
+DEBUG: 9htk Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+ 78%|███████▊  | 127/162 [00:05<00:01, 25.94it/s]DEBUG: 9htl Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 9hpj Chain(s) ['A'] -> Match: 26.6%
+DEBUG: 9hpj Chain(s) ['B', 'C'] -> Match: 87.8%
+DEBUG: 9htn Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+ 80%|████████  | 130/162 [00:05<00:01, 21.78it/s]DEBUG: 9hto Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 9htm Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 9htp Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+ 82%|████████▏ | 133/162 [00:06<00:01, 23.12it/s]DEBUG: 9htq Chain(s) ['A', 'B', 'C'] -> Match: 67.2%
+DEBUG: 9nr3 Chain(s) ['A'] -> Match: 26.8%
+DEBUG: 9nr3 Chain(s) ['B'] -> Match: 87.8%
+DEBUG: 9nr3 Chain(s) ['D'] -> Match: 100.0%
+DEBUG: 9nfq Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 9nfq Chain(s) ['B'] -> Match: 86.2%
+DEBUG: 9nfq Chain(s) ['C'] -> Match: 44.7%
+DEBUG: 9nwt Chain(s) ['C'] -> Match: 73.5%
+DEBUG: 9nwt Chain(s) ['A'] -> Match: 26.9%
+DEBUG: 9nwt Chain(s) ['B'] -> Match: 82.1%
+DEBUG: 9nws Chain(s) ['C'] -> Match: 72.5%
+DEBUG: 9nws Chain(s) ['A'] -> Match: 26.9%
+DEBUG: 9nws Chain(s) ['B'] -> Match: 82.1%
+DEBUG: 9o91 Chain(s) ['A', 'C', 'E', 'G'] -> Match: 91.0%
+DEBUG: 9o91 Chain(s) ['B', 'D', 'F', 'H'] -> Match: 93.3%
+ 86%|████████▌ | 139/162 [00:06<00:00, 26.05it/s]DEBUG: 9odr Chain(s) ['A', 'B', 'C', 'D'] -> Match: 91.0%
+DEBUG: 9ods Chain(s) ['A', 'B', 'C', 'D'] -> Match: 91.0%
+DEBUG: 9ohq Chain(s) ['A', 'C', 'E', 'G'] -> Match: 91.0%
+DEBUG: 9ohq Chain(s) ['B', 'D', 'F', 'H'] -> Match: 93.3%
+ 88%|████████▊ | 142/162 [00:06<00:00, 21.60it/s]DEBUG: 9nyr Chain(s) ['D'] -> Match: 45.0%
+DEBUG: 9nyr Chain(s) ['E'] -> Match: 46.2%
+DEBUG: 9nyr Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 9nyr Chain(s) ['B'] -> Match: 87.7%
+DEBUG: 9nfr Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 9ohr Chain(s) ['A', 'C', 'E', 'G'] -> Match: 91.0%
+DEBUG: 9ohr Chain(s) ['B', 'D', 'F', 'H'] -> Match: 93.3%
+DEBUG: 9nfr Chain(s) ['B'] -> Match: 86.2%
+DEBUG: 9nfr Chain(s) ['C'] -> Match: 76.3%
+DEBUG: 9oty Chain(s) ['A'] -> Match: 26.7%
+DEBUG: 9oty Chain(s) ['B'] -> Match: 89.0%
+DEBUG: 9oty Chain(s) ['C'] -> Match: 44.2%
+ 90%|█████████ | 146/162 [00:06<00:00, 23.32it/s]DEBUG: 9ouk Chain(s) ['A'] -> Match: 26.5%
+DEBUG: 9ouk Chain(s) ['B'] -> Match: 85.1%
+DEBUG: 9ouk Chain(s) ['C'] -> Match: 84.2%
+DEBUG: 9oul Chain(s) ['A'] -> Match: 26.5%
+DEBUG: 9oul Chain(s) ['C'] -> Match: 86.2%
+DEBUG: 9q03 Chain(s) ['A', 'B'] -> Match: 63.6%
+DEBUG: 9q03 Chain(s) ['C'] -> Match: 82.9%
+ 92%|█████████▏| 149/162 [00:06<00:00, 23.45it/s]DEBUG: 9sai Chain(s) ['B'] -> Match: 86.2%
+DEBUG: 9sai Chain(s) ['A'] -> Match: 26.6%
+DEBUG: 9sai Chain(s) ['C'] -> Match: 63.8%
+DEBUG: 9q22 Chain(s) ['A'] -> Match: 26.6%
+DEBUG: 9q22 Chain(s) ['B'] -> Match: 88.5%
+DEBUG: 9q22 Chain(s) ['C'] -> Match: 93.5%
+DEBUG: 9os2 Chain(s) ['B'] -> Match: 89.4%
+DEBUG: 9os2 Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 9os2 Chain(s) ['C', 'D'] -> Match: 33.8%
+DEBUG: 9gao Chain(s) ['A', 'C'] -> Match: 88.1%
+ 94%|█████████▍| 153/162 [00:06<00:00, 24.91it/s]DEBUG: 9saf Chain(s) ['A'] -> Match: 26.6%
+DEBUG: 9saf Chain(s) ['B'] -> Match: 86.2%
+DEBUG: 9saf Chain(s) ['C'] -> Match: 63.8%
+DEBUG: 9q2d Chain(s) ['A'] -> Match: 72.4%
+DEBUG: 9q2d Chain(s) ['B'] -> Match: 82.9%
+DEBUG: 9q2d Chain(s) ['C'] -> Match: 26.6%
+DEBUG: 9y7d Chain(s) ['B'] -> Match: 87.7%
+DEBUG: 9y7d Chain(s) ['C'] -> Match: 68.7%
+ 96%|█████████▋| 156/162 [00:07<00:00, 21.42it/s]DEBUG: 9ngt Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 9ngt Chain(s) ['B'] -> Match: 86.2%
+DEBUG: 9ngt Chain(s) ['C'] -> Match: 67.3%
+DEBUG: 9ya9 Chain(s) ['A', 'B'] -> Match: 63.6%
+DEBUG: 9ya9 Chain(s) ['C'] -> Match: 82.9%
+DEBUG: 9sfm Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 9sfm Chain(s) ['B'] -> Match: 89.0%
+DEBUG: 9w2f Chain(s) ['A'] -> Match: 22.4%
+DEBUG: 9w2f Chain(s) ['B'] -> Match: 89.0%
+DEBUG: 9w2f Chain(s) ['C'] -> Match: 72.9%
+DEBUG: 9e2u Chain(s) ['A', 'C', 'E', 'G', 'I', 'K', 'M', 'O'] -> Match: 26.0%
+DEBUG: 9e2u Chain(s) ['B', 'D', 'F', 'H', 'J', 'L', 'N', 'P'] -> Match: 85.1%
+DEBUG: 9e2u Chain(s) ['R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y'] -> Match: 59.9%
+ 99%|█████████▉| 161/162 [00:07<00:00, 25.48it/s]DEBUG: 9q33 Chain(s) ['A'] -> Match: 55.3%
+DEBUG: 9q33 Chain(s) ['B'] -> Match: 86.2%
+100%|██████████| 162/162 [00:07<00:00, 22.36it/s]
+DONE
+✅ PDBs processed OK: 162
+❌ PDBs failed: 0
+[13:19:30] 🚀 Running 3_PDBmkr.py...
+📊 Similarity Stats: Max found = 100.00% (Threshold: 90.0%)
+🚀 BUILDING 91 PDB CHAINS...
+  0%|          | 0/91 [00:00<?, ?it/s]
+  1%|          | 1/91 [00:00<00:27,  3.23it/s]
+ 10%|▉         | 9/91 [00:00<00:07, 10.39it/s]
+ 11%|█         | 10/91 [00:01<00:08,  9.04it/s]
+ 23%|██▎       | 21/91 [00:01<00:05, 12.49it/s]
+ 25%|██▌       | 23/91 [00:01<00:05, 13.10it/s]
+ 36%|███▋      | 33/91 [00:02<00:04, 12.95it/s]
+ 44%|████▍     | 40/91 [00:02<00:02, 17.87it/s]
+ 49%|████▉     | 45/91 [00:03<00:03, 12.44it/s]
+ 62%|██████▏   | 56/91 [00:03<00:01, 20.40it/s]
+ 67%|██████▋   | 61/91 [00:04<00:01, 18.85it/s]
+ 71%|███████▏  | 65/91 [00:04<00:01, 18.98it/s]
+ 77%|███████▋  | 70/91 [00:04<00:00, 22.60it/s]
+ 84%|████████▎ | 76/91 [00:04<00:00, 27.86it/s]
+ 90%|█████████ | 82/91 [00:04<00:00, 33.17it/s]
+ 96%|█████████▌| 87/91 [00:04<00:00, 35.27it/s]
+100%|██████████| 91/91 [00:04<00:00, 19.16it/s]
+✅ All PDBs built successfully.
+✅ Wrote 5CharMAP.csv with mapping rows (5-letter ligands detected).
+[13:19:35] 🚀 Running 4_PDBfxr.py...
+============================================
+🔥 STEP 4: LIGAND5 → LIGANDX (TOKEN PARSE + STRICT REFORMAT)
+============================================
+🔬 Loaded 7 ligand5→ligandX mappings
+🔧 Fixing 9ohq_A_A1CBH.pdb | A1CBH → A05
+   → 9ohq_A_A05.pdb | atoms updated: 0
+🔧 Fixing 9cuo_D_A1A0J.pdb | A1A0J → A00
+   → 9cuo_D_A00.pdb | atoms updated: 0
+🔧 Fixing 9cuo_E_A1A0J.pdb | A1A0J → A00
+   → 9cuo_E_A00.pdb | atoms updated: 0
+🔧 Fixing 9ohq_E_A1CBH.pdb | A1CBH → A05
+   → 9ohq_E_A05.pdb | atoms updated: 0
+🔧 Fixing 9odr_C_A1CAV.pdb | A1CAV → A03
+   → 9odr_C_A03.pdb | atoms updated: 0
+🔧 Fixing 9ods_C_A1CAW.pdb | A1CAW → A04
+   → 9ods_C_A04.pdb | atoms updated: 0
+🔧 Fixing 9o91_A_A1CAC.pdb | A1CAC → A02
+   → 9o91_A_A02.pdb | atoms updated: 0
+🔧 Fixing 9ods_B_A1CAW.pdb | A1CAW → A04
+   → 9ods_B_A04.pdb | atoms updated: 0
+🔧 Fixing 9dom_E_A1A8N.pdb | A1A8N → A01
+   → 9dom_E_A01.pdb | atoms updated: 0
+🔧 Fixing 9ods_A_A1CAW.pdb | A1CAW → A04
+   → 9ods_A_A04.pdb | atoms updated: 0
+🔧 Fixing 9ohr_C_A1CBG.pdb | A1CBG → A06
+   → 9ohr_C_A06.pdb | atoms updated: 0
+🔧 Fixing 9dom_A_A1A8N.pdb | A1A8N → A01
+   → 9dom_A_A01.pdb | atoms updated: 0
+🔧 Fixing 9cuo_F_A1A0J.pdb | A1A0J → A00
+   → 9cuo_F_A00.pdb | atoms updated: 0
+🔧 Fixing 9dom_G_A1A8N.pdb | A1A8N → A01
+   → 9dom_G_A01.pdb | atoms updated: 0
+🔧 Fixing 9cuo_B_A1A0J.pdb | A1A0J → A00
+   → 9cuo_B_A00.pdb | atoms updated: 0
+🔧 Fixing 9odr_B_A1CAV.pdb | A1CAV → A03
+   → 9odr_B_A03.pdb | atoms updated: 0
+🔧 Fixing 9cuo_A_A1A0J.pdb | A1A0J → A00
+   → 9cuo_A_A00.pdb | atoms updated: 0
+🔧 Fixing 9o91_E_A1CAC.pdb | A1CAC → A02
+   → 9o91_E_A02.pdb | atoms updated: 0
+🔧 Fixing 9ohr_E_A1CBG.pdb | A1CBG → A06
+   → 9ohr_E_A06.pdb | atoms updated: 0
+🔧 Fixing 9ohq_C_A1CBH.pdb | A1CBH → A05
+   → 9ohq_C_A05.pdb | atoms updated: 0
+🔧 Fixing 9ohr_G_A1CBG.pdb | A1CBG → A06
+   → 9ohr_G_A06.pdb | atoms updated: 0
+🔧 Fixing 9ohr_A_A1CBG.pdb | A1CBG → A06
+   → 9ohr_A_A06.pdb | atoms updated: 0
+🔧 Fixing 9odr_A_A1CAV.pdb | A1CAV → A03
+   → 9odr_A_A03.pdb | atoms updated: 0
+🔧 Fixing 9odr_D_A1CAV.pdb | A1CAV → A03
+   → 9odr_D_A03.pdb | atoms updated: 0
+🔧 Fixing 9ods_D_A1CAW.pdb | A1CAW → A04
+   → 9ods_D_A04.pdb | atoms updated: 0
+🔧 Fixing 9o91_C_A1CAC.pdb | A1CAC → A02
+   → 9o91_C_A02.pdb | atoms updated: 0
+🔧 Fixing 9ohq_G_A1CBH.pdb | A1CBH → A05
+   → 9ohq_G_A05.pdb | atoms updated: 0
+🔧 Fixing 9cuo_C_A1A0J.pdb | A1A0J → A00
+   → 9cuo_C_A00.pdb | atoms updated: 0
+🔧 Fixing 9dom_C_A1A8N.pdb | A1A8N → A01
+   → 9dom_C_A01.pdb | atoms updated: 0
+🔧 Fixing 9o91_G_A1CAC.pdb | A1CAC → A02
+   → 9o91_G_A02.pdb | atoms updated: 0
+============================================
+🎉 DONE — 30 files fixed
+✅ Total ligand atoms renamed: 0
+============================================
+[13:19:36] 🚀 Running 5_PDBcln.py...
+📁 ROOT DIRECTORY: WAR_PDB
+=============================
+🔬 Processing Protein: CRBN
+📂 Folder: WAR_PDB/CRBN
+=============================
+🧪 Cleaning 5yj1_S_6EL.pdb  | Keeping ligand: 6EL
+✔ Cleaned: 5yj1_S_6EL.pdb
+🧪 Cleaning 9o91_E_A02.pdb  | Keeping ligand: A02
+✔ Cleaned: 9o91_E_A02.pdb
+🧪 Cleaning 7bqv_A_F4U.pdb  | Keeping ligand: F4U
+✔ Cleaned: 7bqv_A_F4U.pdb
+🧪 Cleaning 5yj0_b_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yj0_b_EF2.pdb
+🧪 Cleaning 4tzc_C_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 4tzc_C_EF2.pdb
+🧪 Cleaning 5yiz_n_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yiz_n_EF2.pdb
+🧪 Cleaning 5yj0_S_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yj0_S_EF2.pdb
+🧪 Cleaning 9ods_B_A04.pdb  | Keeping ligand: A04
+✔ Cleaned: 9ods_B_A04.pdb
+🧪 Cleaning 4tzc_A_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 4tzc_A_EF2.pdb
+🧪 Cleaning 5yiz_q_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yiz_q_EF2.pdb
+🧪 Cleaning 5yj1_h_6EL.pdb  | Keeping ligand: 6EL
+✔ Cleaned: 5yj1_h_6EL.pdb
+🧪 Cleaning 5yj1_k_6EL.pdb  | Keeping ligand: 6EL
+✔ Cleaned: 5yj1_k_6EL.pdb
+🧪 Cleaning 9cuo_D_A00.pdb  | Keeping ligand: A00
+✔ Cleaned: 9cuo_D_A00.pdb
+🧪 Cleaning 5yiz_D_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yiz_D_EF2.pdb
+🧪 Cleaning 5yiz_M_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yiz_M_EF2.pdb
+🧪 Cleaning 7bqu_A_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 7bqu_A_EF2.pdb
+🧪 Cleaning 9ohq_G_A05.pdb  | Keeping ligand: A05
+✔ Cleaned: 9ohq_G_A05.pdb
+🧪 Cleaning 5yj1_G_6EL.pdb  | Keeping ligand: 6EL
+✔ Cleaned: 5yj1_G_6EL.pdb
+🧪 Cleaning 5yj1_V_6EL.pdb  | Keeping ligand: 6EL
+✔ Cleaned: 5yj1_V_6EL.pdb
+🧪 Cleaning 4ci3_B_Y70.pdb  | Keeping ligand: Y70
+✔ Cleaned: 4ci3_B_Y70.pdb
+🧪 Cleaning 5yj0_q_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yj0_q_EF2.pdb
+🧪 Cleaning 5yj1_J_6EL.pdb  | Keeping ligand: 6EL
+✔ Cleaned: 5yj1_J_6EL.pdb
+🧪 Cleaning 9ods_A_A04.pdb  | Keeping ligand: A04
+✔ Cleaned: 9ods_A_A04.pdb
+🧪 Cleaning 9ohr_G_A06.pdb  | Keeping ligand: A06
+✔ Cleaned: 9ohr_G_A06.pdb
+🧪 Cleaning 5yj1_A_6EL.pdb  | Keeping ligand: 6EL
+✔ Cleaned: 5yj1_A_6EL.pdb
+🧪 Cleaning 9cuo_B_A00.pdb  | Keeping ligand: A00
+✔ Cleaned: 9cuo_B_A00.pdb
+🧪 Cleaning 5yj0_k_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yj0_k_EF2.pdb
+🧪 Cleaning 5yj0_J_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yj0_J_EF2.pdb
+🧪 Cleaning 9cuo_A_A00.pdb  | Keeping ligand: A00
+✔ Cleaned: 9cuo_A_A00.pdb
+🧪 Cleaning 5yiz_J_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yiz_J_EF2.pdb
+🧪 Cleaning 9dom_C_A01.pdb  | Keeping ligand: A01
+✔ Cleaned: 9dom_C_A01.pdb
+🧪 Cleaning 5yj0_V_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yj0_V_EF2.pdb
+🧪 Cleaning 9dom_A_A01.pdb  | Keeping ligand: A01
+✔ Cleaned: 9dom_A_A01.pdb
+🧪 Cleaning 9ohr_C_A06.pdb  | Keeping ligand: A06
+✔ Cleaned: 9ohr_C_A06.pdb
+🧪 Cleaning 4ci1_B_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 4ci1_B_EF2.pdb
+🧪 Cleaning 5yiz_h_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yiz_h_EF2.pdb
+🧪 Cleaning 5yj1_n_6EL.pdb  | Keeping ligand: 6EL
+✔ Cleaned: 5yj1_n_6EL.pdb
+🧪 Cleaning 4tzc_B_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 4tzc_B_EF2.pdb
+🧪 Cleaning 9o91_A_A02.pdb  | Keeping ligand: A02
+✔ Cleaned: 9o91_A_A02.pdb
+🧪 Cleaning 9odr_C_A03.pdb  | Keeping ligand: A03
+✔ Cleaned: 9odr_C_A03.pdb
+🧪 Cleaning 9cuo_E_A00.pdb  | Keeping ligand: A00
+✔ Cleaned: 9cuo_E_A00.pdb
+🧪 Cleaning 4tzu_D_Y70.pdb  | Keeping ligand: Y70
+✔ Cleaned: 4tzu_D_Y70.pdb
+🧪 Cleaning 4tzu_C_Y70.pdb  | Keeping ligand: Y70
+✔ Cleaned: 4tzu_C_Y70.pdb
+🧪 Cleaning 5yj0_t_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yj0_t_EF2.pdb
+🧪 Cleaning 9odr_D_A03.pdb  | Keeping ligand: A03
+✔ Cleaned: 9odr_D_A03.pdb
+🧪 Cleaning 4tzu_A_Y70.pdb  | Keeping ligand: Y70
+✔ Cleaned: 4tzu_A_Y70.pdb
+🧪 Cleaning 5yiz_k_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yiz_k_EF2.pdb
+🧪 Cleaning 9ods_C_A04.pdb  | Keeping ligand: A04
+✔ Cleaned: 9ods_C_A04.pdb
+🧪 Cleaning 5yiz_P_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yiz_P_EF2.pdb
+🧪 Cleaning 5yj1_M_6EL.pdb  | Keeping ligand: 6EL
+✔ Cleaned: 5yj1_M_6EL.pdb
+🧪 Cleaning 5yiz_t_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yiz_t_EF2.pdb
+🧪 Cleaning 5yj0_e_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yj0_e_EF2.pdb
+🧪 Cleaning 5yiz_A_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yiz_A_EF2.pdb
+🧪 Cleaning 5yj0_M_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yj0_M_EF2.pdb
+🧪 Cleaning 5yj1_D_6EL.pdb  | Keeping ligand: 6EL
+✔ Cleaned: 5yj1_D_6EL.pdb
+🧪 Cleaning 5yj0_G_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yj0_G_EF2.pdb
+🧪 Cleaning 5yj1_q_6EL.pdb  | Keeping ligand: 6EL
+✔ Cleaned: 5yj1_q_6EL.pdb
+🧪 Cleaning 5yiz_b_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yiz_b_EF2.pdb
+🧪 Cleaning 5yiz_G_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yiz_G_EF2.pdb
+🧪 Cleaning 9ohr_A_A06.pdb  | Keeping ligand: A06
+✔ Cleaned: 9ohr_A_A06.pdb
+🧪 Cleaning 9ohq_A_A05.pdb  | Keeping ligand: A05
+✔ Cleaned: 9ohq_A_A05.pdb
+🧪 Cleaning 5yj1_e_6EL.pdb  | Keeping ligand: 6EL
+✔ Cleaned: 5yj1_e_6EL.pdb
+🧪 Cleaning 5yj1_t_6EL.pdb  | Keeping ligand: 6EL
+✔ Cleaned: 5yj1_t_6EL.pdb
+🧪 Cleaning 5yj0_h_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yj0_h_EF2.pdb
+🧪 Cleaning 5yj0_P_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yj0_P_EF2.pdb
+🧪 Cleaning 9odr_A_A03.pdb  | Keeping ligand: A03
+✔ Cleaned: 9odr_A_A03.pdb
+🧪 Cleaning 9dom_E_A01.pdb  | Keeping ligand: A01
+✔ Cleaned: 9dom_E_A01.pdb
+🧪 Cleaning 9o91_G_A02.pdb  | Keeping ligand: A02
+✔ Cleaned: 9o91_G_A02.pdb
+🧪 Cleaning 5yj0_D_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yj0_D_EF2.pdb
+🧪 Cleaning 5yiz_e_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yiz_e_EF2.pdb
+🧪 Cleaning 5yj0_Y_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yj0_Y_EF2.pdb
+🧪 Cleaning 9cuo_F_A00.pdb  | Keeping ligand: A00
+✔ Cleaned: 9cuo_F_A00.pdb
+🧪 Cleaning 4tzu_B_Y70.pdb  | Keeping ligand: Y70
+✔ Cleaned: 4tzu_B_Y70.pdb
+🧪 Cleaning 5yj1_b_6EL.pdb  | Keeping ligand: 6EL
+✔ Cleaned: 5yj1_b_6EL.pdb
+🧪 Cleaning 9dom_G_A01.pdb  | Keeping ligand: A01
+✔ Cleaned: 9dom_G_A01.pdb
+🧪 Cleaning 9ohr_E_A06.pdb  | Keeping ligand: A06
+✔ Cleaned: 9ohr_E_A06.pdb
+🧪 Cleaning 9cuo_C_A00.pdb  | Keeping ligand: A00
+✔ Cleaned: 9cuo_C_A00.pdb
+🧪 Cleaning 9ohq_E_A05.pdb  | Keeping ligand: A05
+✔ Cleaned: 9ohq_E_A05.pdb
+🧪 Cleaning 5yiz_S_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yiz_S_EF2.pdb
+🧪 Cleaning 9odr_B_A03.pdb  | Keeping ligand: A03
+✔ Cleaned: 9odr_B_A03.pdb
+🧪 Cleaning 9ods_D_A04.pdb  | Keeping ligand: A04
+✔ Cleaned: 9ods_D_A04.pdb
+🧪 Cleaning 9o91_C_A02.pdb  | Keeping ligand: A02
+✔ Cleaned: 9o91_C_A02.pdb
+🧪 Cleaning 4tzc_D_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 4tzc_D_EF2.pdb
+🧪 Cleaning 5yj0_n_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yj0_n_EF2.pdb
+🧪 Cleaning 9ohq_C_A05.pdb  | Keeping ligand: A05
+✔ Cleaned: 9ohq_C_A05.pdb
+🧪 Cleaning 5yj1_Y_6EL.pdb  | Keeping ligand: 6EL
+✔ Cleaned: 5yj1_Y_6EL.pdb
+🧪 Cleaning 5yiz_Y_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yiz_Y_EF2.pdb
+🧪 Cleaning 4ci2_B_LVY.pdb  | Keeping ligand: LVY
+✔ Cleaned: 4ci2_B_LVY.pdb
+🧪 Cleaning 5yiz_V_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yiz_V_EF2.pdb
+🧪 Cleaning 5yj0_A_EF2.pdb  | Keeping ligand: EF2
+✔ Cleaned: 5yj0_A_EF2.pdb
+🧪 Cleaning 5yj1_P_6EL.pdb  | Keeping ligand: 6EL
+✔ Cleaned: 5yj1_P_6EL.pdb
+🎉 DONE — cleaned=91, dropped=0
+[13:19:36] 🚀 Running 6_SASA.py...
+📁 Scanning WARHEAD PDB ROOT: WAR_PDB
+🔎 Found 91 PDB files
+🧠 Using 11 cores
+✅ 5yj1_S_6EL.pdb: 12/19 exposed (0.63)
+✅ 5yiz_n_EF2.pdb: 9/19 exposed (0.47)✅ 4tzc_A_EF2.pdb: 10/19 exposed (0.53)
+✅ 4tzc_C_EF2.pdb: 11/19 exposed (0.58)
+✅ 5yj1_h_6EL.pdb: 11/19 exposed (0.58)✅ 5yiz_q_EF2.pdb: 10/19 exposed (0.53)
+✅ 5yj0_b_EF2.pdb: 11/19 exposed (0.58)
+✅ 5yj0_S_EF2.pdb: 10/19 exposed (0.53)
+✅ 9ods_B_A04.pdb: 0/0 exposed (0.00)
+✅ 7bqv_A_F4U.pdb: 9/20 exposed (0.45)
+✅ 9o91_E_A02.pdb: 0/0 exposed (0.00)
+✅ 9cuo_D_A00.pdb: 0/0 exposed (0.00)
+✅ 5yj1_k_6EL.pdb: 10/19 exposed (0.53)
+✅ 5yj1_V_6EL.pdb: 11/19 exposed (0.58)
+✅ 5yiz_M_EF2.pdb: 12/19 exposed (0.63)
+✅ 5yiz_D_EF2.pdb: 11/19 exposed (0.58)
+✅ 5yj1_G_6EL.pdb: 11/19 exposed (0.58)
+✅ 9ohq_G_A05.pdb: 0/0 exposed (0.00)
+✅ 5yj0_q_EF2.pdb: 10/19 exposed (0.53)
+✅ 7bqu_A_EF2.pdb: 8/19 exposed (0.42)
+✅ 5yj1_J_6EL.pdb: 9/19 exposed (0.47)
+✅ 9cuo_B_A00.pdb: 0/0 exposed (0.00)
+✅ 5yj1_A_6EL.pdb: 10/19 exposed (0.53)
+✅ 5yj0_J_EF2.pdb: 11/19 exposed (0.58)
+✅ 5yj0_k_EF2.pdb: 12/19 exposed (0.63)
+📊 Progress: 25/91
+✅ 9ods_A_A04.pdb: 0/0 exposed (0.00)
+✅ 9cuo_A_A00.pdb: 0/0 exposed (0.00)
+✅ 9ohr_G_A06.pdb: 0/0 exposed (0.00)
+✅ 5yiz_J_EF2.pdb: 11/19 exposed (0.58)
+✅ 9dom_C_A01.pdb: 0/0 exposed (0.00)
+✅ 5yiz_h_EF2.pdb: 11/19 exposed (0.58)
+✅ 5yj1_n_6EL.pdb: 11/19 exposed (0.58)
+✅ 9dom_A_A01.pdb: 0/0 exposed (0.00)
+✅ 5yj0_V_EF2.pdb: 12/19 exposed (0.63)
+✅ 9ohr_C_A06.pdb: 0/0 exposed (0.00)
+✅ 4tzc_B_EF2.pdb: 11/19 exposed (0.58)
+✅ 9odr_C_A03.pdb: 0/0 exposed (0.00)
+✅ 9cuo_E_A00.pdb: 0/0 exposed (0.00)
+✅ 9o91_A_A02.pdb: 0/0 exposed (0.00)
+✅ 4tzu_D_Y70.pdb: 11/20 exposed (0.55)
+✅ 4tzu_C_Y70.pdb: 11/20 exposed (0.55)
+✅ 5yj0_t_EF2.pdb: 11/19 exposed (0.58)
+✅ 4tzu_A_Y70.pdb: 10/20 exposed (0.50)
+✅ 4ci3_B_Y70.pdb: 7/20 exposed (0.35)
+✅ 5yiz_k_EF2.pdb: 11/19 exposed (0.58)
+✅ 5yiz_P_EF2.pdb: 11/19 exposed (0.58)
+✅ 5yj1_M_6EL.pdb: 12/19 exposed (0.63)
+✅ 9ods_C_A04.pdb: 0/0 exposed (0.00)
+✅ 9odr_D_A03.pdb: 0/0 exposed (0.00)
+✅ 5yiz_t_EF2.pdb: 11/19 exposed (0.58)
+📊 Progress: 50/91
+✅ 5yj0_e_EF2.pdb: 10/19 exposed (0.53)
+✅ 5yiz_A_EF2.pdb: 11/19 exposed (0.58)
+✅ 5yj0_M_EF2.pdb: 12/19 exposed (0.63)
+✅ 5yj1_D_6EL.pdb: 12/19 exposed (0.63)
+✅ 5yj0_G_EF2.pdb: 11/19 exposed (0.58)
+✅ 5yj1_q_6EL.pdb: 10/19 exposed (0.53)
+✅ 5yiz_b_EF2.pdb: 11/19 exposed (0.58)
+✅ 5yiz_G_EF2.pdb: 11/19 exposed (0.58)
+✅ 5yj1_e_6EL.pdb: 11/19 exposed (0.58)
+✅ 4ci1_B_EF2.pdb: 7/19 exposed (0.37)
+✅ 9ohr_A_A06.pdb: 0/0 exposed (0.00)
+✅ 5yj1_t_6EL.pdb: 11/19 exposed (0.58)
+✅ 5yj0_h_EF2.pdb: 11/19 exposed (0.58)
+✅ 9ohq_A_A05.pdb: 0/0 exposed (0.00)
+✅ 5yj0_P_EF2.pdb: 11/19 exposed (0.58)
+✅ 9odr_A_A03.pdb: 0/0 exposed (0.00)
+✅ 9dom_E_A01.pdb: 0/0 exposed (0.00)
+✅ 9o91_G_A02.pdb: 0/0 exposed (0.00)
+✅ 5yj0_D_EF2.pdb: 10/19 exposed (0.53)
+✅ 5yiz_e_EF2.pdb: 10/19 exposed (0.53)
+✅ 5yj0_Y_EF2.pdb: 11/19 exposed (0.58)
+✅ 4tzu_B_Y70.pdb: 11/20 exposed (0.55)
+✅ 5yj1_b_6EL.pdb: 12/19 exposed (0.63)
+✅ 9dom_G_A01.pdb: 0/0 exposed (0.00)
+✅ 9cuo_C_A00.pdb: 0/0 exposed (0.00)
+📊 Progress: 75/91
+✅ 9ohr_E_A06.pdb: 0/0 exposed (0.00)
+✅ 9cuo_F_A00.pdb: 0/0 exposed (0.00)
+✅ 5yiz_S_EF2.pdb: 11/19 exposed (0.58)
+✅ 9ohq_E_A05.pdb: 0/0 exposed (0.00)
+✅ 9odr_B_A03.pdb: 0/0 exposed (0.00)
+✅ 5yj0_n_EF2.pdb: 9/19 exposed (0.47)
+✅ 9ods_D_A04.pdb: 0/0 exposed (0.00)
+✅ 9o91_C_A02.pdb: 0/0 exposed (0.00)
+✅ 4tzc_D_EF2.pdb: 10/19 exposed (0.53)
+✅ 5yiz_Y_EF2.pdb: 11/19 exposed (0.58)
+✅ 5yiz_V_EF2.pdb: 10/19 exposed (0.53)
+✅ 9ohq_C_A05.pdb: 0/0 exposed (0.00)
+✅ 5yj1_Y_6EL.pdb: 11/19 exposed (0.58)
+✅ 5yj0_A_EF2.pdb: 12/19 exposed (0.63)
+✅ 5yj1_P_6EL.pdb: 11/19 exposed (0.58)
+✅ 4ci2_B_LVY.pdb: 8/19 exposed (0.42)
+🎉 WARHEAD SASA COMPLETE
+[13:19:39] 🚀 Running 7_metadata.py...
+📂 Using SMILES file: Components-smiles-stereo-oe.smi
+🧬 Loaded 49558 SMILES entries.
+🔎 Sample SMILES keys: ['000', '001', '002', '003', '004', '005', '006', '007', '008', '009', '00A', '00B', '00C', '00D', '00E']
+🤖 AUTO MODE: Warhead_SASA_summary.csv
+📥 Loaded SASA table.
+/home/jxs794/WEBTOOLs/PROTAC-Target-Builder/jobs/b281996d/7_metadata.py:443: FutureWarning: DataFrame.applymap has been deprecated. Use DataFrame.map instead.
+  alias = alias.applymap(lambda x: str(x).strip() if x is not None else "")
+🧭 5CharMAP loaded: 7 (pdb,ligX)->lig5 mappings
+🧭 5CharMAP loaded: 7 (pdb,lig3)->lig5 mappings
+🔗 WAR_PDB chain map built: 17 (pdb,ligX) groups
+🔬 BEGIN RESOLUTION TRACE
+--------------------------------------------------
+Row 0
+  PDB: 5yj1
+  Warhead (input): 6EL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6EL
+  SMILES found? YES
+--------------------------------------------------
+Row 1
+  PDB: 5yiz
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 2
+  PDB: 4tzc
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 3
+  PDB: 4tzc
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 4
+  PDB: 5yiz
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 5
+  PDB: 5yj1
+  Warhead (input): 6EL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6EL
+  SMILES found? YES
+--------------------------------------------------
+Row 6
+  PDB: 5yj0
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 7
+  PDB: 5yj0
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 8
+  PDB: 9ods
+  Warhead (input): A04
+  Warhead_5 (if mapped): A1CAW
+  SMILES lookup key: A1CAW
+  SMILES found? YES
+--------------------------------------------------
+Row 9
+  PDB: 7bqv
+  Warhead (input): F4U
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: F4U
+  SMILES found? YES
+--------------------------------------------------
+Row 10
+  PDB: 9o91
+  Warhead (input): A02
+  Warhead_5 (if mapped): A1CAC
+  SMILES lookup key: A1CAC
+  SMILES found? YES
+--------------------------------------------------
+Row 11
+  PDB: 9cuo
+  Warhead (input): A00
+  Warhead_5 (if mapped): A1A0J
+  SMILES lookup key: A1A0J
+  SMILES found? YES
+--------------------------------------------------
+Row 12
+  PDB: 5yj1
+  Warhead (input): 6EL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6EL
+  SMILES found? YES
+--------------------------------------------------
+Row 13
+  PDB: 5yj1
+  Warhead (input): 6EL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6EL
+  SMILES found? YES
+--------------------------------------------------
+Row 14
+  PDB: 5yiz
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 15
+  PDB: 5yiz
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 16
+  PDB: 5yj1
+  Warhead (input): 6EL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6EL
+  SMILES found? YES
+--------------------------------------------------
+Row 17
+  PDB: 9ohq
+  Warhead (input): A05
+  Warhead_5 (if mapped): A1CBH
+  SMILES lookup key: A1CBH
+  SMILES found? YES
+--------------------------------------------------
+Row 18
+  PDB: 5yj0
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 19
+  PDB: 7bqu
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 20
+  PDB: 5yj1
+  Warhead (input): 6EL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6EL
+  SMILES found? YES
+--------------------------------------------------
+Row 21
+  PDB: 9cuo
+  Warhead (input): A00
+  Warhead_5 (if mapped): A1A0J
+  SMILES lookup key: A1A0J
+  SMILES found? YES
+--------------------------------------------------
+Row 22
+  PDB: 5yj1
+  Warhead (input): 6EL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6EL
+  SMILES found? YES
+--------------------------------------------------
+Row 23
+  PDB: 5yj0
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 24
+  PDB: 5yj0
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 25
+  PDB: 9ods
+  Warhead (input): A04
+  Warhead_5 (if mapped): A1CAW
+  SMILES lookup key: A1CAW
+  SMILES found? YES
+--------------------------------------------------
+Row 26
+  PDB: 9cuo
+  Warhead (input): A00
+  Warhead_5 (if mapped): A1A0J
+  SMILES lookup key: A1A0J
+  SMILES found? YES
+--------------------------------------------------
+Row 27
+  PDB: 9ohr
+  Warhead (input): A06
+  Warhead_5 (if mapped): A1CBG
+  SMILES lookup key: A1CBG
+  SMILES found? YES
+--------------------------------------------------
+Row 28
+  PDB: 5yiz
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 29
+  PDB: 9dom
+  Warhead (input): A01
+  Warhead_5 (if mapped): A1A8N
+  SMILES lookup key: A1A8N
+  SMILES found? YES
+--------------------------------------------------
+Row 30
+  PDB: 5yiz
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 31
+  PDB: 5yj1
+  Warhead (input): 6EL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6EL
+  SMILES found? YES
+--------------------------------------------------
+Row 32
+  PDB: 9dom
+  Warhead (input): A01
+  Warhead_5 (if mapped): A1A8N
+  SMILES lookup key: A1A8N
+  SMILES found? YES
+--------------------------------------------------
+Row 33
+  PDB: 5yj0
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 34
+  PDB: 9ohr
+  Warhead (input): A06
+  Warhead_5 (if mapped): A1CBG
+  SMILES lookup key: A1CBG
+  SMILES found? YES
+--------------------------------------------------
+Row 35
+  PDB: 4tzc
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 36
+  PDB: 9odr
+  Warhead (input): A03
+  Warhead_5 (if mapped): A1CAV
+  SMILES lookup key: A1CAV
+  SMILES found? YES
+--------------------------------------------------
+Row 37
+  PDB: 9cuo
+  Warhead (input): A00
+  Warhead_5 (if mapped): A1A0J
+  SMILES lookup key: A1A0J
+  SMILES found? YES
+--------------------------------------------------
+Row 38
+  PDB: 9o91
+  Warhead (input): A02
+  Warhead_5 (if mapped): A1CAC
+  SMILES lookup key: A1CAC
+  SMILES found? YES
+--------------------------------------------------
+Row 39
+  PDB: 4tzu
+  Warhead (input): Y70
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: Y70
+  SMILES found? YES
+--------------------------------------------------
+Row 40
+  PDB: 4tzu
+  Warhead (input): Y70
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: Y70
+  SMILES found? YES
+--------------------------------------------------
+Row 41
+  PDB: 5yj0
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 42
+  PDB: 4tzu
+  Warhead (input): Y70
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: Y70
+  SMILES found? YES
+--------------------------------------------------
+Row 43
+  PDB: 4ci3
+  Warhead (input): Y70
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: Y70
+  SMILES found? YES
+--------------------------------------------------
+Row 44
+  PDB: 5yiz
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 45
+  PDB: 5yiz
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 46
+  PDB: 5yj1
+  Warhead (input): 6EL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6EL
+  SMILES found? YES
+--------------------------------------------------
+Row 47
+  PDB: 9ods
+  Warhead (input): A04
+  Warhead_5 (if mapped): A1CAW
+  SMILES lookup key: A1CAW
+  SMILES found? YES
+--------------------------------------------------
+Row 48
+  PDB: 9odr
+  Warhead (input): A03
+  Warhead_5 (if mapped): A1CAV
+  SMILES lookup key: A1CAV
+  SMILES found? YES
+--------------------------------------------------
+Row 49
+  PDB: 5yiz
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 50
+  PDB: 5yj0
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 51
+  PDB: 5yiz
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 52
+  PDB: 5yj0
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 53
+  PDB: 5yj1
+  Warhead (input): 6EL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6EL
+  SMILES found? YES
+--------------------------------------------------
+Row 54
+  PDB: 5yj0
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 55
+  PDB: 5yj1
+  Warhead (input): 6EL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6EL
+  SMILES found? YES
+--------------------------------------------------
+Row 56
+  PDB: 5yiz
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 57
+  PDB: 5yiz
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 58
+  PDB: 5yj1
+  Warhead (input): 6EL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6EL
+  SMILES found? YES
+--------------------------------------------------
+Row 59
+  PDB: 4ci1
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 60
+  PDB: 9ohr
+  Warhead (input): A06
+  Warhead_5 (if mapped): A1CBG
+  SMILES lookup key: A1CBG
+  SMILES found? YES
+--------------------------------------------------
+Row 61
+  PDB: 5yj1
+  Warhead (input): 6EL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6EL
+  SMILES found? YES
+--------------------------------------------------
+Row 62
+  PDB: 5yj0
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 63
+  PDB: 9ohq
+  Warhead (input): A05
+  Warhead_5 (if mapped): A1CBH
+  SMILES lookup key: A1CBH
+  SMILES found? YES
+--------------------------------------------------
+Row 64
+  PDB: 5yj0
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 65
+  PDB: 9odr
+  Warhead (input): A03
+  Warhead_5 (if mapped): A1CAV
+  SMILES lookup key: A1CAV
+  SMILES found? YES
+--------------------------------------------------
+Row 66
+  PDB: 9dom
+  Warhead (input): A01
+  Warhead_5 (if mapped): A1A8N
+  SMILES lookup key: A1A8N
+  SMILES found? YES
+--------------------------------------------------
+Row 67
+  PDB: 9o91
+  Warhead (input): A02
+  Warhead_5 (if mapped): A1CAC
+  SMILES lookup key: A1CAC
+  SMILES found? YES
+--------------------------------------------------
+Row 68
+  PDB: 5yj0
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 69
+  PDB: 5yiz
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 70
+  PDB: 5yj0
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 71
+  PDB: 4tzu
+  Warhead (input): Y70
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: Y70
+  SMILES found? YES
+--------------------------------------------------
+Row 72
+  PDB: 5yj1
+  Warhead (input): 6EL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6EL
+  SMILES found? YES
+--------------------------------------------------
+Row 73
+  PDB: 9dom
+  Warhead (input): A01
+  Warhead_5 (if mapped): A1A8N
+  SMILES lookup key: A1A8N
+  SMILES found? YES
+--------------------------------------------------
+Row 74
+  PDB: 9cuo
+  Warhead (input): A00
+  Warhead_5 (if mapped): A1A0J
+  SMILES lookup key: A1A0J
+  SMILES found? YES
+--------------------------------------------------
+Row 75
+  PDB: 9ohr
+  Warhead (input): A06
+  Warhead_5 (if mapped): A1CBG
+  SMILES lookup key: A1CBG
+  SMILES found? YES
+--------------------------------------------------
+Row 76
+  PDB: 9cuo
+  Warhead (input): A00
+  Warhead_5 (if mapped): A1A0J
+  SMILES lookup key: A1A0J
+  SMILES found? YES
+--------------------------------------------------
+Row 77
+  PDB: 5yiz
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 78
+  PDB: 9ohq
+  Warhead (input): A05
+  Warhead_5 (if mapped): A1CBH
+  SMILES lookup key: A1CBH
+  SMILES found? YES
+--------------------------------------------------
+Row 79
+  PDB: 9odr
+  Warhead (input): A03
+  Warhead_5 (if mapped): A1CAV
+  SMILES lookup key: A1CAV
+  SMILES found? YES
+--------------------------------------------------
+Row 80
+  PDB: 5yj0
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 81
+  PDB: 9ods
+  Warhead (input): A04
+  Warhead_5 (if mapped): A1CAW
+  SMILES lookup key: A1CAW
+  SMILES found? YES
+--------------------------------------------------
+Row 82
+  PDB: 9o91
+  Warhead (input): A02
+  Warhead_5 (if mapped): A1CAC
+  SMILES lookup key: A1CAC
+  SMILES found? YES
+--------------------------------------------------
+Row 83
+  PDB: 4tzc
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 84
+  PDB: 5yiz
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 85
+  PDB: 5yiz
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 86
+  PDB: 9ohq
+  Warhead (input): A05
+  Warhead_5 (if mapped): A1CBH
+  SMILES lookup key: A1CBH
+  SMILES found? YES
+--------------------------------------------------
+Row 87
+  PDB: 5yj1
+  Warhead (input): 6EL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6EL
+  SMILES found? YES
+--------------------------------------------------
+Row 88
+  PDB: 5yj0
+  Warhead (input): EF2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EF2
+  SMILES found? YES
+--------------------------------------------------
+Row 89
+  PDB: 5yj1
+  Warhead (input): 6EL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6EL
+  SMILES found? YES
+--------------------------------------------------
+Row 90
+  PDB: 4ci2
+  Warhead (input): LVY
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: LVY
+  SMILES found? YES
+🔬 END RESOLUTION TRACE
+✅ Filtered SASA table: removed 0 ion-only rows; remaining 91 rows
+💾 Saved Resolved_SASA_Summary.csv
+💾 Saved Ligand_PDB_Index.csv
+🚀 Launching parallel engine with 12 cores...
+🧪 Computing descriptors:   0%|          | 0/12 [00:00<?, ?it/s]
+🧪 Computing descriptors:   8%|▊         | 1/12 [00:00<00:01,  8.29it/s]
+🧪 Computing descriptors: 100%|██████████| 12/12 [00:00<00:00, 87.02it/s]
+🎉 COMPLETE → Ligand_Metadata.csv
+===================================================================
+[13:19:39] 🚀 Running 8_scaffold.py...
+📥 Loaded 91 rows from Resolved_SASA_Summary.csv
+🔬 Found 1 protein targets.
+✅ Stage 1 complete — base scaffold mapping and diversity scores saved.
+🎉 Stage 2 complete — advanced scaffold data saved.
+📦 All tables written to Target_Table/
+[13:19:40] 🚀 Running 9_2Dmapping.py...
+📥 Loading: Resolved_SASA_Summary.csv
+✅ Using: Target=Target, Ligand=Warhead, SMILES=SMILES
+🧬 Generating atom-level mapping...
+🎉 SUCCESS: All maps saved to Target_Table
+[13:19:40] 🚀 Running 10_2DmappingExtraction.py...
+✅ Extracted ligand atom coordinates for 1165 atoms
+💾 Saved → Ligand_3D_Atoms.csv
+[13:19:40] 🚀 Running 11_mcsMatcher.py...
+ℹ️ No ligand alias resolution required (all ligands resolved in SMILES map).
+🚀 Running MCS on 61 ligand occurrences using 12 cores
+⚙️ Using hard timeout (5s per ligand) via SIGALRM
+[13:19:41 pid=2720222] BEGIN key=('6EL', 'CRBN', '5yj1', 501, 'A')
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'A') step=START
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'A') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'A') step=LOOKUP_SMILES
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'A') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] BEGIN key=('6EL', 'CRBN', '5yj1', 501, 'D')
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'D') step=START
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'D') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'D') step=LOOKUP_SMILES
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'D') step=MOLFROM_SMILES
+[13:19:41 pid=2720224] BEGIN key=('6EL', 'CRBN', '5yj1', 501, 'G')
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'G') step=START
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'G') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'G') step=LOOKUP_SMILES
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'G') step=MOLFROM_SMILES
+[13:19:41 pid=2720225] BEGIN key=('6EL', 'CRBN', '5yj1', 501, 'J')
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'J') step=START
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'J') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'J') step=LOOKUP_SMILES
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'J') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'A') step=GET_GROUP
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'G') step=GET_GROUP
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'J') step=GET_GROUP
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'A') step=BUILD_3D_MOL
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'G') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'D') step=GET_GROUP
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'J') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'D') step=BUILD_3D_MOL
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'A') ⏱ BUILD_3D_MOL dt=0.009s[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'J') ⏱ BUILD_3D_MOL dt=0.008s
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'A') step=SDF_BLOCK
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'J') step=SDF_BLOCK
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'G') ⏱ BUILD_3D_MOL dt=0.009s
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'G') step=SDF_BLOCK
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj1_A_6EL_501.sdf (exists=False)
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'A') step=SDF_WRITE
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'J') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj1_J_6EL_501.sdf (exists=False)
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'G') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj1_G_6EL_501.sdf (exists=False)
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'J') step=SDF_WRITE
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'G') step=SDF_WRITE
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'D') ⏱ BUILD_3D_MOL dt=0.010s
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'D') step=SDF_BLOCK
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'D') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj1_D_6EL_501.sdf (exists=False)
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'D') step=SDF_WRITE
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'A') ✅ SDF_WRITE ok dt=0.07s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'A') step=MAP_INIT
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'A') step=SIZE_CHECKS
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'A') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'J') ✅ SDF_WRITE ok dt=0.07s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'J') step=MAP_INIT
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'J') step=SIZE_CHECKS
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'J') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'J') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720225] [6EL 5yj1 J 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=6EL
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'J') step=BUILD_ROWS
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'A') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720222] [6EL 5yj1 A 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=6EL
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'A') step=BUILD_ROWS
+[13:19:41 pid=2720225] END key=('6EL', 'CRBN', '5yj1', 501, 'J') mode=GRAPH_FULL mapped=19 dt=0.09s
+[13:19:41 pid=2720225] BEGIN key=('6EL', 'CRBN', '5yj1', 501, 'M')
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'M') step=START
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'M') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'M') step=LOOKUP_SMILES
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'M') step=MOLFROM_SMILES
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'M') step=GET_GROUP
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'M') step=BUILD_3D_MOL
+[13:19:41 pid=2720222] END key=('6EL', 'CRBN', '5yj1', 501, 'A') mode=GRAPH_FULL mapped=19 dt=0.09s
+[13:19:41 pid=2720222] BEGIN key=('6EL', 'CRBN', '5yj1', 501, 'P')
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'P') step=START
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'P') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'P') step=LOOKUP_SMILES
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'P') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'P') step=GET_GROUP
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'P') step=BUILD_3D_MOL
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'M') ⏱ BUILD_3D_MOL dt=0.008s
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'M') step=SDF_BLOCK
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'M') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj1_M_6EL_501.sdf (exists=False)
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'M') step=SDF_WRITE
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'P') ⏱ BUILD_3D_MOL dt=0.011s
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'P') step=SDF_BLOCK
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'P') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj1_P_6EL_501.sdf (exists=False)
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'P') step=SDF_WRITE
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'G') ✅ SDF_WRITE ok dt=0.09s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'G') step=MAP_INIT
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'G') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'D') ✅ SDF_WRITE ok dt=0.09s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'G') step=GRAPH_FULL
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'D') step=MAP_INIT
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'D') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'D') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'G') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720224] [6EL 5yj1 G 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=6EL
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'G') step=BUILD_ROWS
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'D') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720223] [6EL 5yj1 D 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=6EL
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'D') step=BUILD_ROWS
+[13:19:41 pid=2720224] END key=('6EL', 'CRBN', '5yj1', 501, 'G') mode=GRAPH_FULL mapped=19 dt=0.11s
+[13:19:41 pid=2720224] BEGIN key=('6EL', 'CRBN', '5yj1', 501, 'S')
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'S') step=START
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'S') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'S') step=LOOKUP_SMILES
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'S') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] END key=('6EL', 'CRBN', '5yj1', 501, 'D') mode=GRAPH_FULL mapped=19 dt=0.11s
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'S') step=GET_GROUP
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'S') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] BEGIN key=('6EL', 'CRBN', '5yj1', 501, 'V')
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'V') step=START
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'V') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'V') step=LOOKUP_SMILES
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'V') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'V') step=GET_GROUP
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'V') step=BUILD_3D_MOL
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'S') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'S') step=SDF_BLOCK
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'S') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj1_S_6EL_501.sdf (exists=False)
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'S') step=SDF_WRITE
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'V') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'V') step=SDF_BLOCK
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'V') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj1_V_6EL_501.sdf (exists=False)
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'V') step=SDF_WRITE
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'M') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'P') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'M') step=MAP_INIT[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'P') step=MAP_INIT
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'M') step=SIZE_CHECKS[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'P') step=SIZE_CHECKS
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'M') step=GRAPH_FULL
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'P') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'M') ⏱ GRAPH_FULL dt=0.000s[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'P') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720222] [6EL 5yj1 P 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=6EL[13:19:41 pid=2720225] [6EL 5yj1 M 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=6EL
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'P') step=BUILD_ROWS[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'M') step=BUILD_ROWS
+[13:19:41 pid=2720222] END key=('6EL', 'CRBN', '5yj1', 501, 'P') mode=GRAPH_FULL mapped=19 dt=0.04s[13:19:41 pid=2720225] END key=('6EL', 'CRBN', '5yj1', 501, 'M') mode=GRAPH_FULL mapped=19 dt=0.05s
+[13:19:41 pid=2720225] BEGIN key=('6EL', 'CRBN', '5yj1', 501, 'Y')
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'Y') step=START
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'Y') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'Y') step=LOOKUP_SMILES
+[13:19:41 pid=2720222] BEGIN key=('6EL', 'CRBN', '5yj1', 501, 'b')[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'Y') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'b') step=START
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'b') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'b') step=LOOKUP_SMILES
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'b') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'b') step=GET_GROUP
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'Y') step=GET_GROUP
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'b') step=BUILD_3D_MOL
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'Y') step=BUILD_3D_MOL
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'Y') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'Y') step=SDF_BLOCK
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'b') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'b') step=SDF_BLOCK
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'Y') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj1_Y_6EL_501.sdf (exists=False)
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'Y') step=SDF_WRITE
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'b') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj1_B_6EL_501.sdf (exists=False)
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'b') step=SDF_WRITE
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'S') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'S') step=MAP_INIT
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'S') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'V') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'S') step=GRAPH_FULL
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'V') step=MAP_INIT
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'V') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'V') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'S') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720224] [6EL 5yj1 S 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=6EL
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'S') step=BUILD_ROWS
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'V') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720223] [6EL 5yj1 V 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=6EL
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'V') step=BUILD_ROWS
+[13:19:41 pid=2720224] END key=('6EL', 'CRBN', '5yj1', 501, 'S') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720224] BEGIN key=('6EL', 'CRBN', '5yj1', 501, 'e')
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'e') step=START
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'e') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'e') step=LOOKUP_SMILES
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'e') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] END key=('6EL', 'CRBN', '5yj1', 501, 'V') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'e') step=GET_GROUP
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'e') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] BEGIN key=('6EL', 'CRBN', '5yj1', 501, 'h')
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'h') step=START
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'h') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'h') step=LOOKUP_SMILES
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'h') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'h') step=GET_GROUP
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'h') step=BUILD_3D_MOL
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'e') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'e') step=SDF_BLOCK
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'e') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj1_E_6EL_501.sdf (exists=False)
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'e') step=SDF_WRITE
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'h') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'h') step=SDF_BLOCK
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'h') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj1_H_6EL_501.sdf (exists=False)
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'h') step=SDF_WRITE
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'Y') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'Y') step=MAP_INIT
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'Y') step=SIZE_CHECKS
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'b') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'Y') step=GRAPH_FULL
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'b') step=MAP_INIT
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'b') step=SIZE_CHECKS
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'b') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'Y') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720225] [6EL 5yj1 Y 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=6EL
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'Y') step=BUILD_ROWS
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'b') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720222] [6EL 5yj1 b 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=6EL
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'b') step=BUILD_ROWS
+[13:19:41 pid=2720222] END key=('6EL', 'CRBN', '5yj1', 501, 'b') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720225] END key=('6EL', 'CRBN', '5yj1', 501, 'Y') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720222] BEGIN key=('6EL', 'CRBN', '5yj1', 501, 'k')
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'k') step=START
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'k') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'k') step=LOOKUP_SMILES
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'k') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'k') step=GET_GROUP
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'k') step=BUILD_3D_MOL
+[13:19:41 pid=2720225] BEGIN key=('6EL', 'CRBN', '5yj1', 501, 'n')
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'n') step=START
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'n') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'n') step=LOOKUP_SMILES
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'n') step=MOLFROM_SMILES
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'n') step=GET_GROUP
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'n') step=BUILD_3D_MOL
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'k') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'k') step=SDF_BLOCK
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'k') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj1_K_6EL_501.sdf (exists=False)
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'k') step=SDF_WRITE
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'n') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'n') step=SDF_BLOCK
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'n') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj1_N_6EL_501.sdf (exists=False)
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'n') step=SDF_WRITE
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'e') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'e') step=MAP_INIT
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'e') step=SIZE_CHECKS
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'e') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'e') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720224] [6EL 5yj1 e 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=6EL
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'e') step=BUILD_ROWS
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'h') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'h') step=MAP_INIT
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'h') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'h') step=GRAPH_FULL
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'h') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720223] [6EL 5yj1 h 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=6EL
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 'h') step=BUILD_ROWS
+[13:19:41 pid=2720224] END key=('6EL', 'CRBN', '5yj1', 501, 'e') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720224] BEGIN key=('6EL', 'CRBN', '5yj1', 501, 'q')
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'q') step=START
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'q') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'q') step=LOOKUP_SMILES
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'q') step=MOLFROM_SMILES
+⏳ progress: 10/61 pending=51
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'q') step=GET_GROUP
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'q') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] END key=('6EL', 'CRBN', '5yj1', 501, 'h') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720223] BEGIN key=('6EL', 'CRBN', '5yj1', 501, 't')
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 't') step=START
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 't') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 't') step=LOOKUP_SMILES
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 't') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 't') step=GET_GROUP
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 't') step=BUILD_3D_MOL
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'q') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'q') step=SDF_BLOCK
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'q') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj1_Q_6EL_501.sdf (exists=False)
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'q') step=SDF_WRITE
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 't') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 't') step=SDF_BLOCK
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 't') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj1_T_6EL_501.sdf (exists=False)
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 't') step=SDF_WRITE
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'n') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'n') step=MAP_INIT
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'n') step=SIZE_CHECKS[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'k') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'n') step=GRAPH_FULL
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'k') step=MAP_INIT
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'k') step=SIZE_CHECKS
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'k') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'n') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720225] [6EL 5yj1 n 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=6EL
+[13:19:41 pid=2720225] ('6EL', 'CRBN', '5yj1', 501, 'n') step=BUILD_ROWS
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'k') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720222] [6EL 5yj1 k 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=6EL
+[13:19:41 pid=2720222] ('6EL', 'CRBN', '5yj1', 501, 'k') step=BUILD_ROWS
+[13:19:41 pid=2720225] END key=('6EL', 'CRBN', '5yj1', 501, 'n') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720225] BEGIN key=('EF2', 'CRBN', '4ci1', 1429, 'B')
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4ci1', 1429, 'B') step=START
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4ci1', 1429, 'B') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4ci1', 1429, 'B') step=LOOKUP_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4ci1', 1429, 'B') step=MOLFROM_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4ci1', 1429, 'B') step=GET_GROUP
+[13:19:41 pid=2720222] END key=('6EL', 'CRBN', '5yj1', 501, 'k') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4ci1', 1429, 'B') step=BUILD_3D_MOL
+[13:19:41 pid=2720222] BEGIN key=('EF2', 'CRBN', '4tzc', 502, 'C')
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '4tzc', 502, 'C') step=START
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '4tzc', 502, 'C') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '4tzc', 502, 'C') step=LOOKUP_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '4tzc', 502, 'C') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '4tzc', 502, 'C') step=GET_GROUP
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '4tzc', 502, 'C') step=BUILD_3D_MOL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4ci1', 1429, 'B') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4ci1', 1429, 'B') step=SDF_BLOCK
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4ci1', 1429, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/4ci1_B_EF2_1429.sdf (exists=False)
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4ci1', 1429, 'B') step=SDF_WRITE
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '4tzc', 502, 'C') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '4tzc', 502, 'C') step=SDF_BLOCK
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '4tzc', 502, 'C') SDF skip_exists=0 path=MCS_Output/MCS_SDF/4tzc_C_EF2_502.sdf (exists=False)
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '4tzc', 502, 'C') step=SDF_WRITE
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 't') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 't') step=MAP_INIT
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 't') step=SIZE_CHECKS
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'q') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'q') step=MAP_INIT
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'q') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 't') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'q') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'q') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720224] [6EL 5yj1 q 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=6EL
+[13:19:41 pid=2720224] ('6EL', 'CRBN', '5yj1', 501, 'q') step=BUILD_ROWS
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 't') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720223] [6EL 5yj1 t 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=6EL
+[13:19:41 pid=2720223] ('6EL', 'CRBN', '5yj1', 501, 't') step=BUILD_ROWS
+[13:19:41 pid=2720224] END key=('6EL', 'CRBN', '5yj1', 501, 'q') mode=GRAPH_FULL mapped=19 dt=0.05s
+[13:19:41 pid=2720223] END key=('6EL', 'CRBN', '5yj1', 501, 't') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720224] BEGIN key=('EF2', 'CRBN', '4tzc', 504, 'A')
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '4tzc', 504, 'A') step=START
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '4tzc', 504, 'A') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '4tzc', 504, 'A') step=LOOKUP_SMILES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '4tzc', 504, 'A') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] BEGIN key=('EF2', 'CRBN', '4tzc', 505, 'B')
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '4tzc', 505, 'B') step=START
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '4tzc', 505, 'B') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '4tzc', 504, 'A') step=GET_GROUP
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '4tzc', 505, 'B') step=LOOKUP_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '4tzc', 505, 'B') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '4tzc', 505, 'B') step=GET_GROUP
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '4tzc', 504, 'A') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '4tzc', 505, 'B') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '4tzc', 505, 'B') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '4tzc', 505, 'B') step=SDF_BLOCK
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '4tzc', 505, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/4tzc_B_EF2_505.sdf (exists=False)
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '4tzc', 505, 'B') step=SDF_WRITE
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '4tzc', 504, 'A') ⏱ BUILD_3D_MOL dt=0.008s
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '4tzc', 504, 'A') step=SDF_BLOCK
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '4tzc', 504, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/4tzc_A_EF2_504.sdf (exists=False)
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '4tzc', 504, 'A') step=SDF_WRITE
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4ci1', 1429, 'B') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4ci1', 1429, 'B') step=MAP_INIT
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4ci1', 1429, 'B') step=SIZE_CHECKS
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4ci1', 1429, 'B') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4ci1', 1429, 'B') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720225] [EF2 4ci1 B 1429] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4ci1', 1429, 'B') step=BUILD_ROWS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '4tzc', 502, 'C') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '4tzc', 502, 'C') step=MAP_INIT
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '4tzc', 502, 'C') step=SIZE_CHECKS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '4tzc', 502, 'C') step=GRAPH_FULL
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '4tzc', 502, 'C') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720222] [EF2 4tzc C 502] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '4tzc', 502, 'C') step=BUILD_ROWS
+[13:19:41 pid=2720225] END key=('EF2', 'CRBN', '4ci1', 1429, 'B') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720225] BEGIN key=('EF2', 'CRBN', '4tzc', 505, 'D')
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4tzc', 505, 'D') step=START
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4tzc', 505, 'D') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4tzc', 505, 'D') step=LOOKUP_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4tzc', 505, 'D') step=MOLFROM_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4tzc', 505, 'D') step=GET_GROUP
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4tzc', 505, 'D') step=BUILD_3D_MOL
+[13:19:41 pid=2720222] END key=('EF2', 'CRBN', '4tzc', 502, 'C') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720222] BEGIN key=('EF2', 'CRBN', '5yiz', 501, 'A')
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'A') step=START
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'A') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'A') step=LOOKUP_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'A') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'A') step=GET_GROUP
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'A') step=BUILD_3D_MOL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4tzc', 505, 'D') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4tzc', 505, 'D') step=SDF_BLOCK
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4tzc', 505, 'D') SDF skip_exists=0 path=MCS_Output/MCS_SDF/4tzc_D_EF2_505.sdf (exists=False)
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4tzc', 505, 'D') step=SDF_WRITE
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'A') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'A') step=SDF_BLOCK
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yiz_A_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'A') step=SDF_WRITE
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '4tzc', 504, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '4tzc', 505, 'B') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '4tzc', 504, 'A') step=MAP_INIT
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '4tzc', 504, 'A') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '4tzc', 505, 'B') step=MAP_INIT
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '4tzc', 505, 'B') step=SIZE_CHECKS
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '4tzc', 504, 'A') step=GRAPH_FULL
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '4tzc', 505, 'B') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '4tzc', 504, 'A') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720224] [EF2 4tzc A 504] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '4tzc', 504, 'A') step=BUILD_ROWS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '4tzc', 505, 'B') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720223] [EF2 4tzc B 505] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '4tzc', 505, 'B') step=BUILD_ROWS
+[13:19:41 pid=2720224] END key=('EF2', 'CRBN', '4tzc', 504, 'A') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720224] BEGIN key=('EF2', 'CRBN', '5yiz', 501, 'D')
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'D') step=START
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'D') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'D') step=LOOKUP_SMILES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'D') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] END key=('EF2', 'CRBN', '4tzc', 505, 'B') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'D') step=GET_GROUP
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'D') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] BEGIN key=('EF2', 'CRBN', '5yiz', 501, 'G')
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'G') step=START
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'G') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'G') step=LOOKUP_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'G') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'G') step=GET_GROUP
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'G') step=BUILD_3D_MOL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'D') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'D') step=SDF_BLOCK
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'G') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'G') step=SDF_BLOCK
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'D') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yiz_D_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'D') step=SDF_WRITE
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'G') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yiz_G_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'G') step=SDF_WRITE
+⏳ progress: 20/61 pending=41
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted[13:19:41 pid=2720225] ('EF2', 'CRBN', '4tzc', 505, 'D') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4tzc', 505, 'D') step=MAP_INIT
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4tzc', 505, 'D') step=SIZE_CHECKS[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'A') step=MAP_INIT
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'A') step=SIZE_CHECKS
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4tzc', 505, 'D') step=GRAPH_FULL
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'A') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4tzc', 505, 'D') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720225] [EF2 4tzc D 505] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '4tzc', 505, 'D') step=BUILD_ROWS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'A') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720222] [EF2 5yiz A 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'A') step=BUILD_ROWS
+[13:19:41 pid=2720225] END key=('EF2', 'CRBN', '4tzc', 505, 'D') mode=GRAPH_FULL mapped=19 dt=0.05s
+[13:19:41 pid=2720225] BEGIN key=('EF2', 'CRBN', '5yiz', 501, 'J')
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'J') step=START
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'J') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'J') step=LOOKUP_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'J') step=MOLFROM_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'J') step=GET_GROUP
+[13:19:41 pid=2720222] END key=('EF2', 'CRBN', '5yiz', 501, 'A') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'J') step=BUILD_3D_MOL
+[13:19:41 pid=2720222] BEGIN key=('EF2', 'CRBN', '5yiz', 501, 'M')
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'M') step=START
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'M') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'M') step=LOOKUP_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'M') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'M') step=GET_GROUP
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'M') step=BUILD_3D_MOL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'J') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'J') step=SDF_BLOCK
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'J') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yiz_J_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'J') step=SDF_WRITE
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'M') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'M') step=SDF_BLOCK
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'M') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yiz_M_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'M') step=SDF_WRITE
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'D') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'G') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'D') step=MAP_INIT
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'D') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'G') step=MAP_INIT
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'D') step=GRAPH_FULL
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'G') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'G') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'D') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720224] [EF2 5yiz D 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'D') step=BUILD_ROWS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'G') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720223] [EF2 5yiz G 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'G') step=BUILD_ROWS
+[13:19:41 pid=2720223] END key=('EF2', 'CRBN', '5yiz', 501, 'G') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720224] END key=('EF2', 'CRBN', '5yiz', 501, 'D') mode=GRAPH_FULL mapped=19 dt=0.05s
+[13:19:41 pid=2720223] BEGIN key=('EF2', 'CRBN', '5yiz', 501, 'P')
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'P') step=START
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'P') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'P') step=LOOKUP_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'P') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'P') step=GET_GROUP
+[13:19:41 pid=2720224] BEGIN key=('EF2', 'CRBN', '5yiz', 501, 'S')
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'S') step=START
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'S') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'S') step=LOOKUP_SMILES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'S') step=MOLFROM_SMILES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'S') step=GET_GROUP
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'P') step=BUILD_3D_MOL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'S') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'P') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'P') step=SDF_BLOCK
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'P') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yiz_P_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'P') step=SDF_WRITE
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'S') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'S') step=SDF_BLOCK
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'S') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yiz_S_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'S') step=SDF_WRITE
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'J') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'J') step=MAP_INIT
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'J') step=SIZE_CHECKS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'M') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'J') step=GRAPH_FULL
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'M') step=MAP_INIT
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'M') step=SIZE_CHECKS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'M') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'J') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720225] [EF2 5yiz J 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'J') step=BUILD_ROWS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'M') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720222] [EF2 5yiz M 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'M') step=BUILD_ROWS
+[13:19:41 pid=2720225] END key=('EF2', 'CRBN', '5yiz', 501, 'J') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720225] BEGIN key=('EF2', 'CRBN', '5yiz', 501, 'V')
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'V') step=START
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'V') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'V') step=LOOKUP_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'V') step=MOLFROM_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'V') step=GET_GROUP
+[13:19:41 pid=2720222] END key=('EF2', 'CRBN', '5yiz', 501, 'M') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'V') step=BUILD_3D_MOL
+[13:19:41 pid=2720222] BEGIN key=('EF2', 'CRBN', '5yiz', 501, 'Y')
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'Y') step=START
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'Y') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'Y') step=LOOKUP_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'Y') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'Y') step=GET_GROUP
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'Y') step=BUILD_3D_MOL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'V') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'V') step=SDF_BLOCK
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'V') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yiz_V_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'V') step=SDF_WRITE
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'Y') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'Y') step=SDF_BLOCK
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'Y') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yiz_Y_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'Y') step=SDF_WRITE
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'S') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'S') step=MAP_INIT
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'S') step=SIZE_CHECKS
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'S') step=GRAPH_FULL
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'P') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'P') step=MAP_INIT
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'P') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'P') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'S') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720224] [EF2 5yiz S 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'S') step=BUILD_ROWS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'P') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720223] [EF2 5yiz P 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'P') step=BUILD_ROWS
+[13:19:41 pid=2720224] END key=('EF2', 'CRBN', '5yiz', 501, 'S') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720223] END key=('EF2', 'CRBN', '5yiz', 501, 'P') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720224] BEGIN key=('EF2', 'CRBN', '5yiz', 501, 'b')
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'b') step=START
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'b') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'b') step=LOOKUP_SMILES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'b') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] BEGIN key=('EF2', 'CRBN', '5yiz', 501, 'e')
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'e') step=START
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'e') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'e') step=LOOKUP_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'e') step=MOLFROM_SMILES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'b') step=GET_GROUP
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'e') step=GET_GROUP
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'e') step=BUILD_3D_MOL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'b') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'e') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'e') step=SDF_BLOCK
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'e') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yiz_E_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'e') step=SDF_WRITE
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'b') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'b') step=SDF_BLOCK
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'b') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yiz_B_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'b') step=SDF_WRITE
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'V') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'V') step=MAP_INIT
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'V') step=SIZE_CHECKS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'Y') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'V') step=GRAPH_FULL
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'Y') step=MAP_INIT
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'Y') step=SIZE_CHECKS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'Y') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'V') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720225] [EF2 5yiz V 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'V') step=BUILD_ROWS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'Y') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720222] [EF2 5yiz Y 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'Y') step=BUILD_ROWS
+[13:19:41 pid=2720225] END key=('EF2', 'CRBN', '5yiz', 501, 'V') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720225] BEGIN key=('EF2', 'CRBN', '5yiz', 501, 'h')
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'h') step=START
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'h') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'h') step=LOOKUP_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'h') step=MOLFROM_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'h') step=GET_GROUP
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'h') step=BUILD_3D_MOL
+[13:19:41 pid=2720222] END key=('EF2', 'CRBN', '5yiz', 501, 'Y') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720222] BEGIN key=('EF2', 'CRBN', '5yiz', 501, 'k')
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'k') step=START
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'k') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'k') step=LOOKUP_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'k') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'k') step=GET_GROUP
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'k') step=BUILD_3D_MOL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'h') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'h') step=SDF_BLOCK
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'h') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yiz_H_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'h') step=SDF_WRITE
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'k') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'k') step=SDF_BLOCK
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'k') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yiz_K_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'k') step=SDF_WRITE
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'b') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'b') step=MAP_INIT
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'b') step=SIZE_CHECKS[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'e') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'b') step=GRAPH_FULL
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'e') step=MAP_INIT
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'e') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'e') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'b') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720224] [EF2 5yiz b 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'b') step=BUILD_ROWS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'e') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720223] [EF2 5yiz e 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'e') step=BUILD_ROWS
+[13:19:41 pid=2720224] END key=('EF2', 'CRBN', '5yiz', 501, 'b') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720224] BEGIN key=('EF2', 'CRBN', '5yiz', 501, 'n')
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'n') step=START
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'n') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'n') step=LOOKUP_SMILES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'n') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] END key=('EF2', 'CRBN', '5yiz', 501, 'e') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'n') step=GET_GROUP
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'n') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] BEGIN key=('EF2', 'CRBN', '5yiz', 501, 'q')
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'q') step=START
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'q') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'q') step=LOOKUP_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'q') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'q') step=GET_GROUP
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'q') step=BUILD_3D_MOL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'n') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'n') step=SDF_BLOCK
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'n') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yiz_N_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'n') step=SDF_WRITE
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'q') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'q') step=SDF_BLOCK
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'q') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yiz_Q_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'q') step=SDF_WRITE
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'h') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'h') step=MAP_INIT
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'h') step=SIZE_CHECKS
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'h') step=GRAPH_FULL
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'k') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'k') step=MAP_INIT
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'k') step=SIZE_CHECKS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'k') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'h') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720225] [EF2 5yiz h 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 'h') step=BUILD_ROWS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'k') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720222] [EF2 5yiz k 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yiz', 501, 'k') step=BUILD_ROWS
+[13:19:41 pid=2720225] END key=('EF2', 'CRBN', '5yiz', 501, 'h') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720225] BEGIN key=('EF2', 'CRBN', '5yiz', 501, 't')
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 't') step=START
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 't') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 't') step=LOOKUP_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 't') step=MOLFROM_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 't') step=GET_GROUP
+[13:19:41 pid=2720222] END key=('EF2', 'CRBN', '5yiz', 501, 'k') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 't') step=BUILD_3D_MOL
+[13:19:41 pid=2720222] BEGIN key=('EF2', 'CRBN', '5yj0', 501, 'A')
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'A') step=START
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'A') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'A') step=LOOKUP_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'A') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'A') step=GET_GROUP
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'A') step=BUILD_3D_MOL
+⏳ progress: 30/61 pending=31
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 't') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 't') step=SDF_BLOCK
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 't') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yiz_T_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 't') step=SDF_WRITE
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'A') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'A') step=SDF_BLOCK
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj0_A_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'A') step=SDF_WRITE
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'n') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'n') step=MAP_INIT
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'n') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'q') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'n') step=GRAPH_FULL
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'q') step=MAP_INIT
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'q') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'q') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'n') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720224] [EF2 5yiz n 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yiz', 501, 'n') step=BUILD_ROWS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'q') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720223] [EF2 5yiz q 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yiz', 501, 'q') step=BUILD_ROWS
+[13:19:41 pid=2720224] END key=('EF2', 'CRBN', '5yiz', 501, 'n') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720223] END key=('EF2', 'CRBN', '5yiz', 501, 'q') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720224] BEGIN key=('EF2', 'CRBN', '5yj0', 501, 'D')
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'D') step=START
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'D') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'D') step=LOOKUP_SMILES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'D') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] BEGIN key=('EF2', 'CRBN', '5yj0', 501, 'G')
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'D') step=GET_GROUP
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'G') step=START
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'G') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'G') step=LOOKUP_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'G') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'G') step=GET_GROUP
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'D') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'G') step=BUILD_3D_MOL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'D') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'D') step=SDF_BLOCK
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'D') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj0_D_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'D') step=SDF_WRITE
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'G') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'G') step=SDF_BLOCK
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'G') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj0_G_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'G') step=SDF_WRITE
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 't') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 't') step=MAP_INIT
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 't') step=SIZE_CHECKS
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 't') step=GRAPH_FULL
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'A') step=MAP_INIT
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'A') step=SIZE_CHECKS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'A') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 't') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720225] [EF2 5yiz t 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yiz', 501, 't') step=BUILD_ROWS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'A') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720222] [EF2 5yj0 A 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'A') step=BUILD_ROWS
+[13:19:41 pid=2720225] END key=('EF2', 'CRBN', '5yiz', 501, 't') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720225] BEGIN key=('EF2', 'CRBN', '5yj0', 501, 'J')
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'J') step=START
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'J') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'J') step=LOOKUP_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'J') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] END key=('EF2', 'CRBN', '5yj0', 501, 'A') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'J') step=GET_GROUP
+[13:19:41 pid=2720222] BEGIN key=('EF2', 'CRBN', '5yj0', 501, 'M')
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'M') step=START
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'J') step=BUILD_3D_MOL
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'M') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'M') step=LOOKUP_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'M') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'M') step=GET_GROUP
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'M') step=BUILD_3D_MOL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'J') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'J') step=SDF_BLOCK
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'J') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj0_J_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'J') step=SDF_WRITE
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'M') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'M') step=SDF_BLOCK
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'M') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj0_M_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'M') step=SDF_WRITE
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'G') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'G') step=MAP_INIT
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'G') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'G') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'D') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'D') step=MAP_INIT
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'D') step=SIZE_CHECKS
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'D') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'D') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720224] [EF2 5yj0 D 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'D') step=BUILD_ROWS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'G') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720223] [EF2 5yj0 G 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'G') step=BUILD_ROWS
+[13:19:41 pid=2720223] END key=('EF2', 'CRBN', '5yj0', 501, 'G') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720223] BEGIN key=('EF2', 'CRBN', '5yj0', 501, 'P')
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'P') step=START
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'P') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'P') step=LOOKUP_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'P') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'P') step=GET_GROUP
+[13:19:41 pid=2720224] END key=('EF2', 'CRBN', '5yj0', 501, 'D') mode=GRAPH_FULL mapped=19 dt=0.05s
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'P') step=BUILD_3D_MOL
+[13:19:41 pid=2720224] BEGIN key=('EF2', 'CRBN', '5yj0', 501, 'S')
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'S') step=START
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'S') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'S') step=LOOKUP_SMILES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'S') step=MOLFROM_SMILES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'S') step=GET_GROUP
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'S') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'P') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'P') step=SDF_BLOCK
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'P') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj0_P_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'P') step=SDF_WRITE
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'S') ⏱ BUILD_3D_MOL dt=0.011s
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'S') step=SDF_BLOCK
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'S') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj0_S_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'S') step=SDF_WRITE
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'J') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'J') step=MAP_INIT
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'M') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'J') step=SIZE_CHECKS
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'J') step=GRAPH_FULL
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'M') step=MAP_INIT
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'M') step=SIZE_CHECKS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'M') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'J') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720225] [EF2 5yj0 J 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'J') step=BUILD_ROWS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'M') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720222] [EF2 5yj0 M 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'M') step=BUILD_ROWS
+[13:19:41 pid=2720222] END key=('EF2', 'CRBN', '5yj0', 501, 'M') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720225] END key=('EF2', 'CRBN', '5yj0', 501, 'J') mode=GRAPH_FULL mapped=19 dt=0.05s
+[13:19:41 pid=2720222] BEGIN key=('EF2', 'CRBN', '5yj0', 501, 'V')
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'V') step=START
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'V') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'V') step=LOOKUP_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'V') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'V') step=GET_GROUP
+[13:19:41 pid=2720225] BEGIN key=('EF2', 'CRBN', '5yj0', 501, 'Y')
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'Y') step=START[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'V') step=BUILD_3D_MOL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'Y') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'Y') step=LOOKUP_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'Y') step=MOLFROM_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'Y') step=GET_GROUP
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'Y') step=BUILD_3D_MOL
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'V') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'V') step=SDF_BLOCK
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'V') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj0_V_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'V') step=SDF_WRITE
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'Y') ⏱ BUILD_3D_MOL dt=0.010s
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'Y') step=SDF_BLOCK
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'Y') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj0_Y_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'Y') step=SDF_WRITE
+⏳ progress: 40/61 pending=21
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'P') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'P') step=MAP_INIT[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'S') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'P') step=SIZE_CHECKS
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'S') step=MAP_INIT
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'S') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'P') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'S') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'S') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720224] [EF2 5yj0 S 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'S') step=BUILD_ROWS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'P') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720223] [EF2 5yj0 P 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'P') step=BUILD_ROWS
+[13:19:41 pid=2720224] END key=('EF2', 'CRBN', '5yj0', 501, 'S') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720224] BEGIN key=('EF2', 'CRBN', '5yj0', 501, 'b')
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'b') step=START
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'b') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'b') step=LOOKUP_SMILES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'b') step=MOLFROM_SMILES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'b') step=GET_GROUP
+[13:19:41 pid=2720223] END key=('EF2', 'CRBN', '5yj0', 501, 'P') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'b') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] BEGIN key=('EF2', 'CRBN', '5yj0', 501, 'e')
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'e') step=START
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'e') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'e') step=LOOKUP_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'e') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'e') step=GET_GROUP
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'e') step=BUILD_3D_MOL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'b') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'b') step=SDF_BLOCK
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'b') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj0_B_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'b') step=SDF_WRITE
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'e') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'e') step=SDF_BLOCK
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'e') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj0_E_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'e') step=SDF_WRITE
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'V') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'Y') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'V') step=MAP_INIT[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'Y') step=MAP_INIT
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'Y') step=SIZE_CHECKS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'V') step=SIZE_CHECKS
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'Y') step=GRAPH_FULL
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'V') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'Y') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720225] [EF2 5yj0 Y 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'Y') step=BUILD_ROWS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'V') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720222] [EF2 5yj0 V 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'V') step=BUILD_ROWS
+[13:19:41 pid=2720225] END key=('EF2', 'CRBN', '5yj0', 501, 'Y') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720225] BEGIN key=('EF2', 'CRBN', '5yj0', 501, 'h')
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'h') step=START
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'h') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'h') step=LOOKUP_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'h') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] END key=('EF2', 'CRBN', '5yj0', 501, 'V') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'h') step=GET_GROUP
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'h') step=BUILD_3D_MOL
+[13:19:41 pid=2720222] BEGIN key=('EF2', 'CRBN', '5yj0', 501, 'k')
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'k') step=START
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'k') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'k') step=LOOKUP_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'k') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'k') step=GET_GROUP
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'k') step=BUILD_3D_MOL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'h') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'h') step=SDF_BLOCK
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'h') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj0_H_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'h') step=SDF_WRITE
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'k') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'k') step=SDF_BLOCK
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'k') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj0_K_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'k') step=SDF_WRITE
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'b') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'b') step=MAP_INIT
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'b') step=SIZE_CHECKS
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'b') step=GRAPH_FULL
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'e') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'e') step=MAP_INIT
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'e') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'e') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'b') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720224] [EF2 5yj0 b 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'b') step=BUILD_ROWS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'e') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720223] [EF2 5yj0 e 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'e') step=BUILD_ROWS
+[13:19:41 pid=2720223] END key=('EF2', 'CRBN', '5yj0', 501, 'e') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720224] END key=('EF2', 'CRBN', '5yj0', 501, 'b') mode=GRAPH_FULL mapped=19 dt=0.05s
+[13:19:41 pid=2720223] BEGIN key=('EF2', 'CRBN', '5yj0', 501, 'n')
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'n') step=START
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'n') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'n') step=LOOKUP_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'n') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'n') step=GET_GROUP
+[13:19:41 pid=2720224] BEGIN key=('EF2', 'CRBN', '5yj0', 501, 'q')
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'q') step=START
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'q') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'q') step=LOOKUP_SMILES
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'q') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'n') step=BUILD_3D_MOL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'q') step=GET_GROUP
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'q') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'n') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'n') step=SDF_BLOCK
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'n') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj0_N_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'n') step=SDF_WRITE
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'q') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'q') step=SDF_BLOCK
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'q') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj0_Q_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'q') step=SDF_WRITE
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'h') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'h') step=MAP_INIT
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'h') step=SIZE_CHECKS
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'h') step=GRAPH_FULL
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'k') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'k') step=MAP_INIT
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'k') step=SIZE_CHECKS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'k') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'h') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720225] [EF2 5yj0 h 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '5yj0', 501, 'h') step=BUILD_ROWS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'k') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720222] [EF2 5yj0 k 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 'k') step=BUILD_ROWS
+[13:19:41 pid=2720222] END key=('EF2', 'CRBN', '5yj0', 501, 'k') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720225] END key=('EF2', 'CRBN', '5yj0', 501, 'h') mode=GRAPH_FULL mapped=19 dt=0.05s
+[13:19:41 pid=2720222] BEGIN key=('EF2', 'CRBN', '5yj0', 501, 't')
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 't') step=START
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 't') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 't') step=LOOKUP_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 't') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 't') step=GET_GROUP
+[13:19:41 pid=2720225] BEGIN key=('EF2', 'CRBN', '7bqu', 501, 'A')
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '7bqu', 501, 'A') step=START
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '7bqu', 501, 'A') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '7bqu', 501, 'A') step=LOOKUP_SMILES
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '7bqu', 501, 'A') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 't') step=BUILD_3D_MOL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '7bqu', 501, 'A') step=GET_GROUP
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '7bqu', 501, 'A') step=BUILD_3D_MOL
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 't') ⏱ BUILD_3D_MOL dt=0.008s
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 't') step=SDF_BLOCK
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 't') SDF skip_exists=0 path=MCS_Output/MCS_SDF/5yj0_T_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 't') step=SDF_WRITE
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '7bqu', 501, 'A') ⏱ BUILD_3D_MOL dt=0.010s
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '7bqu', 501, 'A') step=SDF_BLOCK
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '7bqu', 501, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/7bqu_A_EF2_501.sdf (exists=False)
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '7bqu', 501, 'A') step=SDF_WRITE
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'q') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'q') step=MAP_INIT
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'q') step=SIZE_CHECKS
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'q') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'q') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720224] [EF2 5yj0 q 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720224] ('EF2', 'CRBN', '5yj0', 501, 'q') step=BUILD_ROWS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'n') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'n') step=MAP_INIT
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'n') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'n') step=GRAPH_FULL
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'n') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720223] [EF2 5yj0 n 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720223] ('EF2', 'CRBN', '5yj0', 501, 'n') step=BUILD_ROWS
+[13:19:41 pid=2720224] END key=('EF2', 'CRBN', '5yj0', 501, 'q') mode=GRAPH_FULL mapped=19 dt=0.04s
+[13:19:41 pid=2720224] BEGIN key=('F4U', 'CRBN', '7bqv', 501, 'A')
+[13:19:41 pid=2720224] ('F4U', 'CRBN', '7bqv', 501, 'A') step=START
+[13:19:41 pid=2720224] ('F4U', 'CRBN', '7bqv', 501, 'A') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720224] ('F4U', 'CRBN', '7bqv', 501, 'A') step=LOOKUP_SMILES
+[13:19:41 pid=2720224] ('F4U', 'CRBN', '7bqv', 501, 'A') step=MOLFROM_SMILES
+[13:19:41 pid=2720224] ('F4U', 'CRBN', '7bqv', 501, 'A') step=GET_GROUP
+[13:19:41 pid=2720224] ('F4U', 'CRBN', '7bqv', 501, 'A') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] END key=('EF2', 'CRBN', '5yj0', 501, 'n') mode=GRAPH_FULL mapped=19 dt=0.05s
+⏳ progress: 50/61 pending=11
+[13:19:41 pid=2720223] BEGIN key=('LVY', 'CRBN', '4ci2', 1429, 'B')
+[13:19:41 pid=2720223] ('LVY', 'CRBN', '4ci2', 1429, 'B') step=START
+[13:19:41 pid=2720223] ('LVY', 'CRBN', '4ci2', 1429, 'B') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720223] ('LVY', 'CRBN', '4ci2', 1429, 'B') step=LOOKUP_SMILES
+[13:19:41 pid=2720223] ('LVY', 'CRBN', '4ci2', 1429, 'B') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] ('LVY', 'CRBN', '4ci2', 1429, 'B') step=GET_GROUP
+[13:19:41 pid=2720223] ('LVY', 'CRBN', '4ci2', 1429, 'B') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] ('LVY', 'CRBN', '4ci2', 1429, 'B') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720223] ('LVY', 'CRBN', '4ci2', 1429, 'B') step=SDF_BLOCK
+[13:19:41 pid=2720224] ('F4U', 'CRBN', '7bqv', 501, 'A') ⏱ BUILD_3D_MOL dt=0.009s
+[13:19:41 pid=2720224] ('F4U', 'CRBN', '7bqv', 501, 'A') step=SDF_BLOCK
+[13:19:41 pid=2720223] ('LVY', 'CRBN', '4ci2', 1429, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/4ci2_B_LVY_1429.sdf (exists=False)
+[13:19:41 pid=2720223] ('LVY', 'CRBN', '4ci2', 1429, 'B') step=SDF_WRITE
+[13:19:41 pid=2720224] ('F4U', 'CRBN', '7bqv', 501, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/7bqv_A_F4U_501.sdf (exists=False)
+[13:19:41 pid=2720224] ('F4U', 'CRBN', '7bqv', 501, 'A') step=SDF_WRITE
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 't') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 't') step=MAP_INIT
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 't') step=SIZE_CHECKS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 't') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '7bqu', 501, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '7bqu', 501, 'A') step=MAP_INIT
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '7bqu', 501, 'A') step=SIZE_CHECKS
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '7bqu', 501, 'A') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '7bqu', 501, 'A') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720225] [EF2 7bqu A 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720225] ('EF2', 'CRBN', '7bqu', 501, 'A') step=BUILD_ROWS
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 't') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720222] [EF2 5yj0 t 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=EF2
+[13:19:41 pid=2720222] ('EF2', 'CRBN', '5yj0', 501, 't') step=BUILD_ROWS
+[13:19:41 pid=2720225] END key=('EF2', 'CRBN', '7bqu', 501, 'A') mode=GRAPH_FULL mapped=19 dt=0.05s
+[13:19:41 pid=2720225] BEGIN key=('Y70', 'CRBN', '4ci3', 1429, 'B')
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4ci3', 1429, 'B') step=START
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4ci3', 1429, 'B') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4ci3', 1429, 'B') step=LOOKUP_SMILES
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4ci3', 1429, 'B') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] END key=('EF2', 'CRBN', '5yj0', 501, 't') mode=GRAPH_FULL mapped=19 dt=0.05s
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4ci3', 1429, 'B') step=GET_GROUP
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4ci3', 1429, 'B') step=BUILD_3D_MOL
+[13:19:41 pid=2720222] BEGIN key=('Y70', 'CRBN', '4tzu', 503, 'D')
+[13:19:41 pid=2720222] ('Y70', 'CRBN', '4tzu', 503, 'D') step=START
+[13:19:41 pid=2720222] ('Y70', 'CRBN', '4tzu', 503, 'D') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720222] ('Y70', 'CRBN', '4tzu', 503, 'D') step=LOOKUP_SMILES
+[13:19:41 pid=2720222] ('Y70', 'CRBN', '4tzu', 503, 'D') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] ('Y70', 'CRBN', '4tzu', 503, 'D') step=GET_GROUP
+[13:19:41 pid=2720222] ('Y70', 'CRBN', '4tzu', 503, 'D') step=BUILD_3D_MOL
+[13:19:41 pid=2720222] ('Y70', 'CRBN', '4tzu', 503, 'D') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720222] ('Y70', 'CRBN', '4tzu', 503, 'D') step=SDF_BLOCK
+[13:19:41 pid=2720222] ('Y70', 'CRBN', '4tzu', 503, 'D') SDF skip_exists=0 path=MCS_Output/MCS_SDF/4tzu_D_Y70_503.sdf (exists=False)
+[13:19:41 pid=2720222] ('Y70', 'CRBN', '4tzu', 503, 'D') step=SDF_WRITE
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4ci3', 1429, 'B') ⏱ BUILD_3D_MOL dt=0.008s
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4ci3', 1429, 'B') step=SDF_BLOCK
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4ci3', 1429, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/4ci3_B_Y70_1429.sdf (exists=False)
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4ci3', 1429, 'B') step=SDF_WRITE
+[13:19:41 pid=2720224] ('F4U', 'CRBN', '7bqv', 501, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('F4U', 'CRBN', '7bqv', 501, 'A') step=MAP_INIT
+[13:19:41 pid=2720224] ('F4U', 'CRBN', '7bqv', 501, 'A') step=SIZE_CHECKS
+[13:19:41 pid=2720224] ('F4U', 'CRBN', '7bqv', 501, 'A') step=GRAPH_FULL
+[13:19:41 pid=2720223] ('LVY', 'CRBN', '4ci2', 1429, 'B') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720223] ('LVY', 'CRBN', '4ci2', 1429, 'B') step=MAP_INIT
+[13:19:41 pid=2720223] ('LVY', 'CRBN', '4ci2', 1429, 'B') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('LVY', 'CRBN', '4ci2', 1429, 'B') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('F4U', 'CRBN', '7bqv', 501, 'A') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720224] [F4U 7bqv A 501] 2D=20 3D=20 bonds3D=22 mapped=20 mode=GRAPH_FULL smiles_id=F4U
+[13:19:41 pid=2720224] ('F4U', 'CRBN', '7bqv', 501, 'A') step=BUILD_ROWS
+[13:19:41 pid=2720223] ('LVY', 'CRBN', '4ci2', 1429, 'B') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720223] [LVY 4ci2 B 1429] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=LVY
+[13:19:41 pid=2720223] ('LVY', 'CRBN', '4ci2', 1429, 'B') step=BUILD_ROWS
+[13:19:41 pid=2720224] END key=('F4U', 'CRBN', '7bqv', 501, 'A') mode=GRAPH_FULL mapped=20 dt=0.05s
+[13:19:41 pid=2720224] BEGIN key=('Y70', 'CRBN', '4tzu', 504, 'A')
+[13:19:41 pid=2720224] ('Y70', 'CRBN', '4tzu', 504, 'A') step=START
+[13:19:41 pid=2720224] ('Y70', 'CRBN', '4tzu', 504, 'A') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720224] ('Y70', 'CRBN', '4tzu', 504, 'A') step=LOOKUP_SMILES
+[13:19:41 pid=2720224] ('Y70', 'CRBN', '4tzu', 504, 'A') step=MOLFROM_SMILES
+[13:19:41 pid=2720224] ('Y70', 'CRBN', '4tzu', 504, 'A') step=GET_GROUP
+[13:19:41 pid=2720224] ('Y70', 'CRBN', '4tzu', 504, 'A') step=BUILD_3D_MOL
+[13:19:41 pid=2720223] END key=('LVY', 'CRBN', '4ci2', 1429, 'B') mode=GRAPH_FULL mapped=19 dt=0.05s
+[13:19:41 pid=2720223] BEGIN key=('Y70', 'CRBN', '4tzu', 504, 'C')
+[13:19:41 pid=2720223] ('Y70', 'CRBN', '4tzu', 504, 'C') step=START
+[13:19:41 pid=2720223] ('Y70', 'CRBN', '4tzu', 504, 'C') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720223] ('Y70', 'CRBN', '4tzu', 504, 'C') step=LOOKUP_SMILES
+[13:19:41 pid=2720223] ('Y70', 'CRBN', '4tzu', 504, 'C') step=MOLFROM_SMILES
+[13:19:41 pid=2720223] ('Y70', 'CRBN', '4tzu', 504, 'C') step=GET_GROUP
+[13:19:41 pid=2720223] ('Y70', 'CRBN', '4tzu', 504, 'C') step=BUILD_3D_MOL
+[13:19:41 pid=2720224] ('Y70', 'CRBN', '4tzu', 504, 'A') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720224] ('Y70', 'CRBN', '4tzu', 504, 'A') step=SDF_BLOCK
+[13:19:41 pid=2720224] ('Y70', 'CRBN', '4tzu', 504, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/4tzu_A_Y70_504.sdf (exists=False)
+[13:19:41 pid=2720224] ('Y70', 'CRBN', '4tzu', 504, 'A') step=SDF_WRITE
+[13:19:41 pid=2720223] ('Y70', 'CRBN', '4tzu', 504, 'C') ⏱ BUILD_3D_MOL dt=0.010s
+[13:19:41 pid=2720223] ('Y70', 'CRBN', '4tzu', 504, 'C') step=SDF_BLOCK
+[13:19:41 pid=2720223] ('Y70', 'CRBN', '4tzu', 504, 'C') SDF skip_exists=0 path=MCS_Output/MCS_SDF/4tzu_C_Y70_504.sdf (exists=False)
+[13:19:41 pid=2720223] ('Y70', 'CRBN', '4tzu', 504, 'C') step=SDF_WRITE
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4ci3', 1429, 'B') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4ci3', 1429, 'B') step=MAP_INIT
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4ci3', 1429, 'B') step=SIZE_CHECKS
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4ci3', 1429, 'B') step=GRAPH_FULL
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4ci3', 1429, 'B') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720225] [Y70 4ci3 B 1429] 2D=20 3D=20 bonds3D=22 mapped=20 mode=GRAPH_FULL smiles_id=Y70
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4ci3', 1429, 'B') step=BUILD_ROWS
+[13:19:41 pid=2720222] ('Y70', 'CRBN', '4tzu', 503, 'D') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720222] ('Y70', 'CRBN', '4tzu', 503, 'D') step=MAP_INIT
+[13:19:41 pid=2720222] ('Y70', 'CRBN', '4tzu', 503, 'D') step=SIZE_CHECKS
+[13:19:41 pid=2720222] ('Y70', 'CRBN', '4tzu', 503, 'D') step=GRAPH_FULL
+[13:19:41 pid=2720222] ('Y70', 'CRBN', '4tzu', 503, 'D') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720222] [Y70 4tzu D 503] 2D=20 3D=20 bonds3D=22 mapped=20 mode=GRAPH_FULL smiles_id=Y70
+[13:19:41 pid=2720222] ('Y70', 'CRBN', '4tzu', 503, 'D') step=BUILD_ROWS
+[13:19:41 pid=2720225] END key=('Y70', 'CRBN', '4ci3', 1429, 'B') mode=GRAPH_FULL mapped=20 dt=0.05s
+[13:19:41 pid=2720225] BEGIN key=('Y70', 'CRBN', '4tzu', 505, 'B')
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4tzu', 505, 'B') step=START
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4tzu', 505, 'B') step=RESOLVE_SMILES_CANDIDATES
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4tzu', 505, 'B') step=LOOKUP_SMILES
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4tzu', 505, 'B') step=MOLFROM_SMILES
+[13:19:41 pid=2720222] END key=('Y70', 'CRBN', '4tzu', 503, 'D') mode=GRAPH_FULL mapped=20 dt=0.05s
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4tzu', 505, 'B') step=GET_GROUP
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4tzu', 505, 'B') step=BUILD_3D_MOL
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4tzu', 505, 'B') ⏱ BUILD_3D_MOL dt=0.007s
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4tzu', 505, 'B') step=SDF_BLOCK
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4tzu', 505, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/4tzu_B_Y70_505.sdf (exists=False)
+[13:19:41 pid=2720225] ('Y70', 'CRBN', '4tzu', 505, 'B') step=SDF_WRITE
+[13:19:41 pid=2720223] ('Y70', 'CRBN', '4tzu', 504, 'C') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:41 pid=2720224] ('Y70', 'CRBN', '4tzu', 504, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted[13:19:41 pid=2720223] ('Y70', 'CRBN', '4tzu', 504, 'C') step=MAP_INIT
+[13:19:41 pid=2720223] ('Y70', 'CRBN', '4tzu', 504, 'C') step=SIZE_CHECKS
+[13:19:41 pid=2720224] ('Y70', 'CRBN', '4tzu', 504, 'A') step=MAP_INIT
+[13:19:41 pid=2720224] ('Y70', 'CRBN', '4tzu', 504, 'A') step=SIZE_CHECKS
+[13:19:41 pid=2720223] ('Y70', 'CRBN', '4tzu', 504, 'C') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('Y70', 'CRBN', '4tzu', 504, 'A') step=GRAPH_FULL
+[13:19:41 pid=2720224] ('Y70', 'CRBN', '4tzu', 504, 'A') ⏱ GRAPH_FULL dt=0.000s
+[13:19:41 pid=2720224] [Y70 4tzu A 504] 2D=20 3D=20 bonds3D=22 mapped=20 mode=GRAPH_FULL smiles_id=Y70
+[13:19:41 pid=2720224] ('Y70', 'CRBN', '4tzu', 504, 'A') step=BUILD_ROWS
+[13:19:41 pid=2720223] ('Y70', 'CRBN', '4tzu', 504, 'C') ⏱ GRAPH_FULL dt=0.001s
+[13:19:41 pid=2720223] [Y70 4tzu C 504] 2D=20 3D=20 bonds3D=22 mapped=20 mode=GRAPH_FULL smiles_id=Y70
+[13:19:41 pid=2720223] ('Y70', 'CRBN', '4tzu', 504, 'C') step=BUILD_ROWS
+[13:19:41 pid=2720224] END key=('Y70', 'CRBN', '4tzu', 504, 'A') mode=GRAPH_FULL mapped=20 dt=0.04s
+[13:19:41 pid=2720223] END key=('Y70', 'CRBN', '4tzu', 504, 'C') mode=GRAPH_FULL mapped=20 dt=0.04s
+⏳ progress: 60/61 pending=1
+[13:19:42 pid=2720225] ('Y70', 'CRBN', '4tzu', 505, 'B') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[13:19:42 pid=2720225] ('Y70', 'CRBN', '4tzu', 505, 'B') step=MAP_INIT
+[13:19:42 pid=2720225] ('Y70', 'CRBN', '4tzu', 505, 'B') step=SIZE_CHECKS
+[13:19:42 pid=2720225] ('Y70', 'CRBN', '4tzu', 505, 'B') step=GRAPH_FULL
+[13:19:42 pid=2720225] ('Y70', 'CRBN', '4tzu', 505, 'B') ⏱ GRAPH_FULL dt=0.000s
+[13:19:42 pid=2720225] [Y70 4tzu B 505] 2D=20 3D=20 bonds3D=22 mapped=20 mode=GRAPH_FULL smiles_id=Y70
+[13:19:42 pid=2720225] ('Y70', 'CRBN', '4tzu', 505, 'B') step=BUILD_ROWS
+[13:19:42 pid=2720225] END key=('Y70', 'CRBN', '4tzu', 505, 'B') mode=GRAPH_FULL mapped=20 dt=0.04s
+⏳ progress: 61/61 pending=0
+✅ POOL COMPLETE (or aborted) — proceeding to write CSVs + SVG
+====================================================
+🎉 COMPLETED MCS MAPPING + SASA ANNOTATION
+📦 Map (MCS only)        → MCS_Output/Ligand_MCS_Map.csv
+🧪 SASA (MCS only)       → MCS_Output/Ligand_MCS_SASA.csv
+🧬 All atoms (debug)     → MCS_Output/Ligand_AllAtoms_Map.csv
+🧪 SASA (ALL atoms)      → MCS_Output/Ligand_MCS_SASA_ALL_ATOMS.csv
+⚠️ Failures              → MCS_Output/Ligand_MCS_Failures.csv
+====================================================
+🎨 Starting SVG generation for 61 occurrences
+🖼️  SVGs generated: 61 → MCS_Output/MCS_SVG
+[13:19:42] 🚀 Running 12_Results.py...
+✅ Integrated 3DSASAmapped.csv created with standard headers.
+[13:19:42] 🚀 Running 15_ResultsMerged.py...
+🧬 Using SASA file: Warhead_SASA_atoms.csv
+✅ Wrote merged atom table: Ligand_3D_Atoms_with_SASA.csv
+📊 Total atoms: 1165
+🎉 RESULTS MERGE COMPLETE
+[13:19:43] 🚀 Running 16_ResultsDisplay.py...
+✅ Wrote /home/jxs794/WEBTOOLs/PROTAC-Target-Builder/jobs/b281996d/Results_Display.csv (91 entries)
+[13:19:43] ✅ PIPELINE FINISHED SUCCESSFULLY
+[13:19:43] Access results in the Browse tab.

@@ -1,0 +1,674 @@
+[18:32:42] Job 032917e1 started: 2026-04-08 18:32:42
+[18:32:42] 📦 Copying assets from pipeline_assets → jobs/032917e1 ...
+[18:32:42] 🧾 Wrote input.csv and Protein_Data.csv
+[18:32:42] 🚀 Running 1_GRABBER.py...
+🤖 AUTOMATED MODE: Processing input.csv
+=== Processing EGFR ===
+    🔄 Switching to EBI Backup Search for 'EGFR'...
+  → Found 429 candidates
+    ✖ 24wi (Failed all sources)
+    ✖ 24xj (Failed all sources)
+    ✖ 24xc (Failed all sources)
+    ✖ 24wl (Failed all sources)
+    ✖ 24xq (Failed all sources)
+    ✖ 24xk (Failed all sources)
+    ✖ 2lyu (Failed all sources)
+    ✖ 3axp (Failed all sources)
+    ✖ 4bsy (Failed all sources)
+    ✖ 4cv6 (Failed all sources)
+    ✖ 4jjl (Failed all sources)
+    ✖ 4kxs (Failed all sources)
+    ✖ 4ynj (Failed all sources)
+    ✖ 4zqj (Failed all sources)
+    ✖ 5fg2 (Failed all sources)
+    ✖ 5h96 (Failed all sources)
+    ✖ 5h97 (Failed all sources)
+    ✖ 5yon (Failed all sources)
+    ✖ 6cs7 (Failed all sources)
+    ✖ 9ntp (Failed all sources)
+    ✖ 9wgp (Failed all sources)
+    ✖ 9vv1 (Failed all sources)
+    ✖ 9wr9 (Failed all sources)
+    ✖ 9z9e (Failed all sources)
+    ✖ 9z9f (Failed all sources)
+  → Downloaded 404 CIFs
+=== DONE ===
+✅ Wrote queries.csv with MW_min=250.0, MW_max=700.0, MinID=90.0
+[18:33:19] 🚀 Running 2_SQchk.py...
+🚀 Running Sequence Identity Analysis...
+   Proteins missing fasta/name rows skipped: 0
+   MW_min=250.0  MW_max=700.0  (MW filters currently ignored for ligand debug)
+   Total PDB jobs to process: 404
+  0%|          | 0/404 [00:00<?, ?it/s]DEBUG: 1xkk Chain(s) ['A'] -> Match: 39.8%
+  0%|          | 1/404 [00:00<03:20,  2.01it/s]DEBUG: 1m17 Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 1z9i Chain(s) ['A'] -> Match: 73.6%
+DEBUG: 1wt5 Chain(s) ['A', 'B'] -> Match: 49.6%
+DEBUG: 1wt5 Chain(s) ['C', 'D'] -> Match: 50.8%
+  1%|          | 4/404 [00:00<00:48,  8.24it/s]DEBUG: 2eb2 Chain(s) ['A'] -> Match: 41.3%
+DEBUG: 2gs2 Chain(s) ['A'] -> Match: 41.8%
+DEBUG: 1i31 Chain(s) ['A'] -> Match: 31.8%
+DEBUG: 1i31 Chain(s) ['P'] -> Match: 100.0%
+DEBUG: 1m14 Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 1bw8 Chain(s) ['A'] -> Match: 31.2%
+DEBUG: 1bw8 Chain(s) ['P'] -> Match: 100.0%
+  2%|▏         | 9/404 [00:00<00:21, 18.01it/s]DEBUG: 2eb3 Chain(s) ['A'] -> Match: 41.6%
+DEBUG: 2gs6 Chain(s) ['A'] -> Match: 41.8%
+DEBUG: 2gs6 Chain(s) ['B'] -> Match: 92.3%
+DEBUG: 1cf4 Chain(s) ['A'] -> Match: 44.0%
+DEBUG: 1cf4 Chain(s) ['B'] -> Match: 77.3%
+DEBUG: 2itn Chain(s) ['A'] -> Match: 41.9%
+  3%|▎         | 13/404 [00:00<00:23, 16.31it/s]DEBUG: 2itx Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 2ito Chain(s) ['A'] -> Match: 41.9%
+DEBUG: 2gs7 Chain(s) ['A', 'B'] -> Match: 41.5%
+  4%|▍         | 16/404 [00:01<00:32, 12.05it/s]DEBUG: 2itp Chain(s) ['A'] -> Match: 41.9%
+DEBUG: 2itt Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 2itq Chain(s) ['A'] -> Match: 41.9%
+DEBUG: 2itu Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 2itw Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 2ity Chain(s) ['A'] -> Match: 42.2%
+  5%|▌         | 22/404 [00:01<00:20, 19.07it/s]DEBUG: 2itz Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 2j5e Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 2itv Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 2izv Chain(s) ['A'] -> Match: 44.9%
+DEBUG: 2izv Chain(s) ['B'] -> Match: 54.2%
+DEBUG: 2izv Chain(s) ['C'] -> Match: 55.7%
+  6%|▋         | 26/404 [00:01<00:19, 18.99it/s]DEBUG: 2ks1 Chain(s) ['A'] -> Match: 81.8%
+DEBUG: 2ks1 Chain(s) ['B'] -> Match: 77.3%
+DEBUG: 2jit Chain(s) ['A', 'B'] -> Match: 41.9%
+DEBUG: 2m0b Chain(s) ['A', 'B'] -> Match: 77.3%
+  7%|▋         | 29/404 [00:01<00:20, 18.34it/s]DEBUG: 2j6m Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 2jiv Chain(s) ['A', 'B'] -> Match: 41.8%
+DEBUG: 2jiu Chain(s) ['A', 'B'] -> Match: 41.8%
+DEBUG: 2j5f Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 2m20 Chain(s) ['A', 'B'] -> Match: 73.3%
+  8%|▊         | 34/404 [00:01<00:15, 23.47it/s]DEBUG: 2n5s Chain(s) ['A'] -> Match: 75.9%
+DEBUG: 2rgp Chain(s) ['A'] -> Match: 43.2%
+DEBUG: 2rfd Chain(s) ['A', 'B'] -> Match: 42.6%
+DEBUG: 2rfd Chain(s) ['C', 'D'] -> Match: 84.0%
+DEBUG: 2z4q Chain(s) ['A'] -> Match: 39.7%
+DEBUG: 2z4q Chain(s) ['B'] -> Match: 38.1%
+  9%|▉         | 38/404 [00:02<00:18, 20.32it/s]DEBUG: 3ca7 Chain(s) ['A'] -> Match: 71.2%
+DEBUG: 3bel Chain(s) ['A'] -> Match: 43.2%
+DEBUG: 3buo Chain(s) ['A', 'C'] -> Match: 100.0%
+DEBUG: 3c08 Chain(s) ['L'] -> Match: 37.7%
+DEBUG: 3buo Chain(s) ['B', 'D'] -> Match: 34.7%
+DEBUG: 3c08 Chain(s) ['H'] -> Match: 38.6%
+DEBUG: 2rf9 Chain(s) ['A', 'B'] -> Match: 41.8%
+DEBUG: 2rf9 Chain(s) ['C', 'D'] -> Match: 67.7%
+ 10%|█         | 41/404 [00:02<00:19, 18.60it/s]DEBUG: 2rfe Chain(s) ['A', 'B', 'C', 'D'] -> Match: 42.6%
+DEBUG: 2rfe Chain(s) ['E', 'F'] -> Match: 82.5%
+DEBUG: 2xkn Chain(s) ['A', 'C'] -> Match: 37.2%
+DEBUG: 3cgu Chain(s) ['A', 'B'] -> Match: 39.9%
+DEBUG: 2xkn Chain(s) ['B', 'D'] -> Match: 41.2%
+DEBUG: 3c9a Chain(s) ['A', 'B'] -> Match: 39.9%
+DEBUG: 3c9a Chain(s) ['C', 'D'] -> Match: 71.2%
+DEBUG: 3g5v Chain(s) ['A'] -> Match: 39.6%
+DEBUG: 3g5v Chain(s) ['B'] -> Match: 38.5%
+DEBUG: 3g5v Chain(s) ['C'] -> Match: 93.8%
+ 12%|█▏        | 48/404 [00:02<00:18, 19.67it/s]DEBUG: 3c09 Chain(s) ['B', 'L'] -> Match: 37.7%
+DEBUG: 3c09 Chain(s) ['C', 'H'] -> Match: 38.6%
+DEBUG: 3c09 Chain(s) ['A', 'D'] -> Match: 40.2%
+DEBUG: 3g5x Chain(s) ['A', 'C'] -> Match: 39.7%
+DEBUG: 3g5x Chain(s) ['B', 'D'] -> Match: 38.9%
+DEBUG: 3g5y Chain(s) ['A'] -> Match: 39.0%
+DEBUG: 3g5y Chain(s) ['B'] -> Match: 39.4%
+DEBUG: 3g5y Chain(s) ['E'] -> Match: 93.8%
+DEBUG: 3i7z Chain(s) ['A'] -> Match: 33.6%
+DEBUG: 3i7z Chain(s) ['B'] -> Match: 100.0%
+ 13%|█▎        | 52/404 [00:02<00:15, 22.03it/s]DEBUG: 3gop Chain(s) ['A'] -> Match: 38.8%
+DEBUG: 3i2t Chain(s) ['A'] -> Match: 24.5%
+DEBUG: 3g5z Chain(s) ['A'] -> Match: 39.4%
+DEBUG: 3g5z Chain(s) ['B'] -> Match: 39.2%
+DEBUG: 3ika Chain(s) ['A', 'B'] -> Match: 41.4%
+DEBUG: 3ob2 Chain(s) ['A'] -> Match: 100.0%
+DEBUG: 3ob2 Chain(s) ['B'] -> Match: 34.7%
+DEBUG: 3gt8 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.5%
+ 14%|█▍        | 58/404 [00:03<00:13, 25.91it/s]DEBUG: 3ltf Chain(s) ['A', 'C'] -> Match: 23.3%
+DEBUG: 3ltf Chain(s) ['B', 'D'] -> Match: 67.2%
+DEBUG: 3ltg Chain(s) ['A', 'C'] -> Match: 23.3%
+DEBUG: 3ltg Chain(s) ['D'] -> Match: 71.2%
+DEBUG: 3lzb Chain(s) ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] -> Match: 40.7%
+ 15%|█▌        | 61/404 [00:03<00:17, 19.92it/s]DEBUG: 3op0 Chain(s) ['A', 'B'] -> Match: 36.2%
+DEBUG: 3op0 Chain(s) ['C', 'D'] -> Match: 100.0%
+DEBUG: 3p0y Chain(s) ['A'] -> Match: 39.3%
+DEBUG: 3p0y Chain(s) ['H'] -> Match: 38.6%
+DEBUG: 3p0y Chain(s) ['L'] -> Match: 37.9%
+DEBUG: 3ug1 Chain(s) ['A'] -> Match: 41.0%
+ 16%|█▌        | 64/404 [00:03<00:16, 20.93it/s]DEBUG: 3p11 Chain(s) ['H'] -> Match: 38.6%
+DEBUG: 3p11 Chain(s) ['L'] -> Match: 37.9%
+DEBUG: 3p11 Chain(s) ['A'] -> Match: 25.5%
+DEBUG: 3poz Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 3ug2 Chain(s) ['A'] -> Match: 41.0%
+ 17%|█▋        | 67/404 [00:03<00:15, 21.98it/s]DEBUG: 3vjn Chain(s) ['A'] -> Match: 41.0%
+DEBUG: 3p0v Chain(s) ['L', 'M'] -> Match: 37.9%
+DEBUG: 3p0v Chain(s) ['H', 'I'] -> Match: 38.6%
+DEBUG: 3vjo Chain(s) ['A'] -> Match: 41.6%
+DEBUG: 3vrp Chain(s) ['A'] -> Match: 35.6%
+DEBUG: 3vrp Chain(s) ['B'] -> Match: 100.0%
+ 18%|█▊        | 71/404 [00:03<00:13, 25.22it/s]DEBUG: 3w2o Chain(s) ['A'] -> Match: 41.1%
+DEBUG: 3u7u Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 22.3%
+DEBUG: 3u7u Chain(s) ['G', 'H', 'I', 'J', 'K', 'L'] -> Match: 70.9%
+DEBUG: 3vrr Chain(s) ['A'] -> Match: 35.3%
+DEBUG: 3vrr Chain(s) ['C'] -> Match: 100.0%
+ 18%|█▊        | 74/404 [00:03<00:16, 19.89it/s]DEBUG: 3w2r Chain(s) ['A'] -> Match: 41.1%
+DEBUG: 3w2q Chain(s) ['A'] -> Match: 41.1%
+DEBUG: 3w2s Chain(s) ['A'] -> Match: 41.8%
+ 19%|█▉        | 77/404 [00:04<00:16, 20.03it/s]DEBUG: 3w32 Chain(s) ['A'] -> Match: 41.8%
+DEBUG: 3w33 Chain(s) ['A'] -> Match: 41.8%
+DEBUG: 3pfv Chain(s) ['A', 'B'] -> Match: 34.6%
+DEBUG: 3pfv Chain(s) ['C', 'D'] -> Match: 100.0%
+DEBUG: 4hjo Chain(s) ['A'] -> Match: 40.7%
+DEBUG: 4g5j Chain(s) ['A'] -> Match: 41.8%
+ 20%|██        | 82/404 [00:04<00:12, 25.04it/s]DEBUG: 3w2p Chain(s) ['A'] -> Match: 41.1%
+DEBUG: 4g5p Chain(s) ['A', 'B'] -> Match: 41.5%
+DEBUG: 4i1z Chain(s) ['A'] -> Match: 41.3%
+ 21%|██        | 85/404 [00:04<00:16, 19.74it/s]DEBUG: 4jq7 Chain(s) ['A'] -> Match: 42.1%
+DEBUG: 4i22 Chain(s) ['A'] -> Match: 41.3%
+DEBUG: 4i21 Chain(s) ['A', 'B'] -> Match: 41.6%
+DEBUG: 4i21 Chain(s) ['C', 'D'] -> Match: 67.7%
+ 22%|██▏       | 88/404 [00:04<00:15, 20.46it/s]DEBUG: 4jq8 Chain(s) ['A'] -> Match: 42.1%
+DEBUG: 4i20 Chain(s) ['A'] -> Match: 41.6%
+DEBUG: 4i24 Chain(s) ['A', 'B'] -> Match: 41.6%
+ 23%|██▎       | 91/404 [00:04<00:14, 21.83it/s]DEBUG: 4krl Chain(s) ['B'] -> Match: 52.6%
+DEBUG: 4krl Chain(s) ['A'] -> Match: 40.2%
+DEBUG: 4jrv Chain(s) ['A'] -> Match: 42.1%
+DEBUG: 4i23 Chain(s) ['A'] -> Match: 41.9%
+DEBUG: 4krn Chain(s) ['A'] -> Match: 48.6%
+DEBUG: 4jr3 Chain(s) ['A'] -> Match: 42.1%
+DEBUG: 4ll0 Chain(s) ['A', 'B'] -> Match: 41.4%
+ 24%|██▍       | 97/404 [00:04<00:13, 22.68it/s]DEBUG: 4lqm Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 4krp Chain(s) ['A'] -> Match: 23.5%
+DEBUG: 4krp Chain(s) ['B'] -> Match: 48.5%
+DEBUG: 4krp Chain(s) ['C'] -> Match: 37.4%
+DEBUG: 4krp Chain(s) ['D'] -> Match: 38.2%
+DEBUG: 4kro Chain(s) ['A'] -> Match: 23.6%
+DEBUG: 4kro Chain(s) ['B'] -> Match: 48.6%
+DEBUG: 4kro Chain(s) ['C'] -> Match: 37.4%
+DEBUG: 4kro Chain(s) ['D'] -> Match: 38.2%
+ 25%|██▍       | 100/404 [00:05<00:13, 22.29it/s]DEBUG: 4r3p Chain(s) ['A'] -> Match: 42.4%
+DEBUG: 4r3p Chain(s) ['B'] -> Match: 100.0%
+DEBUG: 4r5s Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 4krm Chain(s) ['A', 'C', 'E', 'G', 'I', 'K'] -> Match: 40.2%
+DEBUG: 4krm Chain(s) ['B', 'D', 'F', 'H', 'J', 'L'] -> Match: 52.6%
+DEBUG: 4rj4 Chain(s) ['A'] -> Match: 41.4%
+ 26%|██▌       | 104/404 [00:05<00:12, 23.88it/s]DEBUG: 4r3r Chain(s) ['A'] -> Match: 42.4%
+DEBUG: 4r3r Chain(s) ['B'] -> Match: 100.0%
+DEBUG: 4r5y Chain(s) ['A', 'B'] -> Match: 39.0%
+DEBUG: 4lrm Chain(s) ['A', 'B', 'C', 'D', 'E'] -> Match: 41.3%
+DEBUG: 4rj5 Chain(s) ['A'] -> Match: 41.4%
+ 27%|██▋       | 108/404 [00:05<00:11, 24.91it/s]DEBUG: 4wkq Chain(s) ['A'] -> Match: 41.8%
+DEBUG: 4uv7 Chain(s) ['A'] -> Match: 23.7%
+DEBUG: 4uv7 Chain(s) ['H'] -> Match: 39.1%
+DEBUG: 4uv7 Chain(s) ['L'] -> Match: 37.0%
+DEBUG: 4rj7 Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 4z21 Chain(s) ['A'] -> Match: 43.6%
+ 27%|██▋       | 111/404 [00:06<00:27, 10.77it/s]DEBUG: 4zau Chain(s) ['A'] -> Match: 41.8%
+DEBUG: 4v0g Chain(s) ['A'] -> Match: 47.0%
+DEBUG: 4v0g Chain(s) ['B'] -> Match: 47.0%
+DEBUG: 4wd5 Chain(s) ['A', 'B'] -> Match: 41.4%
+DEBUG: 4rj8 Chain(s) ['A'] -> Match: 41.4%
+ 29%|██▊       | 116/404 [00:06<00:19, 15.01it/s]DEBUG: 4tks Chain(s) ['A'] -> Match: 41.6%
+DEBUG: 4uip Chain(s) ['A'] -> Match: 23.8%
+DEBUG: 4uip Chain(s) ['B'] -> Match: 40.2%
+DEBUG: 4rj6 Chain(s) ['A'] -> Match: 41.4%
+ 29%|██▉       | 119/404 [00:06<00:19, 14.59it/s]DEBUG: 4wrg Chain(s) ['A'] -> Match: 41.8%
+DEBUG: 4zjv Chain(s) ['A', 'B'] -> Match: 42.0%
+DEBUG: 4zjv Chain(s) ['C', 'D'] -> Match: 67.1%
+DEBUG: 5c8m Chain(s) ['A'] -> Match: 41.4%
+ 30%|███       | 122/404 [00:07<00:27, 10.26it/s]DEBUG: 5cao Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5can Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5c8n Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5cap Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5cas Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 4zse Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+DEBUG: 5caq Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5cal Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5cau Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5c8k Chain(s) ['A'] -> Match: 41.4%
+ 33%|███▎      | 132/404 [00:07<00:14, 18.86it/s]DEBUG: 5cav Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 5czi Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 5czi Chain(s) ['B'] -> Match: 100.0%
+DEBUG: 5cnn Chain(s) ['A', 'B'] -> Match: 39.7%
+DEBUG: 5d10 Chain(s) ['A', 'B'] -> Match: 45.5%
+ 34%|███▎      | 136/404 [00:07<00:17, 15.19it/s]DEBUG: 5edq Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5edp Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5d12 Chain(s) ['A', 'B'] -> Match: 45.5%
+DEBUG: 5czh Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 5czh Chain(s) ['B'] -> Match: 100.0%
+DEBUG: 5cno Chain(s) ['A', 'B', 'X'] -> Match: 41.5%
+DEBUG: 5edr Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5d41 Chain(s) ['A', 'B'] -> Match: 41.4%
+DEBUG: 5em5 Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5em7 Chain(s) ['A'] -> Match: 41.4%
+ 36%|███▌      | 145/404 [00:08<00:14, 17.33it/s]DEBUG: 5em8 Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 5em6 Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5fed Chain(s) ['A'] -> Match: 42.1%
+DEBUG: 5fee Chain(s) ['A'] -> Match: 41.8%
+ 37%|███▋      | 149/404 [00:08<00:13, 19.18it/s]DEBUG: 5gty Chain(s) ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] -> Match: 41.4%
+DEBUG: 5gnk Chain(s) ['A'] -> Match: 44.8%
+DEBUG: 5hcy Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5hcx Chain(s) ['A'] -> Match: 41.4%
+ 38%|███▊      | 153/404 [00:08<00:11, 21.44it/s]DEBUG: 5gmp Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5feq Chain(s) ['A'] -> Match: 41.8%
+DEBUG: 5gtz Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5hg8 Chain(s) ['A'] -> Match: 41.3%
+ 39%|███▉      | 157/404 [00:08<00:13, 18.44it/s]DEBUG: 5hg7 Chain(s) ['A'] -> Match: 41.3%
+DEBUG: 5hcz Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5hg9 Chain(s) ['A'] -> Match: 41.3%
+ 40%|███▉      | 160/404 [00:08<00:12, 19.85it/s]DEBUG: 5hic Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5hib Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5u8l Chain(s) ['A'] -> Match: 41.3%
+ 40%|████      | 163/404 [00:08<00:11, 20.34it/s]DEBUG: 5hg5 Chain(s) ['A'] -> Match: 41.3%
+DEBUG: 5j9z Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 5jeb Chain(s) ['A'] -> Match: 40.7%
+DEBUG: 5ug8 Chain(s) ['A'] -> Match: 41.3%
+DEBUG: 5j9y Chain(s) ['A'] -> Match: 41.8%
+DEBUG: 5ug9 Chain(s) ['A'] -> Match: 41.3%
+ 42%|████▏     | 169/404 [00:09<00:11, 19.83it/s]DEBUG: 5uga Chain(s) ['A'] -> Match: 41.3%
+DEBUG: 5ugb Chain(s) ['A'] -> Match: 41.9%
+DEBUG: 5sx5 Chain(s) ['K', 'L'] -> Match: 39.3%
+DEBUG: 5sx5 Chain(s) ['H', 'J'] -> Match: 38.0%
+DEBUG: 5ugc Chain(s) ['A'] -> Match: 41.3%
+DEBUG: 5sx5 Chain(s) ['M', 'N'] -> Match: 41.3%
+ 43%|████▎     | 172/404 [00:09<00:11, 20.34it/s]DEBUG: 5sx4 Chain(s) ['I', 'L'] -> Match: 39.3%
+DEBUG: 5sx4 Chain(s) ['H', 'J'] -> Match: 38.0%
+DEBUG: 5sx4 Chain(s) ['M', 'N'] -> Match: 41.3%
+DEBUG: 5uwd Chain(s) ['A'] -> Match: 41.3%
+DEBUG: 5lv6 Chain(s) ['A', 'B'] -> Match: 77.3%
+DEBUG: 5x28 Chain(s) ['A'] -> Match: 42.2%
+ 44%|████▍     | 177/404 [00:09<00:08, 25.25it/s]DEBUG: 5x27 Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 5x26 Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 5wb7 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 25.4%
+DEBUG: 5wb7 Chain(s) ['E', 'F', 'G', 'H'] -> Match: 62.9%
+ 45%|████▍     | 180/404 [00:09<00:08, 25.95it/s]DEBUG: 5wb8 Chain(s) ['A', 'D'] -> Match: 25.4%
+DEBUG: 5wb8 Chain(s) ['B', 'C'] -> Match: 65.6%
+DEBUG: 5x2c Chain(s) ['A', 'B'] -> Match: 41.4%
+DEBUG: 5x2k Chain(s) ['A'] -> Match: 41.9%
+ 45%|████▌     | 183/404 [00:09<00:10, 20.30it/s]DEBUG: 5x2f Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+DEBUG: 5xdk Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5x2a Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+ 46%|████▌     | 186/404 [00:09<00:09, 22.06it/s]DEBUG: 5xdl Chain(s) ['A'] -> Match: 42.0%
+DEBUG: 5xgm Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 5y25 Chain(s) ['A'] -> Match: 41.0%
+DEBUG: 5xgn Chain(s) ['A', 'B'] -> Match: 41.7%
+ 47%|████▋     | 190/404 [00:09<00:08, 25.82it/s]DEBUG: 5y9t Chain(s) ['A'] -> Match: 41.1%
+DEBUG: 5zwj Chain(s) ['A'] -> Match: 39.2%
+DEBUG: 5yu9 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+ 48%|████▊     | 193/404 [00:10<00:10, 19.66it/s]DEBUG: 5zto Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 6aru Chain(s) ['A'] -> Match: 23.5%
+DEBUG: 6aru Chain(s) ['B'] -> Match: 37.4%
+DEBUG: 6aru Chain(s) ['C'] -> Match: 38.3%
+DEBUG: 6b3s Chain(s) ['A', 'B', 'E', 'I'] -> Match: 40.2%
+DEBUG: 6b3s Chain(s) ['C', 'F', 'H', 'J'] -> Match: 37.8%
+DEBUG: 6b3s Chain(s) ['D', 'G', 'K', 'L'] -> Match: 38.0%
+DEBUG: 6d8e Chain(s) ['A'] -> Match: 42.2%
+ 49%|████▉     | 197/404 [00:10<00:08, 23.29it/s]DEBUG: 6jkg Chain(s) ['A', 'B'] -> Match: 37.6%
+DEBUG: 6jkh Chain(s) ['A', 'B'] -> Match: 37.6%
+DEBUG: 6duk Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 41.4%
+ 50%|████▉     | 200/404 [00:10<00:08, 23.51it/s]DEBUG: 6jrk Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 6jrj Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 6jrx Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 6jxt Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 6jwl Chain(s) ['A'] -> Match: 41.7%
+ 50%|█████     | 204/404 [00:10<00:11, 17.46it/s]DEBUG: 6jz0 Chain(s) ['A'] -> Match: 42.3%
+DEBUG: 6jx0 Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 6jx4 Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 6lud Chain(s) ['A'] -> Match: 41.9%
+DEBUG: 6lub Chain(s) ['A'] -> Match: 41.9%
+DEBUG: 6s89 Chain(s) ['A'] -> Match: 41.4%
+ 52%|█████▏    | 211/404 [00:10<00:07, 24.28it/s]DEBUG: 6s9b Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 6p1d Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.6%
+DEBUG: 6s8a Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 6p1l Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.6%
+DEBUG: 6p8q Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.6%
+ 53%|█████▎    | 216/404 [00:11<00:09, 19.84it/s]DEBUG: 6tfv Chain(s) ['A', 'B'] -> Match: 40.8%
+DEBUG: 6s9c Chain(s) ['A'] -> Match: 41.6%
+DEBUG: 6tfu Chain(s) ['A', 'B'] -> Match: 40.8%
+DEBUG: 6tfw Chain(s) ['A', 'B'] -> Match: 40.8%
+DEBUG: 6tfy Chain(s) ['A', 'B'] -> Match: 40.8%
+DEBUG: 6tfz Chain(s) ['A', 'B'] -> Match: 40.8%
+ 55%|█████▍    | 222/404 [00:11<00:07, 23.45it/s]DEBUG: 6v5n Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.5%
+DEBUG: 6s9d Chain(s) ['A'] -> Match: 41.6%
+DEBUG: 6tg1 Chain(s) ['A', 'B'] -> Match: 40.8%
+DEBUG: 6v66 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.6%
+ 56%|█████▌    | 226/404 [00:11<00:06, 26.10it/s]DEBUG: 6tg0 Chain(s) ['A', 'B'] -> Match: 40.8%
+DEBUG: 6v6k Chain(s) ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] -> Match: 41.6%
+DEBUG: 6v5p Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.5%
+DEBUG: 6vh4 Chain(s) ['A'] -> Match: 42.2%
+ 57%|█████▋    | 230/404 [00:11<00:08, 20.91it/s]DEBUG: 6v6o Chain(s) ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] -> Match: 41.6%
+DEBUG: 6vhn Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 6vhp Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 6wa2 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.5%
+ 58%|█████▊    | 234/404 [00:11<00:07, 22.65it/s]DEBUG: 6z4b Chain(s) ['A', 'B'] -> Match: 40.8%
+DEBUG: 6wak Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.5%
+DEBUG: 6xl4 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.5%
+ 59%|█████▊    | 237/404 [00:12<00:07, 23.62it/s]DEBUG: 6wvz Chain(s) ['H'] -> Match: 38.2%
+DEBUG: 6wvz Chain(s) ['L'] -> Match: 37.9%
+DEBUG: 6wvz Chain(s) ['M'] -> Match: 24.9%
+DEBUG: 7a2a Chain(s) ['A', 'B'] -> Match: 40.8%
+DEBUG: 7b85 Chain(s) ['A'] -> Match: 41.4%
+ 59%|█████▉    | 240/404 [00:12<00:08, 20.17it/s]DEBUG: 7er2 Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 7aem Chain(s) ['A'] -> Match: 40.5%
+DEBUG: 6z4d Chain(s) ['A', 'B'] -> Match: 40.8%
+ 60%|██████    | 243/404 [00:12<00:07, 20.39it/s]DEBUG: 7jxi Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+DEBUG: 7aei Chain(s) ['A'] -> Match: 41.9%
+DEBUG: 7a6i Chain(s) ['A'] -> Match: 40.8%
+DEBUG: 7jxm Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+DEBUG: 7k1i Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 7len Chain(s) ['A', 'B'] -> Match: 25.2%
+DEBUG: 7len Chain(s) ['C', 'D'] -> Match: 70.8%
+ 62%|██████▏   | 249/404 [00:12<00:06, 25.24it/s]DEBUG: 7kxz Chain(s) ['A'] -> Match: 42.0%
+DEBUG: 7jxl Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+DEBUG: 7jxw Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+ 62%|██████▏   | 252/404 [00:12<00:06, 22.02it/s]DEBUG: 7lfr Chain(s) ['A', 'B'] -> Match: 25.5%
+DEBUG: 7lfr Chain(s) ['C', 'D'] -> Match: 70.8%
+DEBUG: 7jxp Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 41.4%
+DEBUG: 7jxk Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 41.4%
+ 63%|██████▎   | 255/404 [00:12<00:06, 22.07it/s]DEBUG: 7lgs Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+DEBUG: 7k1h Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 41.7%
+DEBUG: 7oxb Chain(s) ['A'] -> Match: 42.0%
+DEBUG: 7lg8 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+DEBUG: 7lfs Chain(s) ['A', 'B', 'C', 'D'] -> Match: 25.4%
+DEBUG: 7lfs Chain(s) ['E', 'F', 'G', 'H'] -> Match: 70.8%
+DEBUG: 7pcd Chain(s) ['A'] -> Match: 41.9%
+ 65%|██████▍   | 261/404 [00:13<00:05, 25.30it/s]DEBUG: 7jxq Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+DEBUG: 7si1 Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 7ltx Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+ 65%|██████▌   | 264/404 [00:13<00:06, 20.22it/s]DEBUG: 7sz0 Chain(s) ['A', 'B'] -> Match: 16.0%
+DEBUG: 7sz0 Chain(s) ['C', 'D'] -> Match: 71.7%
+DEBUG: 7sye Chain(s) ['A', 'B'] -> Match: 16.0%
+DEBUG: 7sye Chain(s) ['C', 'D'] -> Match: 71.7%
+DEBUG: 7sz5 Chain(s) ['A', 'B'] -> Match: 16.0%
+DEBUG: 7sz5 Chain(s) ['C', 'D'] -> Match: 74.0%
+DEBUG: 7sz7 Chain(s) ['A', 'B'] -> Match: 16.0%
+DEBUG: 7sz7 Chain(s) ['C', 'D'] -> Match: 74.0%
+DEBUG: 7t4i Chain(s) ['A'] -> Match: 42.1%
+DEBUG: 7syd Chain(s) ['A', 'B'] -> Match: 16.0%
+DEBUG: 7syd Chain(s) ['C', 'D'] -> Match: 71.7%
+ 67%|██████▋   | 269/404 [00:13<00:05, 23.98it/s]DEBUG: 7t4j Chain(s) ['A', 'B'] -> Match: 41.4%
+DEBUG: 7ky0 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+DEBUG: 7tvd Chain(s) ['A'] -> Match: 40.9%
+ 68%|██████▊   | 273/404 [00:13<00:05, 24.74it/s]DEBUG: 7ukv Chain(s) ['A'] -> Match: 42.1%
+DEBUG: 7u99 Chain(s) ['A'] -> Match: 42.0%
+DEBUG: 7u9a Chain(s) ['A'] -> Match: 42.0%
+ 68%|██████▊   | 276/404 [00:13<00:06, 20.15it/s]DEBUG: 7ukw Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.5%
+DEBUG: 7vra Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 7zym Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 7vre Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 7zyp Chain(s) ['A'] -> Match: 41.4%
+ 70%|██████▉   | 281/404 [00:14<00:05, 24.46it/s]DEBUG: 7zyn Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 8a2b Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 7om4 Chain(s) ['A'] -> Match: 23.5%
+DEBUG: 7om4 Chain(s) ['C'] -> Match: 71.7%
+DEBUG: 7om4 Chain(s) ['B'] -> Match: 48.5%
+DEBUG: 8a27 Chain(s) ['A'] -> Match: 42.0%
+ 71%|███████   | 285/404 [00:14<00:04, 26.32it/s]DEBUG: 8a2a Chain(s) ['A'] -> Match: 42.0%
+DEBUG: 8a2d Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 8dsw Chain(s) ['A'] -> Match: 41.8%
+ 71%|███████▏  | 288/404 [00:14<00:05, 19.95it/s]DEBUG: 7sz1 Chain(s) ['A', 'B'] -> Match: 16.0%
+DEBUG: 7sz1 Chain(s) ['C', 'D'] -> Match: 71.7%
+DEBUG: 8d76 Chain(s) ['A', 'B'] -> Match: 39.4%
+DEBUG: 8f1h Chain(s) ['A'] -> Match: 42.0%
+DEBUG: 8d73 Chain(s) ['A', 'B'] -> Match: 39.4%
+DEBUG: 8eme Chain(s) ['A', 'B'] -> Match: 41.4%
+ 73%|███████▎  | 293/404 [00:14<00:04, 22.45it/s]DEBUG: 8f1x Chain(s) ['A'] -> Match: 42.0%
+DEBUG: 8f1w Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+DEBUG: 8f1y Chain(s) ['A'] -> Match: 42.0%
+DEBUG: 8f1z Chain(s) ['A'] -> Match: 42.0%
+DEBUG: 8g63 Chain(s) ['A'] -> Match: 42.2%
+ 74%|███████▍  | 298/404 [00:14<00:04, 21.91it/s]DEBUG: 8fv3 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.5%
+DEBUG: 8fv4 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.5%
+DEBUG: 8h7x Chain(s) ['A', 'B'] -> Match: 41.8%
+ 75%|███████▍  | 301/404 [00:14<00:04, 21.70it/s]DEBUG: 8hgo Chain(s) ['B'] -> Match: 20.8%
+DEBUG: 8hgo Chain(s) ['A'] -> Match: 20.8%
+DEBUG: 8hgo Chain(s) ['C'] -> Match: 70.2%
+DEBUG: 8hv1 Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 8gb4 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+DEBUG: 8hv2 Chain(s) ['A'] -> Match: 41.7%
+ 75%|███████▌  | 305/404 [00:15<00:04, 22.62it/s]DEBUG: 8gk5 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+DEBUG: 8hgp Chain(s) ['B'] -> Match: 20.8%
+DEBUG: 8hgp Chain(s) ['A'] -> Match: 20.8%
+DEBUG: 8hgp Chain(s) ['C'] -> Match: 71.4%
+DEBUG: 8hv4 Chain(s) ['A'] -> Match: 41.7%
+ 76%|███████▌  | 308/404 [00:15<00:04, 23.40it/s]DEBUG: 8hv3 Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 8hgs Chain(s) ['A', 'B'] -> Match: 20.8%
+DEBUG: 8hgs Chain(s) ['C', 'D'] -> Match: 70.2%
+DEBUG: 8hv5 Chain(s) ['A'] -> Match: 41.4%
+ 77%|███████▋  | 311/404 [00:15<00:04, 21.81it/s]DEBUG: 8hv7 Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 8hv8 Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 8hv9 Chain(s) ['A'] -> Match: 41.7%
+ 78%|███████▊  | 314/404 [00:15<00:04, 21.31it/s]DEBUG: 8hv6 Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 8hva Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 8kfq Chain(s) ['A'] -> Match: 41.9%
+ 78%|███████▊  | 317/404 [00:15<00:03, 22.54it/s]DEBUG: 8pnz Chain(s) ['A'] -> Match: 41.9%
+DEBUG: 8hy7 Chain(s) ['A'] -> Match: 41.5%
+DEBUG: 8po0 Chain(s) ['A'] -> Match: 41.6%
+ 79%|███████▉  | 320/404 [00:15<00:03, 22.80it/s]DEBUG: 8po1 Chain(s) ['A'] -> Match: 41.3%
+DEBUG: 8po3 Chain(s) ['A'] -> Match: 41.5%
+DEBUG: 8po2 Chain(s) ['A', 'B', 'D'] -> Match: 41.3%
+ 80%|███████▉  | 323/404 [00:15<00:03, 22.77it/s]DEBUG: 8s1m Chain(s) ['A'] -> Match: 50.3%
+DEBUG: 8po4 Chain(s) ['A', 'B'] -> Match: 41.8%
+DEBUG: 7u98 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.4%
+ 81%|████████  | 326/404 [00:16<00:03, 23.68it/s]DEBUG: 8tjl Chain(s) ['A'] -> Match: 42.0%
+DEBUG: 8sc7 Chain(s) ['A'] -> Match: 41.8%
+ 81%|████████▏ | 329/404 [00:16<00:03, 21.06it/s]DEBUG: 8to3 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.5%
+DEBUG: 8sc9 Chain(s) ['A', 'B'] -> Match: 37.1%
+DEBUG: 8to4 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.5%
+ 82%|████████▏ | 332/404 [00:16<00:03, 22.66it/s]DEBUG: 8ukv Chain(s) ['A', 'B'] -> Match: 31.9%
+DEBUG: 8ukv Chain(s) ['C', 'D'] -> Match: 48.2%
+DEBUG: 8ukw Chain(s) ['A', 'B'] -> Match: 31.9%
+DEBUG: 8ukx Chain(s) ['A'] -> Match: 31.9%
+DEBUG: 8wd4 Chain(s) ['A'] -> Match: 41.9%
+ 83%|████████▎ | 336/404 [00:16<00:02, 24.29it/s]DEBUG: 9by4 Chain(s) ['A'] -> Match: 40.8%
+DEBUG: 9d3v Chain(s) ['A'] -> Match: 41.8%
+DEBUG: 9by6 Chain(s) ['A'] -> Match: 40.8%
+ 84%|████████▍ | 339/404 [00:16<00:02, 25.38it/s]DEBUG: 9df2 Chain(s) ['A'] -> Match: 41.1%
+DEBUG: 9df3 Chain(s) ['A'] -> Match: 41.1%
+DEBUG: 9df4 Chain(s) ['A'] -> Match: 41.1%
+ 85%|████████▍ | 342/404 [00:16<00:02, 22.02it/s]DEBUG: 9dm8 Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 9d3w Chain(s) ['A'] -> Match: 41.8%
+DEBUG: 9ews Chain(s) ['A'] -> Match: 41.3%
+DEBUG: 9fqp Chain(s) ['A'] -> Match: 40.5%
+ 86%|████████▌ | 346/404 [00:16<00:02, 22.03it/s]DEBUG: 9ewt Chain(s) ['A', 'B'] -> Match: 41.3%
+DEBUG: 9frd Chain(s) ['A'] -> Match: 41.8%
+DEBUG: 9fzs Chain(s) ['A'] -> Match: 41.9%
+DEBUG: 9fqs Chain(s) ['A'] -> Match: 40.5%
+DEBUG: 9gc6 Chain(s) ['A', 'B'] -> Match: 41.5%
+ 87%|████████▋ | 351/404 [00:17<00:02, 25.37it/s]DEBUG: 9fzr Chain(s) ['A'] -> Match: 41.9%
+DEBUG: 9gc5 Chain(s) ['A', 'B'] -> Match: 41.5%
+DEBUG: 9gc4 Chain(s) ['A', 'B', 'D'] -> Match: 41.3%
+ 88%|████████▊ | 354/404 [00:17<00:02, 23.33it/s]DEBUG: 9gdv Chain(s) ['A', 'B'] -> Match: 41.5%
+DEBUG: 9ghs Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 9ghr Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 9ght Chain(s) ['A'] -> Match: 41.4%
+ 89%|████████▊ | 358/404 [00:17<00:01, 23.74it/s]DEBUG: 9ghu Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 9gi9 Chain(s) ['A'] -> Match: 41.8%
+DEBUG: 9ghv Chain(s) ['A'] -> Match: 41.4%
+DEBUG: 9h46 Chain(s) ['A'] -> Match: 42.1%
+ 90%|████████▉ | 362/404 [00:17<00:01, 27.01it/s]DEBUG: 9gl7 Chain(s) ['A'] -> Match: 40.5%
+DEBUG: 9h47 Chain(s) ['A'] -> Match: 42.1%
+DEBUG: 9gl9 Chain(s) ['A'] -> Match: 41.8%
+ 90%|█████████ | 365/404 [00:17<00:01, 20.87it/s]DEBUG: 9gl8 Chain(s) ['A'] -> Match: 40.5%
+DEBUG: 9h42 Chain(s) ['A'] -> Match: 42.1%
+DEBUG: 9ip7 Chain(s) ['A'] -> Match: 23.4%
+DEBUG: 9ip7 Chain(s) ['D'] -> Match: 35.3%
+DEBUG: 9hbo Chain(s) ['A', 'B'] -> Match: 41.3%
+DEBUG: 9ip8 Chain(s) ['A'] -> Match: 23.4%
+DEBUG: 9ip8 Chain(s) ['B'] -> Match: 24.3%
+DEBUG: 9ip8 Chain(s) ['C'] -> Match: 41.2%
+ 92%|█████████▏| 370/404 [00:17<00:01, 23.74it/s]DEBUG: 9ip9 Chain(s) ['A'] -> Match: 23.4%
+DEBUG: 9ip9 Chain(s) ['B'] -> Match: 24.3%
+DEBUG: 9ip9 Chain(s) ['C'] -> Match: 41.2%
+DEBUG: 9ipb Chain(s) ['A'] -> Match: 23.4%
+DEBUG: 9ipa Chain(s) ['A'] -> Match: 23.4%
+DEBUG: 9ipb Chain(s) ['D'] -> Match: 35.6%
+DEBUG: 9ipa Chain(s) ['B'] -> Match: 24.3%
+DEBUG: 9ipa Chain(s) ['C'] -> Match: 41.2%
+DEBUG: 9jl7 Chain(s) ['G'] -> Match: 90.9%
+ 93%|█████████▎| 374/404 [00:18<00:01, 26.79it/s]DEBUG: 9ipe Chain(s) ['A'] -> Match: 23.4%
+DEBUG: 9ipe Chain(s) ['B'] -> Match: 24.3%
+DEBUG: 9ipe Chain(s) ['C'] -> Match: 41.2%
+DEBUG: 9ipd Chain(s) ['A'] -> Match: 23.4%
+DEBUG: 9ipd Chain(s) ['B'] -> Match: 24.3%
+DEBUG: 9ipd Chain(s) ['C'] -> Match: 41.2%
+DEBUG: 9klw Chain(s) ['A'] -> Match: 41.5%
+ 93%|█████████▎| 377/404 [00:18<00:01, 19.84it/s]DEBUG: 9jq1 Chain(s) ['A'] -> Match: 41.9%
+DEBUG: 9ipc Chain(s) ['A'] -> Match: 23.4%
+DEBUG: 9ipc Chain(s) ['B'] -> Match: 24.3%
+DEBUG: 9ipc Chain(s) ['C'] -> Match: 41.2%
+DEBUG: 9kl4 Chain(s) ['A'] -> Match: 41.8%
+DEBUG: 9ly5 Chain(s) ['A'] -> Match: 37.7%
+DEBUG: 9ly5 Chain(s) ['B'] -> Match: 37.6%
+DEBUG: 9ly5 Chain(s) ['C'] -> Match: 28.3%
+DEBUG: 9msr Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 9mss Chain(s) ['A'] -> Match: 42.2%
+ 95%|█████████▍| 382/404 [00:18<00:00, 24.36it/s]DEBUG: 9mst Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 9ly6 Chain(s) ['A'] -> Match: 29.3%
+DEBUG: 9ly6 Chain(s) ['B', 'D'] -> Match: 37.1%
+DEBUG: 9ly6 Chain(s) ['C', 'E'] -> Match: 37.6%
+DEBUG: 9n6g Chain(s) ['A', 'B', 'C', 'D'] -> Match: 41.3%
+ 96%|█████████▌| 386/404 [00:18<00:00, 22.60it/s]DEBUG: 9ngp Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 9nj7 Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 9njn Chain(s) ['A'] -> Match: 42.2%
+ 96%|█████████▋| 389/404 [00:18<00:00, 20.14it/s]DEBUG: 9nhw Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 9nis Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 9olb Chain(s) ['A', 'B', 'C'] -> Match: 45.4%
+DEBUG: 9olb Chain(s) ['D'] -> Match: 100.0%
+DEBUG: 9nm0 Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 9ou9 Chain(s) ['A'] -> Match: 42.2%
+ 98%|█████████▊| 394/404 [00:18<00:00, 25.57it/s]DEBUG: 9os6 Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 9p9u Chain(s) ['A'] -> Match: 24.5%
+DEBUG: 9q0s Chain(s) ['A'] -> Match: 42.2%
+DEBUG: 9s3x Chain(s) ['A'] -> Match: 42.3%
+ 99%|█████████▊| 398/404 [00:19<00:00, 23.20it/s]DEBUG: 9qxn Chain(s) ['AAA'] -> Match: 40.5%
+DEBUG: 9u91 Chain(s) ['A'] -> Match: 40.1%
+DEBUG: 9pmz Chain(s) ['A'] -> Match: 42.2%
+ 99%|█████████▉| 401/404 [00:19<00:00, 21.09it/s]DEBUG: 9z2h Chain(s) ['A', 'E'] -> Match: 83.3%
+DEBUG: 9z2h Chain(s) ['H', 'HH'] -> Match: 36.8%
+DEBUG: 9z2h Chain(s) ['L', 'LL'] -> Match: 38.8%
+DEBUG: 9xu9 Chain(s) ['A'] -> Match: 41.7%
+DEBUG: 9u8c Chain(s) ['A', 'B', 'C', 'D', 'E'] -> Match: 40.8%
+100%|██████████| 404/404 [00:19<00:00, 20.89it/s]
+DONE
+✅ PDBs processed OK: 404
+❌ PDBs failed: 0
+[18:33:39] 🚀 Running 3_PDBmkr.py...
+📊 Similarity Stats: Max found = 92.31% (Threshold: 90.0%)
+⚠️ No 5-letter ligands detected. Renaming map not required.
+🛑 Created Skip4.txt — Step 4 will be skipped.
+🚀 BUILDING 1 PDB CHAINS...
+  0%|          | 0/1 [00:00<?, ?it/s]
+100%|██████████| 1/1 [00:00<00:00, 13.13it/s]
+✅ All PDBs built successfully.
+✅ Wrote 5CharMAP.csv as headers-only (no 5-letter ligands detected).
+[18:33:40] 🚀 Running 4_PDBfxr.py...
+🛑 Skip4.txt detected — no ligand5→ligandX renaming required.
+✅ Step 4 exiting safely.
+[18:33:40] 🚀 Running 5_PDBcln.py...
+📁 ROOT DIRECTORY: WAR_PDB
+=============================
+🔬 Processing Protein: EGFR
+📂 Folder: WAR_PDB/EGFR
+=============================
+🧪 Cleaning 2gs6_B_112.pdb  | Keeping ligand: 112
+✔ Cleaned: 2gs6_B_112.pdb
+🎉 DONE — cleaned=1, dropped=0
+[18:33:40] 🚀 Running 6_SASA.py...
+📁 Scanning WARHEAD PDB ROOT: WAR_PDB
+🔎 Found 1 PDB files
+🧠 Using 11 cores
+✅ 2gs6_B_112.pdb: 31/35 exposed (0.89)
+🎉 WARHEAD SASA COMPLETE
+[18:33:41] 🚀 Running 7_metadata.py...
+📂 Using SMILES file: Components-smiles-stereo-oe.smi
+🧬 Loaded 49558 SMILES entries.
+🔎 Sample SMILES keys: ['000', '001', '002', '003', '004', '005', '006', '007', '008', '009', '00A', '00B', '00C', '00D', '00E']
+🤖 AUTO MODE: Warhead_SASA_summary.csv
+📥 Loaded SASA table.
+/home/jxs794/WEBTOOLs/PROTAC-Target-Builder/jobs/032917e1/7_metadata.py:443: FutureWarning: DataFrame.applymap has been deprecated. Use DataFrame.map instead.
+  alias = alias.applymap(lambda x: str(x).strip() if x is not None else "")
+ℹ️ 5CharMAP.csv has no usable rows → alias mapping disabled.
+🔗 WAR_PDB chain map built: 1 (pdb,ligX) groups
+🔬 BEGIN RESOLUTION TRACE
+--------------------------------------------------
+Row 0
+  PDB: 2gs6
+  Warhead (input): 112
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 112
+  SMILES found? YES
+🔬 END RESOLUTION TRACE
+✅ Filtered SASA table: removed 0 ion-only rows; remaining 1 rows
+💾 Saved Resolved_SASA_Summary.csv
+💾 Saved Ligand_PDB_Index.csv
+🚀 Launching parallel engine with 12 cores...
+🧪 Computing descriptors:   0%|          | 0/1 [00:00<?, ?it/s]
+🧪 Computing descriptors: 100%|██████████| 1/1 [00:00<00:00,  9.73it/s]
+🧪 Computing descriptors: 100%|██████████| 1/1 [00:00<00:00,  9.71it/s]
+🎉 COMPLETE → Ligand_Metadata.csv
+===================================================================
+[18:33:41] 🚀 Running 8_scaffold.py...
+📥 Loaded 1 rows from Resolved_SASA_Summary.csv
+🔬 Found 1 protein targets.
+✅ Stage 1 complete — base scaffold mapping and diversity scores saved.
+🎉 Stage 2 complete — advanced scaffold data saved.
+📦 All tables written to Target_Table/
+[18:33:42] 🚀 Running 9_2Dmapping.py...
+📥 Loading: Resolved_SASA_Summary.csv
+✅ Using: Target=Target, Ligand=Warhead, SMILES=SMILES
+🧬 Generating atom-level mapping...
+🎉 SUCCESS: All maps saved to Target_Table
+[18:33:42] 🚀 Running 10_2DmappingExtraction.py...
+✅ Extracted ligand atom coordinates for 35 atoms
+💾 Saved → Ligand_3D_Atoms.csv
+[18:33:42] 🚀 Running 11_mcsMatcher.py...
+ℹ️ No ligand alias resolution required (all ligands resolved in SMILES map).
+🚀 Running MCS on 1 ligand occurrences using 12 cores
+⚙️ Using hard timeout (5s per ligand) via SIGALRM
+[18:33:42 pid=2703621] BEGIN key=(112, 'EGFR', '2gs6', 101, 'B')
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') step=START
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') step=RESOLVE_SMILES_CANDIDATES
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') step=LOOKUP_SMILES
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') step=MOLFROM_SMILES
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') step=GET_GROUP
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') step=BUILD_3D_MOL
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') ⏱ BUILD_3D_MOL dt=0.009s
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') step=SDF_BLOCK
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/2gs6_B_112_101.sdf (exists=False)
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') step=SDF_WRITE
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') ✅ SDF_WRITE ok dt=0.02s msg=OK (warn): 1 molecule converted
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') step=MAP_INIT
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') step=SIZE_CHECKS
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') step=GRAPH_FULL
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') ⏱ GRAPH_FULL dt=0.001s
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') step=TEMPLATE_FULL
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') ⏱ TEMPLATE_FULL dt=0.000s
+[18:33:42 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') step=MCS
+🧨 STILL PENDING (1): [(112, 'EGFR', '2gs6', 101, 'B')]
+[18:33:45 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') ⏱ MCS dt=2.415s
+[18:33:45 pid=2703621] [112 2gs6 B 101] 2D=35 3D=35 bonds3D=37 mapped=23 mode=MCS(23/35) smiles_id=112
+[18:33:45 pid=2703621] (112, 'EGFR', '2gs6', 101, 'B') step=BUILD_ROWS
+[18:33:45 pid=2703621] END key=(112, 'EGFR', '2gs6', 101, 'B') mode=MCS(23/35) mapped=23 dt=2.46s
+⏳ progress: 1/1 pending=0
+✅ POOL COMPLETE (or aborted) — proceeding to write CSVs + SVG
+====================================================
+🎉 COMPLETED MCS MAPPING + SASA ANNOTATION
+📦 Map (MCS only)        → MCS_Output/Ligand_MCS_Map.csv
+🧪 SASA (MCS only)       → MCS_Output/Ligand_MCS_SASA.csv
+🧬 All atoms (debug)     → MCS_Output/Ligand_AllAtoms_Map.csv
+🧪 SASA (ALL atoms)      → MCS_Output/Ligand_MCS_SASA_ALL_ATOMS.csv
+⚠️ Failures              → MCS_Output/Ligand_MCS_Failures.csv
+====================================================
+🎨 Starting SVG generation for 1 occurrences
+🖼️  SVGs generated: 1 → MCS_Output/MCS_SVG
+[18:33:45] 🚀 Running 12_Results.py...
+✅ Integrated 3DSASAmapped.csv created with standard headers.
+[18:33:45] 🚀 Running 15_ResultsMerged.py...
+🧬 Using SASA file: Warhead_SASA_atoms.csv
+✅ Wrote merged atom table: Ligand_3D_Atoms_with_SASA.csv
+📊 Total atoms: 35
+🎉 RESULTS MERGE COMPLETE
+[18:33:45] 🚀 Running 16_ResultsDisplay.py...
+✅ Wrote /home/jxs794/WEBTOOLs/PROTAC-Target-Builder/jobs/032917e1/Results_Display.csv (1 entries)
+[18:33:46] ✅ PIPELINE FINISHED SUCCESSFULLY
+[18:33:46] Access results in the Browse tab.

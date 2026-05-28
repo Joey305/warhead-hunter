@@ -1,0 +1,16 @@
+Rank,Ligand_Resolved,PDB_List,Count
+1,017,"['3ekt', '3em6', '3lzv', '3oxw', '3oy4']",5
+2,1UN,"['3ekx', '3el0', '3el5']",3
+3,2NC,"['3hau', '3haw', '3hbo', '3hdk', '3nwq', '3nyg']",6
+4,478,"['3ekp', '3ekv', '3em3', '3oxv']",4
+5,DR7,"['3ekw', '3eky', '3el1', '3el9', '3em4', '3oxx']",6
+6,DRR,['3bxr'],1
+7,DRS,['3bxs'],1
+8,HBB,['1z1h'],1
+9,HBH,['1z1r'],1
+10,K53,['3mxd'],1
+11,K54,['3mxe'],1
+12,KVS,['3nwx'],1
+13,PI8,['1d4k'],1
+14,PI9,['1d4l'],1
+15,ROC,"['3ekq', '3el4']",2

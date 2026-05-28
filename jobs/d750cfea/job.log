@@ -1,0 +1,1489 @@
+[19:14:25] Job d750cfea started: 2026-04-20 19:14:25
+[19:14:25] 📦 Copying assets from pipeline_assets → jobs/d750cfea ...
+[19:14:25] 🧾 Wrote input.csv and Protein_Data.csv
+[19:14:25] 🚀 Running 1_GRABBER.py...
+🤖 AUTOMATED MODE: Processing input.csv
+=== Processing Protease ===
+    🔄 Switching to EBI Backup Search for 'HIV-1 M:B_ARV2/SF2'...
+  → Found 76 candidates
+  → Downloaded 76 CIFs
+=== DONE ===
+✅ Wrote queries.csv with MW_min=250.0, MW_max=700.0, MinID=90.0
+[19:14:33] 🚀 Running 2_SQchk.py...
+🚀 Running Sequence Identity Analysis...
+   Proteins missing fasta/name rows skipped: 0
+   MW_min=250.0  MW_max=700.0  (MW filters currently ignored for ligand debug)
+   Total PDB jobs to process: 76
+  0%|          | 0/76 [00:00<?, ?it/s]DEBUG: 1d4l Chain(s) ['A', 'B'] -> Match: 96.0%
+  1%|▏         | 1/76 [00:00<00:35,  2.12it/s]DEBUG: 2nxd Chain(s) ['A', 'B'] -> Match: 99.0%
+DEBUG: 2nxd Chain(s) ['P'] -> Match: 90.0%
+DEBUG: 2nxm Chain(s) ['A', 'B'] -> Match: 99.0%
+DEBUG: 2nxm Chain(s) ['P'] -> Match: 80.0%
+DEBUG: 1z1h Chain(s) ['A', 'B'] -> Match: 96.0%
+DEBUG: 2nxl Chain(s) ['A', 'B'] -> Match: 99.0%
+DEBUG: 2nxl Chain(s) ['P'] -> Match: 80.0%
+DEBUG: 1z1r Chain(s) ['A', 'B'] -> Match: 96.0%
+DEBUG: 1tsq Chain(s) ['A', 'B'] -> Match: 97.0%
+DEBUG: 1tsq Chain(s) ['P'] -> Match: 90.0%
+DEBUG: 3bxr Chain(s) ['A', 'B'] -> Match: 94.9%
+DEBUG: 1d4k Chain(s) ['A', 'B'] -> Match: 96.0%
+DEBUG: 1tsu Chain(s) ['A', 'B'] -> Match: 98.0%
+DEBUG: 1tsu Chain(s) ['P'] -> Match: 87.5%
+DEBUG: 1kjg Chain(s) ['A', 'B'] -> Match: 98.0%
+DEBUG: 1cpi Chain(s) ['A', 'B'] -> Match: 96.0%
+DEBUG: 1kjg Chain(s) ['P'] -> Match: 80.0%
+DEBUG: 1cpi Chain(s) ['C'] -> Match: 66.7%
+DEBUG: 3ekq Chain(s) ['A', 'B'] -> Match: 96.0%
+ 17%|█▋        | 13/76 [00:00<00:04, 15.29it/s]DEBUG: 3eky Chain(s) ['A', 'B'] -> Match: 100.0%
+DEBUG: 3bxs Chain(s) ['A', 'B'] -> Match: 96.0%
+DEBUG: 3ekt Chain(s) ['A', 'B', 'C', 'D'] -> Match: 96.0%
+DEBUG: 3ekw Chain(s) ['A', 'B'] -> Match: 96.0%
+DEBUG: 3ekv Chain(s) ['A', 'B'] -> Match: 100.0%
+DEBUG: 3el0 Chain(s) ['A', 'B'] -> Match: 96.0%
+DEBUG: 3el5 Chain(s) ['A', 'B'] -> Match: 97.0%
+DEBUG: 3el1 Chain(s) ['A', 'B'] -> Match: 99.0%
+DEBUG: 3ekp Chain(s) ['A', 'B', 'C', 'D'] -> Match: 96.0%
+DEBUG: 3el4 Chain(s) ['A', 'B'] -> Match: 98.0%
+DEBUG: 3ekx Chain(s) ['A', 'B'] -> Match: 100.0%
+DEBUG: 3el9 Chain(s) ['A', 'B'] -> Match: 97.0%
+ 33%|███▎      | 25/76 [00:01<00:02, 19.11it/s]DEBUG: 3hbo Chain(s) ['A', 'B'] -> Match: 91.9%DEBUG: 3em6 Chain(s) ['A', 'B'] -> Match: 97.0%
+DEBUG: 3em4 Chain(s) ['A', 'B', 'U', 'V'] -> Match: 97.0%
+DEBUG: 3fsm Chain(s) ['A'] -> Match: 45.8%
+DEBUG: 3em3 Chain(s) ['A', 'B'] -> Match: 98.0%
+DEBUG: 3hau Chain(s) ['A', 'B'] -> Match: 92.9%
+DEBUG: 3hdk Chain(s) ['A', 'B'] -> Match: 91.9%
+DEBUG: 3hlo Chain(s) ['A'] -> Match: 46.3%
+DEBUG: 3haw Chain(s) ['A', 'B'] -> Match: 91.9%
+DEBUG: 3iaw Chain(s) ['A'] -> Match: 46.3%
+DEBUG: 3ka2 Chain(s) ['A'] -> Match: 45.8%
+DEBUG: 3nyg Chain(s) ['A', 'B'] -> Match: 91.9%
+DEBUG: 3oxv Chain(s) ['A', 'B', 'C', 'D'] -> Match: 98.0%
+DEBUG: 3mxd Chain(s) ['A', 'B'] -> Match: 100.0%
+DEBUG: 3oy4 Chain(s) ['A', 'B'] -> Match: 99.0%
+DEBUG: 3nxn Chain(s) ['A'] -> Match: 46.3%
+ 49%|████▊     | 37/76 [00:02<00:01, 20.36it/s]DEBUG: 3oxw Chain(s) ['A', 'B', 'C', 'D'] -> Match: 97.0%
+DEBUG: 3lzv Chain(s) ['A', 'B'] -> Match: 97.0%
+DEBUG: 3nwx Chain(s) ['A', 'B'] -> Match: 91.9%
+DEBUG: 3nwq Chain(s) ['A', 'B'] -> Match: 91.9%
+DEBUG: 3oxx Chain(s) ['A', 'B', 'C', 'D'] -> Match: 97.0%
+DEBUG: 3rbb Chain(s) ['A', 'C'] -> Match: 24.7%
+DEBUG: 3rbb Chain(s) ['B', 'D'] -> Match: 36.1%
+DEBUG: 3mxe Chain(s) ['A', 'B'] -> Match: 100.0%
+DEBUG: 4f76 Chain(s) ['A', 'B'] -> Match: 99.0%
+DEBUG: 4f76 Chain(s) ['C'] -> Match: 100.0%
+DEBUG: 4f76 Chain(s) ['D'] -> Match: 80.0%
+DEBUG: 4f74 Chain(s) ['A', 'B'] -> Match: 99.0%
+DEBUG: 4f74 Chain(s) ['C'] -> Match: 80.0%
+DEBUG: 3rea Chain(s) ['A', 'C'] -> Match: 24.7%
+DEBUG: 3rea Chain(s) ['B', 'D'] -> Match: 37.7%
+DEBUG: 4eqj Chain(s) ['A'] -> Match: 47.3%
+DEBUG: 4eqj Chain(s) ['G'] -> Match: 75.0%
+DEBUG: 4f75 Chain(s) ['A', 'B'] -> Match: 99.0%
+DEBUG: 4f75 Chain(s) ['C'] -> Match: 100.0%
+DEBUG: 4f75 Chain(s) ['D'] -> Match: 80.0%
+DEBUG: 4f73 Chain(s) ['A', 'B'] -> Match: 99.0%
+DEBUG: 4f73 Chain(s) ['C', 'D'] -> Match: 100.0%
+DEBUG: 3reb Chain(s) ['A', 'C'] -> Match: 24.7%
+DEBUG: 3reb Chain(s) ['B', 'D'] -> Match: 34.4%
+DEBUG: 4ep2 Chain(s) ['A'] -> Match: 47.3%
+DEBUG: 4obd Chain(s) ['A', 'B', 'C', 'D'] -> Match: 97.0%
+DEBUG: 4ep2 Chain(s) ['B'] -> Match: 75.0%
+DEBUG: 4obd Chain(s) ['E', 'F'] -> Match: 80.0%
+DEBUG: 4ep3 Chain(s) ['A'] -> Match: 47.3%
+DEBUG: 4ep3 Chain(s) ['E'] -> Match: 77.8%
+ 64%|██████▍   | 49/76 [00:02<00:01, 21.54it/s]DEBUG: 4epj Chain(s) ['A'] -> Match: 47.3%
+DEBUG: 4epj Chain(s) ['D'] -> Match: 87.5%
+DEBUG: 4eq0 Chain(s) ['A'] -> Match: 47.3%
+DEBUG: 4eq0 Chain(s) ['P'] -> Match: 87.5%
+DEBUG: 4qj6 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 97.0%
+DEBUG: 4qj6 Chain(s) ['E', 'F'] -> Match: 70.0%
+ 80%|████████  | 61/76 [00:03<00:00, 22.62it/s]DEBUG: 4u5w Chain(s) ['A', 'C'] -> Match: 27.5%
+DEBUG: 4u5w Chain(s) ['B', 'D'] -> Match: 26.1%
+DEBUG: 4obj Chain(s) ['A', 'B'] -> Match: 99.0%
+DEBUG: 4obj Chain(s) ['C'] -> Match: 80.0%
+DEBUG: 4obk Chain(s) ['A', 'B'] -> Match: 99.0%
+DEBUG: 4obk Chain(s) ['C'] -> Match: 80.0%DEBUG: 4obg Chain(s) ['A', 'B', 'C', 'D'] -> Match: 97.0%
+DEBUG: 4obg Chain(s) ['E', 'F'] -> Match: 70.0%
+DEBUG: 4qj9 Chain(s) ['A', 'B'] -> Match: 98.0%
+DEBUG: 4qj9 Chain(s) ['G'] -> Match: 70.0%
+DEBUG: 4qja Chain(s) ['A', 'B'] -> Match: 98.0%
+DEBUG: 4qja Chain(s) ['P'] -> Match: 80.0%
+DEBUG: 4qj7 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 97.0%
+DEBUG: 4orz Chain(s) ['A'] -> Match: 32.8%
+DEBUG: 4qj7 Chain(s) ['F', 'G'] -> Match: 70.0%
+DEBUG: 4qj8 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 97.0%
+DEBUG: 4qj8 Chain(s) ['E', 'F'] -> Match: 80.0%
+DEBUG: 4orz Chain(s) ['B'] -> Match: 25.5%
+DEBUG: 4orz Chain(s) ['C'] -> Match: 31.7%
+DEBUG: 4obf Chain(s) ['A', 'B', 'C', 'D'] -> Match: 97.0%
+DEBUG: 4obf Chain(s) ['E', 'F'] -> Match: 80.0%
+DEBUG: 4obh Chain(s) ['A', 'B', 'C', 'D'] -> Match: 99.0%
+DEBUG: 4obh Chain(s) ['E', 'F'] -> Match: 70.0%
+DEBUG: 8f2p Chain(s) ['A'] -> Match: 27.5%
+DEBUG: 8f2p Chain(s) ['B'] -> Match: 32.9%
+ 96%|█████████▌| 73/76 [00:03<00:00, 23.33it/s]DEBUG: 7d7s Chain(s) ['A', 'B'] -> Match: 21.1%
+DEBUG: 7d7s Chain(s) ['C', 'D'] -> Match: 37.5%
+DEBUG: 6b72 Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 27.2%
+DEBUG: 5drz Chain(s) ['A', 'L'] -> Match: 22.3%
+DEBUG: 5drz Chain(s) ['B', 'H'] -> Match: 21.6%
+DEBUG: 5drz Chain(s) ['P', 'Q'] -> Match: 50.0%
+100%|██████████| 76/76 [00:03<00:00, 21.40it/s]
+DONE
+✅ PDBs processed OK: 76
+❌ PDBs failed: 0
+[19:14:37] 🚀 Running 3_PDBmkr.py...
+📊 Similarity Stats: Max found = 100.00% (Threshold: 90.0%)
+⚠️ No 5-letter ligands detected. Renaming map not required.
+🛑 Created Skip4.txt — Step 4 will be skipped.
+🚀 BUILDING 43 PDB CHAINS...
+  0%|          | 0/43 [00:00<?, ?it/s]
+  5%|▍         | 2/43 [00:00<00:02, 18.82it/s]
+ 26%|██▌       | 11/43 [00:00<00:00, 53.44it/s]
+ 49%|████▉     | 21/43 [00:00<00:00, 73.12it/s]
+ 67%|██████▋   | 29/43 [00:00<00:00, 67.72it/s]
+ 84%|████████▎ | 36/43 [00:00<00:00, 53.70it/s]
+100%|██████████| 43/43 [00:00<00:00, 54.88it/s]
+100%|██████████| 43/43 [00:00<00:00, 56.26it/s]
+✅ All PDBs built successfully.
+✅ Wrote 5CharMAP.csv as headers-only (no 5-letter ligands detected).
+[19:14:38] 🚀 Running 4_PDBfxr.py...
+🛑 Skip4.txt detected — no ligand5→ligandX renaming required.
+✅ Step 4 exiting safely.
+[19:14:38] 🚀 Running 5_PDBcln.py...
+📁 ROOT DIRECTORY: WAR_PDB
+=============================
+🔬 Processing Protein: Protease
+📂 Folder: WAR_PDB/Protease
+=============================
+🧪 Cleaning 3em6_A_017.pdb  | Keeping ligand: 017
+✔ Cleaned: 3em6_A_017.pdb
+🧪 Cleaning 3oxx_C_DR7.pdb  | Keeping ligand: DR7
+✔ Cleaned: 3oxx_C_DR7.pdb
+🧪 Cleaning 3lzv_A_017.pdb  | Keeping ligand: 017
+✔ Cleaned: 3lzv_A_017.pdb
+🧪 Cleaning 3eky_A_DR7.pdb  | Keeping ligand: DR7
+✔ Cleaned: 3eky_A_DR7.pdb
+🧪 Cleaning 3hdk_B_2NC.pdb  | Keeping ligand: 2NC
+✔ Cleaned: 3hdk_B_2NC.pdb
+🧪 Cleaning 3ekx_B_1UN.pdb  | Keeping ligand: 1UN
+✔ Cleaned: 3ekx_B_1UN.pdb
+🧪 Cleaning 3nwq_A_2NC.pdb  | Keeping ligand: 2NC
+✔ Cleaned: 3nwq_A_2NC.pdb
+🧪 Cleaning 3el9_A_DR7.pdb  | Keeping ligand: DR7
+✔ Cleaned: 3el9_A_DR7.pdb
+🧪 Cleaning 3ekw_B_DR7.pdb  | Keeping ligand: DR7
+✔ Cleaned: 3ekw_B_DR7.pdb
+🧪 Cleaning 3ekq_A_ROC.pdb  | Keeping ligand: ROC
+✔ Cleaned: 3ekq_A_ROC.pdb
+🧪 Cleaning 3oxw_B_017.pdb  | Keeping ligand: 017
+✔ Cleaned: 3oxw_B_017.pdb
+🧪 Cleaning 3oxv_B_478.pdb  | Keeping ligand: 478
+✔ Cleaned: 3oxv_B_478.pdb
+🧪 Cleaning 3nyg_A_2NC.pdb  | Keeping ligand: 2NC
+✔ Cleaned: 3nyg_A_2NC.pdb
+🧪 Cleaning 3ekp_B_478.pdb  | Keeping ligand: 478
+✔ Cleaned: 3ekp_B_478.pdb
+🧪 Cleaning 3bxs_A_DRS.pdb  | Keeping ligand: DRS
+✔ Cleaned: 3bxs_A_DRS.pdb
+🧪 Cleaning 3ekp_C_478.pdb  | Keeping ligand: 478
+✔ Cleaned: 3ekp_C_478.pdb
+🧪 Cleaning 3hbo_A_2NC.pdb  | Keeping ligand: 2NC
+✔ Cleaned: 3hbo_A_2NC.pdb
+🧪 Cleaning 3oy4_B_017.pdb  | Keeping ligand: 017
+✔ Cleaned: 3oy4_B_017.pdb
+🧪 Cleaning 3em3_B_478.pdb  | Keeping ligand: 478
+✔ Cleaned: 3em3_B_478.pdb
+🧪 Cleaning 3ekv_A_478.pdb  | Keeping ligand: 478
+✔ Cleaned: 3ekv_A_478.pdb
+🧪 Cleaning 3em4_V_DR7.pdb  | Keeping ligand: DR7
+✔ Cleaned: 3em4_V_DR7.pdb
+🧪 Cleaning 3ekt_D_017.pdb  | Keeping ligand: 017
+✔ Cleaned: 3ekt_D_017.pdb
+🧪 Cleaning 3oxw_D_017.pdb  | Keeping ligand: 017
+✔ Cleaned: 3oxw_D_017.pdb
+🧪 Cleaning 1d4k_A_PI8.pdb  | Keeping ligand: PI8
+✔ Cleaned: 1d4k_A_PI8.pdb
+🧪 Cleaning 3haw_B_2NC.pdb  | Keeping ligand: 2NC
+✔ Cleaned: 3haw_B_2NC.pdb
+🧪 Cleaning 3em4_A_DR7.pdb  | Keeping ligand: DR7
+✔ Cleaned: 3em4_A_DR7.pdb
+🧪 Cleaning 3el0_A_1UN.pdb  | Keeping ligand: 1UN
+✔ Cleaned: 3el0_A_1UN.pdb
+🧪 Cleaning 3ekt_B_017.pdb  | Keeping ligand: 017
+✔ Cleaned: 3ekt_B_017.pdb
+🧪 Cleaning 3bxr_B_DRR.pdb  | Keeping ligand: DRR
+✔ Cleaned: 3bxr_B_DRR.pdb
+🧪 Cleaning 3oxv_C_478.pdb  | Keeping ligand: 478
+✔ Cleaned: 3oxv_C_478.pdb
+🧪 Cleaning 3nwx_B_KVS.pdb  | Keeping ligand: KVS
+✔ Cleaned: 3nwx_B_KVS.pdb
+🧪 Cleaning 3el5_B_1UN.pdb  | Keeping ligand: 1UN
+✔ Cleaned: 3el5_B_1UN.pdb
+🧪 Cleaning 3el4_A_ROC.pdb  | Keeping ligand: ROC
+✔ Cleaned: 3el4_A_ROC.pdb
+🧪 Cleaning 3oxv_A_478.pdb  | Keeping ligand: 478
+✔ Cleaned: 3oxv_A_478.pdb
+🧪 Cleaning 1d4l_A_PI9.pdb  | Keeping ligand: PI9
+✔ Cleaned: 1d4l_A_PI9.pdb
+🧪 Cleaning 3hau_A_2NC.pdb  | Keeping ligand: 2NC
+✔ Cleaned: 3hau_A_2NC.pdb
+🧪 Cleaning 3oxx_A_DR7.pdb  | Keeping ligand: DR7
+✔ Cleaned: 3oxx_A_DR7.pdb
+🧪 Cleaning 3mxd_A_K53.pdb  | Keeping ligand: K53
+✔ Cleaned: 3mxd_A_K53.pdb
+🧪 Cleaning 3mxe_A_K54.pdb  | Keeping ligand: K54
+✔ Cleaned: 3mxe_A_K54.pdb
+🧪 Cleaning 1z1h_A_HBB.pdb  | Keeping ligand: HBB
+✔ Cleaned: 1z1h_A_HBB.pdb
+🧪 Cleaning 3bxs_B_DRS.pdb  | Keeping ligand: DRS
+✔ Cleaned: 3bxs_B_DRS.pdb
+🧪 Cleaning 3el1_A_DR7.pdb  | Keeping ligand: DR7
+✔ Cleaned: 3el1_A_DR7.pdb
+🧪 Cleaning 1z1r_A_HBH.pdb  | Keeping ligand: HBH
+✔ Cleaned: 1z1r_A_HBH.pdb
+🎉 DONE — cleaned=43, dropped=0
+[19:14:39] 🚀 Running 6_SASA.py...
+📁 Scanning WARHEAD PDB ROOT: WAR_PDB
+🔎 Found 43 PDB files
+🧠 Using 11 cores
+✅ 3hdk_B_2NC.pdb: 42/54 exposed (0.78)
+✅ 3nwq_A_2NC.pdb: 40/54 exposed (0.74)
+✅ 3oxx_C_DR7.pdb: 36/51 exposed (0.71)
+✅ 3lzv_A_017.pdb: 26/38 exposed (0.68)
+✅ 3em6_A_017.pdb: 25/38 exposed (0.66)
+✅ 3ekx_B_1UN.pdb: 30/40 exposed (0.75)
+✅ 3eky_A_DR7.pdb: 34/51 exposed (0.67)
+✅ 3el9_A_DR7.pdb: 36/51 exposed (0.71)
+✅ 3ekw_B_DR7.pdb: 37/51 exposed (0.72)
+✅ 3oxw_B_017.pdb: 27/38 exposed (0.71)
+✅ 3ekq_A_ROC.pdb: 33/49 exposed (0.67)
+✅ 3oxv_B_478.pdb: 25/35 exposed (0.71)
+✅ 3nyg_A_2NC.pdb: 38/54 exposed (0.70)
+✅ 3oxw_D_017.pdb: 27/38 exposed (0.71)
+✅ 3bxs_A_DRS.pdb: 20/26 exposed (0.77)
+✅ 3em3_B_478.pdb: 26/35 exposed (0.74)
+✅ 3ekp_B_478.pdb: 24/35 exposed (0.69)
+✅ 3ekp_C_478.pdb: 27/35 exposed (0.77)
+✅ 3oy4_B_017.pdb: 28/38 exposed (0.74)
+✅ 3ekv_A_478.pdb: 24/35 exposed (0.69)
+✅ 3em4_V_DR7.pdb: 36/51 exposed (0.71)
+✅ 3hbo_A_2NC.pdb: 38/54 exposed (0.70)
+✅ 3ekt_D_017.pdb: 25/38 exposed (0.66)
+✅ 3oxv_C_478.pdb: 23/35 exposed (0.66)
+✅ 3haw_B_2NC.pdb: 40/54 exposed (0.74)
+📊 Progress: 25/43
+✅ 3ekt_B_017.pdb: 28/38 exposed (0.74)
+✅ 1d4k_A_PI8.pdb: 40/51 exposed (0.78)
+✅ 3nwx_B_KVS.pdb: 38/56 exposed (0.68)
+✅ 3em4_A_DR7.pdb: 36/51 exposed (0.71)
+✅ 3el5_B_1UN.pdb: 26/40 exposed (0.65)
+✅ 3el0_A_1UN.pdb: 28/40 exposed (0.70)
+✅ 3bxr_B_DRR.pdb: 36/49 exposed (0.73)
+✅ 3el4_A_ROC.pdb: 36/49 exposed (0.73)
+✅ 3oxv_A_478.pdb: 26/35 exposed (0.74)
+✅ 1d4l_A_PI9.pdb: 33/43 exposed (0.77)
+✅ 3hau_A_2NC.pdb: 40/54 exposed (0.74)
+✅ 1z1h_A_HBB.pdb: 29/40 exposed (0.72)
+✅ 3oxx_A_DR7.pdb: 38/51 exposed (0.74)
+✅ 3el1_A_DR7.pdb: 35/51 exposed (0.69)
+✅ 3mxe_A_K54.pdb: 33/47 exposed (0.70)
+✅ 3mxd_A_K53.pdb: 31/44 exposed (0.70)
+✅ 3bxs_B_DRS.pdb: 18/26 exposed (0.69)
+✅ 1z1r_A_HBH.pdb: 25/41 exposed (0.61)
+🎉 WARHEAD SASA COMPLETE
+[19:14:40] 🚀 Running 7_metadata.py...
+📂 Using SMILES file: Components-smiles-stereo-oe.smi
+🧬 Loaded 49558 SMILES entries.
+🔎 Sample SMILES keys: ['000', '001', '002', '003', '004', '005', '006', '007', '008', '009', '00A', '00B', '00C', '00D', '00E']
+🤖 AUTO MODE: Warhead_SASA_summary.csv
+📥 Loaded SASA table.
+/home/jxs794/WEBTOOLs/PROTAC-Target-Builder/jobs/d750cfea/7_metadata.py:443: FutureWarning: DataFrame.applymap has been deprecated. Use DataFrame.map instead.
+  alias = alias.applymap(lambda x: str(x).strip() if x is not None else "")
+ℹ️ 5CharMAP.csv has no usable rows → alias mapping disabled.
+🔗 WAR_PDB chain map built: 35 (pdb,ligX) groups
+🔬 BEGIN RESOLUTION TRACE
+--------------------------------------------------
+Row 0
+  PDB: 3hdk
+  Warhead (input): 2NC
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2NC
+  SMILES found? YES
+--------------------------------------------------
+Row 1
+  PDB: 3nwq
+  Warhead (input): 2NC
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2NC
+  SMILES found? YES
+--------------------------------------------------
+Row 2
+  PDB: 3oxx
+  Warhead (input): DR7
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DR7
+  SMILES found? YES
+--------------------------------------------------
+Row 3
+  PDB: 3lzv
+  Warhead (input): 017
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 017
+  SMILES found? YES
+--------------------------------------------------
+Row 4
+  PDB: 3em6
+  Warhead (input): 017
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 017
+  SMILES found? YES
+--------------------------------------------------
+Row 5
+  PDB: 3ekx
+  Warhead (input): 1UN
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 1UN
+  SMILES found? YES
+--------------------------------------------------
+Row 6
+  PDB: 3eky
+  Warhead (input): DR7
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DR7
+  SMILES found? YES
+--------------------------------------------------
+Row 7
+  PDB: 3el9
+  Warhead (input): DR7
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DR7
+  SMILES found? YES
+--------------------------------------------------
+Row 8
+  PDB: 3ekw
+  Warhead (input): DR7
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DR7
+  SMILES found? YES
+--------------------------------------------------
+Row 9
+  PDB: 3oxw
+  Warhead (input): 017
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 017
+  SMILES found? YES
+--------------------------------------------------
+Row 10
+  PDB: 3ekq
+  Warhead (input): ROC
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: ROC
+  SMILES found? YES
+--------------------------------------------------
+Row 11
+  PDB: 3oxv
+  Warhead (input): 478
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 478
+  SMILES found? YES
+--------------------------------------------------
+Row 12
+  PDB: 3nyg
+  Warhead (input): 2NC
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2NC
+  SMILES found? YES
+--------------------------------------------------
+Row 13
+  PDB: 3oxw
+  Warhead (input): 017
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 017
+  SMILES found? YES
+--------------------------------------------------
+Row 14
+  PDB: 3bxs
+  Warhead (input): DRS
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DRS
+  SMILES found? YES
+--------------------------------------------------
+Row 15
+  PDB: 3em3
+  Warhead (input): 478
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 478
+  SMILES found? YES
+--------------------------------------------------
+Row 16
+  PDB: 3ekp
+  Warhead (input): 478
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 478
+  SMILES found? YES
+--------------------------------------------------
+Row 17
+  PDB: 3ekp
+  Warhead (input): 478
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 478
+  SMILES found? YES
+--------------------------------------------------
+Row 18
+  PDB: 3oy4
+  Warhead (input): 017
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 017
+  SMILES found? YES
+--------------------------------------------------
+Row 19
+  PDB: 3ekv
+  Warhead (input): 478
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 478
+  SMILES found? YES
+--------------------------------------------------
+Row 20
+  PDB: 3em4
+  Warhead (input): DR7
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DR7
+  SMILES found? YES
+--------------------------------------------------
+Row 21
+  PDB: 3hbo
+  Warhead (input): 2NC
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2NC
+  SMILES found? YES
+--------------------------------------------------
+Row 22
+  PDB: 3ekt
+  Warhead (input): 017
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 017
+  SMILES found? YES
+--------------------------------------------------
+Row 23
+  PDB: 3oxv
+  Warhead (input): 478
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 478
+  SMILES found? YES
+--------------------------------------------------
+Row 24
+  PDB: 3haw
+  Warhead (input): 2NC
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2NC
+  SMILES found? YES
+--------------------------------------------------
+Row 25
+  PDB: 3ekt
+  Warhead (input): 017
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 017
+  SMILES found? YES
+--------------------------------------------------
+Row 26
+  PDB: 1d4k
+  Warhead (input): PI8
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: PI8
+  SMILES found? YES
+--------------------------------------------------
+Row 27
+  PDB: 3nwx
+  Warhead (input): KVS
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KVS
+  SMILES found? YES
+--------------------------------------------------
+Row 28
+  PDB: 3em4
+  Warhead (input): DR7
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DR7
+  SMILES found? YES
+--------------------------------------------------
+Row 29
+  PDB: 3el5
+  Warhead (input): 1UN
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 1UN
+  SMILES found? YES
+--------------------------------------------------
+Row 30
+  PDB: 3el0
+  Warhead (input): 1UN
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 1UN
+  SMILES found? YES
+--------------------------------------------------
+Row 31
+  PDB: 3bxr
+  Warhead (input): DRR
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DRR
+  SMILES found? YES
+--------------------------------------------------
+Row 32
+  PDB: 3el4
+  Warhead (input): ROC
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: ROC
+  SMILES found? YES
+--------------------------------------------------
+Row 33
+  PDB: 3oxv
+  Warhead (input): 478
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 478
+  SMILES found? YES
+--------------------------------------------------
+Row 34
+  PDB: 1d4l
+  Warhead (input): PI9
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: PI9
+  SMILES found? YES
+--------------------------------------------------
+Row 35
+  PDB: 3hau
+  Warhead (input): 2NC
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2NC
+  SMILES found? YES
+--------------------------------------------------
+Row 36
+  PDB: 1z1h
+  Warhead (input): HBB
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: HBB
+  SMILES found? YES
+--------------------------------------------------
+Row 37
+  PDB: 3oxx
+  Warhead (input): DR7
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DR7
+  SMILES found? YES
+--------------------------------------------------
+Row 38
+  PDB: 3el1
+  Warhead (input): DR7
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DR7
+  SMILES found? YES
+--------------------------------------------------
+Row 39
+  PDB: 3mxe
+  Warhead (input): K54
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: K54
+  SMILES found? YES
+--------------------------------------------------
+Row 40
+  PDB: 3mxd
+  Warhead (input): K53
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: K53
+  SMILES found? YES
+--------------------------------------------------
+Row 41
+  PDB: 3bxs
+  Warhead (input): DRS
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DRS
+  SMILES found? YES
+--------------------------------------------------
+Row 42
+  PDB: 1z1r
+  Warhead (input): HBH
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: HBH
+  SMILES found? YES
+🔬 END RESOLUTION TRACE
+✅ Filtered SASA table: removed 0 ion-only rows; remaining 43 rows
+💾 Saved Resolved_SASA_Summary.csv
+💾 Saved Ligand_PDB_Index.csv
+🚀 Launching parallel engine with 12 cores...
+🧪 Computing descriptors:   0%|          | 0/15 [00:00<?, ?it/s]
+🧪 Computing descriptors:   7%|▋         | 1/15 [00:00<00:01,  8.98it/s]
+🧪 Computing descriptors: 100%|██████████| 15/15 [00:00<00:00, 92.97it/s]
+🎉 COMPLETE → Ligand_Metadata.csv
+===================================================================
+[19:14:40] 🚀 Running 8_scaffold.py...
+📥 Loaded 43 rows from Resolved_SASA_Summary.csv
+🔬 Found 1 protein targets.
+✅ Stage 1 complete — base scaffold mapping and diversity scores saved.
+🎉 Stage 2 complete — advanced scaffold data saved.
+📦 All tables written to Target_Table/
+[19:14:42] 🚀 Running 9_2Dmapping.py...
+📥 Loading: Resolved_SASA_Summary.csv
+✅ Using: Target=Target, Ligand=Warhead, SMILES=SMILES
+🧬 Generating atom-level mapping...
+🎉 SUCCESS: All maps saved to Target_Table
+[19:14:43] 🚀 Running 10_2DmappingExtraction.py...
+✅ Extracted ligand atom coordinates for 1992 atoms
+💾 Saved → Ligand_3D_Atoms.csv
+[19:14:43] 🚀 Running 11_mcsMatcher.py...
+ℹ️ No ligand alias resolution required (all ligands resolved in SMILES map).
+🚀 Running MCS on 43 ligand occurrences using 12 cores
+⚙️ Using hard timeout (5s per ligand) via SIGALRM
+[19:14:43 pid=1449809] BEGIN key=('017', 'Protease', '3ekt', 200, 'B')
+[19:14:43 pid=1449809] ('017', 'Protease', '3ekt', 200, 'B') step=START
+[19:14:43 pid=1449810] BEGIN key=('017', 'Protease', '3ekt', 200, 'D')
+[19:14:43 pid=1449809] ('017', 'Protease', '3ekt', 200, 'B') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449810] ('017', 'Protease', '3ekt', 200, 'D') step=START
+[19:14:43 pid=1449809] ('017', 'Protease', '3ekt', 200, 'B') step=LOOKUP_SMILES[19:14:43 pid=1449810] ('017', 'Protease', '3ekt', 200, 'D') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449810] ('017', 'Protease', '3ekt', 200, 'D') step=LOOKUP_SMILES
+[19:14:43 pid=1449809] ('017', 'Protease', '3ekt', 200, 'B') step=MOLFROM_SMILES[19:14:43 pid=1449810] ('017', 'Protease', '3ekt', 200, 'D') step=MOLFROM_SMILES
+[19:14:43 pid=1449811] BEGIN key=('017', 'Protease', '3em6', 200, 'A')
+[19:14:43 pid=1449811] ('017', 'Protease', '3em6', 200, 'A') step=START
+[19:14:43 pid=1449811] ('017', 'Protease', '3em6', 200, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449811] ('017', 'Protease', '3em6', 200, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449811] ('017', 'Protease', '3em6', 200, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449812] BEGIN key=('017', 'Protease', '3lzv', 200, 'A')
+[19:14:43 pid=1449812] ('017', 'Protease', '3lzv', 200, 'A') step=START
+[19:14:43 pid=1449812] ('017', 'Protease', '3lzv', 200, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449812] ('017', 'Protease', '3lzv', 200, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449812] ('017', 'Protease', '3lzv', 200, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449810] ('017', 'Protease', '3ekt', 200, 'D') step=GET_GROUP[19:14:43 pid=1449811] ('017', 'Protease', '3em6', 200, 'A') step=GET_GROUP[19:14:43 pid=1449809] ('017', 'Protease', '3ekt', 200, 'B') step=GET_GROUP
+[19:14:43 pid=1449812] ('017', 'Protease', '3lzv', 200, 'A') step=GET_GROUP
+[19:14:43 pid=1449809] ('017', 'Protease', '3ekt', 200, 'B') step=BUILD_3D_MOL[19:14:43 pid=1449811] ('017', 'Protease', '3em6', 200, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449812] ('017', 'Protease', '3lzv', 200, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449810] ('017', 'Protease', '3ekt', 200, 'D') step=BUILD_3D_MOL
+[19:14:43 pid=1449811] ('017', 'Protease', '3em6', 200, 'A') ⏱ BUILD_3D_MOL dt=0.009s[19:14:43 pid=1449809] ('017', 'Protease', '3ekt', 200, 'B') ⏱ BUILD_3D_MOL dt=0.009s
+[19:14:43 pid=1449809] ('017', 'Protease', '3ekt', 200, 'B') step=SDF_BLOCK[19:14:43 pid=1449811] ('017', 'Protease', '3em6', 200, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449811] ('017', 'Protease', '3em6', 200, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3em6_A_017_200.sdf (exists=False)
+[19:14:43 pid=1449811] ('017', 'Protease', '3em6', 200, 'A') step=SDF_WRITE
+[19:14:43 pid=1449809] ('017', 'Protease', '3ekt', 200, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3ekt_B_017_200.sdf (exists=False)
+[19:14:43 pid=1449809] ('017', 'Protease', '3ekt', 200, 'B') step=SDF_WRITE
+[19:14:43 pid=1449812] ('017', 'Protease', '3lzv', 200, 'A') ⏱ BUILD_3D_MOL dt=0.009s
+[19:14:43 pid=1449812] ('017', 'Protease', '3lzv', 200, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449812] ('017', 'Protease', '3lzv', 200, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3lzv_A_017_200.sdf (exists=False)
+[19:14:43 pid=1449812] ('017', 'Protease', '3lzv', 200, 'A') step=SDF_WRITE
+[19:14:43 pid=1449810] ('017', 'Protease', '3ekt', 200, 'D') ⏱ BUILD_3D_MOL dt=0.017s
+[19:14:43 pid=1449810] ('017', 'Protease', '3ekt', 200, 'D') step=SDF_BLOCK
+[19:14:43 pid=1449810] ('017', 'Protease', '3ekt', 200, 'D') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3ekt_D_017_200.sdf (exists=False)
+[19:14:43 pid=1449810] ('017', 'Protease', '3ekt', 200, 'D') step=SDF_WRITE
+[19:14:43 pid=1449811] ('017', 'Protease', '3em6', 200, 'A') ✅ SDF_WRITE ok dt=0.02s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449811] ('017', 'Protease', '3em6', 200, 'A') step=MAP_INIT
+[19:14:43 pid=1449811] ('017', 'Protease', '3em6', 200, 'A') step=SIZE_CHECKS
+[19:14:43 pid=1449811] ('017', 'Protease', '3em6', 200, 'A') step=GRAPH_FULL
+[19:14:43 pid=1449809] ('017', 'Protease', '3ekt', 200, 'B') ✅ SDF_WRITE ok dt=0.02s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449809] ('017', 'Protease', '3ekt', 200, 'B') step=MAP_INIT
+[19:14:43 pid=1449809] ('017', 'Protease', '3ekt', 200, 'B') step=SIZE_CHECKS
+[19:14:43 pid=1449809] ('017', 'Protease', '3ekt', 200, 'B') step=GRAPH_FULL
+[19:14:43 pid=1449811] ('017', 'Protease', '3em6', 200, 'A') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449811] [017 3em6 A 200] 2D=38 3D=38 bonds3D=41 mapped=38 mode=GRAPH_FULL smiles_id=017
+[19:14:43 pid=1449811] ('017', 'Protease', '3em6', 200, 'A') step=BUILD_ROWS
+[19:14:43 pid=1449809] ('017', 'Protease', '3ekt', 200, 'B') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449809] [017 3ekt B 200] 2D=38 3D=38 bonds3D=41 mapped=38 mode=GRAPH_FULL smiles_id=017
+[19:14:43 pid=1449809] ('017', 'Protease', '3ekt', 200, 'B') step=BUILD_ROWS
+[19:14:43 pid=1449811] END key=('017', 'Protease', '3em6', 200, 'A') mode=GRAPH_FULL mapped=38 dt=0.05s
+[19:14:43 pid=1449809] END key=('017', 'Protease', '3ekt', 200, 'B') mode=GRAPH_FULL mapped=38 dt=0.05s
+[19:14:43 pid=1449811] BEGIN key=('017', 'Protease', '3oxw', 200, 'B')
+[19:14:43 pid=1449811] ('017', 'Protease', '3oxw', 200, 'B') step=START
+[19:14:43 pid=1449811] ('017', 'Protease', '3oxw', 200, 'B') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449811] ('017', 'Protease', '3oxw', 200, 'B') step=LOOKUP_SMILES
+[19:14:43 pid=1449811] ('017', 'Protease', '3oxw', 200, 'B') step=MOLFROM_SMILES
+[19:14:43 pid=1449811] ('017', 'Protease', '3oxw', 200, 'B') step=GET_GROUP
+[19:14:43 pid=1449809] BEGIN key=('017', 'Protease', '3oxw', 200, 'D')
+[19:14:43 pid=1449809] ('017', 'Protease', '3oxw', 200, 'D') step=START
+[19:14:43 pid=1449809] ('017', 'Protease', '3oxw', 200, 'D') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449809] ('017', 'Protease', '3oxw', 200, 'D') step=LOOKUP_SMILES
+[19:14:43 pid=1449809] ('017', 'Protease', '3oxw', 200, 'D') step=MOLFROM_SMILES
+[19:14:43 pid=1449809] ('017', 'Protease', '3oxw', 200, 'D') step=GET_GROUP
+[19:14:43 pid=1449811] ('017', 'Protease', '3oxw', 200, 'B') step=BUILD_3D_MOL
+[19:14:43 pid=1449809] ('017', 'Protease', '3oxw', 200, 'D') step=BUILD_3D_MOL
+[19:14:43 pid=1449811] ('017', 'Protease', '3oxw', 200, 'B') ⏱ BUILD_3D_MOL dt=0.008s
+[19:14:43 pid=1449811] ('017', 'Protease', '3oxw', 200, 'B') step=SDF_BLOCK
+[19:14:43 pid=1449809] ('017', 'Protease', '3oxw', 200, 'D') ⏱ BUILD_3D_MOL dt=0.008s
+[19:14:43 pid=1449809] ('017', 'Protease', '3oxw', 200, 'D') step=SDF_BLOCK
+[19:14:43 pid=1449811] ('017', 'Protease', '3oxw', 200, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3oxw_B_017_200.sdf (exists=False)
+[19:14:43 pid=1449811] ('017', 'Protease', '3oxw', 200, 'B') step=SDF_WRITE
+[19:14:43 pid=1449809] ('017', 'Protease', '3oxw', 200, 'D') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3oxw_D_017_200.sdf (exists=False)
+[19:14:43 pid=1449809] ('017', 'Protease', '3oxw', 200, 'D') step=SDF_WRITE
+[19:14:43 pid=1449812] ('017', 'Protease', '3lzv', 200, 'A') ✅ SDF_WRITE ok dt=0.05s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449812] ('017', 'Protease', '3lzv', 200, 'A') step=MAP_INIT
+[19:14:43 pid=1449812] ('017', 'Protease', '3lzv', 200, 'A') step=SIZE_CHECKS
+[19:14:43 pid=1449812] ('017', 'Protease', '3lzv', 200, 'A') step=GRAPH_FULL
+[19:14:43 pid=1449812] ('017', 'Protease', '3lzv', 200, 'A') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449812] [017 3lzv A 200] 2D=38 3D=38 bonds3D=41 mapped=38 mode=GRAPH_FULL smiles_id=017
+[19:14:43 pid=1449812] ('017', 'Protease', '3lzv', 200, 'A') step=BUILD_ROWS
+[19:14:43 pid=1449812] END key=('017', 'Protease', '3lzv', 200, 'A') mode=GRAPH_FULL mapped=38 dt=0.07s
+[19:14:43 pid=1449812] BEGIN key=('017', 'Protease', '3oy4', 200, 'B')
+[19:14:43 pid=1449812] ('017', 'Protease', '3oy4', 200, 'B') step=START
+[19:14:43 pid=1449812] ('017', 'Protease', '3oy4', 200, 'B') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449812] ('017', 'Protease', '3oy4', 200, 'B') step=LOOKUP_SMILES
+[19:14:43 pid=1449812] ('017', 'Protease', '3oy4', 200, 'B') step=MOLFROM_SMILES
+[19:14:43 pid=1449812] ('017', 'Protease', '3oy4', 200, 'B') step=GET_GROUP
+[19:14:43 pid=1449812] ('017', 'Protease', '3oy4', 200, 'B') step=BUILD_3D_MOL
+[19:14:43 pid=1449810] ('017', 'Protease', '3ekt', 200, 'D') ✅ SDF_WRITE ok dt=0.05s msg=OK (warn): ==============================
+[19:14:43 pid=1449810] ('017', 'Protease', '3ekt', 200, 'D') step=MAP_INIT
+[19:14:43 pid=1449810] ('017', 'Protease', '3ekt', 200, 'D') step=SIZE_CHECKS
+[19:14:43 pid=1449810] ('017', 'Protease', '3ekt', 200, 'D') step=GRAPH_FULL
+[19:14:43 pid=1449812] ('017', 'Protease', '3oy4', 200, 'B') ⏱ BUILD_3D_MOL dt=0.009s
+[19:14:43 pid=1449812] ('017', 'Protease', '3oy4', 200, 'B') step=SDF_BLOCK
+[19:14:43 pid=1449812] ('017', 'Protease', '3oy4', 200, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3oy4_B_017_200.sdf (exists=False)
+[19:14:43 pid=1449812] ('017', 'Protease', '3oy4', 200, 'B') step=SDF_WRITE
+[19:14:43 pid=1449810] ('017', 'Protease', '3ekt', 200, 'D') ⏱ GRAPH_FULL dt=0.002s
+[19:14:43 pid=1449810] [017 3ekt D 200] 2D=38 3D=76 bonds3D=172 mapped=38 mode=GRAPH_FULL smiles_id=017
+[19:14:43 pid=1449810] ('017', 'Protease', '3ekt', 200, 'D') step=BUILD_ROWS
+[19:14:43 pid=1449809] ('017', 'Protease', '3oxw', 200, 'D') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449809] ('017', 'Protease', '3oxw', 200, 'D') step=MAP_INIT
+[19:14:43 pid=1449809] ('017', 'Protease', '3oxw', 200, 'D') step=SIZE_CHECKS
+[19:14:43 pid=1449809] ('017', 'Protease', '3oxw', 200, 'D') step=GRAPH_FULL
+[19:14:43 pid=1449809] ('017', 'Protease', '3oxw', 200, 'D') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449809] [017 3oxw D 200] 2D=38 3D=38 bonds3D=41 mapped=38 mode=GRAPH_FULL smiles_id=017
+[19:14:43 pid=1449809] ('017', 'Protease', '3oxw', 200, 'D') step=BUILD_ROWS
+[19:14:43 pid=1449809] END key=('017', 'Protease', '3oxw', 200, 'D') mode=GRAPH_FULL mapped=38 dt=0.05s
+[19:14:43 pid=1449810] END key=('017', 'Protease', '3ekt', 200, 'D') mode=GRAPH_FULL mapped=38 dt=0.09s
+[19:14:43 pid=1449809] BEGIN key=('1UN', 'Protease', '3ekx', 201, 'B')
+[19:14:43 pid=1449809] ('1UN', 'Protease', '3ekx', 201, 'B') step=START
+[19:14:43 pid=1449809] ('1UN', 'Protease', '3ekx', 201, 'B') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449809] ('1UN', 'Protease', '3ekx', 201, 'B') step=LOOKUP_SMILES
+[19:14:43 pid=1449809] ('1UN', 'Protease', '3ekx', 201, 'B') step=MOLFROM_SMILES
+[19:14:43 pid=1449809] ('1UN', 'Protease', '3ekx', 201, 'B') step=GET_GROUP
+[19:14:43 pid=1449809] ('1UN', 'Protease', '3ekx', 201, 'B') step=BUILD_3D_MOL
+[19:14:43 pid=1449810] BEGIN key=('1UN', 'Protease', '3el0', 201, 'A')
+[19:14:43 pid=1449810] ('1UN', 'Protease', '3el0', 201, 'A') step=START
+[19:14:43 pid=1449810] ('1UN', 'Protease', '3el0', 201, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449810] ('1UN', 'Protease', '3el0', 201, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449810] ('1UN', 'Protease', '3el0', 201, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449810] ('1UN', 'Protease', '3el0', 201, 'A') step=GET_GROUP
+[19:14:43 pid=1449810] ('1UN', 'Protease', '3el0', 201, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449811] ('017', 'Protease', '3oxw', 200, 'B') ✅ SDF_WRITE ok dt=0.05s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449811] ('017', 'Protease', '3oxw', 200, 'B') step=MAP_INIT
+[19:14:43 pid=1449811] ('017', 'Protease', '3oxw', 200, 'B') step=SIZE_CHECKS
+[19:14:43 pid=1449811] ('017', 'Protease', '3oxw', 200, 'B') step=GRAPH_FULL
+[19:14:43 pid=1449809] ('1UN', 'Protease', '3ekx', 201, 'B') ⏱ BUILD_3D_MOL dt=0.008s
+[19:14:43 pid=1449809] ('1UN', 'Protease', '3ekx', 201, 'B') step=SDF_BLOCK
+[19:14:43 pid=1449809] ('1UN', 'Protease', '3ekx', 201, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3ekx_B_1UN_201.sdf (exists=False)
+[19:14:43 pid=1449809] ('1UN', 'Protease', '3ekx', 201, 'B') step=SDF_WRITE
+[19:14:43 pid=1449811] ('017', 'Protease', '3oxw', 200, 'B') ⏱ GRAPH_FULL dt=0.000s
+[19:14:43 pid=1449811] [017 3oxw B 200] 2D=38 3D=38 bonds3D=41 mapped=38 mode=GRAPH_FULL smiles_id=017
+[19:14:43 pid=1449811] ('017', 'Protease', '3oxw', 200, 'B') step=BUILD_ROWS
+[19:14:43 pid=1449810] ('1UN', 'Protease', '3el0', 201, 'A') ⏱ BUILD_3D_MOL dt=0.008s
+[19:14:43 pid=1449810] ('1UN', 'Protease', '3el0', 201, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449810] ('1UN', 'Protease', '3el0', 201, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3el0_A_1UN_201.sdf (exists=False)
+[19:14:43 pid=1449810] ('1UN', 'Protease', '3el0', 201, 'A') step=SDF_WRITE
+[19:14:43 pid=1449811] END key=('017', 'Protease', '3oxw', 200, 'B') mode=GRAPH_FULL mapped=38 dt=0.06s
+[19:14:43 pid=1449811] BEGIN key=('1UN', 'Protease', '3el5', 201, 'B')
+[19:14:43 pid=1449811] ('1UN', 'Protease', '3el5', 201, 'B') step=START
+[19:14:43 pid=1449811] ('1UN', 'Protease', '3el5', 201, 'B') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449811] ('1UN', 'Protease', '3el5', 201, 'B') step=LOOKUP_SMILES
+[19:14:43 pid=1449811] ('1UN', 'Protease', '3el5', 201, 'B') step=MOLFROM_SMILES
+[19:14:43 pid=1449811] ('1UN', 'Protease', '3el5', 201, 'B') step=GET_GROUP
+[19:14:43 pid=1449811] ('1UN', 'Protease', '3el5', 201, 'B') step=BUILD_3D_MOL
+[19:14:43 pid=1449812] ('017', 'Protease', '3oy4', 200, 'B') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449812] ('017', 'Protease', '3oy4', 200, 'B') step=MAP_INIT
+[19:14:43 pid=1449812] ('017', 'Protease', '3oy4', 200, 'B') step=SIZE_CHECKS
+[19:14:43 pid=1449812] ('017', 'Protease', '3oy4', 200, 'B') step=GRAPH_FULL
+[19:14:43 pid=1449812] ('017', 'Protease', '3oy4', 200, 'B') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449812] [017 3oy4 B 200] 2D=38 3D=38 bonds3D=41 mapped=38 mode=GRAPH_FULL smiles_id=017
+[19:14:43 pid=1449812] ('017', 'Protease', '3oy4', 200, 'B') step=BUILD_ROWS
+[19:14:43 pid=1449811] ('1UN', 'Protease', '3el5', 201, 'B') ⏱ BUILD_3D_MOL dt=0.008s
+[19:14:43 pid=1449811] ('1UN', 'Protease', '3el5', 201, 'B') step=SDF_BLOCK
+[19:14:43 pid=1449811] ('1UN', 'Protease', '3el5', 201, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3el5_B_1UN_201.sdf (exists=False)
+[19:14:43 pid=1449811] ('1UN', 'Protease', '3el5', 201, 'B') step=SDF_WRITE
+[19:14:43 pid=1449812] END key=('017', 'Protease', '3oy4', 200, 'B') mode=GRAPH_FULL mapped=38 dt=0.05s
+[19:14:43 pid=1449812] BEGIN key=('2NC', 'Protease', '3hau', 0, 'A')
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') step=START
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') step=GET_GROUP
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449809] ('1UN', 'Protease', '3ekx', 201, 'B') ✅ SDF_WRITE ok dt=0.02s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449809] ('1UN', 'Protease', '3ekx', 201, 'B') step=MAP_INIT
+[19:14:43 pid=1449809] ('1UN', 'Protease', '3ekx', 201, 'B') step=SIZE_CHECKS
+[19:14:43 pid=1449809] ('1UN', 'Protease', '3ekx', 201, 'B') step=GRAPH_FULL
+[19:14:43 pid=1449809] ('1UN', 'Protease', '3ekx', 201, 'B') ⏱ GRAPH_FULL dt=0.000s
+[19:14:43 pid=1449809] [1UN 3ekx B 201] 2D=40 3D=40 bonds3D=43 mapped=40 mode=GRAPH_FULL smiles_id=1UN
+[19:14:43 pid=1449809] ('1UN', 'Protease', '3ekx', 201, 'B') step=BUILD_ROWS
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') ⏱ BUILD_3D_MOL dt=0.009s
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3hau_A_2NC_0.sdf (exists=False)
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') step=SDF_WRITE
+[19:14:43 pid=1449809] END key=('1UN', 'Protease', '3ekx', 201, 'B') mode=GRAPH_FULL mapped=40 dt=0.04s
+[19:14:43 pid=1449809] BEGIN key=('2NC', 'Protease', '3haw', 0, 'B')
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') step=START
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') step=LOOKUP_SMILES
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') step=MOLFROM_SMILES
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') step=GET_GROUP
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') step=BUILD_3D_MOL
+[19:14:43 pid=1449810] ('1UN', 'Protease', '3el0', 201, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449810] ('1UN', 'Protease', '3el0', 201, 'A') step=MAP_INIT
+[19:14:43 pid=1449810] ('1UN', 'Protease', '3el0', 201, 'A') step=SIZE_CHECKS
+[19:14:43 pid=1449810] ('1UN', 'Protease', '3el0', 201, 'A') step=GRAPH_FULL
+[19:14:43 pid=1449810] ('1UN', 'Protease', '3el0', 201, 'A') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449810] [1UN 3el0 A 201] 2D=40 3D=40 bonds3D=43 mapped=40 mode=GRAPH_FULL smiles_id=1UN
+[19:14:43 pid=1449810] ('1UN', 'Protease', '3el0', 201, 'A') step=BUILD_ROWS
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') ⏱ BUILD_3D_MOL dt=0.009s
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') step=SDF_BLOCK
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3haw_B_2NC_0.sdf (exists=False)
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') step=SDF_WRITE
+[19:14:43 pid=1449810] END key=('1UN', 'Protease', '3el0', 201, 'A') mode=GRAPH_FULL mapped=40 dt=0.05s
+[19:14:43 pid=1449810] BEGIN key=('2NC', 'Protease', '3hbo', 0, 'A')
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') step=START
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') step=GET_GROUP
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449811] ('1UN', 'Protease', '3el5', 201, 'B') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449811] ('1UN', 'Protease', '3el5', 201, 'B') step=MAP_INIT
+[19:14:43 pid=1449811] ('1UN', 'Protease', '3el5', 201, 'B') step=SIZE_CHECKS
+[19:14:43 pid=1449811] ('1UN', 'Protease', '3el5', 201, 'B') step=GRAPH_FULL
+[19:14:43 pid=1449811] ('1UN', 'Protease', '3el5', 201, 'B') ⏱ GRAPH_FULL dt=0.000s
+[19:14:43 pid=1449811] [1UN 3el5 B 201] 2D=40 3D=40 bonds3D=43 mapped=40 mode=GRAPH_FULL smiles_id=1UN
+[19:14:43 pid=1449811] ('1UN', 'Protease', '3el5', 201, 'B') step=BUILD_ROWS
+[19:14:43 pid=1449811] END key=('1UN', 'Protease', '3el5', 201, 'B') mode=GRAPH_FULL mapped=40 dt=0.05s
+[19:14:43 pid=1449811] BEGIN key=('2NC', 'Protease', '3hdk', 0, 'B')
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') step=START
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') step=LOOKUP_SMILES
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') step=MOLFROM_SMILES
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') step=GET_GROUP
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') step=BUILD_3D_MOL
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') ⏱ BUILD_3D_MOL dt=0.013s
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3hbo_A_2NC_0.sdf (exists=False)
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') step=SDF_WRITE
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') step=MAP_INIT
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') step=SIZE_CHECKS
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') step=GRAPH_FULL
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') step=TEMPLATE_FULL
+[19:14:43] WARNING: More than one matching pattern found - picking one
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') ⏱ TEMPLATE_FULL dt=0.001s
+[19:14:43 pid=1449812] [2NC 3hau A 0] 2D=54 3D=54 bonds3D=53 mapped=54 mode=TEMPLATE_FULL smiles_id=2NC
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3hau', 0, 'A') step=BUILD_ROWS
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') ⏱ BUILD_3D_MOL dt=0.009s
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') step=SDF_BLOCK
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3hdk_B_2NC_0.sdf (exists=False)
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') step=SDF_WRITE
+[19:14:43 pid=1449812] END key=('2NC', 'Protease', '3hau', 0, 'A') mode=TEMPLATE_FULL mapped=54 dt=0.05s
+[19:14:43 pid=1449812] BEGIN key=('2NC', 'Protease', '3nwq', 100, 'A')
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') step=START
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') step=GET_GROUP
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') step=MAP_INIT
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') step=SIZE_CHECKS
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') step=GRAPH_FULL
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') step=TEMPLATE_FULL
+[19:14:43] WARNING: More than one matching pattern found - picking one
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') ⏱ TEMPLATE_FULL dt=0.001s
+[19:14:43 pid=1449809] [2NC 3haw B 0] 2D=54 3D=54 bonds3D=53 mapped=54 mode=TEMPLATE_FULL smiles_id=2NC
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3haw', 0, 'B') step=BUILD_ROWS
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') ⏱ BUILD_3D_MOL dt=0.009s
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3nwq_A_2NC_100.sdf (exists=False)
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') step=SDF_WRITE
+[19:14:43 pid=1449809] END key=('2NC', 'Protease', '3haw', 0, 'B') mode=TEMPLATE_FULL mapped=54 dt=0.05s
+[19:14:43 pid=1449809] BEGIN key=('2NC', 'Protease', '3nyg', 100, 'A')
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') step=START
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') step=GET_GROUP
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') step=MAP_INIT
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') step=SIZE_CHECKS
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') step=GRAPH_FULL
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') step=TEMPLATE_FULL
+[19:14:43] WARNING: More than one matching pattern found - picking one
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') ⏱ TEMPLATE_FULL dt=0.003s
+[19:14:43 pid=1449810] [2NC 3hbo A 0] 2D=54 3D=54 bonds3D=53 mapped=54 mode=TEMPLATE_FULL smiles_id=2NC
+[19:14:43 pid=1449810] ('2NC', 'Protease', '3hbo', 0, 'A') step=BUILD_ROWS
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') ⏱ BUILD_3D_MOL dt=0.010s
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3nyg_A_2NC_100.sdf (exists=False)
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') step=SDF_WRITE
+⏳ progress: 10/43 pending=33
+[19:14:43 pid=1449810] END key=('2NC', 'Protease', '3hbo', 0, 'A') mode=TEMPLATE_FULL mapped=54 dt=0.05s
+[19:14:43 pid=1449810] BEGIN key=('478', 'Protease', '3ekp', 200, 'B')
+[19:14:43 pid=1449810] ('478', 'Protease', '3ekp', 200, 'B') step=START
+[19:14:43 pid=1449810] ('478', 'Protease', '3ekp', 200, 'B') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449810] ('478', 'Protease', '3ekp', 200, 'B') step=LOOKUP_SMILES
+[19:14:43 pid=1449810] ('478', 'Protease', '3ekp', 200, 'B') step=MOLFROM_SMILES
+[19:14:43 pid=1449810] ('478', 'Protease', '3ekp', 200, 'B') step=GET_GROUP
+[19:14:43 pid=1449810] ('478', 'Protease', '3ekp', 200, 'B') step=BUILD_3D_MOL
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') step=MAP_INIT
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') step=SIZE_CHECKS
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') step=GRAPH_FULL
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') step=TEMPLATE_FULL
+[19:14:43] WARNING: More than one matching pattern found - picking one
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') ⏱ TEMPLATE_FULL dt=0.001s
+[19:14:43 pid=1449811] [2NC 3hdk B 0] 2D=54 3D=54 bonds3D=53 mapped=54 mode=TEMPLATE_FULL smiles_id=2NC
+[19:14:43 pid=1449811] ('2NC', 'Protease', '3hdk', 0, 'B') step=BUILD_ROWS
+[19:14:43 pid=1449811] END key=('2NC', 'Protease', '3hdk', 0, 'B') mode=TEMPLATE_FULL mapped=54 dt=0.05s
+[19:14:43 pid=1449810] ('478', 'Protease', '3ekp', 200, 'B') ⏱ BUILD_3D_MOL dt=0.010s
+[19:14:43 pid=1449810] ('478', 'Protease', '3ekp', 200, 'B') step=SDF_BLOCK
+[19:14:43 pid=1449810] ('478', 'Protease', '3ekp', 200, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3ekp_B_478_200.sdf (exists=False)
+[19:14:43 pid=1449810] ('478', 'Protease', '3ekp', 200, 'B') step=SDF_WRITE
+[19:14:43 pid=1449811] BEGIN key=('478', 'Protease', '3ekp', 200, 'C')
+[19:14:43 pid=1449811] ('478', 'Protease', '3ekp', 200, 'C') step=START
+[19:14:43 pid=1449811] ('478', 'Protease', '3ekp', 200, 'C') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449811] ('478', 'Protease', '3ekp', 200, 'C') step=LOOKUP_SMILES
+[19:14:43 pid=1449811] ('478', 'Protease', '3ekp', 200, 'C') step=MOLFROM_SMILES
+[19:14:43 pid=1449811] ('478', 'Protease', '3ekp', 200, 'C') step=GET_GROUP
+[19:14:43 pid=1449811] ('478', 'Protease', '3ekp', 200, 'C') step=BUILD_3D_MOL
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') step=MAP_INIT
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') step=SIZE_CHECKS
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') step=GRAPH_FULL
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') step=TEMPLATE_FULL
+[19:14:43] WARNING: More than one matching pattern found - picking one
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') ⏱ TEMPLATE_FULL dt=0.001s
+[19:14:43 pid=1449812] [2NC 3nwq A 100] 2D=54 3D=54 bonds3D=53 mapped=54 mode=TEMPLATE_FULL smiles_id=2NC
+[19:14:43 pid=1449812] ('2NC', 'Protease', '3nwq', 100, 'A') step=BUILD_ROWS
+[19:14:43 pid=1449811] ('478', 'Protease', '3ekp', 200, 'C') ⏱ BUILD_3D_MOL dt=0.008s
+[19:14:43 pid=1449811] ('478', 'Protease', '3ekp', 200, 'C') step=SDF_BLOCK
+[19:14:43 pid=1449811] ('478', 'Protease', '3ekp', 200, 'C') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3ekp_C_478_200.sdf (exists=False)
+[19:14:43 pid=1449811] ('478', 'Protease', '3ekp', 200, 'C') step=SDF_WRITE
+[19:14:43 pid=1449812] END key=('2NC', 'Protease', '3nwq', 100, 'A') mode=TEMPLATE_FULL mapped=54 dt=0.05s
+[19:14:43 pid=1449812] BEGIN key=('478', 'Protease', '3ekv', 200, 'A')
+[19:14:43 pid=1449812] ('478', 'Protease', '3ekv', 200, 'A') step=START
+[19:14:43 pid=1449812] ('478', 'Protease', '3ekv', 200, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449812] ('478', 'Protease', '3ekv', 200, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449812] ('478', 'Protease', '3ekv', 200, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449812] ('478', 'Protease', '3ekv', 200, 'A') step=GET_GROUP
+[19:14:43 pid=1449812] ('478', 'Protease', '3ekv', 200, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') step=MAP_INIT
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') step=SIZE_CHECKS
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') step=GRAPH_FULL
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') step=TEMPLATE_FULL
+[19:14:43] WARNING: More than one matching pattern found - picking one
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') ⏱ TEMPLATE_FULL dt=0.003s
+[19:14:43 pid=1449809] [2NC 3nyg A 100] 2D=54 3D=54 bonds3D=53 mapped=54 mode=TEMPLATE_FULL smiles_id=2NC
+[19:14:43 pid=1449809] ('2NC', 'Protease', '3nyg', 100, 'A') step=BUILD_ROWS
+[19:14:43 pid=1449812] ('478', 'Protease', '3ekv', 200, 'A') ⏱ BUILD_3D_MOL dt=0.008s
+[19:14:43 pid=1449812] ('478', 'Protease', '3ekv', 200, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449812] ('478', 'Protease', '3ekv', 200, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3ekv_A_478_200.sdf (exists=False)
+[19:14:43 pid=1449812] ('478', 'Protease', '3ekv', 200, 'A') step=SDF_WRITE
+[19:14:43 pid=1449810] ('478', 'Protease', '3ekp', 200, 'B') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449810] ('478', 'Protease', '3ekp', 200, 'B') step=MAP_INIT
+[19:14:43 pid=1449810] ('478', 'Protease', '3ekp', 200, 'B') step=SIZE_CHECKS
+[19:14:43 pid=1449810] ('478', 'Protease', '3ekp', 200, 'B') step=GRAPH_FULL
+[19:14:43 pid=1449810] ('478', 'Protease', '3ekp', 200, 'B') ⏱ GRAPH_FULL dt=0.000s
+[19:14:43 pid=1449810] [478 3ekp B 200] 2D=35 3D=35 bonds3D=37 mapped=35 mode=GRAPH_FULL smiles_id=478
+[19:14:43 pid=1449810] ('478', 'Protease', '3ekp', 200, 'B') step=BUILD_ROWS
+[19:14:43 pid=1449810] END key=('478', 'Protease', '3ekp', 200, 'B') mode=GRAPH_FULL mapped=35 dt=0.04s
+[19:14:43 pid=1449809] END key=('2NC', 'Protease', '3nyg', 100, 'A') mode=TEMPLATE_FULL mapped=54 dt=0.05s
+[19:14:43 pid=1449810] BEGIN key=('478', 'Protease', '3em3', 200, 'B')
+[19:14:43 pid=1449810] ('478', 'Protease', '3em3', 200, 'B') step=START
+[19:14:43 pid=1449810] ('478', 'Protease', '3em3', 200, 'B') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449810] ('478', 'Protease', '3em3', 200, 'B') step=LOOKUP_SMILES
+[19:14:43 pid=1449810] ('478', 'Protease', '3em3', 200, 'B') step=MOLFROM_SMILES
+[19:14:43 pid=1449810] ('478', 'Protease', '3em3', 200, 'B') step=GET_GROUP
+[19:14:43 pid=1449810] ('478', 'Protease', '3em3', 200, 'B') step=BUILD_3D_MOL
+[19:14:43 pid=1449809] BEGIN key=('478', 'Protease', '3oxv', 200, 'A')
+[19:14:43 pid=1449809] ('478', 'Protease', '3oxv', 200, 'A') step=START
+[19:14:43 pid=1449809] ('478', 'Protease', '3oxv', 200, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449809] ('478', 'Protease', '3oxv', 200, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449809] ('478', 'Protease', '3oxv', 200, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449809] ('478', 'Protease', '3oxv', 200, 'A') step=GET_GROUP
+[19:14:43 pid=1449809] ('478', 'Protease', '3oxv', 200, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449811] ('478', 'Protease', '3ekp', 200, 'C') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449811] ('478', 'Protease', '3ekp', 200, 'C') step=MAP_INIT
+[19:14:43 pid=1449811] ('478', 'Protease', '3ekp', 200, 'C') step=SIZE_CHECKS
+[19:14:43 pid=1449811] ('478', 'Protease', '3ekp', 200, 'C') step=GRAPH_FULL
+[19:14:43 pid=1449810] ('478', 'Protease', '3em3', 200, 'B') ⏱ BUILD_3D_MOL dt=0.008s
+[19:14:43 pid=1449810] ('478', 'Protease', '3em3', 200, 'B') step=SDF_BLOCK
+[19:14:43 pid=1449810] ('478', 'Protease', '3em3', 200, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3em3_B_478_200.sdf (exists=False)
+[19:14:43 pid=1449810] ('478', 'Protease', '3em3', 200, 'B') step=SDF_WRITE
+[19:14:43 pid=1449811] ('478', 'Protease', '3ekp', 200, 'C') ⏱ GRAPH_FULL dt=0.000s
+[19:14:43 pid=1449811] [478 3ekp C 200] 2D=35 3D=35 bonds3D=37 mapped=35 mode=GRAPH_FULL smiles_id=478
+[19:14:43 pid=1449811] ('478', 'Protease', '3ekp', 200, 'C') step=BUILD_ROWS
+[19:14:43 pid=1449811] END key=('478', 'Protease', '3ekp', 200, 'C') mode=GRAPH_FULL mapped=35 dt=0.04s
+[19:14:43 pid=1449811] BEGIN key=('478', 'Protease', '3oxv', 200, 'B')
+[19:14:43 pid=1449811] ('478', 'Protease', '3oxv', 200, 'B') step=START
+[19:14:43 pid=1449811] ('478', 'Protease', '3oxv', 200, 'B') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449811] ('478', 'Protease', '3oxv', 200, 'B') step=LOOKUP_SMILES
+[19:14:43 pid=1449811] ('478', 'Protease', '3oxv', 200, 'B') step=MOLFROM_SMILES
+[19:14:43 pid=1449809] ('478', 'Protease', '3oxv', 200, 'A') ⏱ BUILD_3D_MOL dt=0.011s
+[19:14:43 pid=1449809] ('478', 'Protease', '3oxv', 200, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449809] ('478', 'Protease', '3oxv', 200, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3oxv_A_478_200.sdf (exists=False)
+[19:14:43 pid=1449809] ('478', 'Protease', '3oxv', 200, 'A') step=SDF_WRITE
+[19:14:43 pid=1449811] ('478', 'Protease', '3oxv', 200, 'B') step=GET_GROUP
+[19:14:43 pid=1449811] ('478', 'Protease', '3oxv', 200, 'B') step=BUILD_3D_MOL
+[19:14:43 pid=1449812] ('478', 'Protease', '3ekv', 200, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449812] ('478', 'Protease', '3ekv', 200, 'A') step=MAP_INIT
+[19:14:43 pid=1449812] ('478', 'Protease', '3ekv', 200, 'A') step=SIZE_CHECKS
+[19:14:43 pid=1449812] ('478', 'Protease', '3ekv', 200, 'A') step=GRAPH_FULL
+[19:14:43 pid=1449812] ('478', 'Protease', '3ekv', 200, 'A') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449812] [478 3ekv A 200] 2D=35 3D=35 bonds3D=37 mapped=35 mode=GRAPH_FULL smiles_id=478
+[19:14:43 pid=1449812] ('478', 'Protease', '3ekv', 200, 'A') step=BUILD_ROWS
+[19:14:43 pid=1449811] ('478', 'Protease', '3oxv', 200, 'B') ⏱ BUILD_3D_MOL dt=0.008s
+[19:14:43 pid=1449811] ('478', 'Protease', '3oxv', 200, 'B') step=SDF_BLOCK
+[19:14:43 pid=1449811] ('478', 'Protease', '3oxv', 200, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3oxv_B_478_200.sdf (exists=False)
+[19:14:43 pid=1449811] ('478', 'Protease', '3oxv', 200, 'B') step=SDF_WRITE
+[19:14:43 pid=1449812] END key=('478', 'Protease', '3ekv', 200, 'A') mode=GRAPH_FULL mapped=35 dt=0.05s
+[19:14:43 pid=1449812] BEGIN key=('478', 'Protease', '3oxv', 200, 'C')
+[19:14:43 pid=1449812] ('478', 'Protease', '3oxv', 200, 'C') step=START
+[19:14:43 pid=1449812] ('478', 'Protease', '3oxv', 200, 'C') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449812] ('478', 'Protease', '3oxv', 200, 'C') step=LOOKUP_SMILES
+[19:14:43 pid=1449812] ('478', 'Protease', '3oxv', 200, 'C') step=MOLFROM_SMILES
+[19:14:43 pid=1449812] ('478', 'Protease', '3oxv', 200, 'C') step=GET_GROUP
+[19:14:43 pid=1449812] ('478', 'Protease', '3oxv', 200, 'C') step=BUILD_3D_MOL
+[19:14:43 pid=1449809] ('478', 'Protease', '3oxv', 200, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449809] ('478', 'Protease', '3oxv', 200, 'A') step=MAP_INIT
+[19:14:43 pid=1449809] ('478', 'Protease', '3oxv', 200, 'A') step=SIZE_CHECKS
+[19:14:43 pid=1449809] ('478', 'Protease', '3oxv', 200, 'A') step=GRAPH_FULL
+[19:14:43 pid=1449809] ('478', 'Protease', '3oxv', 200, 'A') ⏱ GRAPH_FULL dt=0.000s
+[19:14:43 pid=1449809] [478 3oxv A 200] 2D=35 3D=35 bonds3D=37 mapped=35 mode=GRAPH_FULL smiles_id=478
+[19:14:43 pid=1449809] ('478', 'Protease', '3oxv', 200, 'A') step=BUILD_ROWS
+[19:14:43 pid=1449812] ('478', 'Protease', '3oxv', 200, 'C') ⏱ BUILD_3D_MOL dt=0.012s
+[19:14:43 pid=1449812] ('478', 'Protease', '3oxv', 200, 'C') step=SDF_BLOCK
+[19:14:43 pid=1449812] ('478', 'Protease', '3oxv', 200, 'C') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3oxv_C_478_200.sdf (exists=False)
+[19:14:43 pid=1449812] ('478', 'Protease', '3oxv', 200, 'C') step=SDF_WRITE
+[19:14:43 pid=1449810] ('478', 'Protease', '3em3', 200, 'B') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449810] ('478', 'Protease', '3em3', 200, 'B') step=MAP_INIT
+[19:14:43 pid=1449810] ('478', 'Protease', '3em3', 200, 'B') step=SIZE_CHECKS
+[19:14:43 pid=1449810] ('478', 'Protease', '3em3', 200, 'B') step=GRAPH_FULL
+[19:14:43 pid=1449810] ('478', 'Protease', '3em3', 200, 'B') ⏱ GRAPH_FULL dt=0.000s
+[19:14:43 pid=1449810] [478 3em3 B 200] 2D=35 3D=35 bonds3D=37 mapped=35 mode=GRAPH_FULL smiles_id=478
+[19:14:43 pid=1449810] ('478', 'Protease', '3em3', 200, 'B') step=BUILD_ROWS
+[19:14:43 pid=1449809] END key=('478', 'Protease', '3oxv', 200, 'A') mode=GRAPH_FULL mapped=35 dt=0.05s
+[19:14:43 pid=1449810] END key=('478', 'Protease', '3em3', 200, 'B') mode=GRAPH_FULL mapped=35 dt=0.05s
+[19:14:43 pid=1449809] BEGIN key=('DR7', 'Protease', '3ekw', 100, 'B')
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3ekw', 100, 'B') step=START
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3ekw', 100, 'B') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3ekw', 100, 'B') step=LOOKUP_SMILES
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3ekw', 100, 'B') step=MOLFROM_SMILES
+[19:14:43 pid=1449810] BEGIN key=('DR7', 'Protease', '3eky', 100, 'A')
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3eky', 100, 'A') step=START
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3eky', 100, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3eky', 100, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3eky', 100, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3ekw', 100, 'B') step=GET_GROUP
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3eky', 100, 'A') step=GET_GROUP
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3ekw', 100, 'B') step=BUILD_3D_MOL
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3eky', 100, 'A') step=BUILD_3D_MOL
+⏳ progress: 20/43 pending=23
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3ekw', 100, 'B') ⏱ BUILD_3D_MOL dt=0.008s
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3ekw', 100, 'B') step=SDF_BLOCK
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3ekw', 100, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3ekw_B_DR7_100.sdf (exists=False)
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3ekw', 100, 'B') step=SDF_WRITE
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3eky', 100, 'A') ⏱ BUILD_3D_MOL dt=0.009s
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3eky', 100, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3eky', 100, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3eky_A_DR7_100.sdf (exists=False)
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3eky', 100, 'A') step=SDF_WRITE
+[19:14:43 pid=1449812] ('478', 'Protease', '3oxv', 200, 'C') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449812] ('478', 'Protease', '3oxv', 200, 'C') step=MAP_INIT
+[19:14:43 pid=1449812] ('478', 'Protease', '3oxv', 200, 'C') step=SIZE_CHECKS
+[19:14:43 pid=1449812] ('478', 'Protease', '3oxv', 200, 'C') step=GRAPH_FULL
+[19:14:43 pid=1449812] ('478', 'Protease', '3oxv', 200, 'C') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449812] [478 3oxv C 200] 2D=35 3D=35 bonds3D=37 mapped=35 mode=GRAPH_FULL smiles_id=478
+[19:14:43 pid=1449812] ('478', 'Protease', '3oxv', 200, 'C') step=BUILD_ROWS
+[19:14:43 pid=1449811] ('478', 'Protease', '3oxv', 200, 'B') ✅ SDF_WRITE ok dt=0.05s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449811] ('478', 'Protease', '3oxv', 200, 'B') step=MAP_INIT
+[19:14:43 pid=1449811] ('478', 'Protease', '3oxv', 200, 'B') step=SIZE_CHECKS
+[19:14:43 pid=1449811] ('478', 'Protease', '3oxv', 200, 'B') step=GRAPH_FULL
+[19:14:43 pid=1449811] ('478', 'Protease', '3oxv', 200, 'B') ⏱ GRAPH_FULL dt=0.002s
+[19:14:43 pid=1449811] [478 3oxv B 200] 2D=35 3D=35 bonds3D=37 mapped=35 mode=GRAPH_FULL smiles_id=478
+[19:14:43 pid=1449811] ('478', 'Protease', '3oxv', 200, 'B') step=BUILD_ROWS
+[19:14:43 pid=1449812] END key=('478', 'Protease', '3oxv', 200, 'C') mode=GRAPH_FULL mapped=35 dt=0.05s
+[19:14:43 pid=1449812] BEGIN key=('DR7', 'Protease', '3el1', 100, 'A')
+[19:14:43 pid=1449812] ('DR7', 'Protease', '3el1', 100, 'A') step=START
+[19:14:43 pid=1449812] ('DR7', 'Protease', '3el1', 100, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449812] ('DR7', 'Protease', '3el1', 100, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449812] ('DR7', 'Protease', '3el1', 100, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449812] ('DR7', 'Protease', '3el1', 100, 'A') step=GET_GROUP
+[19:14:43 pid=1449811] END key=('478', 'Protease', '3oxv', 200, 'B') mode=GRAPH_FULL mapped=35 dt=0.07s
+[19:14:43 pid=1449812] ('DR7', 'Protease', '3el1', 100, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449811] BEGIN key=('DR7', 'Protease', '3el9', 100, 'A')
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3el9', 100, 'A') step=START
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3el9', 100, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3el9', 100, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3el9', 100, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3el9', 100, 'A') step=GET_GROUP
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3el9', 100, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3el9', 100, 'A') ⏱ BUILD_3D_MOL dt=0.012s
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3el9', 100, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3el9', 100, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3el9_A_DR7_100.sdf (exists=False)
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3el9', 100, 'A') step=SDF_WRITE
+[19:14:43 pid=1449812] ('DR7', 'Protease', '3el1', 100, 'A') ⏱ BUILD_3D_MOL dt=0.020s
+[19:14:43 pid=1449812] ('DR7', 'Protease', '3el1', 100, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449812] ('DR7', 'Protease', '3el1', 100, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3el1_A_DR7_100.sdf (exists=False)
+[19:14:43 pid=1449812] ('DR7', 'Protease', '3el1', 100, 'A') step=SDF_WRITE
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3ekw', 100, 'B') ✅ SDF_WRITE ok dt=0.05s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3ekw', 100, 'B') step=MAP_INIT
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3ekw', 100, 'B') step=SIZE_CHECKS
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3ekw', 100, 'B') step=GRAPH_FULL
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3ekw', 100, 'B') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449809] [DR7 3ekw B 100] 2D=51 3D=51 bonds3D=53 mapped=51 mode=GRAPH_FULL smiles_id=DR7
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3ekw', 100, 'B') step=BUILD_ROWS
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3eky', 100, 'A') ✅ SDF_WRITE ok dt=0.05s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3eky', 100, 'A') step=MAP_INIT
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3eky', 100, 'A') step=SIZE_CHECKS
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3eky', 100, 'A') step=GRAPH_FULL
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3eky', 100, 'A') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449810] [DR7 3eky A 100] 2D=51 3D=51 bonds3D=53 mapped=51 mode=GRAPH_FULL smiles_id=DR7
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3eky', 100, 'A') step=BUILD_ROWS
+[19:14:43 pid=1449809] END key=('DR7', 'Protease', '3ekw', 100, 'B') mode=GRAPH_FULL mapped=51 dt=0.06s
+[19:14:43 pid=1449809] BEGIN key=('DR7', 'Protease', '3em4', 100, 'A')
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3em4', 100, 'A') step=START
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3em4', 100, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3em4', 100, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3em4', 100, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3em4', 100, 'A') step=GET_GROUP
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3em4', 100, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449810] END key=('DR7', 'Protease', '3eky', 100, 'A') mode=GRAPH_FULL mapped=51 dt=0.07s
+[19:14:43 pid=1449810] BEGIN key=('DR7', 'Protease', '3em4', 100, 'V')
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3em4', 100, 'V') step=START
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3em4', 100, 'V') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3em4', 100, 'V') step=LOOKUP_SMILES
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3em4', 100, 'V') step=MOLFROM_SMILES
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3em4', 100, 'V') step=GET_GROUP
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3em4', 100, 'V') step=BUILD_3D_MOL
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3em4', 100, 'A') ⏱ BUILD_3D_MOL dt=0.009s
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3em4', 100, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3em4', 100, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3em4_A_DR7_100.sdf (exists=False)
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3em4', 100, 'A') step=SDF_WRITE
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3em4', 100, 'V') ⏱ BUILD_3D_MOL dt=0.009s
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3em4', 100, 'V') step=SDF_BLOCK
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3em4', 100, 'V') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3em4_V_DR7_100.sdf (exists=False)
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3em4', 100, 'V') step=SDF_WRITE
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3el9', 100, 'A') ✅ SDF_WRITE ok dt=0.04s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3el9', 100, 'A') step=MAP_INIT
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3el9', 100, 'A') step=SIZE_CHECKS
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3el9', 100, 'A') step=GRAPH_FULL
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3el9', 100, 'A') ⏱ GRAPH_FULL dt=0.002s
+[19:14:43 pid=1449811] [DR7 3el9 A 100] 2D=51 3D=51 bonds3D=53 mapped=51 mode=GRAPH_FULL smiles_id=DR7
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3el9', 100, 'A') step=BUILD_ROWS
+[19:14:43 pid=1449811] END key=('DR7', 'Protease', '3el9', 100, 'A') mode=GRAPH_FULL mapped=51 dt=0.06s
+[19:14:43 pid=1449811] BEGIN key=('DR7', 'Protease', '3oxx', 100, 'A')
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3oxx', 100, 'A') step=START
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3oxx', 100, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3oxx', 100, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3oxx', 100, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3oxx', 100, 'A') step=GET_GROUP
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3oxx', 100, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3oxx', 100, 'A') ⏱ BUILD_3D_MOL dt=0.009s
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3oxx', 100, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3oxx', 100, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3oxx_A_DR7_100.sdf (exists=False)
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3oxx', 100, 'A') step=SDF_WRITE
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3em4', 100, 'A') ✅ SDF_WRITE ok dt=0.04s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3em4', 100, 'A') step=MAP_INIT
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3em4', 100, 'A') step=SIZE_CHECKS
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3em4', 100, 'A') step=GRAPH_FULL
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3em4', 100, 'A') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449809] [DR7 3em4 A 100] 2D=51 3D=51 bonds3D=53 mapped=51 mode=GRAPH_FULL smiles_id=DR7
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3em4', 100, 'A') step=BUILD_ROWS
+[19:14:43 pid=1449809] END key=('DR7', 'Protease', '3em4', 100, 'A') mode=GRAPH_FULL mapped=51 dt=0.05s
+[19:14:43 pid=1449809] BEGIN key=('DR7', 'Protease', '3oxx', 100, 'C')
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3oxx', 100, 'C') step=START
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3oxx', 100, 'C') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3oxx', 100, 'C') step=LOOKUP_SMILES
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3oxx', 100, 'C') step=MOLFROM_SMILES
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3oxx', 100, 'C') step=GET_GROUP
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3oxx', 100, 'C') step=BUILD_3D_MOL
+[19:14:43 pid=1449812] ('DR7', 'Protease', '3el1', 100, 'A') ✅ SDF_WRITE ok dt=0.07s msg=OK (warn): ==============================
+[19:14:43 pid=1449812] ('DR7', 'Protease', '3el1', 100, 'A') step=MAP_INIT
+[19:14:43 pid=1449812] ('DR7', 'Protease', '3el1', 100, 'A') step=SIZE_CHECKS
+[19:14:43 pid=1449812] ('DR7', 'Protease', '3el1', 100, 'A') step=GRAPH_FULL
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3oxx', 100, 'C') ⏱ BUILD_3D_MOL dt=0.009s
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3oxx', 100, 'C') step=SDF_BLOCK
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3oxx', 100, 'C') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3oxx_C_DR7_100.sdf (exists=False)
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3oxx', 100, 'C') step=SDF_WRITE
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3em4', 100, 'V') ✅ SDF_WRITE ok dt=0.06s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3em4', 100, 'V') step=MAP_INIT
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3em4', 100, 'V') step=SIZE_CHECKS
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3em4', 100, 'V') step=GRAPH_FULL
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3em4', 100, 'V') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449810] [DR7 3em4 V 100] 2D=51 3D=51 bonds3D=53 mapped=51 mode=GRAPH_FULL smiles_id=DR7
+[19:14:43 pid=1449810] ('DR7', 'Protease', '3em4', 100, 'V') step=BUILD_ROWS
+[19:14:43 pid=1449810] END key=('DR7', 'Protease', '3em4', 100, 'V') mode=GRAPH_FULL mapped=51 dt=0.07s
+[19:14:43 pid=1449810] BEGIN key=('DRR', 'Protease', '3bxr', 201, 'B')
+[19:14:43 pid=1449810] ('DRR', 'Protease', '3bxr', 201, 'B') step=START
+[19:14:43 pid=1449810] ('DRR', 'Protease', '3bxr', 201, 'B') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449810] ('DRR', 'Protease', '3bxr', 201, 'B') step=LOOKUP_SMILES
+[19:14:43 pid=1449810] ('DRR', 'Protease', '3bxr', 201, 'B') step=MOLFROM_SMILES
+[19:14:43 pid=1449810] ('DRR', 'Protease', '3bxr', 201, 'B') step=GET_GROUP
+[19:14:43 pid=1449810] ('DRR', 'Protease', '3bxr', 201, 'B') step=BUILD_3D_MOL
+[19:14:43 pid=1449810] ('DRR', 'Protease', '3bxr', 201, 'B') ⏱ BUILD_3D_MOL dt=0.009s
+[19:14:43 pid=1449810] ('DRR', 'Protease', '3bxr', 201, 'B') step=SDF_BLOCK
+[19:14:43 pid=1449810] ('DRR', 'Protease', '3bxr', 201, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3bxr_B_DRR_201.sdf (exists=False)
+[19:14:43 pid=1449810] ('DRR', 'Protease', '3bxr', 201, 'B') step=SDF_WRITE
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3oxx', 100, 'A') ✅ SDF_WRITE ok dt=0.05s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3oxx', 100, 'A') step=MAP_INIT
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3oxx', 100, 'A') step=SIZE_CHECKS
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3oxx', 100, 'A') step=GRAPH_FULL
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3oxx', 100, 'A') ⏱ GRAPH_FULL dt=0.002s
+[19:14:43 pid=1449811] [DR7 3oxx A 100] 2D=51 3D=51 bonds3D=53 mapped=51 mode=GRAPH_FULL smiles_id=DR7
+[19:14:43 pid=1449811] ('DR7', 'Protease', '3oxx', 100, 'A') step=BUILD_ROWS
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3oxx', 100, 'C') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3oxx', 100, 'C') step=MAP_INIT
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3oxx', 100, 'C') step=SIZE_CHECKS
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3oxx', 100, 'C') step=GRAPH_FULL
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3oxx', 100, 'C') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449809] [DR7 3oxx C 100] 2D=51 3D=51 bonds3D=53 mapped=51 mode=GRAPH_FULL smiles_id=DR7
+[19:14:43 pid=1449809] ('DR7', 'Protease', '3oxx', 100, 'C') step=BUILD_ROWS
+[19:14:43 pid=1449811] END key=('DR7', 'Protease', '3oxx', 100, 'A') mode=GRAPH_FULL mapped=51 dt=0.07s
+[19:14:43 pid=1449811] BEGIN key=('DRS', 'Protease', '3bxs', 201, 'A')
+[19:14:43 pid=1449811] ('DRS', 'Protease', '3bxs', 201, 'A') step=START
+[19:14:43 pid=1449811] ('DRS', 'Protease', '3bxs', 201, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449811] ('DRS', 'Protease', '3bxs', 201, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449811] ('DRS', 'Protease', '3bxs', 201, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449811] ('DRS', 'Protease', '3bxs', 201, 'A') step=GET_GROUP
+[19:14:43 pid=1449811] ('DRS', 'Protease', '3bxs', 201, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449812] ('DR7', 'Protease', '3el1', 100, 'A') ⏱ GRAPH_FULL dt=0.040s
+[19:14:43 pid=1449812] [DR7 3el1 A 100] 2D=51 3D=102 bonds3D=235 mapped=51 mode=GRAPH_FULL smiles_id=DR7
+[19:14:43 pid=1449812] ('DR7', 'Protease', '3el1', 100, 'A') step=BUILD_ROWS
+[19:14:43 pid=1449809] END key=('DR7', 'Protease', '3oxx', 100, 'C') mode=GRAPH_FULL mapped=51 dt=0.05s
+[19:14:43 pid=1449809] BEGIN key=('DRS', 'Protease', '3bxs', 203, 'B')
+[19:14:43 pid=1449809] ('DRS', 'Protease', '3bxs', 203, 'B') step=START
+[19:14:43 pid=1449809] ('DRS', 'Protease', '3bxs', 203, 'B') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449809] ('DRS', 'Protease', '3bxs', 203, 'B') step=LOOKUP_SMILES
+[19:14:43 pid=1449809] ('DRS', 'Protease', '3bxs', 203, 'B') step=MOLFROM_SMILES
+[19:14:43 pid=1449809] ('DRS', 'Protease', '3bxs', 203, 'B') step=GET_GROUP
+[19:14:43 pid=1449809] ('DRS', 'Protease', '3bxs', 203, 'B') step=BUILD_3D_MOL
+[19:14:43 pid=1449811] ('DRS', 'Protease', '3bxs', 201, 'A') ⏱ BUILD_3D_MOL dt=0.007s
+[19:14:43 pid=1449811] ('DRS', 'Protease', '3bxs', 201, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449811] ('DRS', 'Protease', '3bxs', 201, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3bxs_A_DRS_201.sdf (exists=False)
+[19:14:43 pid=1449811] ('DRS', 'Protease', '3bxs', 201, 'A') step=SDF_WRITE
+[19:14:43 pid=1449812] END key=('DR7', 'Protease', '3el1', 100, 'A') mode=GRAPH_FULL mapped=51 dt=0.14s
+[19:14:43 pid=1449812] BEGIN key=('HBB', 'Protease', '1z1h', 201, 'A')
+[19:14:43 pid=1449812] ('HBB', 'Protease', '1z1h', 201, 'A') step=START
+[19:14:43 pid=1449812] ('HBB', 'Protease', '1z1h', 201, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449812] ('HBB', 'Protease', '1z1h', 201, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449812] ('HBB', 'Protease', '1z1h', 201, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449809] ('DRS', 'Protease', '3bxs', 203, 'B') ⏱ BUILD_3D_MOL dt=0.007s
+[19:14:43 pid=1449809] ('DRS', 'Protease', '3bxs', 203, 'B') step=SDF_BLOCK
+[19:14:43 pid=1449809] ('DRS', 'Protease', '3bxs', 203, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3bxs_B_DRS_203.sdf (exists=False)
+[19:14:43 pid=1449809] ('DRS', 'Protease', '3bxs', 203, 'B') step=SDF_WRITE
+[19:14:43 pid=1449812] ('HBB', 'Protease', '1z1h', 201, 'A') step=GET_GROUP
+[19:14:43 pid=1449812] ('HBB', 'Protease', '1z1h', 201, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449810] ('DRR', 'Protease', '3bxr', 201, 'B') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449810] ('DRR', 'Protease', '3bxr', 201, 'B') step=MAP_INIT
+[19:14:43 pid=1449810] ('DRR', 'Protease', '3bxr', 201, 'B') step=SIZE_CHECKS
+[19:14:43 pid=1449810] ('DRR', 'Protease', '3bxr', 201, 'B') step=GRAPH_FULL
+[19:14:43 pid=1449810] ('DRR', 'Protease', '3bxr', 201, 'B') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449810] [DRR 3bxr B 201] 2D=49 3D=49 bonds3D=52 mapped=49 mode=GRAPH_FULL smiles_id=DRR
+[19:14:43 pid=1449810] ('DRR', 'Protease', '3bxr', 201, 'B') step=BUILD_ROWS
+[19:14:43 pid=1449810] END key=('DRR', 'Protease', '3bxr', 201, 'B') mode=GRAPH_FULL mapped=49 dt=0.04s
+[19:14:43 pid=1449810] BEGIN key=('HBH', 'Protease', '1z1r', 201, 'A')
+[19:14:43 pid=1449810] ('HBH', 'Protease', '1z1r', 201, 'A') step=START
+[19:14:43 pid=1449810] ('HBH', 'Protease', '1z1r', 201, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449812] ('HBB', 'Protease', '1z1h', 201, 'A') ⏱ BUILD_3D_MOL dt=0.009s
+[19:14:43 pid=1449810] ('HBH', 'Protease', '1z1r', 201, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449812] ('HBB', 'Protease', '1z1h', 201, 'A') step=SDF_BLOCK[19:14:43 pid=1449810] ('HBH', 'Protease', '1z1r', 201, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449812] ('HBB', 'Protease', '1z1h', 201, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/1z1h_A_HBB_201.sdf (exists=False)
+[19:14:43 pid=1449812] ('HBB', 'Protease', '1z1h', 201, 'A') step=SDF_WRITE
+[19:14:43 pid=1449810] ('HBH', 'Protease', '1z1r', 201, 'A') step=GET_GROUP
+[19:14:43 pid=1449810] ('HBH', 'Protease', '1z1r', 201, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449811] ('DRS', 'Protease', '3bxs', 201, 'A') ✅ SDF_WRITE ok dt=0.02s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449811] ('DRS', 'Protease', '3bxs', 201, 'A') step=MAP_INIT
+[19:14:43 pid=1449811] ('DRS', 'Protease', '3bxs', 201, 'A') step=SIZE_CHECKS
+[19:14:43 pid=1449811] ('DRS', 'Protease', '3bxs', 201, 'A') step=GRAPH_FULL
+[19:14:43 pid=1449811] ('DRS', 'Protease', '3bxs', 201, 'A') ⏱ GRAPH_FULL dt=0.001s
+[19:14:43 pid=1449811] [DRS 3bxs A 201] 2D=26 3D=26 bonds3D=27 mapped=26 mode=GRAPH_FULL smiles_id=DRS
+[19:14:43 pid=1449811] ('DRS', 'Protease', '3bxs', 201, 'A') step=BUILD_ROWS
+[19:14:43 pid=1449810] ('HBH', 'Protease', '1z1r', 201, 'A') ⏱ BUILD_3D_MOL dt=0.013s
+[19:14:43 pid=1449810] ('HBH', 'Protease', '1z1r', 201, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449810] ('HBH', 'Protease', '1z1r', 201, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/1z1r_A_HBH_201.sdf (exists=False)
+[19:14:43 pid=1449810] ('HBH', 'Protease', '1z1r', 201, 'A') step=SDF_WRITE
+[19:14:43 pid=1449811] END key=('DRS', 'Protease', '3bxs', 201, 'A') mode=GRAPH_FULL mapped=26 dt=0.04s
+[19:14:43 pid=1449811] BEGIN key=('K53', 'Protease', '3mxd', 200, 'A')
+[19:14:43 pid=1449811] ('K53', 'Protease', '3mxd', 200, 'A') step=START
+[19:14:43 pid=1449811] ('K53', 'Protease', '3mxd', 200, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449811] ('K53', 'Protease', '3mxd', 200, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449811] ('K53', 'Protease', '3mxd', 200, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449811] ('K53', 'Protease', '3mxd', 200, 'A') step=GET_GROUP
+[19:14:43 pid=1449811] ('K53', 'Protease', '3mxd', 200, 'A') step=BUILD_3D_MOL
+[19:14:43 pid=1449809] ('DRS', 'Protease', '3bxs', 203, 'B') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:43 pid=1449809] ('DRS', 'Protease', '3bxs', 203, 'B') step=MAP_INIT
+[19:14:43 pid=1449809] ('DRS', 'Protease', '3bxs', 203, 'B') step=SIZE_CHECKS
+[19:14:43 pid=1449809] ('DRS', 'Protease', '3bxs', 203, 'B') step=GRAPH_FULL
+[19:14:43 pid=1449809] ('DRS', 'Protease', '3bxs', 203, 'B') ⏱ GRAPH_FULL dt=0.000s
+[19:14:43 pid=1449809] [DRS 3bxs B 203] 2D=26 3D=26 bonds3D=27 mapped=26 mode=GRAPH_FULL smiles_id=DRS
+[19:14:43 pid=1449809] ('DRS', 'Protease', '3bxs', 203, 'B') step=BUILD_ROWS
+[19:14:43 pid=1449809] END key=('DRS', 'Protease', '3bxs', 203, 'B') mode=GRAPH_FULL mapped=26 dt=0.04s
+[19:14:43 pid=1449809] BEGIN key=('K54', 'Protease', '3mxe', 200, 'A')
+[19:14:43 pid=1449809] ('K54', 'Protease', '3mxe', 200, 'A') step=START
+[19:14:43 pid=1449809] ('K54', 'Protease', '3mxe', 200, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:43 pid=1449809] ('K54', 'Protease', '3mxe', 200, 'A') step=LOOKUP_SMILES
+[19:14:43 pid=1449809] ('K54', 'Protease', '3mxe', 200, 'A') step=MOLFROM_SMILES
+[19:14:43 pid=1449809] ('K54', 'Protease', '3mxe', 200, 'A') step=GET_GROUP
+[19:14:43 pid=1449809] ('K54', 'Protease', '3mxe', 200, 'A') step=BUILD_3D_MOL
+⏳ progress: 30/43 pending=13
+[19:14:43 pid=1449811] ('K53', 'Protease', '3mxd', 200, 'A') ⏱ BUILD_3D_MOL dt=0.010s
+[19:14:43 pid=1449811] ('K53', 'Protease', '3mxd', 200, 'A') step=SDF_BLOCK
+[19:14:43 pid=1449811] ('K53', 'Protease', '3mxd', 200, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3mxd_A_K53_200.sdf (exists=False)
+[19:14:43 pid=1449811] ('K53', 'Protease', '3mxd', 200, 'A') step=SDF_WRITE
+[19:14:44 pid=1449809] ('K54', 'Protease', '3mxe', 200, 'A') ⏱ BUILD_3D_MOL dt=0.008s
+[19:14:44 pid=1449809] ('K54', 'Protease', '3mxe', 200, 'A') step=SDF_BLOCK
+[19:14:44 pid=1449809] ('K54', 'Protease', '3mxe', 200, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3mxe_A_K54_200.sdf (exists=False)
+[19:14:44 pid=1449809] ('K54', 'Protease', '3mxe', 200, 'A') step=SDF_WRITE
+[19:14:44 pid=1449812] ('HBB', 'Protease', '1z1h', 201, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:44 pid=1449812] ('HBB', 'Protease', '1z1h', 201, 'A') step=MAP_INIT
+[19:14:44 pid=1449812] ('HBB', 'Protease', '1z1h', 201, 'A') step=SIZE_CHECKS
+[19:14:44 pid=1449812] ('HBB', 'Protease', '1z1h', 201, 'A') step=GRAPH_FULL
+[19:14:44 pid=1449812] ('HBB', 'Protease', '1z1h', 201, 'A') ⏱ GRAPH_FULL dt=0.000s
+[19:14:44 pid=1449812] [HBB 1z1h A 201] 2D=40 3D=45 bonds3D=56 mapped=40 mode=GRAPH_FULL smiles_id=HBB
+[19:14:44 pid=1449812] ('HBB', 'Protease', '1z1h', 201, 'A') step=BUILD_ROWS
+[19:14:44 pid=1449812] END key=('HBB', 'Protease', '1z1h', 201, 'A') mode=GRAPH_FULL mapped=40 dt=0.05s
+[19:14:44 pid=1449812] BEGIN key=('KVS', 'Protease', '3nwx', 100, 'B')
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') step=START
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') step=RESOLVE_SMILES_CANDIDATES
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') step=LOOKUP_SMILES
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') step=MOLFROM_SMILES
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') step=GET_GROUP
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') step=BUILD_3D_MOL
+[19:14:44 pid=1449810] ('HBH', 'Protease', '1z1r', 201, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:44 pid=1449810] ('HBH', 'Protease', '1z1r', 201, 'A') step=MAP_INIT
+[19:14:44 pid=1449810] ('HBH', 'Protease', '1z1r', 201, 'A') step=SIZE_CHECKS
+[19:14:44 pid=1449810] ('HBH', 'Protease', '1z1r', 201, 'A') step=GRAPH_FULL
+[19:14:44 pid=1449810] ('HBH', 'Protease', '1z1r', 201, 'A') ⏱ GRAPH_FULL dt=0.000s
+[19:14:44 pid=1449810] [HBH 1z1r A 201] 2D=41 3D=46 bonds3D=60 mapped=41 mode=GRAPH_FULL smiles_id=HBH
+[19:14:44 pid=1449810] ('HBH', 'Protease', '1z1r', 201, 'A') step=BUILD_ROWS
+[19:14:44 pid=1449810] END key=('HBH', 'Protease', '1z1r', 201, 'A') mode=GRAPH_FULL mapped=41 dt=0.05s
+[19:14:44 pid=1449810] BEGIN key=('PI8', 'Protease', '1d4k', 201, 'A')
+[19:14:44 pid=1449810] ('PI8', 'Protease', '1d4k', 201, 'A') step=START
+[19:14:44 pid=1449810] ('PI8', 'Protease', '1d4k', 201, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:44 pid=1449810] ('PI8', 'Protease', '1d4k', 201, 'A') step=LOOKUP_SMILES
+[19:14:44 pid=1449810] ('PI8', 'Protease', '1d4k', 201, 'A') step=MOLFROM_SMILES
+[19:14:44 pid=1449810] ('PI8', 'Protease', '1d4k', 201, 'A') step=GET_GROUP
+[19:14:44 pid=1449810] ('PI8', 'Protease', '1d4k', 201, 'A') step=BUILD_3D_MOL
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') ⏱ BUILD_3D_MOL dt=0.011s
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') step=SDF_BLOCK
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3nwx_B_KVS_100.sdf (exists=False)
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') step=SDF_WRITE
+[19:14:44 pid=1449811] ('K53', 'Protease', '3mxd', 200, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): ==============================
+[19:14:44 pid=1449811] ('K53', 'Protease', '3mxd', 200, 'A') step=MAP_INIT
+[19:14:44 pid=1449811] ('K53', 'Protease', '3mxd', 200, 'A') step=SIZE_CHECKS
+[19:14:44 pid=1449811] ('K53', 'Protease', '3mxd', 200, 'A') step=GRAPH_FULL
+[19:14:44 pid=1449811] ('K53', 'Protease', '3mxd', 200, 'A') ⏱ GRAPH_FULL dt=0.001s
+[19:14:44 pid=1449811] [K53 3mxd A 200] 2D=44 3D=44 bonds3D=48 mapped=44 mode=GRAPH_FULL smiles_id=K53
+[19:14:44 pid=1449811] ('K53', 'Protease', '3mxd', 200, 'A') step=BUILD_ROWS
+[19:14:44 pid=1449810] ('PI8', 'Protease', '1d4k', 201, 'A') ⏱ BUILD_3D_MOL dt=0.011s
+[19:14:44 pid=1449810] ('PI8', 'Protease', '1d4k', 201, 'A') step=SDF_BLOCK
+[19:14:44 pid=1449810] ('PI8', 'Protease', '1d4k', 201, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/1d4k_A_PI8_201.sdf (exists=False)
+[19:14:44 pid=1449810] ('PI8', 'Protease', '1d4k', 201, 'A') step=SDF_WRITE
+[19:14:44 pid=1449811] END key=('K53', 'Protease', '3mxd', 200, 'A') mode=GRAPH_FULL mapped=44 dt=0.05s
+[19:14:44 pid=1449811] BEGIN key=('PI9', 'Protease', '1d4l', 201, 'A')
+[19:14:44 pid=1449811] ('PI9', 'Protease', '1d4l', 201, 'A') step=START
+[19:14:44 pid=1449811] ('PI9', 'Protease', '1d4l', 201, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:44 pid=1449811] ('PI9', 'Protease', '1d4l', 201, 'A') step=LOOKUP_SMILES
+[19:14:44 pid=1449811] ('PI9', 'Protease', '1d4l', 201, 'A') step=MOLFROM_SMILES
+[19:14:44 pid=1449811] ('PI9', 'Protease', '1d4l', 201, 'A') step=GET_GROUP
+[19:14:44 pid=1449811] ('PI9', 'Protease', '1d4l', 201, 'A') step=BUILD_3D_MOL
+[19:14:44 pid=1449809] ('K54', 'Protease', '3mxe', 200, 'A') ✅ SDF_WRITE ok dt=0.04s msg=OK (warn): 1 molecule converted
+[19:14:44 pid=1449809] ('K54', 'Protease', '3mxe', 200, 'A') step=MAP_INIT
+[19:14:44 pid=1449809] ('K54', 'Protease', '3mxe', 200, 'A') step=SIZE_CHECKS
+[19:14:44 pid=1449809] ('K54', 'Protease', '3mxe', 200, 'A') step=GRAPH_FULL
+[19:14:44 pid=1449809] ('K54', 'Protease', '3mxe', 200, 'A') ⏱ GRAPH_FULL dt=0.000s
+[19:14:44 pid=1449809] [K54 3mxe A 200] 2D=47 3D=47 bonds3D=51 mapped=47 mode=GRAPH_FULL smiles_id=K54
+[19:14:44 pid=1449809] ('K54', 'Protease', '3mxe', 200, 'A') step=BUILD_ROWS
+[19:14:44 pid=1449809] END key=('K54', 'Protease', '3mxe', 200, 'A') mode=GRAPH_FULL mapped=47 dt=0.05s
+[19:14:44 pid=1449809] BEGIN key=('ROC', 'Protease', '3ekq', 100, 'A')
+[19:14:44 pid=1449809] ('ROC', 'Protease', '3ekq', 100, 'A') step=START
+[19:14:44 pid=1449809] ('ROC', 'Protease', '3ekq', 100, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:44 pid=1449809] ('ROC', 'Protease', '3ekq', 100, 'A') step=LOOKUP_SMILES
+[19:14:44 pid=1449809] ('ROC', 'Protease', '3ekq', 100, 'A') step=MOLFROM_SMILES
+[19:14:44 pid=1449809] ('ROC', 'Protease', '3ekq', 100, 'A') step=GET_GROUP
+[19:14:44 pid=1449809] ('ROC', 'Protease', '3ekq', 100, 'A') step=BUILD_3D_MOL
+[19:14:44 pid=1449811] ('PI9', 'Protease', '1d4l', 201, 'A') ⏱ BUILD_3D_MOL dt=0.011s
+[19:14:44 pid=1449811] ('PI9', 'Protease', '1d4l', 201, 'A') step=SDF_BLOCK
+[19:14:44 pid=1449811] ('PI9', 'Protease', '1d4l', 201, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/1d4l_A_PI9_201.sdf (exists=False)
+[19:14:44 pid=1449811] ('PI9', 'Protease', '1d4l', 201, 'A') step=SDF_WRITE
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') step=MAP_INIT
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') step=SIZE_CHECKS
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') step=GRAPH_FULL
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') ⏱ GRAPH_FULL dt=0.001s
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') step=MCS
+[19:14:44 pid=1449809] ('ROC', 'Protease', '3ekq', 100, 'A') ⏱ BUILD_3D_MOL dt=0.008s
+[19:14:44 pid=1449809] ('ROC', 'Protease', '3ekq', 100, 'A') step=SDF_BLOCK
+[19:14:44 pid=1449809] ('ROC', 'Protease', '3ekq', 100, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3ekq_A_ROC_100.sdf (exists=False)
+[19:14:44 pid=1449809] ('ROC', 'Protease', '3ekq', 100, 'A') step=SDF_WRITE
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') ⏱ MCS dt=0.004s
+[19:14:44 pid=1449812] [KVS 3nwx B 100] 2D=57 3D=56 bonds3D=55 mapped=52 mode=MCS(52/57) smiles_id=KVS
+[19:14:44 pid=1449812] ('KVS', 'Protease', '3nwx', 100, 'B') step=BUILD_ROWS
+[19:14:44 pid=1449812] END key=('KVS', 'Protease', '3nwx', 100, 'B') mode=MCS(52/57) mapped=52 dt=0.05s
+[19:14:44 pid=1449812] BEGIN key=('ROC', 'Protease', '3el4', 100, 'A')
+[19:14:44 pid=1449812] ('ROC', 'Protease', '3el4', 100, 'A') step=START
+[19:14:44 pid=1449812] ('ROC', 'Protease', '3el4', 100, 'A') step=RESOLVE_SMILES_CANDIDATES
+[19:14:44 pid=1449812] ('ROC', 'Protease', '3el4', 100, 'A') step=LOOKUP_SMILES
+[19:14:44 pid=1449812] ('ROC', 'Protease', '3el4', 100, 'A') step=MOLFROM_SMILES
+[19:14:44 pid=1449812] ('ROC', 'Protease', '3el4', 100, 'A') step=GET_GROUP
+[19:14:44 pid=1449812] ('ROC', 'Protease', '3el4', 100, 'A') step=BUILD_3D_MOL
+[19:14:44 pid=1449810] ('PI8', 'Protease', '1d4k', 201, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:44 pid=1449810] ('PI8', 'Protease', '1d4k', 201, 'A') step=MAP_INIT
+[19:14:44 pid=1449810] ('PI8', 'Protease', '1d4k', 201, 'A') step=SIZE_CHECKS
+[19:14:44 pid=1449810] ('PI8', 'Protease', '1d4k', 201, 'A') step=GRAPH_FULL
+[19:14:44 pid=1449810] ('PI8', 'Protease', '1d4k', 201, 'A') ⏱ GRAPH_FULL dt=0.001s
+[19:14:44 pid=1449810] [PI8 1d4k A 201] 2D=51 3D=58 bonds3D=76 mapped=51 mode=GRAPH_FULL smiles_id=PI8
+[19:14:44 pid=1449810] ('PI8', 'Protease', '1d4k', 201, 'A') step=BUILD_ROWS
+[19:14:44 pid=1449810] END key=('PI8', 'Protease', '1d4k', 201, 'A') mode=GRAPH_FULL mapped=51 dt=0.05s
+[19:14:44 pid=1449812] ('ROC', 'Protease', '3el4', 100, 'A') ⏱ BUILD_3D_MOL dt=0.009s
+[19:14:44 pid=1449812] ('ROC', 'Protease', '3el4', 100, 'A') step=SDF_BLOCK
+[19:14:44 pid=1449812] ('ROC', 'Protease', '3el4', 100, 'A') SDF skip_exists=0 path=MCS_Output/MCS_SDF/3el4_A_ROC_100.sdf (exists=False)
+[19:14:44 pid=1449812] ('ROC', 'Protease', '3el4', 100, 'A') step=SDF_WRITE
+[19:14:44 pid=1449811] ('PI9', 'Protease', '1d4l', 201, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:44 pid=1449811] ('PI9', 'Protease', '1d4l', 201, 'A') step=MAP_INIT
+[19:14:44 pid=1449811] ('PI9', 'Protease', '1d4l', 201, 'A') step=SIZE_CHECKS
+[19:14:44 pid=1449811] ('PI9', 'Protease', '1d4l', 201, 'A') step=GRAPH_FULL
+[19:14:44 pid=1449811] ('PI9', 'Protease', '1d4l', 201, 'A') ⏱ GRAPH_FULL dt=0.000s
+[19:14:44 pid=1449811] [PI9 1d4l A 201] 2D=43 3D=45 bonds3D=49 mapped=43 mode=GRAPH_FULL smiles_id=PI9
+[19:14:44 pid=1449811] ('PI9', 'Protease', '1d4l', 201, 'A') step=BUILD_ROWS
+[19:14:44 pid=1449811] END key=('PI9', 'Protease', '1d4l', 201, 'A') mode=GRAPH_FULL mapped=43 dt=0.05s
+[19:14:44 pid=1449809] ('ROC', 'Protease', '3ekq', 100, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:44 pid=1449809] ('ROC', 'Protease', '3ekq', 100, 'A') step=MAP_INIT
+[19:14:44 pid=1449809] ('ROC', 'Protease', '3ekq', 100, 'A') step=SIZE_CHECKS
+[19:14:44 pid=1449809] ('ROC', 'Protease', '3ekq', 100, 'A') step=GRAPH_FULL
+[19:14:44 pid=1449809] ('ROC', 'Protease', '3ekq', 100, 'A') ⏱ GRAPH_FULL dt=0.001s
+[19:14:44 pid=1449809] [ROC 3ekq A 100] 2D=49 3D=49 bonds3D=53 mapped=49 mode=GRAPH_FULL smiles_id=ROC
+[19:14:44 pid=1449809] ('ROC', 'Protease', '3ekq', 100, 'A') step=BUILD_ROWS
+⏳ progress: 40/43 pending=3
+[19:14:44 pid=1449809] END key=('ROC', 'Protease', '3ekq', 100, 'A') mode=GRAPH_FULL mapped=49 dt=0.05s
+[19:14:44 pid=1449812] ('ROC', 'Protease', '3el4', 100, 'A') ✅ SDF_WRITE ok dt=0.03s msg=OK (warn): 1 molecule converted
+[19:14:44 pid=1449812] ('ROC', 'Protease', '3el4', 100, 'A') step=MAP_INIT
+[19:14:44 pid=1449812] ('ROC', 'Protease', '3el4', 100, 'A') step=SIZE_CHECKS
+[19:14:44 pid=1449812] ('ROC', 'Protease', '3el4', 100, 'A') step=GRAPH_FULL
+[19:14:44 pid=1449812] ('ROC', 'Protease', '3el4', 100, 'A') ⏱ GRAPH_FULL dt=0.001s
+[19:14:44 pid=1449812] [ROC 3el4 A 100] 2D=49 3D=49 bonds3D=53 mapped=49 mode=GRAPH_FULL smiles_id=ROC
+[19:14:44 pid=1449812] ('ROC', 'Protease', '3el4', 100, 'A') step=BUILD_ROWS
+[19:14:44 pid=1449812] END key=('ROC', 'Protease', '3el4', 100, 'A') mode=GRAPH_FULL mapped=49 dt=0.04s
+⏳ progress: 43/43 pending=0
+✅ POOL COMPLETE (or aborted) — proceeding to write CSVs + SVG
+====================================================
+🎉 COMPLETED MCS MAPPING + SASA ANNOTATION
+📦 Map (MCS only)        → MCS_Output/Ligand_MCS_Map.csv
+🧪 SASA (MCS only)       → MCS_Output/Ligand_MCS_SASA.csv
+🧬 All atoms (debug)     → MCS_Output/Ligand_AllAtoms_Map.csv
+🧪 SASA (ALL atoms)      → MCS_Output/Ligand_MCS_SASA_ALL_ATOMS.csv
+⚠️ Failures              → MCS_Output/Ligand_MCS_Failures.csv
+====================================================
+🎨 Starting SVG generation for 43 occurrences
+🖼️  SVGs generated: 43 → MCS_Output/MCS_SVG
+[19:14:44] 🚀 Running 12_Results.py...
+✅ Integrated 3DSASAmapped.csv created with standard headers.
+[19:14:45] 🚀 Running 15_ResultsMerged.py...
+🧬 Using SASA file: Warhead_SASA_atoms.csv
+✅ Wrote merged atom table: Ligand_3D_Atoms_with_SASA.csv
+📊 Total atoms: 1992
+🎉 RESULTS MERGE COMPLETE
+[19:14:45] 🚀 Running 16_ResultsDisplay.py...
+✅ Wrote /home/jxs794/WEBTOOLs/PROTAC-Target-Builder/jobs/d750cfea/Results_Display.csv (43 entries)
+[19:14:45] ✅ PIPELINE FINISHED SUCCESSFULLY
+[19:14:45] Access results in the Browse tab.

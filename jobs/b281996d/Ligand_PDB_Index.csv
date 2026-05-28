@@ -1,0 +1,13 @@
+Rank,Ligand_Resolved,PDB_List,Count
+1,6EL,['5yj1'],1
+2,A1A0J,['9cuo'],1
+3,A1A8N,['9dom'],1
+4,A1CAC,['9o91'],1
+5,A1CAV,['9odr'],1
+6,A1CAW,['9ods'],1
+7,A1CBG,['9ohr'],1
+8,A1CBH,['9ohq'],1
+9,EF2,"['4ci1', '4tzc', '5yiz', '5yj0', '7bqu']",5
+10,F4U,['7bqv'],1
+11,LVY,['4ci2'],1
+12,Y70,"['4ci3', '4tzu']",2

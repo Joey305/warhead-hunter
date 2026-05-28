@@ -1,0 +1,13 @@
+SMILES,Warhead
+CN1c2ccccc2N(C1=O)[C@H]3CCC(=O)NC3=O,['A00']
+Cn1ccc2c1nc(cc2CN3CCCC3)c4ccc5c(c4)CN(C5=O)[C@H]6CCC(=O)NC6=O,['A05']
+c1cc2c(c(c1)N)C(=O)N(C2=O)[C@H]3CCC(=O)NC3=O,['Y70']
+c1cc2c(c(c1)N)CN(C2=O)[C@H]3CCC(=O)NC3=O,['LVY']
+c1cc2c(c3c1C(=O)N(C3)[C@H]4CCC(=O)NC4=O)OCC25CCNCC5,['A03']
+c1cc2c(cc1O)C(=O)N(C2=O)[C@H]3CCC(=O)NC3=O,['F4U']
+c1cc2c(cc1c3cc(c4cc[nH]c4n3)CN5CCCC5)CN(C2=O)[C@H]6CCC(=O)NC6=O,['A02']
+c1cc2c(cc1c3cc(c4ccn(c4n3)C5COC5)CN6CCCC6)CN(C2=O)[C@H]7CCC(=O)NC7=O,['A06']
+c1ccc(cc1)CN2CCC3(CC2)COc4c3ccc5c4CN(C5=O)[C@H]6CCC(=O)NC6=O,['A01']
+c1ccc2c(c1)C(=O)N(C2=O)[C@@H]3CCC(=O)NC3=O,['6EL']
+c1ccc2c(c1)C(=O)N(C2=O)[C@H]3CCC(=O)NC3=O,['EF2']
+c1cn2c(cnc2c3c1C4(CCNCC4)CO3)N5C=CC(=O)NC5=O,['A04']

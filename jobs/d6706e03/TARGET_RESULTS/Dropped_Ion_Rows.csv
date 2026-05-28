@@ -1,0 +1,3 @@
+Target,pdb_id,Warhead,Residue_ID,Total_atoms,Exposed_atoms,SASA_in_complex_A2,%Exposed,%Buried,Chain,LigandX_Source,Ligand5_Source,Ligand_Resolved,Warhead_5,SMILES,Ion_Dropped,Ion_Drop_Reason,Parent_SMILES,Salt_Stripped
+DYRK1A,7o7k,LI,813.0,1,1,80.395,1.0,0.0,A,LI,LI,LI,,,True,common_ion,,False
+DYRK1A,7o7k,LI,516.0,1,1,74.653,1.0,0.0,B,LI,LI,LI,,,True,common_ion,,False

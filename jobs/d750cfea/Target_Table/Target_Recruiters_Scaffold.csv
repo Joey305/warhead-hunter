@@ -1,0 +1,16 @@
+Protein,Recruiter,SMILES,Scaffold_ID,Scaffold_SMILES,Scaffold_Hash
+Protease,2NC,CCCC[C@@H](CN[C@@H](CCCC)C(=O)N[C@@H](CCC(=O)N)C(=O)N[C@@H](CCCNC(=[NH2+])N)C(=O)N)NC(=O)[C@H]([C@@H](C)CC)NC(=O)[C@H]([C@@H](C)O)NC(=O)C,Protease_SCAF_1,,e77402ae
+Protease,DR7,CC(C)(C)[C@@H](C(=O)N[C@@H](Cc1ccccc1)[C@H](CN(Cc2ccc(cc2)c3ccccn3)NC(=O)[C@H](C(C)(C)C)NC(=O)OC)O)NC(=O)OC,Protease_SCAF_2,c1ccc(CCCCNCc2ccc(-c3ccccn3)cc2)cc1,06b6e769
+Protease,017,CC(C)C[N@@](C[C@H]([C@H](Cc1ccccc1)NC(=O)O[C@H]2CO[C@@H]3[C@H]2CCO3)O)S(=O)(=O)c4ccc(cc4)N,Protease_SCAF_3,O=C(N[C@H](CCNS(=O)(=O)c1ccccc1)Cc1ccccc1)O[C@H]1CO[C@H]2OCC[C@H]21,8b1cfb6b
+Protease,1UN,Cc1c(cccc1O)C(=O)N[C@@H](CSc2ccccc2)[C@@H](C[N@@]3C[C@H]4CCCC[C@H]4C[C@H]3C(=O)NC(C)(C)C)O,Protease_SCAF_4,O=C(N[C@H](CCN1CC[C@@H]2CCCC[C@@H]2C1)CSc1ccccc1)c1ccccc1,981afc56
+Protease,ROC,CC(C)(C)NC(=O)[C@@H]1C[C@@H]2CCCC[C@@H]2C[N@]1C[C@H]([C@H](Cc3ccccc3)NC(=O)[C@H](CC(=O)N)NC(=O)c4ccc5ccccc5n4)O,Protease_SCAF_5,O=C(CNC(=O)c1ccc2ccccc2n1)N[C@H](CCN1CC[C@@H]2CCCC[C@@H]2C1)Cc1ccccc1,30074493
+Protease,478,CC(C)C[N@](C[C@H]([C@H](Cc1ccccc1)NC(=O)O[C@H]2CCOC2)O)S(=O)(=O)c3ccc(cc3)N,Protease_SCAF_6,O=C(N[C@H](CCNS(=O)(=O)c1ccccc1)Cc1ccccc1)O[C@H]1CCOC1,6ff7da86
+Protease,DRS,CC(C)[C@H]1C(=O)N[C@@H](Cc2ccc(cc2)OCCCCC(=O)N1)C(=O)O,Protease_SCAF_7,O=C1CCCCOc2ccc(cc2)CCNC(=O)CN1,7cc8cf95
+Protease,PI8,CC[C@H](C)[C@H]1C(=O)NCCCCCOc2ccc(cc2)C[C@@H](C(=O)N1)NC[C@H](C[C@@H](Cc3ccccc3)C(=O)N[C@H]4c5ccccc5C[C@H]4O)O,Protease_SCAF_8,O=C1CNC(=O)[C@@H](NCCC[C@@H](Cc2ccccc2)C(=O)N[C@@H]2CCc3ccccc32)Cc2ccc(cc2)OCCCCCN1,72ce68b6
+Protease,KVS,[H]/N=C(\N)/NCCC[C@@H](C(=O)N)NC(=O)[C@H](CCC(=O)N)NC(=O)[C@H](CCCC)CC([C@H](CCCC)NC(=O)[C@H]([C@@H](C)CC)NC(=O)[C@H]([C@@H](C)O)NC(=O)C)(O)O,Protease_SCAF_9,,f0a7adab
+Protease,DRR,CC[C@H](C)[C@H]1C(=O)NCCCOc2ccc(cc2)C[C@@H](C(=O)N1)NC(=O)[C@@H]3Cc4ccc(cc4)OCCCCC(=O)N[C@H](C(=O)N3)C(C)C,Protease_SCAF_10,O=C1CCCCOc2ccc(cc2)C[C@@H](C(=O)N[C@H]2Cc3ccc(cc3)OCCCNC(=O)CNC2=O)NC(=O)CN1,a4ab3cd7
+Protease,PI9,CC(C)CC[N@@](C[C@H]([C@@H]1Cc2ccc(cc2)OCCCCCC(=O)N[C@H](C(=O)N1)C(C)C)O)S(=O)(=O)c3ccc(cc3)N,Protease_SCAF_11,O=C1CCCCCOc2ccc(cc2)C[C@@H](CCNS(=O)(=O)c2ccccc2)NC(=O)CN1,2dbc8477
+Protease,HBB,CC(C)CC[N@@](C[C@H]([C@@H]1Cc2ccc(cc2)OCCCC(=O)N[C@H](C(=O)N1)C(C)C)O)S(=O)(=O)c3ccccc3,Protease_SCAF_12,O=C1CCCOc2ccc(cc2)C[C@@H](CCNS(=O)(=O)c2ccccc2)NC(=O)CN1,e30a4348
+Protease,K54,CC(C)C[N@@](C[C@H]([C@H](Cc1ccccc1)NC(=O)[C@@H]2CN(C(=O)O2)c3ccccc3C(F)(F)F)O)S(=O)(=O)c4ccc5c(c4)scn5,Protease_SCAF_13,O=C(N[C@H](CCNS(=O)(=O)c1ccc2ncsc2c1)Cc1ccccc1)[C@@H]1CN(c2ccccc2)C(=O)O1,d91e74d5
+Protease,K53,CC(C)C[N@@](C[C@H]([C@H](Cc1ccccc1)NC(=O)[C@@H]2CN(C(=O)O2)c3ccccc3O)O)S(=O)(=O)c4ccc5c(c4)OCO5,Protease_SCAF_14,O=C(N[C@H](CCNS(=O)(=O)c1ccc2c(c1)OCO2)Cc1ccccc1)[C@@H]1CN(c2ccccc2)C(=O)O1,271d581c
+Protease,HBH,CC(C)CC[N@@](C[C@H]([C@@H]1Cc2ccc(cc2)OCCCC(=O)N[C@H](C(=O)N1)CC(=O)N)O)S(=O)(=O)c3ccccc3,Protease_SCAF_12,O=C1CCCOc2ccc(cc2)C[C@@H](CCNS(=O)(=O)c2ccccc2)NC(=O)CN1,e30a4348

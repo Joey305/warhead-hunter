@@ -1,9 +1,21 @@
-# Runtime/generated data
-jobs/
+# ------------------------------------------------------------
+# Runtime / generated data
+# ------------------------------------------------------------
+
+# Ignore all generated jobs by default.
+# Curated public demo jobs are explicitly unignored below.
+jobs/*
+!jobs/.gitkeep
+
+# Uploads are runtime data
 uploads/*
 !uploads/.gitkeep
 
-# Python cache/build
+
+# ------------------------------------------------------------
+# Python cache / build artifacts
+# ------------------------------------------------------------
+
 __pycache__/
 *.py[cod]
 *.pyo
@@ -12,13 +24,21 @@ __pycache__/
 build/
 dist/
 
+
+# ------------------------------------------------------------
 # Virtual environments
+# ------------------------------------------------------------
+
 .venv/
 venv/
 env/
 ENV/
 
-# Logs/temp/cache
+
+# ------------------------------------------------------------
+# Logs / temp / cache
+# ------------------------------------------------------------
+
 *.log
 *.tmp
 tmp/
@@ -29,6 +49,10 @@ temp/
 .ipynb_checkpoints/
 
 
+# ------------------------------------------------------------
+# Local / backup / experimental folders
+# ------------------------------------------------------------
+
 Q0dex/
 Qodex.summary.md
 ORIGINAL/
@@ -36,7 +60,10 @@ RESTORE_BACKUP*/
 experimental_broken_attempts/
 
 
+# ------------------------------------------------------------
 # Secrets / local config
+# ------------------------------------------------------------
+
 .env
 .env.*
 !.env.example
@@ -47,12 +74,22 @@ credentials*.json
 token*.json
 secrets*.json
 
-# OS/editor
+
+# ------------------------------------------------------------
+# OS / editor
+# ------------------------------------------------------------
+
 .DS_Store
 .vscode/
 .idea/
 
-# Large scientific/output files
+
+# ------------------------------------------------------------
+# Large scientific / output files
+# These are ignored globally, but curated jobs below are unignored
+# afterward so their required artifacts can still be committed.
+# ------------------------------------------------------------
+
 *.xtc
 *.trr
 *.dcd
@@ -67,3 +104,31 @@ secrets*.json
 *.tar
 *.tar.gz
 *.gz
+
+
+# ------------------------------------------------------------
+# Warhead Hunter curated / public demo jobs
+# These are the four example jobs shown on the API docs page.
+# ------------------------------------------------------------
+
+!jobs/b281996d/
+!jobs/b281996d/**
+
+!jobs/032917e1/
+!jobs/032917e1/**
+
+!jobs/d750cfea/
+!jobs/d750cfea/**
+
+!jobs/d6706e03/
+!jobs/d6706e03/**
+
+
+# ------------------------------------------------------------
+# Never commit transient junk inside jobs
+# These rules come after the curated-job exceptions on purpose.
+# ------------------------------------------------------------
+
+jobs/**/__pycache__/
+jobs/**/*.pyc
+jobs/**/.DS_Store

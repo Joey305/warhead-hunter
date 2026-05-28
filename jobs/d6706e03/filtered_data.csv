@@ -1,0 +1,230 @@
+protein,pdb,chain,ligand,MW,Name
+DYRK1A,4ylk,A,4E2,422.604,"10-chloro-2-iodo-11H-indolo[3,2-c]quinoline-6-carboxylic acid"
+DYRK1A,3anq,A,EHB,235.302,"(1Z)-1-(3-ethyl-5-hydroxy-1,3-benzothiazol-2(3H)-ylidene)propan-2-one"
+DYRK1A,3anq,B,EHB,235.302,"(1Z)-1-(3-ethyl-5-hydroxy-1,3-benzothiazol-2(3H)-ylidene)propan-2-one"
+DYRK1A,3anq,C,EHB,235.302,"(1Z)-1-(3-ethyl-5-hydroxy-1,3-benzothiazol-2(3H)-ylidene)propan-2-one"
+DYRK1A,3anq,D,EHB,235.302,"(1Z)-1-(3-ethyl-5-hydroxy-1,3-benzothiazol-2(3H)-ylidene)propan-2-one"
+DYRK1A,3anr,A,HRM,212.247,7-METHOXY-1-METHYL-9H-BETA-CARBOLINE
+DYRK1A,3anr,B,HRM,212.247,7-METHOXY-1-METHYL-9H-BETA-CARBOLINE
+DYRK1A,3anr,C,HRM,212.247,7-METHOXY-1-METHYL-9H-BETA-CARBOLINE
+DYRK1A,3anr,D,HRM,212.247,7-METHOXY-1-METHYL-9H-BETA-CARBOLINE
+DYRK1A,4yu2,A,4H5,271.702,(1-chloro-7-methoxy-9H-beta-carbolin-9-yl)acetonitrile
+DYRK1A,4yu2,B,4H5,271.702,(1-chloro-7-methoxy-9H-beta-carbolin-9-yl)acetonitrile
+DYRK1A,4yu2,C,4H5,271.702,(1-chloro-7-methoxy-9H-beta-carbolin-9-yl)acetonitrile
+DYRK1A,4yu2,D,4H5,271.702,(1-chloro-7-methoxy-9H-beta-carbolin-9-yl)acetonitrile
+DYRK1A,4yll,A,4E3,467.055,"10-bromo-2-iodo-11H-indolo[3,2-c]quinoline-6-carboxylic acid"
+DYRK1A,4aze,A,3RA,307.303,"5-(1,3-benzodioxol-5-ylmethyl)-2-(phenylamino)-4H-imidazol-4-one"
+DYRK1A,4aze,B,3RA,307.303,"5-(1,3-benzodioxol-5-ylmethyl)-2-(phenylamino)-4H-imidazol-4-one"
+DYRK1A,4aze,C,3RA,307.303,"5-(1,3-benzodioxol-5-ylmethyl)-2-(phenylamino)-4H-imidazol-4-one"
+DYRK1A,4mq2,A,2C4,388.762,"methyl 4-chloro-3-{[(2-methoxy-7-oxo-7,8-dihydropyrido[2,3-d]pyrimidin-6-yl)carbonyl]amino}benzoate"
+DYRK1A,4mq2,B,2C4,388.762,"methyl 4-chloro-3-{[(2-methoxy-7-oxo-7,8-dihydropyrido[2,3-d]pyrimidin-6-yl)carbonyl]amino}benzoate"
+DYRK1A,4mq2,C,2C4,388.762,"methyl 4-chloro-3-{[(2-methoxy-7-oxo-7,8-dihydropyrido[2,3-d]pyrimidin-6-yl)carbonyl]amino}benzoate"
+DYRK1A,4mq2,D,2C4,388.762,"methyl 4-chloro-3-{[(2-methoxy-7-oxo-7,8-dihydropyrido[2,3-d]pyrimidin-6-yl)carbonyl]amino}benzoate"
+DYRK1A,4ylj,A,4E1,388.159,"10-iodo-11H-indolo[3,2-c]quinoline-6-carboxylic acid"
+DYRK1A,4ylj,B,4E1,388.159,"10-iodo-11H-indolo[3,2-c]quinoline-6-carboxylic acid"
+DYRK1A,4ylj,C,4E1,388.159,"10-iodo-11H-indolo[3,2-c]quinoline-6-carboxylic acid"
+DYRK1A,4ylj,D,4E1,388.159,"10-iodo-11H-indolo[3,2-c]quinoline-6-carboxylic acid"
+DYRK1A,2vx3,A,D15,447.917,N-(5-{[(2S)-4-amino-2-(3-chlorophenyl)butanoyl]amino}-1H-indazol-3-yl)benzamide
+DYRK1A,2vx3,B,D15,447.917,N-(5-{[(2S)-4-amino-2-(3-chlorophenyl)butanoyl]amino}-1H-indazol-3-yl)benzamide
+DYRK1A,2vx3,C,D15,447.917,N-(5-{[(2S)-4-amino-2-(3-chlorophenyl)butanoyl]amino}-1H-indazol-3-yl)benzamide
+DYRK1A,2vx3,D,D15,447.917,N-(5-{[(2S)-4-amino-2-(3-chlorophenyl)butanoyl]amino}-1H-indazol-3-yl)benzamide
+DYRK1A,4mq1,A,2C3,541.386,"N-(5-{[(1R)-3-amino-1-(3-chlorophenyl)propyl]carbamoyl}-2-chlorophenyl)-2-methoxy-7-oxo-7,8-dihydropyrido[2,3-d]pyrimidine-6-carboxamide"
+DYRK1A,4mq1,B,2C3,541.386,"N-(5-{[(1R)-3-amino-1-(3-chlorophenyl)propyl]carbamoyl}-2-chlorophenyl)-2-methoxy-7-oxo-7,8-dihydropyrido[2,3-d]pyrimidine-6-carboxamide"
+DYRK1A,4mq1,C,2C3,541.386,"N-(5-{[(1R)-3-amino-1-(3-chlorophenyl)propyl]carbamoyl}-2-chlorophenyl)-2-methoxy-7-oxo-7,8-dihydropyrido[2,3-d]pyrimidine-6-carboxamide"
+DYRK1A,4mq1,D,2C3,541.386,"N-(5-{[(1R)-3-amino-1-(3-chlorophenyl)propyl]carbamoyl}-2-chlorophenyl)-2-methoxy-7-oxo-7,8-dihydropyrido[2,3-d]pyrimidine-6-carboxamide"
+DYRK1A,4nct,A,2K2,570.637,PKC412
+DYRK1A,4nct,B,2K2,570.637,PKC412
+DYRK1A,4nct,C,2K2,570.637,PKC412
+DYRK1A,4nct,D,2K2,570.637,PKC412
+DYRK1A,2wo6,A,D15,447.917,N-(5-{[(2S)-4-amino-2-(3-chlorophenyl)butanoyl]amino}-1H-indazol-3-yl)benzamide
+DYRK1A,2wo6,B,D15,447.917,N-(5-{[(2S)-4-amino-2-(3-chlorophenyl)butanoyl]amino}-1H-indazol-3-yl)benzamide
+DYRK1A,5a3x,A,QIV,208.237,"N-(5-oxidanyl-1,3-benzothiazol-2-yl)ethanamide"
+DYRK1A,5a3x,B,QIV,208.237,"N-(5-oxidanyl-1,3-benzothiazol-2-yl)ethanamide"
+DYRK1A,5a3x,C,QIV,208.237,"N-(5-oxidanyl-1,3-benzothiazol-2-yl)ethanamide"
+DYRK1A,5a3x,D,QIV,208.237,"N-(5-oxidanyl-1,3-benzothiazol-2-yl)ethanamide"
+DYRK1A,6a1f,A,9OF,255.315,"8-methoxy-5,5-dimethyl-5,6-dihydrobenzo[h]quinazolin-4-amine"
+DYRK1A,5a4e,A,7QQ,222.264,"N-(5-methoxy-1,3-benzothiazol-2-yl)ethanamide"
+DYRK1A,5a4e,B,7QQ,222.264,"N-(5-methoxy-1,3-benzothiazol-2-yl)ethanamide"
+DYRK1A,5a4e,C,7QQ,222.264,"N-(5-methoxy-1,3-benzothiazol-2-yl)ethanamide"
+DYRK1A,5a4e,D,7QQ,222.264,"N-(5-methoxy-1,3-benzothiazol-2-yl)ethanamide"
+DYRK1A,5a4l,A,ZC3,210.228,"N-(5-FLUORANYL-1,3-BENZOTHIAZOL-2-YL)ETHANAMIDE"
+DYRK1A,5a4l,B,ZC3,210.228,"N-(5-FLUORANYL-1,3-BENZOTHIAZOL-2-YL)ETHANAMIDE"
+DYRK1A,5a4l,C,ZC3,210.228,"N-(5-FLUORANYL-1,3-BENZOTHIAZOL-2-YL)ETHANAMIDE"
+DYRK1A,5a4l,D,ZC3,210.228,"N-(5-FLUORANYL-1,3-BENZOTHIAZOL-2-YL)ETHANAMIDE"
+DYRK1A,6a1g,A,9OL,334.458,"5,5-dimethyl-8-[1-(piperidin-4-yl)ethenyl]-5,6-dihydrobenzo[h]quinazolin-4-amine"
+DYRK1A,6a1g,B,9OL,334.458,"5,5-dimethyl-8-[1-(piperidin-4-yl)ethenyl]-5,6-dihydrobenzo[h]quinazolin-4-amine"
+DYRK1A,5a4t,A,AJG,217.247,"N-(6-CYANO-3H-1,3-BENZOTHIAZOL-2-YLIDENE)ETHANAMIDE"
+DYRK1A,5a4t,B,AJG,217.247,"N-(6-CYANO-3H-1,3-BENZOTHIAZOL-2-YLIDENE)ETHANAMIDE"
+DYRK1A,5a4t,C,AJG,217.247,"N-(6-CYANO-3H-1,3-BENZOTHIAZOL-2-YLIDENE)ETHANAMIDE"
+DYRK1A,5a4t,D,AJG,217.247,"N-(6-CYANO-3H-1,3-BENZOTHIAZOL-2-YLIDENE)ETHANAMIDE"
+DYRK1A,5a54,A,5PW,237.235,"N-(6-nitro-1,3-benzothiazol-2-yl)ethanamide"
+DYRK1A,5a54,B,5PW,237.235,"N-(6-nitro-1,3-benzothiazol-2-yl)ethanamide"
+DYRK1A,5a54,C,5PW,237.235,"N-(6-nitro-1,3-benzothiazol-2-yl)ethanamide"
+DYRK1A,5a54,D,5PW,237.235,"N-(6-nitro-1,3-benzothiazol-2-yl)ethanamide"
+DYRK1A,6eil,A,B6B,321.333,[3-azanyl-6-(5-azanyl-2-methoxy-phenyl)pyrazin-2-yl]-pyridin-3-yl-methanone
+DYRK1A,6eil,B,B6B,321.333,[3-azanyl-6-(5-azanyl-2-methoxy-phenyl)pyrazin-2-yl]-pyridin-3-yl-methanone
+DYRK1A,6eil,D,B6B,321.333,[3-azanyl-6-(5-azanyl-2-methoxy-phenyl)pyrazin-2-yl]-pyridin-3-yl-methanone
+DYRK1A,6eif,A,B5T,350.394,"4-(3-pyridin-3-yl-1~{H}-pyrrolo[2,3-b]pyridin-5-yl)benzenesulfonamide"
+DYRK1A,6eif,B,B5T,350.394,"4-(3-pyridin-3-yl-1~{H}-pyrrolo[2,3-b]pyridin-5-yl)benzenesulfonamide"
+DYRK1A,6eif,C,B5T,350.394,"4-(3-pyridin-3-yl-1~{H}-pyrrolo[2,3-b]pyridin-5-yl)benzenesulfonamide"
+DYRK1A,6eif,D,B5T,350.394,"4-(3-pyridin-3-yl-1~{H}-pyrrolo[2,3-b]pyridin-5-yl)benzenesulfonamide"
+DYRK1A,6eij,A,B5Z,466.556,"~{N}-[5-[3-(2-morpholin-4-ylethylcarbamoylamino)phenyl]-[1,3]thiazolo[5,4-b]pyridin-2-yl]cyclopropanecarboxamide"
+DYRK1A,6eij,B,B5Z,466.556,"~{N}-[5-[3-(2-morpholin-4-ylethylcarbamoylamino)phenyl]-[1,3]thiazolo[5,4-b]pyridin-2-yl]cyclopropanecarboxamide"
+DYRK1A,6eij,C,B5Z,466.556,"~{N}-[5-[3-(2-morpholin-4-ylethylcarbamoylamino)phenyl]-[1,3]thiazolo[5,4-b]pyridin-2-yl]cyclopropanecarboxamide"
+DYRK1A,6eij,D,B5Z,466.556,"~{N}-[5-[3-(2-morpholin-4-ylethylcarbamoylamino)phenyl]-[1,3]thiazolo[5,4-b]pyridin-2-yl]cyclopropanecarboxamide"
+DYRK1A,5a4q,A,Y3L,226.683,"N-(5-CHLORANYL-1,3-BENZOTHIAZOL-2-YL)ETHANAMIDE"
+DYRK1A,5a4q,B,Y3L,226.683,"N-(5-CHLORANYL-1,3-BENZOTHIAZOL-2-YL)ETHANAMIDE"
+DYRK1A,5a4q,C,Y3L,226.683,"N-(5-CHLORANYL-1,3-BENZOTHIAZOL-2-YL)ETHANAMIDE"
+DYRK1A,5a4q,D,Y3L,226.683,"N-(5-CHLORANYL-1,3-BENZOTHIAZOL-2-YL)ETHANAMIDE"
+DYRK1A,5aik,A,AWR,337.34,"4-(7-METHOXY-1-(TRIFLUOROMETHYL)-9H-PYRIDO[3,4-B]INDOL-9-yl)butan-1-amine"
+DYRK1A,5aik,B,AWR,337.34,"4-(7-METHOXY-1-(TRIFLUOROMETHYL)-9H-PYRIDO[3,4-B]INDOL-9-yl)butan-1-amine"
+DYRK1A,5aik,C,AWR,337.34,"4-(7-METHOXY-1-(TRIFLUOROMETHYL)-9H-PYRIDO[3,4-B]INDOL-9-yl)butan-1-amine"
+DYRK1A,5aik,D,AWR,337.34,"4-(7-METHOXY-1-(TRIFLUOROMETHYL)-9H-PYRIDO[3,4-B]INDOL-9-yl)butan-1-amine"
+DYRK1A,6eiv,A,B6Q,464.583,"~{N}-[3-[[4-azanyl-2-[[4-(4-methylpiperazin-1-yl)phenyl]amino]-1,3-thiazol-5-yl]carbonyl]phenyl]propanamide"
+DYRK1A,6eiv,B,B6Q,464.583,"~{N}-[3-[[4-azanyl-2-[[4-(4-methylpiperazin-1-yl)phenyl]amino]-1,3-thiazol-5-yl]carbonyl]phenyl]propanamide"
+DYRK1A,6eiv,C,B6Q,464.583,"~{N}-[3-[[4-azanyl-2-[[4-(4-methylpiperazin-1-yl)phenyl]amino]-1,3-thiazol-5-yl]carbonyl]phenyl]propanamide"
+DYRK1A,6eiv,D,B6Q,464.583,"~{N}-[3-[[4-azanyl-2-[[4-(4-methylpiperazin-1-yl)phenyl]amino]-1,3-thiazol-5-yl]carbonyl]phenyl]propanamide"
+DYRK1A,6s11,A,KQE,356.301,"6-pyridin-4-yl-3-[3-(trifluoromethyloxy)phenyl]imidazo[1,2-b]pyridazine"
+DYRK1A,6s11,B,KQE,356.301,"6-pyridin-4-yl-3-[3-(trifluoromethyloxy)phenyl]imidazo[1,2-b]pyridazine"
+DYRK1A,6eis,A,B6N,424.35,"1-[4-fluoranyl-2-(trifluoromethyl)phenyl]-9-(1~{H}-pyrazol-4-yl)benzo[h][1,6]naphthyridin-2-one"
+DYRK1A,6eis,B,B6N,424.35,"1-[4-fluoranyl-2-(trifluoromethyl)phenyl]-9-(1~{H}-pyrazol-4-yl)benzo[h][1,6]naphthyridin-2-one"
+DYRK1A,6eis,C,B6N,424.35,"1-[4-fluoranyl-2-(trifluoromethyl)phenyl]-9-(1~{H}-pyrazol-4-yl)benzo[h][1,6]naphthyridin-2-one"
+DYRK1A,6eis,D,B6N,424.35,"1-[4-fluoranyl-2-(trifluoromethyl)phenyl]-9-(1~{H}-pyrazol-4-yl)benzo[h][1,6]naphthyridin-2-one"
+DYRK1A,6eip,A,B7B,420.507,"4-[[(3~{R},7~{S})-2-cyclopentyl-9-methyl-8-oxidanylidene-2,9,12,14-tetrazatricyclo[8.4.0.0^{3,7}]tetradeca-1(14),10,12-trien-13-yl]amino]benzamide"
+DYRK1A,6eip,B,B7B,420.507,"4-[[(3~{R},7~{S})-2-cyclopentyl-9-methyl-8-oxidanylidene-2,9,12,14-tetrazatricyclo[8.4.0.0^{3,7}]tetradeca-1(14),10,12-trien-13-yl]amino]benzamide"
+DYRK1A,6eip,C,B7B,420.507,"4-[[(3~{R},7~{S})-2-cyclopentyl-9-methyl-8-oxidanylidene-2,9,12,14-tetrazatricyclo[8.4.0.0^{3,7}]tetradeca-1(14),10,12-trien-13-yl]amino]benzamide"
+DYRK1A,6eip,D,B7B,420.507,"4-[[(3~{R},7~{S})-2-cyclopentyl-9-methyl-8-oxidanylidene-2,9,12,14-tetrazatricyclo[8.4.0.0^{3,7}]tetradeca-1(14),10,12-trien-13-yl]amino]benzamide"
+DYRK1A,6s1h,A,KQZ,239.276,"~{N},~{N}-dimethyl-4-(1~{H}-pyrrolo[2,3-b]pyridin-3-yl)pyrimidin-2-amine"
+DYRK1A,6ej4,A,B7W,286.331,"3-(3-pyridin-3-yl-1~{H}-pyrrolo[2,3-b]pyridin-5-yl)aniline"
+DYRK1A,6ej4,B,B7W,286.331,"3-(3-pyridin-3-yl-1~{H}-pyrrolo[2,3-b]pyridin-5-yl)aniline"
+DYRK1A,6ej4,C,B7W,286.331,"3-(3-pyridin-3-yl-1~{H}-pyrrolo[2,3-b]pyridin-5-yl)aniline"
+DYRK1A,6ej4,D,B7W,286.331,"3-(3-pyridin-3-yl-1~{H}-pyrrolo[2,3-b]pyridin-5-yl)aniline"
+DYRK1A,6ln1,A,EKU,260.199,"1,3,5,8-tetrakis(oxidanyl)xanthen-9-one"
+DYRK1A,6ln1,B,EKU,260.199,"1,3,5,8-tetrakis(oxidanyl)xanthen-9-one"
+DYRK1A,6eiq,A,B6Z,423.531,"[4-azanyl-2-[[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]amino]-1,3-thiazol-5-yl]-phenyl-methanone"
+DYRK1A,6eiq,B,B6Z,423.531,"[4-azanyl-2-[[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]amino]-1,3-thiazol-5-yl]-phenyl-methanone"
+DYRK1A,6eiq,C,B6Z,423.531,"[4-azanyl-2-[[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]amino]-1,3-thiazol-5-yl]-phenyl-methanone"
+DYRK1A,6eiq,D,B6Z,423.531,"[4-azanyl-2-[[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]amino]-1,3-thiazol-5-yl]-phenyl-methanone"
+DYRK1A,6eir,A,B6H,494.609,"~{N}-[4-[[4-azanyl-2-[[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]amino]-1,3-thiazol-5-yl]carbonyl]phenyl]propanamide"
+DYRK1A,6eir,B,B6H,494.609,"~{N}-[4-[[4-azanyl-2-[[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]amino]-1,3-thiazol-5-yl]carbonyl]phenyl]propanamide"
+DYRK1A,6eir,C,B6H,494.609,"~{N}-[4-[[4-azanyl-2-[[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]amino]-1,3-thiazol-5-yl]carbonyl]phenyl]propanamide"
+DYRK1A,6eir,D,B6H,494.609,"~{N}-[4-[[4-azanyl-2-[[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]amino]-1,3-thiazol-5-yl]carbonyl]phenyl]propanamide"
+DYRK1A,6s17,A,KQK,240.264,"~{N},~{N}-dimethyl-4-pyrazolo[1,5-b]pyridazin-3-yl-pyrimidin-2-amine"
+DYRK1A,6s1b,A,KRQ,226.237,"~{N}-methyl-4-pyrazolo[1,5-b]pyridazin-3-yl-pyrimidin-2-amine"
+DYRK1A,6qu2,A,JHW,320.368,"8-cyclopropyl-2-pyridin-3-yl-[1,3]thiazolo[5,4-f]quinazolin-9-one"
+DYRK1A,6qu2,B,JHW,320.368,"8-cyclopropyl-2-pyridin-3-yl-[1,3]thiazolo[5,4-f]quinazolin-9-one"
+DYRK1A,6qu2,C,JHW,320.368,"8-cyclopropyl-2-pyridin-3-yl-[1,3]thiazolo[5,4-f]quinazolin-9-one"
+DYRK1A,6qu2,D,JHW,320.368,"8-cyclopropyl-2-pyridin-3-yl-[1,3]thiazolo[5,4-f]quinazolin-9-one"
+DYRK1A,6s1j,A,KRK,284.292,"3-[2-[(3~{S})-3-fluoranylpyrrolidin-1-yl]pyrimidin-4-yl]pyrazolo[1,5-b]pyridazine"
+DYRK1A,6uip,A,Q8J,434.534,"4-ethyl-N-{4-[1-(oxan-4-yl)-1H-pyrrolo[2,3-c]pyridin-3-yl]pyridin-2-yl}piperazine-1-carboxamide"
+DYRK1A,6uip,B,Q8J,434.534,"4-ethyl-N-{4-[1-(oxan-4-yl)-1H-pyrrolo[2,3-c]pyridin-3-yl]pyridin-2-yl}piperazine-1-carboxamide"
+DYRK1A,6uip,C,Q8J,434.534,"4-ethyl-N-{4-[1-(oxan-4-yl)-1H-pyrrolo[2,3-c]pyridin-3-yl]pyridin-2-yl}piperazine-1-carboxamide"
+DYRK1A,6uwy,A,QKG,297.352,4-(7-methoxy-1-methyl-9H-beta-carbolin-9-yl)butanamide
+DYRK1A,6uwy,B,QKG,297.352,4-(7-methoxy-1-methyl-9H-beta-carbolin-9-yl)butanamide
+DYRK1A,6uwy,C,QKG,297.352,4-(7-methoxy-1-methyl-9H-beta-carbolin-9-yl)butanamide
+DYRK1A,6uwy,D,QKG,297.352,4-(7-methoxy-1-methyl-9H-beta-carbolin-9-yl)butanamide
+DYRK1A,6t6a,A,MLW,229.662,4-chloranyl-5~{H}-cyclohepta[b]indol-10-one
+DYRK1A,6t6a,B,MLW,229.662,4-chloranyl-5~{H}-cyclohepta[b]indol-10-one
+DYRK1A,6t6a,C,MLW,229.662,4-chloranyl-5~{H}-cyclohepta[b]indol-10-one
+DYRK1A,7a51,A,QYK,252.071,"4-azanyl-6-bromanyl-7-methyl-pyrrolo[2,3-d]pyrimidine-5-carbonitrile"
+DYRK1A,6s14,A,KQW,266.301,"~{N}-cyclopropyl-~{N}-methyl-4-pyrazolo[1,5-b]pyridazin-3-yl-pyrimidin-2-amine"
+DYRK1A,7a4r,A,QY8,150.138,"2-amino-3H,4H,7H-pyrrolo[2,3-d]pyrimidin-4-one"
+DYRK1A,7a4r,B,QY8,150.138,"2-amino-3H,4H,7H-pyrrolo[2,3-d]pyrimidin-4-one"
+DYRK1A,6yf8,A,OPW,299.348,"~{N}-[5-(5-methoxy-1,3-benzothiazol-2-yl)pyridin-3-yl]ethanamide"
+DYRK1A,6yf8,B,OPW,299.348,"~{N}-[5-(5-methoxy-1,3-benzothiazol-2-yl)pyridin-3-yl]ethanamide"
+DYRK1A,6yf8,C,OPW,299.348,"~{N}-[5-(5-methoxy-1,3-benzothiazol-2-yl)pyridin-3-yl]ethanamide"
+DYRK1A,6yf8,D,OPW,299.348,"~{N}-[5-(5-methoxy-1,3-benzothiazol-2-yl)pyridin-3-yl]ethanamide"
+DYRK1A,7a4s,A,QYE,184.646,"7-chlorothieno[3,2-c]pyridin-4-amine"
+DYRK1A,6s1i,A,KR8,302.333,"~{N}-methyl-~{N}-phenyl-4-pyrazolo[1,5-b]pyridazin-3-yl-pyrimidin-2-amine"
+DYRK1A,6s1i,B,KR8,302.333,"~{N}-methyl-~{N}-phenyl-4-pyrazolo[1,5-b]pyridazin-3-yl-pyrimidin-2-amine"
+DYRK1A,6s1i,C,KR8,302.333,"~{N}-methyl-~{N}-phenyl-4-pyrazolo[1,5-b]pyridazin-3-yl-pyrimidin-2-amine"
+DYRK1A,6s1i,D,KR8,302.333,"~{N}-methyl-~{N}-phenyl-4-pyrazolo[1,5-b]pyridazin-3-yl-pyrimidin-2-amine"
+DYRK1A,7a4w,A,QYH,216.239,"6-(4-methoxyphenyl)pyrimidine-2,4-diamine"
+DYRK1A,7a4w,B,QYH,216.239,"6-(4-methoxyphenyl)pyrimidine-2,4-diamine"
+DYRK1A,7a4z,A,6SD,189.214,3-(4-methoxyphenyl)-1~{H}-pyrazol-5-amine
+DYRK1A,7a53,A,QYZ,225.243,(3~{E})-3-[(5-methylfuran-2-yl)methylidene]-1~{H}-indol-2-one
+DYRK1A,7a53,B,QYZ,225.243,(3~{E})-3-[(5-methylfuran-2-yl)methylidene]-1~{H}-indol-2-one
+DYRK1A,7a52,A,QYB,212.207,"3-phenyl-1H,4H,5H-pyrazolo[3,4-d]pyrimidin-4-one"
+DYRK1A,7a52,B,QYB,212.207,"3-phenyl-1H,4H,5H-pyrazolo[3,4-d]pyrimidin-4-one"
+DYRK1A,7a55,A,QZ2,192.175,3-(1-methylpyrazol-4-yl)-1~{H}-pyrazole-5-carboxylic acid
+DYRK1A,7a55,B,QZ2,192.175,3-(1-methylpyrazol-4-yl)-1~{H}-pyrazole-5-carboxylic acid
+DYRK1A,7a5b,A,MFR,241.249,"4-(4-methoxy-1H-pyrrolo[2,3-b]pyridin-3-yl)pyrimidin-2-amine"
+DYRK1A,7a5b,B,MFR,241.249,"4-(4-methoxy-1H-pyrrolo[2,3-b]pyridin-3-yl)pyrimidin-2-amine"
+DYRK1A,7a5l,A,QZW,337.399,"4-[2-methyl-4-(thiophen-3-ylmethoxy)-7~{H}-pyrrolo[2,3-d]pyrimidin-5-yl]pyridin-2-amine"
+DYRK1A,7aj5,A,RHW,225.246,"4-(1-benzofuran-5-yl)pyridine-2,6-diamine"
+DYRK1A,7a5d,A,QYW,250.259,"4-azanyl-2-methyl-6-pyridin-3-yl-7~{H}-pyrrolo[2,3-d]pyrimidine-5-carbonitrile"
+DYRK1A,7aj2,A,RJ5,200.236,4-(4-methoxyphenyl)pyridin-2-amine
+DYRK1A,7aj4,A,RHZ,234.682,4-(4-chloranyl-3-methoxy-phenyl)pyridin-2-amine
+DYRK1A,7aj8,A,RJ8,210.231,4-(1-benzofuran-5-yl)pyridin-2-amine
+DYRK1A,7a5n,A,R05,366.367,"5-(2-azanylpyridin-4-yl)-~{N}-[[2,6-bis(fluoranyl)phenyl]methyl]-2-methyl-7~{H}-pyrrolo[2,3-d]pyrimidin-4-amine"
+DYRK1A,7a5n,B,R05,366.367,"5-(2-azanylpyridin-4-yl)-~{N}-[[2,6-bis(fluoranyl)phenyl]methyl]-2-methyl-7~{H}-pyrrolo[2,3-d]pyrimidin-4-amine"
+DYRK1A,7aja,A,RJ2,279.336,1-[4-(1-benzofuran-5-yl)pyridin-2-yl]piperazine
+DYRK1A,7ajm,A,RKW,296.324,~{N}-[6-azanyl-4-(1-benzofuran-5-yl)pyridin-2-yl]-2-(methylamino)ethanamide
+DYRK1A,7ajm,B,RKW,296.324,~{N}-[6-azanyl-4-(1-benzofuran-5-yl)pyridin-2-yl]-2-(methylamino)ethanamide
+DYRK1A,7ak2,A,RHH,361.4,"4-[2-methyl-3-(2-pyridin-2-yloxyethyl)imidazo[4,5-b]pyridin-5-yl]pyridine-2,6-diamine"
+DYRK1A,7ak2,B,RHH,361.4,"4-[2-methyl-3-(2-pyridin-2-yloxyethyl)imidazo[4,5-b]pyridin-5-yl]pyridine-2,6-diamine"
+DYRK1A,7akb,A,RJZ,440.297,"4-[3-[2-(6-bromanylpyridin-2-yl)oxyethyl]-2-methyl-imidazo[4,5-b]pyridin-5-yl]pyridine-2,6-diamine"
+DYRK1A,7akb,B,RJZ,440.297,"4-[3-[2-(6-bromanylpyridin-2-yl)oxyethyl]-2-methyl-imidazo[4,5-b]pyridin-5-yl]pyridine-2,6-diamine"
+DYRK1A,7ake,A,RK8,454.323,"4-[3-[(2~{S})-2-(6-bromanylpyridin-2-yl)oxypropyl]-2-methyl-imidazo[4,5-b]pyridin-5-yl]pyridine-2,6-diamine"
+DYRK1A,7ake,B,RK8,454.323,"4-[3-[(2~{S})-2-(6-bromanylpyridin-2-yl)oxypropyl]-2-methyl-imidazo[4,5-b]pyridin-5-yl]pyridine-2,6-diamine"
+DYRK1A,7ajv,A,RKK,338.45,"4-(2,3-dibutylimidazo[4,5-b]pyridin-5-yl)pyridine-2,6-diamine"
+DYRK1A,7ajv,B,RKK,338.45,"4-(2,3-dibutylimidazo[4,5-b]pyridin-5-yl)pyridine-2,6-diamine"
+DYRK1A,7ajy,A,RKZ,374.439,"4-[2-methyl-3-[(2~{R})-2-phenoxypropyl]imidazo[4,5-b]pyridin-5-yl]pyridine-2,6-diamine"
+DYRK1A,7ajy,B,RKZ,374.439,"4-[2-methyl-3-[(2~{R})-2-phenoxypropyl]imidazo[4,5-b]pyridin-5-yl]pyridine-2,6-diamine"
+DYRK1A,7aj7,A,RHT,239.276,"4-(3-methylbenzimidazol-5-yl)pyridine-2,6-diamine"
+DYRK1A,7ajs,A,RKH,239.273,"4-(2-methyl-1-benzofuran-5-yl)pyridine-2,6-diamine"
+DYRK1A,7ajs,B,RKH,239.273,"4-(2-methyl-1-benzofuran-5-yl)pyridine-2,6-diamine"
+DYRK1A,7aka,A,RK2,375.427,"4-[2-methyl-3-[(2~{R})-2-pyridin-2-yloxypropyl]imidazo[4,5-b]pyridin-5-yl]pyridine-2,6-diamine"
+DYRK1A,7aka,B,RK2,375.427,"4-[2-methyl-3-[(2~{R})-2-pyridin-2-yloxypropyl]imidazo[4,5-b]pyridin-5-yl]pyridine-2,6-diamine"
+DYRK1A,7ajw,A,RKQ,360.412,"4-[2-methyl-3-(2-phenoxyethyl)imidazo[4,5-b]pyridin-5-yl]pyridine-2,6-diamine"
+DYRK1A,7akl,A,RK5,253.299,"4-(2,3-dimethyl-1-benzofuran-5-yl)pyridine-2,6-diamine"
+DYRK1A,7fht,A,4WD,275.346,"(5~{Z})-5-[(3-ethynyl-4-methoxy-phenyl)methylidene]-2-sulfanylidene-1,3-thiazolidin-4-one"
+DYRK1A,7fht,B,4WD,275.346,"(5~{Z})-5-[(3-ethynyl-4-methoxy-phenyl)methylidene]-2-sulfanylidene-1,3-thiazolidin-4-one"
+DYRK1A,7fht,C,4WD,275.346,"(5~{Z})-5-[(3-ethynyl-4-methoxy-phenyl)methylidene]-2-sulfanylidene-1,3-thiazolidin-4-one"
+DYRK1A,7fht,D,4WD,275.346,"(5~{Z})-5-[(3-ethynyl-4-methoxy-phenyl)methylidene]-2-sulfanylidene-1,3-thiazolidin-4-one"
+DYRK1A,8yev,A,CUE,268.221,Coumestrol
+DYRK1A,8yev,B,CUE,268.221,Coumestrol
+DYRK1A,8c3q,A,RUT,610.517,RUTIN
+DYRK1A,8c3q,B,RUT,610.517,RUTIN
+DYRK1A,8c3r,A,R7O,480.376,Gossypin
+DYRK1A,8c3r,B,R7O,480.376,Gossypin
+DYRK1A,7fhs,A,4VZ,281.351,"(5~{Z})-5-[(3-ethoxy-4-oxidanyl-phenyl)methylidene]-2-sulfanylidene-1,3-thiazolidin-4-one"
+DYRK1A,7fhs,B,4VZ,281.351,"(5~{Z})-5-[(3-ethoxy-4-oxidanyl-phenyl)methylidene]-2-sulfanylidene-1,3-thiazolidin-4-one"
+DYRK1A,7fhs,C,4VZ,281.351,"(5~{Z})-5-[(3-ethoxy-4-oxidanyl-phenyl)methylidene]-2-sulfanylidene-1,3-thiazolidin-4-one"
+DYRK1A,7fhs,D,4VZ,281.351,"(5~{Z})-5-[(3-ethoxy-4-oxidanyl-phenyl)methylidene]-2-sulfanylidene-1,3-thiazolidin-4-one"
+DYRK1A,7zh8,A,IWU,199.008,"6-bromanyl-3H-[1,2,3]triazolo[4,5-b]pyridine"
+DYRK1A,7zh8,B,IWU,199.008,"6-bromanyl-3H-[1,2,3]triazolo[4,5-b]pyridine"
+DYRK1A,7zh8,C,IWU,199.008,"6-bromanyl-3H-[1,2,3]triazolo[4,5-b]pyridine"
+DYRK1A,7zh8,D,IWU,199.008,"6-bromanyl-3H-[1,2,3]triazolo[4,5-b]pyridine"
+DYRK1A,7o7k,A,6ZV,506.593,N-{5-[(4-ethylpiperazin-1-yl)methyl]pyridin-2-yl}-5-fluoro-4-[4-fluoro-2-methyl-1-(propan-2-yl)-1H-benzimidazol-6-yl]py rimidin-2-amine
+DYRK1A,7o7k,B,6ZV,506.593,N-{5-[(4-ethylpiperazin-1-yl)methyl]pyridin-2-yl}-5-fluoro-4-[4-fluoro-2-methyl-1-(propan-2-yl)-1H-benzimidazol-6-yl]py rimidin-2-amine
+DYRK1A,7o7k,A,LI,6.941,LITHIUM ION
+DYRK1A,7o7k,B,LI,6.941,LITHIUM ION
+DYRK1A,8t2h,A,XIR,417.482,"(4P)-4-{(3M)-3-[3-fluoro-4-(4-methylpiperazin-1-yl)phenyl]-2-methyl-3H-imidazo[4,5-b]pyridin-5-yl}pyridin-2-amine"
+DYRK1A,8t2h,B,XIR,417.482,"(4P)-4-{(3M)-3-[3-fluoro-4-(4-methylpiperazin-1-yl)phenyl]-2-methyl-3H-imidazo[4,5-b]pyridin-5-yl}pyridin-2-amine"
+DYRK1A,8r8e,A,YOX,336.171,2-cyclopentyl-7-iodanyl-1~{H}-indole-3-carbonitrile
+DYRK1A,8r8e,B,YOX,336.171,2-cyclopentyl-7-iodanyl-1~{H}-indole-3-carbonitrile
+DYRK1A,8r8e,C,YOX,336.171,2-cyclopentyl-7-iodanyl-1~{H}-indole-3-carbonitrile
+DYRK1A,8r8e,D,YOX,336.171,2-cyclopentyl-7-iodanyl-1~{H}-indole-3-carbonitrile
+DYRK1A,8c3g,A,QS0,429.517,"N-[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]-4-(1-methylpyrrolo[2,3-c]pyridin-3-yl)pyrimidin-2-amine"
+DYRK1A,8c3g,B,QS0,429.517,"N-[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]-4-(1-methylpyrrolo[2,3-c]pyridin-3-yl)pyrimidin-2-amine"
+DYRK1A,8c3g,C,QS0,429.517,"N-[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]-4-(1-methylpyrrolo[2,3-c]pyridin-3-yl)pyrimidin-2-amine"
+DYRK1A,8c3g,D,QS0,429.517,"N-[2-methoxy-4-(4-methylpiperazin-1-yl)phenyl]-4-(1-methylpyrrolo[2,3-c]pyridin-3-yl)pyrimidin-2-amine"
+DYRK1A,7oy6,C,39I,362.451,"~{N}4-(3-cyclopropyl-1~{H}-pyrazol-5-yl)-~{N}2-(phenylmethyl)thieno[3,2-d]pyrimidine-2,4-diamine"
+DYRK1A,9cy5,A,A1A04,414.478,(4P)-4-{(4M)-4-[3-fluoro-4-(4-methylpiperazin-1-yl)phenyl]quinazolin-6-yl}pyridin-2-amine
+DYRK1A,9cy5,B,A1A04,414.478,(4P)-4-{(4M)-4-[3-fluoro-4-(4-methylpiperazin-1-yl)phenyl]quinazolin-6-yl}pyridin-2-amine
+DYRK1A,9fuf,A,A1IFO,405.476,"3-[[[4-[(3-cyclopropyl-1~{H}-pyrazol-5-yl)amino]thieno[3,2-d]pyrimidin-2-yl]amino]methyl]benzamide"
+DYRK1A,9ft2,A,A1IE6,403.437,"3-[[[4-[(3-cyclobutyl-1~{H}-pyrazol-5-yl)amino]furo[3,2-d]pyrimidin-2-yl]amino]methyl]benzamide"
+DYRK1A,7z5n,A,3NG,349.77,"5-[(3-chlorophenyl)amino]benzo[c][2,6]naphthyridine-8-carboxylic acid"
+DYRK1A,7z5n,B,3NG,349.77,"5-[(3-chlorophenyl)amino]benzo[c][2,6]naphthyridine-8-carboxylic acid"
+DYRK1A,7z5n,C,3NG,349.77,"5-[(3-chlorophenyl)amino]benzo[c][2,6]naphthyridine-8-carboxylic acid"
+DYRK1A,7z5n,D,3NG,349.77,"5-[(3-chlorophenyl)amino]benzo[c][2,6]naphthyridine-8-carboxylic acid"
+DYRK1A,7z5n,E,3NG,349.77,"5-[(3-chlorophenyl)amino]benzo[c][2,6]naphthyridine-8-carboxylic acid"
+DYRK1A,7z5n,F,3NG,349.77,"5-[(3-chlorophenyl)amino]benzo[c][2,6]naphthyridine-8-carboxylic acid"
+DYRK1A,7z5n,G,3NG,349.77,"5-[(3-chlorophenyl)amino]benzo[c][2,6]naphthyridine-8-carboxylic acid"
+DYRK1A,7z5n,H,3NG,349.77,"5-[(3-chlorophenyl)amino]benzo[c][2,6]naphthyridine-8-carboxylic acid"
+DYRK1A,9fpx,A,CC9,368.38,curcumin
+DYRK1A,9fpx,B,CC9,368.38,curcumin
+DYRK1A,9ft3,A,A1IE7,377.466,"~{N}4-(3-cyclobutyl-1~{H}-pyrazol-5-yl)-~{N}2-(pyridin-3-ylmethyl)thieno[3,2-d]pyrimidine-2,4-diamine"
+DYRK1A,9ft4,A,A1IFJ,346.386,"~{N}4-(5-cyclopropyl-1~{H}-pyrazol-3-yl)-~{N}2-(phenylmethyl)furo[3,2-d]pyrimidine-2,4-diamine"
+DYRK1A,9ft6,A,A1IE8,361.4,"~{N}4-(3-cyclobutyl-1~{H}-pyrazol-5-yl)-~{N}2-(pyridin-3-ylmethyl)furo[3,2-d]pyrimidine-2,4-diamine"

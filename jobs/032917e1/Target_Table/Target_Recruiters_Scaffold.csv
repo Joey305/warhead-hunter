@@ -1,0 +1,2 @@
+Protein,Recruiter,SMILES,Scaffold_ID,Scaffold_SMILES,Scaffold_Hash
+EGFR,112,c1nc(c2c(n1)n(cn2)[C@H]3[C@@H]([C@@H]([C@H](O3)CO[P@](=O)(O)O[P@](=O)(O)O[P@@](=O)(O)SCC(=O)N)O)O)N,EGFR_SCAF_1,c1ncc2ncn([C@H]3CCCO3)c2n1,bec95c18

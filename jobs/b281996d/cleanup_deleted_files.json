@@ -1,0 +1,974 @@
+[
+  {
+    "relative_path": "WAR/CRBN/10ay.cif",
+    "size": 4683013,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/3wx1.cif",
+    "size": 239919,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/3wx2.cif",
+    "size": 236300,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/4ci1.cif",
+    "size": 2282682,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/4ci2.cif",
+    "size": 2271163,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/4ci3.cif",
+    "size": 2276931,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/4m91.cif",
+    "size": 352503,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/4tz4.cif",
+    "size": 2212758,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/4tzc.cif",
+    "size": 700511,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/4tzu.cif",
+    "size": 649149,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/4v2y.cif",
+    "size": 568425,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/4v2z.cif",
+    "size": 566595,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/4v30.cif",
+    "size": 544300,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/4v31.cif",
+    "size": 590069,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/4v32.cif",
+    "size": 544390,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5amh.cif",
+    "size": 274703,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5ami.cif",
+    "size": 505790,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5amj.cif",
+    "size": 507668,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5amk.cif",
+    "size": 711130,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5fqd.cif",
+    "size": 4500751,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5hxb.cif",
+    "size": 4550897,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5oh1.cif",
+    "size": 563016,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5oh2.cif",
+    "size": 552194,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5oh3.cif",
+    "size": 500970,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5oh4.cif",
+    "size": 537442,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5oh7.cif",
+    "size": 527187,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5oh8.cif",
+    "size": 467968,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5oh9.cif",
+    "size": 564010,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5oha.cif",
+    "size": 565095,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5ohb.cif",
+    "size": 554866,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5v3o.cif",
+    "size": 2182935,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5yiz.cif",
+    "size": 1471336,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5yj0.cif",
+    "size": 1485916,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/5yj1.cif",
+    "size": 1444917,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6bn7.cif",
+    "size": 2051238,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6bn8.cif",
+    "size": 1231329,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6bn9.cif",
+    "size": 2023335,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6bnb.cif",
+    "size": 1105756,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6boy.cif",
+    "size": 2058046,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6h0f.cif",
+    "size": 14849997,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6h0g.cif",
+    "size": 7563660,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6r0q.cif",
+    "size": 832916,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6r0s.cif",
+    "size": 621445,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6r0u.cif",
+    "size": 588921,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6r0v.cif",
+    "size": 590028,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6r11.cif",
+    "size": 574632,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6r12.cif",
+    "size": 603632,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6r13.cif",
+    "size": 531249,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6r18.cif",
+    "size": 639577,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6r19.cif",
+    "size": 618582,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6r1a.cif",
+    "size": 628026,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6r1c.cif",
+    "size": 626538,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6r1d.cif",
+    "size": 471090,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6r1k.cif",
+    "size": 571754,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6r1w.cif",
+    "size": 623362,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6r1x.cif",
+    "size": 541379,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6uml.cif",
+    "size": 2300692,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6wwb.cif",
+    "size": 368255,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/6xk9.cif",
+    "size": 3059543,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/7bqu.cif",
+    "size": 186994,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/7bqv.cif",
+    "size": 286446,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/7lps.cif",
+    "size": 7379311,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/7pjk.cif",
+    "size": 482045,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/7ps9.cif",
+    "size": 340243,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/7pso.cif",
+    "size": 355309,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/7shh.cif",
+    "size": 568764,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/7u8f.cif",
+    "size": 3801839,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8aop.cif",
+    "size": 487302,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8aoq.cif",
+    "size": 461888,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8bc6.cif",
+    "size": 525888,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8bc7.cif",
+    "size": 566435,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8c3h.cif",
+    "size": 513895,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8cvp.cif",
+    "size": 1198250,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8d7u.cif",
+    "size": 1257146,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8d7v.cif",
+    "size": 1248511,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8d7w.cif",
+    "size": 1250257,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8d7x.cif",
+    "size": 1192570,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8d7y.cif",
+    "size": 1189186,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8d7z.cif",
+    "size": 1301482,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8d80.cif",
+    "size": 1303796,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8d81.cif",
+    "size": 994684,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8dey.cif",
+    "size": 2085008,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8g66.cif",
+    "size": 4572182,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8oiz.cif",
+    "size": 2336890,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8ojh.cif",
+    "size": 2289546,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8ou3.cif",
+    "size": 342151,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8ou4.cif",
+    "size": 1003251,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8ou5.cif",
+    "size": 1024323,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8ou6.cif",
+    "size": 477506,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8ou7.cif",
+    "size": 563871,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8ou9.cif",
+    "size": 536234,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8oua.cif",
+    "size": 535227,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8rdp.cif",
+    "size": 583563,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8rdq.cif",
+    "size": 527743,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8rdr.cif",
+    "size": 602161,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8rds.cif",
+    "size": 496905,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8rdt.cif",
+    "size": 554148,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8rq1.cif",
+    "size": 314362,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8rq8.cif",
+    "size": 350766,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8rq9.cif",
+    "size": 853945,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8rqa.cif",
+    "size": 334946,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8rqc.cif",
+    "size": 683616,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8tnp.cif",
+    "size": 2139210,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8tnq.cif",
+    "size": 2221876,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8tnr.cif",
+    "size": 2235970,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8tzx.cif",
+    "size": 3367830,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8u15.cif",
+    "size": 3634380,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8u16.cif",
+    "size": 3540027,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8u17.cif",
+    "size": 3394528,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/8uh6.cif",
+    "size": 1338770,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9cuo.cif",
+    "size": 1105072,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9d0w.cif",
+    "size": 1612926,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9d0x.cif",
+    "size": 825598,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9djt.cif",
+    "size": 3620943,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9djx.cif",
+    "size": 3598312,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9dom.cif",
+    "size": 570308,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9dqd.cif",
+    "size": 1075311,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9dur.cif",
+    "size": 998120,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9dwv.cif",
+    "size": 1089369,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9dww.cif",
+    "size": 1102730,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9e2u.cif",
+    "size": 17285544,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9fjx.cif",
+    "size": 2456870,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9gao.cif",
+    "size": 658615,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9gjq.cif",
+    "size": 182236,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9gy3.cif",
+    "size": 671173,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9h59.cif",
+    "size": 1525875,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9hne.cif",
+    "size": 2868208,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9hpi.cif",
+    "size": 2566721,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9hpj.cif",
+    "size": 2558266,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9htk.cif",
+    "size": 610048,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9htl.cif",
+    "size": 586070,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9htm.cif",
+    "size": 589624,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9htn.cif",
+    "size": 573023,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9hto.cif",
+    "size": 589103,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9htp.cif",
+    "size": 525566,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9htq.cif",
+    "size": 625516,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9nfq.cif",
+    "size": 2599467,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9nfr.cif",
+    "size": 2642493,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9ngt.cif",
+    "size": 2245557,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9nr3.cif",
+    "size": 1002736,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9nws.cif",
+    "size": 2177208,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9nwt.cif",
+    "size": 2192283,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9nyr.cif",
+    "size": 2022094,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9o91.cif",
+    "size": 572337,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9odr.cif",
+    "size": 445249,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9ods.cif",
+    "size": 441594,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9ohq.cif",
+    "size": 595702,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9ohr.cif",
+    "size": 548549,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9os2.cif",
+    "size": 1355765,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9oty.cif",
+    "size": 1291019,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9ouk.cif",
+    "size": 1094534,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9oul.cif",
+    "size": 1069170,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9q03.cif",
+    "size": 1057577,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9q22.cif",
+    "size": 2884060,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9q2d.cif",
+    "size": 1922096,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9q33.cif",
+    "size": 531124,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9saf.cif",
+    "size": 1251103,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9sai.cif",
+    "size": 1206111,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9sfm.cif",
+    "size": 2597718,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9w2f.cif",
+    "size": 1146059,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9y7d.cif",
+    "size": 420822,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  },
+  {
+    "relative_path": "WAR/CRBN/9ya9.cif",
+    "size": 1023673,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:20+00:00"
+  }
+]

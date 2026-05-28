@@ -1,0 +1,2 @@
+Target,pdb_id,Warhead,Residue_ID,Total_atoms,Exposed_atoms,SASA_in_complex_A2,%Exposed,%Buried,Chain,LigandX_Source,Ligand5_Source,Ligand_Resolved,Warhead_5,SMILES,Ion_Dropped,Ion_Drop_Reason,Parent_SMILES,Salt_Stripped
+EGFR,2gs6,112,101,35,31,642.883,0.886,0.114,B,112,112,112,,c1nc(c2c(n1)n(cn2)[C@H]3[C@@H]([C@@H]([C@H](O3)CO[P@](=O)(O)O[P@](=O)(O)O[P@@](=O)(O)SCC(=O)N)O)O)N,False,,NC(=O)CS[P@](=O)(O)O[P@@](=O)(O)O[P@@](=O)(O)OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1O,False

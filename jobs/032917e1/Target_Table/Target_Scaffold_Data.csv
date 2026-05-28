@@ -1,0 +1,2 @@
+Protein,Scaffold_ID,Original_Scaffold_SMILES,Murcko_SMILES,Scaffold_Class,CenterOfMass_X,CenterOfMass_Y,CenterOfMass_Z,Connectivity,Recruiter_Count,Recruiter_Density
+EGFR,EGFR_SCAF_1,c1ncc2ncn([C@H]3CCCO3)c2n1,c1ncc2ncn([C@H]3CCCO3)c2n1,Polycyclic_Hetero,6.520709897965087e-14,-5.305940871854394e-15,4.081919987205159e-14,1,1,1.0

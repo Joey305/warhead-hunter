@@ -1,0 +1,2 @@
+Target,pdb_id,Warhead,Residue_ID,Variant,Total_atoms,Exposed_atoms,SASA_in_complex_A2,%Exposed,%Buried
+EGFR,2gs6,112,101,112,35,31,642.883,0.886,0.114

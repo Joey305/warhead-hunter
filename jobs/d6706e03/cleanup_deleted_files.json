@@ -1,0 +1,554 @@
+[
+  {
+    "relative_path": "WAR/DYRK1A/2vx3.cif",
+    "size": 1270604,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/2wo6.cif",
+    "size": 672984,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/3anq.cif",
+    "size": 1156923,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/3anr.cif",
+    "size": 1160172,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/4aze.cif",
+    "size": 1645716,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/4mq1.cif",
+    "size": 1244190,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/4mq2.cif",
+    "size": 1191907,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/4nct.cif",
+    "size": 2175188,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/4ylj.cif",
+    "size": 2256438,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/4ylk.cif",
+    "size": 699333,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/4yll.cif",
+    "size": 687264,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/4yu2.cif",
+    "size": 2229100,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/5a3x.cif",
+    "size": 2122716,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/5a4e.cif",
+    "size": 2012126,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/5a4l.cif",
+    "size": 1174920,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/5a4q.cif",
+    "size": 2166863,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/5a4t.cif",
+    "size": 1161575,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/5a54.cif",
+    "size": 1155455,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/5aik.cif",
+    "size": 2150898,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6a1f.cif",
+    "size": 383159,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6a1g.cif",
+    "size": 633921,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6eif.cif",
+    "size": 2087136,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6eij.cif",
+    "size": 2157196,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6eil.cif",
+    "size": 2225114,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6eip.cif",
+    "size": 2123069,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6eiq.cif",
+    "size": 2132649,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6eir.cif",
+    "size": 2096304,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6eis.cif",
+    "size": 2201973,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6eiv.cif",
+    "size": 1169385,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6ej4.cif",
+    "size": 2095011,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6ln1.cif",
+    "size": 613865,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6qu2.cif",
+    "size": 2243865,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6s11.cif",
+    "size": 1150003,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6s14.cif",
+    "size": 927080,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6s17.cif",
+    "size": 956292,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6s1b.cif",
+    "size": 930372,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6s1h.cif",
+    "size": 970737,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6s1i.cif",
+    "size": 2326420,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6s1j.cif",
+    "size": 903736,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6t6a.cif",
+    "size": 2244889,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6uip.cif",
+    "size": 1684925,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6uwy.cif",
+    "size": 2282251,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/6yf8.cif",
+    "size": 2098857,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7a4o.cif",
+    "size": 668569,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7a4r.cif",
+    "size": 677305,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7a4s.cif",
+    "size": 346272,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7a4w.cif",
+    "size": 642702,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7a4z.cif",
+    "size": 367906,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7a51.cif",
+    "size": 372263,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7a52.cif",
+    "size": 674015,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7a53.cif",
+    "size": 639331,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7a55.cif",
+    "size": 646295,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7a5b.cif",
+    "size": 646499,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7a5d.cif",
+    "size": 383891,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7a5l.cif",
+    "size": 372993,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7a5n.cif",
+    "size": 618324,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7aj2.cif",
+    "size": 370024,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7aj4.cif",
+    "size": 377882,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7aj5.cif",
+    "size": 374841,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7aj7.cif",
+    "size": 350493,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7aj8.cif",
+    "size": 377585,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7aja.cif",
+    "size": 379713,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7ajm.cif",
+    "size": 676054,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7ajs.cif",
+    "size": 674545,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7ajv.cif",
+    "size": 652640,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7ajw.cif",
+    "size": 358466,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7ajy.cif",
+    "size": 646101,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7ak2.cif",
+    "size": 638641,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7aka.cif",
+    "size": 662414,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7akb.cif",
+    "size": 628480,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7ake.cif",
+    "size": 648742,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7akl.cif",
+    "size": 372002,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7fhs.cif",
+    "size": 1206130,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7fht.cif",
+    "size": 2116853,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7o7k.cif",
+    "size": 1304139,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7oy6.cif",
+    "size": 349699,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7z5n.cif",
+    "size": 4181845,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/7zh8.cif",
+    "size": 2508255,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/8c3g.cif",
+    "size": 2416861,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/8c3q.cif",
+    "size": 1107328,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/8c3r.cif",
+    "size": 1143801,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/8r8e.cif",
+    "size": 2470933,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/8t2h.cif",
+    "size": 657371,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/8yev.cif",
+    "size": 726090,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/9cy5.cif",
+    "size": 663049,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/9fpx.cif",
+    "size": 1133201,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/9ft2.cif",
+    "size": 363708,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/9ft3.cif",
+    "size": 359948,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/9ft4.cif",
+    "size": 363252,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/9ft6.cif",
+    "size": 363048,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/9fuf.cif",
+    "size": 365780,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  },
+  {
+    "relative_path": "WAR/DYRK1A/9krj.cif",
+    "size": 718184,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:48+00:00"
+  }
+]

@@ -1,0 +1,25 @@
+Ligand,PDB,Error
+4E1,4ylj,Size mismatch: SMILES=21 vs 3D=41
+4E1,4ylj,Size mismatch: SMILES=21 vs 3D=41
+4E1,4ylj,Size mismatch: SMILES=21 vs 3D=41
+4E1,4ylj,Size mismatch: SMILES=21 vs 3D=41
+4E2,4ylk,Size mismatch: SMILES=22 vs 3D=43
+7QQ,5a4e,Size mismatch: SMILES=15 vs 3D=30
+7QQ,5a4e,Size mismatch: SMILES=15 vs 3D=30
+7QQ,5a4e,Size mismatch: SMILES=15 vs 3D=30
+7QQ,5a4e,Size mismatch: SMILES=15 vs 3D=30
+EKU,6ln1,Size mismatch: SMILES=19 vs 3D=27
+EKU,6ln1,Size mismatch: SMILES=19 vs 3D=27
+KQK,6s17,Size mismatch: SMILES=18 vs 3D=30
+KQW,6s14,Size mismatch: SMILES=20 vs 3D=34
+KQZ,6s1h,Size mismatch: SMILES=18 vs 3D=31
+KRK,6s1j,Size mismatch: SMILES=21 vs 3D=34
+KRQ,6s1b,Size mismatch: SMILES=17 vs 3D=27
+LI,7o7k,Missing SMILES (tried ['LI'])
+LI,7o7k,Missing SMILES (tried ['LI'])
+QKG,6uwy,Size mismatch: SMILES=22 vs 3D=41
+QKG,6uwy,Size mismatch: SMILES=22 vs 3D=41
+QKG,6uwy,Size mismatch: SMILES=22 vs 3D=41
+QKG,6uwy,Size mismatch: SMILES=22 vs 3D=41
+RJ5,7aj2,Size mismatch: SMILES=15 vs 3D=30
+ZC3,5a4l,Size mismatch: SMILES=14 vs 3D=28

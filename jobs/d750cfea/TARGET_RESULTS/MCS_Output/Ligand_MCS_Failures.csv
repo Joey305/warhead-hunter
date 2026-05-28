@@ -1,0 +1,8 @@
+Ligand,PDB,Error
+017,3ekt,Size mismatch: SMILES=38 vs 3D=76
+DR7,3el1,Size mismatch: SMILES=51 vs 3D=102
+HBB,1z1h,Size mismatch: SMILES=40 vs 3D=45
+HBH,1z1r,Size mismatch: SMILES=41 vs 3D=46
+KVS,3nwx,Size mismatch: SMILES=57 vs 3D=56
+PI8,1d4k,Size mismatch: SMILES=51 vs 3D=58
+PI9,1d4l,Size mismatch: SMILES=43 vs 3D=45

@@ -1,0 +1,458 @@
+[
+  {
+    "relative_path": "WAR/Protease/1cpi.cif",
+    "size": 214949,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/1d4k.cif",
+    "size": 199716,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/1d4l.cif",
+    "size": 203771,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/1kjg.cif",
+    "size": 215431,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/1tsq.cif",
+    "size": 217619,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/1tsu.cif",
+    "size": 207446,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/1z1h.cif",
+    "size": 222639,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/1z1r.cif",
+    "size": 220036,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/2nxd.cif",
+    "size": 212016,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/2nxl.cif",
+    "size": 223700,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/2nxm.cif",
+    "size": 211115,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3bxr.cif",
+    "size": 240267,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3bxs.cif",
+    "size": 233848,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3ekp.cif",
+    "size": 400866,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3ekq.cif",
+    "size": 219788,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3ekt.cif",
+    "size": 414837,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3ekv.cif",
+    "size": 224189,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3ekw.cif",
+    "size": 233937,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3ekx.cif",
+    "size": 222423,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3eky.cif",
+    "size": 234905,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3el0.cif",
+    "size": 224670,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3el1.cif",
+    "size": 214434,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3el4.cif",
+    "size": 218560,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3el5.cif",
+    "size": 247166,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3el9.cif",
+    "size": 227945,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3em3.cif",
+    "size": 222431,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3em4.cif",
+    "size": 387835,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3em6.cif",
+    "size": 227710,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3fsm.cif",
+    "size": 239140,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3hau.cif",
+    "size": 363548,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3haw.cif",
+    "size": 366352,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3hbo.cif",
+    "size": 226988,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3hdk.cif",
+    "size": 230140,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3hlo.cif",
+    "size": 238996,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3iaw.cif",
+    "size": 245314,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3ka2.cif",
+    "size": 247755,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3lzv.cif",
+    "size": 221129,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3mxd.cif",
+    "size": 360372,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3mxe.cif",
+    "size": 360187,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3nwq.cif",
+    "size": 372759,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3nwx.cif",
+    "size": 367911,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3nxn.cif",
+    "size": 236193,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3nyg.cif",
+    "size": 375245,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3oxv.cif",
+    "size": 572936,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3oxw.cif",
+    "size": 669338,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3oxx.cif",
+    "size": 659040,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3oy4.cif",
+    "size": 350515,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3rbb.cif",
+    "size": 653284,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3rea.cif",
+    "size": 695389,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/3reb.cif",
+    "size": 572490,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4ep2.cif",
+    "size": 372950,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4ep3.cif",
+    "size": 356233,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4epj.cif",
+    "size": 363440,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4eq0.cif",
+    "size": 370449,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4eqj.cif",
+    "size": 629078,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4f73.cif",
+    "size": 365092,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4f74.cif",
+    "size": 339719,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4f75.cif",
+    "size": 374463,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4f76.cif",
+    "size": 349637,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4obd.cif",
+    "size": 479033,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4obf.cif",
+    "size": 510506,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4obg.cif",
+    "size": 504265,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4obh.cif",
+    "size": 516973,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4obj.cif",
+    "size": 357792,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4obk.cif",
+    "size": 345995,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4orz.cif",
+    "size": 295572,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4qj6.cif",
+    "size": 742123,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4qj7.cif",
+    "size": 410293,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4qj8.cif",
+    "size": 650832,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4qj9.cif",
+    "size": 242420,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4qja.cif",
+    "size": 393602,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/4u5w.cif",
+    "size": 974935,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/5drz.cif",
+    "size": 1377742,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/6b72.cif",
+    "size": 1226201,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/7d7s.cif",
+    "size": 580002,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  },
+  {
+    "relative_path": "WAR/Protease/8f2p.cif",
+    "size": 323948,
+    "reason": "Coordinate CIF is not referenced downstream and cleaned PDB outputs exist.",
+    "timestamp": "2026-05-18T21:26:49+00:00"
+  }
+]

@@ -1,0 +1,3067 @@
+[12:17:19] Job d6706e03 started: 2026-02-14 12:17:19
+[12:17:19] 📦 Copying assets from pipeline_assets → jobs/d6706e03 ...
+[12:17:19] 🧾 Wrote input.csv and Protein_Data.csv
+[12:17:19] 🚀 Running 1_GRABBER.py...
+🤖 AUTOMATED MODE: Processing input.csv
+=== Processing DYRK1A ===
+    🔄 Switching to EBI Backup Search for 'Dual specificity tyrosine-phosphorylation-regulated kinase 1A'...
+  → Found 92 candidates
+  → Downloaded 92 CIFs
+=== DONE ===
+[12:17:29] 🚀 Running 2_SQchk.py...
+🚀 Running Sequence Identity Analysis...
+   Proteins missing fasta/name rows skipped: 0
+   MW_min=250.0  MW_max=None  (MW filters currently ignored for ligand debug)
+   Total PDB jobs to process: 92
+  0%|          | 0/92 [00:00<?, ?it/s]DEBUG: 4ylk Chain(s) ['A'] -> Match: 99.7%
+DEBUG: 4yu2 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 99.7%
+DEBUG: 3anq Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 3anr Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 4mq1 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 99.7%
+DEBUG: 4yll Chain(s) ['A'] -> Match: 99.7%
+DEBUG: 2vx3 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 94.5%
+DEBUG: 4aze Chain(s) ['A', 'B', 'C'] -> Match: 94.5%
+DEBUG: 4aze Chain(s) ['E', 'F', 'G'] -> Match: 25.0%
+DEBUG: 4mq2 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 99.7%
+DEBUG: 4nct Chain(s) ['A', 'B', 'D'] -> Match: 100.0%
+DEBUG: 4ylj Chain(s) ['A', 'B', 'C', 'D'] -> Match: 99.7%
+  1%|          | 1/92 [00:00<00:46,  1.94it/s]DEBUG: 4nct Chain(s) ['C'] -> Match: 100.0%
+DEBUG: 2wo6 Chain(s) ['A', 'B'] -> Match: 94.5%
+DEBUG: 2wo6 Chain(s) ['C'] -> Match: 100.0%
+DEBUG: 5a3x Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 6eif Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 6a1f Chain(s) ['A'] -> Match: 99.4%
+DEBUG: 5a4e Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 5a4l Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 6a1g Chain(s) ['A', 'B'] -> Match: 99.4%
+DEBUG: 5a4t Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 5a54 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 6eil Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 5aik Chain(s) ['A', 'B', 'C', 'D'] -> Match: 94.5%
+DEBUG: 5a4q Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 6eij Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+ 14%|█▍        | 13/92 [00:00<00:05, 15.36it/s]DEBUG: 6eiv Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 6s11 Chain(s) ['A', 'B'] -> Match: 99.7%
+DEBUG: 6s1h Chain(s) ['A'] -> Match: 99.7%
+ 27%|██▋       | 25/92 [00:01<00:03, 19.65it/s]DEBUG: 6eis Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 6eip Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 6eir Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 6ej4 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 6ln1 Chain(s) ['A', 'B'] -> Match: 99.7%DEBUG: 6s17 Chain(s) ['A'] -> Match: 99.7%
+DEBUG: 6s1b Chain(s) ['A'] -> Match: 99.7%
+DEBUG: 6eiq Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 6qu2 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 99.7%
+DEBUG: 6s1j Chain(s) ['A'] -> Match: 99.7%
+DEBUG: 6uip Chain(s) ['A', 'B', 'C'] -> Match: 99.7%DEBUG: 6uwy Chain(s) ['A', 'B', 'C', 'D'] -> Match: 99.7%
+ 40%|████      | 37/92 [00:01<00:02, 21.47it/s]DEBUG: 6t6a Chain(s) ['A', 'B', 'C', 'D'] -> Match: 99.7%
+DEBUG: 7a4o Chain(s) ['A', 'B'] -> Match: 94.5%
+DEBUG: 7a51 Chain(s) ['A'] -> Match: 95.8%
+DEBUG: 7a4r Chain(s) ['A', 'B'] -> Match: 95.5%
+DEBUG: 6s14 Chain(s) ['A'] -> Match: 99.7%
+DEBUG: 6yf8 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 7a4s Chain(s) ['A'] -> Match: 95.8%
+DEBUG: 7a4w Chain(s) ['A', 'B'] -> Match: 94.5%
+DEBUG: 6s1i Chain(s) ['A', 'B', 'C', 'D'] -> Match: 99.7%
+DEBUG: 7a4z Chain(s) ['A'] -> Match: 95.8%
+ 53%|█████▎    | 49/92 [00:02<00:01, 22.59it/s]DEBUG: 7a53 Chain(s) ['A', 'B'] -> Match: 95.8%
+DEBUG: 7a52 Chain(s) ['A', 'B'] -> Match: 95.5%
+DEBUG: 7a55 Chain(s) ['A', 'B'] -> Match: 94.5%
+DEBUG: 7a5b Chain(s) ['A', 'B'] -> Match: 94.5%
+DEBUG: 7a5l Chain(s) ['A'] -> Match: 95.8%
+DEBUG: 7aj5 Chain(s) ['A'] -> Match: 95.8%
+DEBUG: 7a5d Chain(s) ['A'] -> Match: 95.8%
+DEBUG: 7aj2 Chain(s) ['A'] -> Match: 95.8%
+DEBUG: 7aj4 Chain(s) ['A'] -> Match: 95.8%
+DEBUG: 7aj8 Chain(s) ['A'] -> Match: 95.8%
+DEBUG: 7a5n Chain(s) ['A', 'B'] -> Match: 95.8%
+DEBUG: 7aja Chain(s) ['A'] -> Match: 95.8%
+DEBUG: 7ajm Chain(s) ['A', 'B'] -> Match: 95.5%
+DEBUG: 7ak2 Chain(s) ['A', 'B'] -> Match: 95.8%DEBUG: 7akb Chain(s) ['A', 'B'] -> Match: 95.8%
+ 66%|██████▋   | 61/92 [00:02<00:01, 23.82it/s]DEBUG: 7ake Chain(s) ['A', 'B'] -> Match: 95.8%
+DEBUG: 7ajv Chain(s) ['A', 'B'] -> Match: 95.8%
+DEBUG: 7ajy Chain(s) ['A', 'B'] -> Match: 95.8%
+DEBUG: 7aj7 Chain(s) ['A'] -> Match: 95.8%
+DEBUG: 7ajs Chain(s) ['A', 'B'] -> Match: 95.5%
+DEBUG: 7aka Chain(s) ['A', 'B'] -> Match: 95.8%
+DEBUG: 7ajw Chain(s) ['A'] -> Match: 95.8%
+DEBUG: 7akl Chain(s) ['A'] -> Match: 95.8%
+DEBUG: 7fht Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 8c3r Chain(s) ['A', 'B'] -> Match: 98.4%
+DEBUG: 8t2h Chain(s) ['A', 'B'] -> Match: 100.0%
+DEBUG: 8c3q Chain(s) ['A', 'B'] -> Match: 98.4%
+DEBUG: 8yev Chain(s) ['A', 'B'] -> Match: 96.9%
+DEBUG: 8r8e Chain(s) ['A', 'B', 'C'] -> Match: 99.7%
+DEBUG: 7zh8 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 94.5%DEBUG: 8c3g Chain(s) ['A', 'B', 'C', 'D'] -> Match: 98.1%DEBUG: 7o7k Chain(s) ['A', 'B'] -> Match: 99.7%
+ 79%|███████▉  | 73/92 [00:03<00:00, 24.16it/s]DEBUG: 8r8e Chain(s) ['D'] -> Match: 99.7%
+DEBUG: 7fhs Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 7oy6 Chain(s) ['C'] -> Match: 100.0%
+DEBUG: 9cy5 Chain(s) ['A', 'B'] -> Match: 100.0%
+DEBUG: 9fuf Chain(s) ['A'] -> Match: 99.7%
+DEBUG: 9ft2 Chain(s) ['A'] -> Match: 99.7%
+ 92%|█████████▏| 85/92 [00:03<00:00, 24.94it/s]DEBUG: 9krj Chain(s) ['A', 'B'] -> Match: 48.1%
+DEBUG: 7z5n Chain(s) ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] -> Match: 98.4%
+DEBUG: 9fpx Chain(s) ['A', 'B'] -> Match: 98.1%
+DEBUG: 9ft3 Chain(s) ['A'] -> Match: 99.7%
+DEBUG: 9ft4 Chain(s) ['A'] -> Match: 99.7%
+DEBUG: 9ft6 Chain(s) ['A'] -> Match: 99.7%
+100%|██████████| 92/92 [00:03<00:00, 23.93it/s]
+DONE
+✅ PDBs processed OK: 92
+❌ PDBs failed: 0
+[12:17:33] 🚀 Running 3_PDBmkr.py...
+📊 Similarity Stats: Max found = 100.00% (Threshold: 90.0%)
+🚀 BUILDING 229 PDB CHAINS...
+  0%|          | 0/229 [00:00<?, ?it/s]
+  0%|          | 1/229 [00:00<01:21,  2.81it/s]
+  1%|          | 2/229 [00:00<01:15,  3.00it/s]
+  4%|▍         | 10/229 [00:01<00:17, 12.42it/s]
+  5%|▌         | 12/229 [00:01<00:15, 13.63it/s]
+  6%|▌         | 14/229 [00:01<00:18, 11.56it/s]
+  7%|▋         | 17/229 [00:01<00:14, 14.65it/s]
+ 10%|▉         | 22/229 [00:02<00:17, 11.51it/s]
+ 11%|█         | 25/229 [00:02<00:15, 12.75it/s]
+ 14%|█▍        | 32/229 [00:02<00:09, 20.56it/s]
+ 15%|█▌        | 35/229 [00:02<00:11, 17.15it/s]
+ 17%|█▋        | 38/229 [00:03<00:16, 11.31it/s]
+ 17%|█▋        | 40/229 [00:03<00:16, 11.60it/s]
+ 20%|█▉        | 45/229 [00:03<00:12, 14.80it/s]
+ 21%|██        | 48/229 [00:03<00:11, 15.91it/s]
+ 22%|██▏       | 51/229 [00:03<00:10, 17.20it/s]
+ 24%|██▎       | 54/229 [00:03<00:09, 19.07it/s]
+ 25%|██▍       | 57/229 [00:04<00:10, 16.60it/s]
+ 26%|██▌       | 59/229 [00:04<00:10, 16.48it/s]
+ 28%|██▊       | 63/229 [00:04<00:16,  9.82it/s]
+ 29%|██▉       | 66/229 [00:05<00:13, 12.01it/s]
+ 30%|███       | 69/229 [00:05<00:11, 13.98it/s]
+ 31%|███       | 71/229 [00:05<00:11, 13.92it/s]
+ 32%|███▏      | 73/229 [00:05<00:10, 14.23it/s]
+ 33%|███▎      | 75/229 [00:05<00:17,  8.96it/s]
+ 34%|███▍      | 79/229 [00:06<00:11, 12.61it/s]
+ 36%|███▌      | 82/229 [00:06<00:09, 15.02it/s]
+ 38%|███▊      | 87/229 [00:06<00:08, 16.27it/s]
+ 39%|███▉      | 89/229 [00:07<00:15,  8.97it/s]
+ 41%|████▏     | 95/229 [00:07<00:09, 14.25it/s]
+ 43%|████▎     | 98/229 [00:07<00:08, 15.40it/s]
+ 44%|████▍     | 101/229 [00:07<00:07, 17.57it/s]
+ 45%|████▌     | 104/229 [00:07<00:10, 11.69it/s]
+ 46%|████▋     | 106/229 [00:08<00:11, 10.34it/s]
+ 48%|████▊     | 111/229 [00:08<00:07, 14.75it/s]
+ 50%|████▉     | 114/229 [00:08<00:08, 12.94it/s]
+ 51%|█████     | 116/229 [00:08<00:10, 10.83it/s]
+ 53%|█████▎    | 121/229 [00:09<00:08, 13.40it/s]
+ 54%|█████▎    | 123/229 [00:09<00:07, 13.38it/s]
+ 55%|█████▌    | 127/229 [00:09<00:06, 16.15it/s]
+ 57%|█████▋    | 130/229 [00:09<00:06, 16.29it/s]
+ 58%|█████▊    | 132/229 [00:09<00:06, 14.21it/s]
+ 59%|█████▊    | 134/229 [00:10<00:06, 14.95it/s]
+ 60%|█████▉    | 137/229 [00:10<00:05, 15.78it/s]
+ 61%|██████    | 139/229 [00:10<00:05, 15.19it/s]
+ 63%|██████▎   | 144/229 [00:10<00:03, 22.26it/s]
+ 64%|██████▍   | 147/229 [00:10<00:03, 22.39it/s]
+ 67%|██████▋   | 153/229 [00:10<00:02, 30.95it/s]
+ 69%|██████▉   | 158/229 [00:10<00:02, 29.81it/s]
+ 71%|███████   | 162/229 [00:10<00:02, 29.47it/s]
+ 73%|███████▎  | 167/229 [00:11<00:01, 32.28it/s]
+ 75%|███████▌  | 172/229 [00:11<00:01, 35.46it/s]
+ 77%|███████▋  | 176/229 [00:11<00:01, 31.96it/s]
+ 79%|███████▊  | 180/229 [00:11<00:02, 23.60it/s]
+ 80%|███████▉  | 183/229 [00:12<00:02, 17.09it/s]
+ 82%|████████▏ | 187/229 [00:12<00:02, 18.20it/s]
+ 83%|████████▎ | 190/229 [00:12<00:02, 18.86it/s]
+ 84%|████████▍ | 193/229 [00:12<00:01, 20.40it/s]
+ 86%|████████▌ | 196/229 [00:12<00:02, 13.90it/s]
+ 86%|████████▋ | 198/229 [00:13<00:02, 13.46it/s]
+ 87%|████████▋ | 200/229 [00:13<00:02, 11.06it/s]
+ 89%|████████▊ | 203/229 [00:13<00:02, 12.02it/s]
+ 90%|████████▉ | 205/229 [00:13<00:02, 11.59it/s]
+ 92%|█████████▏| 210/229 [00:13<00:01, 17.09it/s]
+ 93%|█████████▎| 213/229 [00:14<00:01, 12.02it/s]
+ 94%|█████████▍| 216/229 [00:14<00:00, 14.05it/s]
+ 95%|█████████▌| 218/229 [00:14<00:00, 12.62it/s]
+ 96%|█████████▌| 220/229 [00:14<00:00, 13.07it/s]
+ 97%|█████████▋| 222/229 [00:15<00:00,  7.43it/s]
+ 98%|█████████▊| 224/229 [00:15<00:00,  6.96it/s]
+100%|█████████▉| 228/229 [00:15<00:00, 10.71it/s]
+100%|██████████| 229/229 [00:15<00:00, 14.45it/s]
+✅ All PDBs built successfully.
+✅ Wrote 5CharMAP.csv with mapping rows (5-letter ligands detected).
+[12:17:50] 🚀 Running 4_PDBfxr.py...
+============================================
+🔥 STEP 4: LIGAND5 → LIGANDX (TOKEN PARSE + STRICT REFORMAT)
+============================================
+🔬 Loaded 6 ligand5→ligandX mappings
+🔧 Fixing 9ft2_A_A1IE6.pdb | A1IE6 → A02
+   → 9ft2_A_A02.pdb | atoms updated: 0
+🔧 Fixing 9ft6_A_A1IE8.pdb | A1IE8 → A05
+   → 9ft6_A_A05.pdb | atoms updated: 0
+🔧 Fixing 9ft4_A_A1IFJ.pdb | A1IFJ → A04
+   → 9ft4_A_A04.pdb | atoms updated: 0
+🔧 Fixing 9ft3_A_A1IE7.pdb | A1IE7 → A03
+   → 9ft3_A_A03.pdb | atoms updated: 0
+🔧 Fixing 9cy5_B_A1A04.pdb | A1A04 → A00
+   → 9cy5_B_A00.pdb | atoms updated: 0
+🔧 Fixing 9cy5_A_A1A04.pdb | A1A04 → A00
+   → 9cy5_A_A00.pdb | atoms updated: 0
+🔧 Fixing 9fuf_A_A1IFO.pdb | A1IFO → A01
+   → 9fuf_A_A01.pdb | atoms updated: 0
+============================================
+🎉 DONE — 7 files fixed
+✅ Total ligand atoms renamed: 0
+============================================
+[12:17:50] 🚀 Running 5_PDBcln.py...
+📁 ROOT DIRECTORY: WAR_PDB
+=============================
+🔬 Processing Protein: DYRK1A
+📂 Folder: WAR_PDB/DYRK1A
+=============================
+🧪 Cleaning 9fpx_B_CC9.pdb  | Keeping ligand: CC9
+✔ Cleaned: 9fpx_B_CC9.pdb
+🧪 Cleaning 6yf8_A_OPW.pdb  | Keeping ligand: OPW
+✔ Cleaned: 6yf8_A_OPW.pdb
+🧪 Cleaning 7aj4_A_RHZ.pdb  | Keeping ligand: RHZ
+✔ Cleaned: 7aj4_A_RHZ.pdb
+🧪 Cleaning 7ajv_B_RKK.pdb  | Keeping ligand: RKK
+✔ Cleaned: 7ajv_B_RKK.pdb
+🧪 Cleaning 5a4t_D_AJG.pdb  | Keeping ligand: AJG
+✔ Cleaned: 5a4t_D_AJG.pdb
+🧪 Cleaning 7z5n_A_3NG.pdb  | Keeping ligand: 3NG
+✔ Cleaned: 7z5n_A_3NG.pdb
+🧪 Cleaning 6eip_B_B7B.pdb  | Keeping ligand: B7B
+✔ Cleaned: 6eip_B_B7B.pdb
+🧪 Cleaning 4aze_B_3RA.pdb  | Keeping ligand: 3RA
+✔ Cleaned: 4aze_B_3RA.pdb
+🧪 Cleaning 7o7k_B_6ZV.pdb  | Keeping ligand: 6ZV
+✔ Cleaned: 7o7k_B_6ZV.pdb
+🧪 Cleaning 3anq_B_EHB.pdb  | Keeping ligand: EHB
+✔ Cleaned: 3anq_B_EHB.pdb
+🧪 Cleaning 7a4w_A_QYH.pdb  | Keeping ligand: QYH
+✔ Cleaned: 7a4w_A_QYH.pdb
+🧪 Cleaning 7a4r_B_QY8.pdb  | Keeping ligand: QY8
+✔ Cleaned: 7a4r_B_QY8.pdb
+🧪 Cleaning 6eis_C_B6N.pdb  | Keeping ligand: B6N
+✔ Cleaned: 6eis_C_B6N.pdb
+🧪 Cleaning 6ej4_A_B7W.pdb  | Keeping ligand: B7W
+✔ Cleaned: 6ej4_A_B7W.pdb
+🧪 Cleaning 7ajw_A_RKQ.pdb  | Keeping ligand: RKQ
+✔ Cleaned: 7ajw_A_RKQ.pdb
+🧪 Cleaning 6eij_C_B5Z.pdb  | Keeping ligand: B5Z
+✔ Cleaned: 6eij_C_B5Z.pdb
+🧪 Cleaning 3anq_D_EHB.pdb  | Keeping ligand: EHB
+✔ Cleaned: 3anq_D_EHB.pdb
+🧪 Cleaning 7a52_A_QYB.pdb  | Keeping ligand: QYB
+✔ Cleaned: 7a52_A_QYB.pdb
+🧪 Cleaning 6eif_C_B5T.pdb  | Keeping ligand: B5T
+✔ Cleaned: 6eif_C_B5T.pdb
+🧪 Cleaning 5a4q_B_Y3L.pdb  | Keeping ligand: Y3L
+✔ Cleaned: 5a4q_B_Y3L.pdb
+🧪 Cleaning 4aze_A_3RA.pdb  | Keeping ligand: 3RA
+✔ Cleaned: 4aze_A_3RA.pdb
+🧪 Cleaning 6eir_D_B6H.pdb  | Keeping ligand: B6H
+✔ Cleaned: 6eir_D_B6H.pdb
+🧪 Cleaning 6s1i_C_KR8.pdb  | Keeping ligand: KR8
+✔ Cleaned: 6s1i_C_KR8.pdb
+🧪 Cleaning 7fht_D_4WD.pdb  | Keeping ligand: 4WD
+✔ Cleaned: 7fht_D_4WD.pdb
+🧪 Cleaning 4nct_D_2K2.pdb  | Keeping ligand: 2K2
+✔ Cleaned: 4nct_D_2K2.pdb
+🧪 Cleaning 8c3g_B_QS0.pdb  | Keeping ligand: QS0
+✔ Cleaned: 8c3g_B_QS0.pdb
+🧪 Cleaning 6s11_A_KQE.pdb  | Keeping ligand: KQE
+✔ Cleaned: 6s11_A_KQE.pdb
+🧪 Cleaning 6eis_A_B6N.pdb  | Keeping ligand: B6N
+✔ Cleaned: 6eis_A_B6N.pdb
+🧪 Cleaning 7fhs_C_4VZ.pdb  | Keeping ligand: 4VZ
+✔ Cleaned: 7fhs_C_4VZ.pdb
+🧪 Cleaning 6eiv_B_B6Q.pdb  | Keeping ligand: B6Q
+✔ Cleaned: 6eiv_B_B6Q.pdb
+🧪 Cleaning 7ajs_A_RKH.pdb  | Keeping ligand: RKH
+✔ Cleaned: 7ajs_A_RKH.pdb
+🧪 Cleaning 8c3g_C_QS0.pdb  | Keeping ligand: QS0
+✔ Cleaned: 8c3g_C_QS0.pdb
+🧪 Cleaning 7aja_A_RJ2.pdb  | Keeping ligand: RJ2
+✔ Cleaned: 7aja_A_RJ2.pdb
+🧪 Cleaning 4mq1_C_2C3.pdb  | Keeping ligand: 2C3
+✔ Cleaned: 4mq1_C_2C3.pdb
+🧪 Cleaning 6s1i_D_KR8.pdb  | Keeping ligand: KR8
+✔ Cleaned: 6s1i_D_KR8.pdb
+🧪 Cleaning 6eil_D_B6B.pdb  | Keeping ligand: B6B
+✔ Cleaned: 6eil_D_B6B.pdb
+🧪 Cleaning 6s17_A_KQK.pdb  | Keeping ligand: KQK
+✔ Cleaned: 6s17_A_KQK.pdb
+🧪 Cleaning 8c3q_A_RUT.pdb  | Keeping ligand: RUT
+✔ Cleaned: 8c3q_A_RUT.pdb
+🧪 Cleaning 7aj5_A_RHW.pdb  | Keeping ligand: RHW
+✔ Cleaned: 7aj5_A_RHW.pdb
+🧪 Cleaning 3anr_A_HRM.pdb  | Keeping ligand: HRM
+✔ Cleaned: 3anr_A_HRM.pdb
+🧪 Cleaning 7fhs_B_4VZ.pdb  | Keeping ligand: 4VZ
+✔ Cleaned: 7fhs_B_4VZ.pdb
+🧪 Cleaning 7ake_B_RK8.pdb  | Keeping ligand: RK8
+✔ Cleaned: 7ake_B_RK8.pdb
+🧪 Cleaning 6eif_D_B5T.pdb  | Keeping ligand: B5T
+✔ Cleaned: 6eif_D_B5T.pdb
+🧪 Cleaning 6eiv_C_B6Q.pdb  | Keeping ligand: B6Q
+✔ Cleaned: 6eiv_C_B6Q.pdb
+🧪 Cleaning 5a4l_D_ZC3.pdb  | Keeping ligand: ZC3
+✔ Cleaned: 5a4l_D_ZC3.pdb
+🧪 Cleaning 6eiv_D_B6Q.pdb  | Keeping ligand: B6Q
+✔ Cleaned: 6eiv_D_B6Q.pdb
+🧪 Cleaning 7fht_B_4WD.pdb  | Keeping ligand: 4WD
+✔ Cleaned: 7fht_B_4WD.pdb
+🧪 Cleaning 6s1i_A_KR8.pdb  | Keeping ligand: KR8
+✔ Cleaned: 6s1i_A_KR8.pdb
+🧪 Cleaning 9ft6_A_A05.pdb  | Keeping ligand: A05
+✔ Cleaned: 9ft6_A_A05.pdb
+🧪 Cleaning 5a4l_A_ZC3.pdb  | Keeping ligand: ZC3
+✔ Cleaned: 5a4l_A_ZC3.pdb
+🧪 Cleaning 7a5d_A_QYW.pdb  | Keeping ligand: QYW
+✔ Cleaned: 7a5d_A_QYW.pdb
+🧪 Cleaning 5a4e_D_7QQ.pdb  | Keeping ligand: 7QQ
+✔ Cleaned: 5a4e_D_7QQ.pdb
+🧪 Cleaning 6eiq_A_B6Z.pdb  | Keeping ligand: B6Z
+✔ Cleaned: 6eiq_A_B6Z.pdb
+🧪 Cleaning 6uip_B_Q8J.pdb  | Keeping ligand: Q8J
+✔ Cleaned: 6uip_B_Q8J.pdb
+🧪 Cleaning 6s11_B_KQE.pdb  | Keeping ligand: KQE
+✔ Cleaned: 6s11_B_KQE.pdb
+🧪 Cleaning 5aik_B_AWR.pdb  | Keeping ligand: AWR
+✔ Cleaned: 5aik_B_AWR.pdb
+🧪 Cleaning 6yf8_B_OPW.pdb  | Keeping ligand: OPW
+✔ Cleaned: 6yf8_B_OPW.pdb
+🧪 Cleaning 5a3x_C_QIV.pdb  | Keeping ligand: QIV
+✔ Cleaned: 5a3x_C_QIV.pdb
+🧪 Cleaning 5a4t_A_AJG.pdb  | Keeping ligand: AJG
+✔ Cleaned: 5a4t_A_AJG.pdb
+🧪 Cleaning 6s1b_A_KRQ.pdb  | Keeping ligand: KRQ
+✔ Cleaned: 6s1b_A_KRQ.pdb
+🧪 Cleaning 5a4t_C_AJG.pdb  | Keeping ligand: AJG
+✔ Cleaned: 5a4t_C_AJG.pdb
+🧪 Cleaning 7a4s_A_QYE.pdb  | Keeping ligand: QYE
+✔ Cleaned: 7a4s_A_QYE.pdb
+🧪 Cleaning 7a4r_A_QY8.pdb  | Keeping ligand: QY8
+✔ Cleaned: 7a4r_A_QY8.pdb
+🧪 Cleaning 7aj8_A_RJ8.pdb  | Keeping ligand: RJ8
+✔ Cleaned: 7aj8_A_RJ8.pdb
+🧪 Cleaning 6eip_A_B7B.pdb  | Keeping ligand: B7B
+✔ Cleaned: 6eip_A_B7B.pdb
+🧪 Cleaning 4ylj_A_4E1.pdb  | Keeping ligand: 4E1
+✔ Cleaned: 4ylj_A_4E1.pdb
+🧪 Cleaning 7fht_C_4WD.pdb  | Keeping ligand: 4WD
+✔ Cleaned: 7fht_C_4WD.pdb
+🧪 Cleaning 9cy5_B_A00.pdb  | Keeping ligand: A00
+✔ Cleaned: 9cy5_B_A00.pdb
+🧪 Cleaning 7a4w_B_QYH.pdb  | Keeping ligand: QYH
+✔ Cleaned: 7a4w_B_QYH.pdb
+🧪 Cleaning 4ylj_B_4E1.pdb  | Keeping ligand: 4E1
+✔ Cleaned: 4ylj_B_4E1.pdb
+🧪 Cleaning 6eir_B_B6H.pdb  | Keeping ligand: B6H
+✔ Cleaned: 6eir_B_B6H.pdb
+🧪 Cleaning 6qu2_A_JHW.pdb  | Keeping ligand: JHW
+✔ Cleaned: 6qu2_A_JHW.pdb
+🧪 Cleaning 4nct_C_2K2.pdb  | Keeping ligand: 2K2
+✔ Cleaned: 4nct_C_2K2.pdb
+🧪 Cleaning 6eir_A_B6H.pdb  | Keeping ligand: B6H
+✔ Cleaned: 6eir_A_B6H.pdb
+🧪 Cleaning 2vx3_B_D15.pdb  | Keeping ligand: D15
+✔ Cleaned: 2vx3_B_D15.pdb
+🧪 Cleaning 5a4e_B_7QQ.pdb  | Keeping ligand: 7QQ
+✔ Cleaned: 5a4e_B_7QQ.pdb
+🧪 Cleaning 7oy6_C_39I.pdb  | Keeping ligand: 39I
+✔ Cleaned: 7oy6_C_39I.pdb
+🧪 Cleaning 4yu2_B_4H5.pdb  | Keeping ligand: 4H5
+✔ Cleaned: 4yu2_B_4H5.pdb
+🧪 Cleaning 6eij_B_B5Z.pdb  | Keeping ligand: B5Z
+✔ Cleaned: 6eij_B_B5Z.pdb
+🧪 Cleaning 6uip_A_Q8J.pdb  | Keeping ligand: Q8J
+✔ Cleaned: 6uip_A_Q8J.pdb
+🧪 Cleaning 4aze_C_3RA.pdb  | Keeping ligand: 3RA
+✔ Cleaned: 4aze_C_3RA.pdb
+🧪 Cleaning 6a1g_A_9OL.pdb  | Keeping ligand: 9OL
+✔ Cleaned: 6a1g_A_9OL.pdb
+🧪 Cleaning 8c3r_A_R7O.pdb  | Keeping ligand: R7O
+✔ Cleaned: 8c3r_A_R7O.pdb
+🧪 Cleaning 7ake_A_RK8.pdb  | Keeping ligand: RK8
+✔ Cleaned: 7ake_A_RK8.pdb
+🧪 Cleaning 5aik_A_AWR.pdb  | Keeping ligand: AWR
+✔ Cleaned: 5aik_A_AWR.pdb
+🧪 Cleaning 4mq2_C_2C4.pdb  | Keeping ligand: 2C4
+✔ Cleaned: 4mq2_C_2C4.pdb
+🧪 Cleaning 3anr_B_HRM.pdb  | Keeping ligand: HRM
+✔ Cleaned: 3anr_B_HRM.pdb
+🧪 Cleaning 6uwy_D_QKG.pdb  | Keeping ligand: QKG
+✔ Cleaned: 6uwy_D_QKG.pdb
+🧪 Cleaning 5a54_D_5PW.pdb  | Keeping ligand: 5PW
+✔ Cleaned: 5a54_D_5PW.pdb
+🧪 Cleaning 9cy5_A_A00.pdb  | Keeping ligand: A00
+✔ Cleaned: 9cy5_A_A00.pdb
+🧪 Cleaning 9ft3_A_A03.pdb  | Keeping ligand: A03
+✔ Cleaned: 9ft3_A_A03.pdb
+🧪 Cleaning 2vx3_C_D15.pdb  | Keeping ligand: D15
+✔ Cleaned: 2vx3_C_D15.pdb
+🧪 Cleaning 5a54_C_5PW.pdb  | Keeping ligand: 5PW
+✔ Cleaned: 5a54_C_5PW.pdb
+🧪 Cleaning 6s1i_B_KR8.pdb  | Keeping ligand: KR8
+✔ Cleaned: 6s1i_B_KR8.pdb
+🧪 Cleaning 7a5b_B_MFR.pdb  | Keeping ligand: MFR
+✔ Cleaned: 7a5b_B_MFR.pdb
+🧪 Cleaning 4mq1_B_2C3.pdb  | Keeping ligand: 2C3
+✔ Cleaned: 4mq1_B_2C3.pdb
+🧪 Cleaning 7ak2_B_RHH.pdb  | Keeping ligand: RHH
+✔ Cleaned: 7ak2_B_RHH.pdb
+🧪 Cleaning 7fht_A_4WD.pdb  | Keeping ligand: 4WD
+✔ Cleaned: 7fht_A_4WD.pdb
+🧪 Cleaning 6ln1_A_EKU.pdb  | Keeping ligand: EKU
+✔ Cleaned: 6ln1_A_EKU.pdb
+🧪 Cleaning 7z5n_G_3NG.pdb  | Keeping ligand: 3NG
+✔ Cleaned: 7z5n_G_3NG.pdb
+🧪 Cleaning 6uip_C_Q8J.pdb  | Keeping ligand: Q8J
+✔ Cleaned: 6uip_C_Q8J.pdb
+🧪 Cleaning 2wo6_A_D15.pdb  | Keeping ligand: D15
+✔ Cleaned: 2wo6_A_D15.pdb
+🧪 Cleaning 7a4z_A_6SD.pdb  | Keeping ligand: 6SD
+✔ Cleaned: 7a4z_A_6SD.pdb
+🧪 Cleaning 6t6a_A_MLW.pdb  | Keeping ligand: MLW
+✔ Cleaned: 6t6a_A_MLW.pdb
+🧪 Cleaning 8c3q_B_RUT.pdb  | Keeping ligand: RUT
+✔ Cleaned: 8c3q_B_RUT.pdb
+🧪 Cleaning 7a53_A_QYZ.pdb  | Keeping ligand: QYZ
+✔ Cleaned: 7a53_A_QYZ.pdb
+🧪 Cleaning 8t2h_A_XIR.pdb  | Keeping ligand: XIR
+✔ Cleaned: 8t2h_A_XIR.pdb
+🧪 Cleaning 5a4t_B_AJG.pdb  | Keeping ligand: AJG
+✔ Cleaned: 5a4t_B_AJG.pdb
+🧪 Cleaning 8c3g_A_QS0.pdb  | Keeping ligand: QS0
+✔ Cleaned: 8c3g_A_QS0.pdb
+🧪 Cleaning 6eip_D_B7B.pdb  | Keeping ligand: B7B
+✔ Cleaned: 6eip_D_B7B.pdb
+🧪 Cleaning 6ln1_B_EKU.pdb  | Keeping ligand: EKU
+✔ Cleaned: 6ln1_B_EKU.pdb
+🧪 Cleaning 6yf8_C_OPW.pdb  | Keeping ligand: OPW
+✔ Cleaned: 6yf8_C_OPW.pdb
+🧪 Cleaning 5a4e_A_7QQ.pdb  | Keeping ligand: 7QQ
+✔ Cleaned: 5a4e_A_7QQ.pdb
+🧪 Cleaning 8yev_B_CUE.pdb  | Keeping ligand: CUE
+✔ Cleaned: 8yev_B_CUE.pdb
+🧪 Cleaning 7o7k_A_LI.pdb  | Keeping ligand: LI
+✔ Cleaned: 7o7k_A_LI.pdb
+🧪 Cleaning 6a1g_B_9OL.pdb  | Keeping ligand: 9OL
+✔ Cleaned: 6a1g_B_9OL.pdb
+🧪 Cleaning 4yll_A_4E3.pdb  | Keeping ligand: 4E3
+✔ Cleaned: 4yll_A_4E3.pdb
+🧪 Cleaning 5a3x_B_QIV.pdb  | Keeping ligand: QIV
+✔ Cleaned: 5a3x_B_QIV.pdb
+🧪 Cleaning 7fhs_A_4VZ.pdb  | Keeping ligand: 4VZ
+✔ Cleaned: 7fhs_A_4VZ.pdb
+🧪 Cleaning 7a5l_A_QZW.pdb  | Keeping ligand: QZW
+✔ Cleaned: 7a5l_A_QZW.pdb
+🧪 Cleaning 6qu2_B_JHW.pdb  | Keeping ligand: JHW
+✔ Cleaned: 6qu2_B_JHW.pdb
+🧪 Cleaning 6eir_C_B6H.pdb  | Keeping ligand: B6H
+✔ Cleaned: 6eir_C_B6H.pdb
+🧪 Cleaning 4mq2_B_2C4.pdb  | Keeping ligand: 2C4
+✔ Cleaned: 4mq2_B_2C4.pdb
+🧪 Cleaning 7ajy_A_RKZ.pdb  | Keeping ligand: RKZ
+✔ Cleaned: 7ajy_A_RKZ.pdb
+🧪 Cleaning 6eip_C_B7B.pdb  | Keeping ligand: B7B
+✔ Cleaned: 6eip_C_B7B.pdb
+🧪 Cleaning 7z5n_E_3NG.pdb  | Keeping ligand: 3NG
+✔ Cleaned: 7z5n_E_3NG.pdb
+🧪 Cleaning 9ft2_A_A02.pdb  | Keeping ligand: A02
+✔ Cleaned: 9ft2_A_A02.pdb
+🧪 Cleaning 6s1h_A_KQZ.pdb  | Keeping ligand: KQZ
+✔ Cleaned: 6s1h_A_KQZ.pdb
+🧪 Cleaning 3anr_D_HRM.pdb  | Keeping ligand: HRM
+✔ Cleaned: 3anr_D_HRM.pdb
+🧪 Cleaning 7aka_B_RK2.pdb  | Keeping ligand: RK2
+✔ Cleaned: 7aka_B_RK2.pdb
+🧪 Cleaning 5a4e_C_7QQ.pdb  | Keeping ligand: 7QQ
+✔ Cleaned: 5a4e_C_7QQ.pdb
+🧪 Cleaning 7z5n_D_3NG.pdb  | Keeping ligand: 3NG
+✔ Cleaned: 7z5n_D_3NG.pdb
+🧪 Cleaning 7a53_B_QYZ.pdb  | Keeping ligand: QYZ
+✔ Cleaned: 7a53_B_QYZ.pdb
+🧪 Cleaning 7a55_B_QZ2.pdb  | Keeping ligand: QZ2
+✔ Cleaned: 7a55_B_QZ2.pdb
+🧪 Cleaning 9fuf_A_A01.pdb  | Keeping ligand: A01
+✔ Cleaned: 9fuf_A_A01.pdb
+🧪 Cleaning 3anq_A_EHB.pdb  | Keeping ligand: EHB
+✔ Cleaned: 3anq_A_EHB.pdb
+🧪 Cleaning 5a3x_D_QIV.pdb  | Keeping ligand: QIV
+✔ Cleaned: 5a3x_D_QIV.pdb
+🧪 Cleaning 8r8e_D_YOX.pdb  | Keeping ligand: YOX
+✔ Cleaned: 8r8e_D_YOX.pdb
+🧪 Cleaning 6a1f_A_9OF.pdb  | Keeping ligand: 9OF
+✔ Cleaned: 6a1f_A_9OF.pdb
+🧪 Cleaning 7zh8_D_IWU.pdb  | Keeping ligand: IWU
+✔ Cleaned: 7zh8_D_IWU.pdb
+🧪 Cleaning 6eif_B_B5T.pdb  | Keeping ligand: B5T
+✔ Cleaned: 6eif_B_B5T.pdb
+🧪 Cleaning 2wo6_B_D15.pdb  | Keeping ligand: D15
+✔ Cleaned: 2wo6_B_D15.pdb
+🧪 Cleaning 6qu2_D_JHW.pdb  | Keeping ligand: JHW
+✔ Cleaned: 6qu2_D_JHW.pdb
+🧪 Cleaning 7ajs_B_RKH.pdb  | Keeping ligand: RKH
+✔ Cleaned: 7ajs_B_RKH.pdb
+🧪 Cleaning 7akb_A_RJZ.pdb  | Keeping ligand: RJZ
+✔ Cleaned: 7akb_A_RJZ.pdb
+🧪 Cleaning 6eis_B_B6N.pdb  | Keeping ligand: B6N
+✔ Cleaned: 6eis_B_B6N.pdb
+🧪 Cleaning 6ej4_D_B7W.pdb  | Keeping ligand: B7W
+✔ Cleaned: 6ej4_D_B7W.pdb
+🧪 Cleaning 6eiq_D_B6Z.pdb  | Keeping ligand: B6Z
+✔ Cleaned: 6eiq_D_B6Z.pdb
+🧪 Cleaning 8c3g_D_QS0.pdb  | Keeping ligand: QS0
+✔ Cleaned: 8c3g_D_QS0.pdb
+🧪 Cleaning 6uwy_A_QKG.pdb  | Keeping ligand: QKG
+✔ Cleaned: 6uwy_A_QKG.pdb
+🧪 Cleaning 7aj7_A_RHT.pdb  | Keeping ligand: RHT
+✔ Cleaned: 7aj7_A_RHT.pdb
+🧪 Cleaning 7a5b_A_MFR.pdb  | Keeping ligand: MFR
+✔ Cleaned: 7a5b_A_MFR.pdb
+🧪 Cleaning 7a55_A_QZ2.pdb  | Keeping ligand: QZ2
+✔ Cleaned: 7a55_A_QZ2.pdb
+🧪 Cleaning 2vx3_A_D15.pdb  | Keeping ligand: D15
+✔ Cleaned: 2vx3_A_D15.pdb
+🧪 Cleaning 4ylk_A_4E2.pdb  | Keeping ligand: 4E2
+✔ Cleaned: 4ylk_A_4E2.pdb
+🧪 Cleaning 4yu2_C_4H5.pdb  | Keeping ligand: 4H5
+✔ Cleaned: 4yu2_C_4H5.pdb
+🧪 Cleaning 6eif_A_B5T.pdb  | Keeping ligand: B5T
+✔ Cleaned: 6eif_A_B5T.pdb
+🧪 Cleaning 4nct_A_2K2.pdb  | Keeping ligand: 2K2
+✔ Cleaned: 4nct_A_2K2.pdb
+🧪 Cleaning 6eiq_B_B6Z.pdb  | Keeping ligand: B6Z
+✔ Cleaned: 6eiq_B_B6Z.pdb
+🧪 Cleaning 6uwy_C_QKG.pdb  | Keeping ligand: QKG
+✔ Cleaned: 6uwy_C_QKG.pdb
+🧪 Cleaning 5a54_A_5PW.pdb  | Keeping ligand: 5PW
+✔ Cleaned: 5a54_A_5PW.pdb
+🧪 Cleaning 7akb_B_RJZ.pdb  | Keeping ligand: RJZ
+✔ Cleaned: 7akb_B_RJZ.pdb
+🧪 Cleaning 3anr_C_HRM.pdb  | Keeping ligand: HRM
+✔ Cleaned: 3anr_C_HRM.pdb
+🧪 Cleaning 3anq_C_EHB.pdb  | Keeping ligand: EHB
+✔ Cleaned: 3anq_C_EHB.pdb
+🧪 Cleaning 4mq1_D_2C3.pdb  | Keeping ligand: 2C3
+✔ Cleaned: 4mq1_D_2C3.pdb
+🧪 Cleaning 4mq1_A_2C3.pdb  | Keeping ligand: 2C3
+✔ Cleaned: 4mq1_A_2C3.pdb
+🧪 Cleaning 6s1j_A_KRK.pdb  | Keeping ligand: KRK
+✔ Cleaned: 6s1j_A_KRK.pdb
+🧪 Cleaning 7z5n_C_3NG.pdb  | Keeping ligand: 3NG
+✔ Cleaned: 7z5n_C_3NG.pdb
+🧪 Cleaning 7zh8_B_IWU.pdb  | Keeping ligand: IWU
+✔ Cleaned: 7zh8_B_IWU.pdb
+🧪 Cleaning 7o7k_B_LI.pdb  | Keeping ligand: LI
+✔ Cleaned: 7o7k_B_LI.pdb
+🧪 Cleaning 8t2h_B_XIR.pdb  | Keeping ligand: XIR
+✔ Cleaned: 8t2h_B_XIR.pdb
+🧪 Cleaning 5a4q_A_Y3L.pdb  | Keeping ligand: Y3L
+✔ Cleaned: 5a4q_A_Y3L.pdb
+🧪 Cleaning 4ylj_D_4E1.pdb  | Keeping ligand: 4E1
+✔ Cleaned: 4ylj_D_4E1.pdb
+🧪 Cleaning 8r8e_A_YOX.pdb  | Keeping ligand: YOX
+✔ Cleaned: 8r8e_A_YOX.pdb
+🧪 Cleaning 5a54_B_5PW.pdb  | Keeping ligand: 5PW
+✔ Cleaned: 5a54_B_5PW.pdb
+🧪 Cleaning 6eil_A_B6B.pdb  | Keeping ligand: B6B
+✔ Cleaned: 6eil_A_B6B.pdb
+🧪 Cleaning 9ft4_A_A04.pdb  | Keeping ligand: A04
+✔ Cleaned: 9ft4_A_A04.pdb
+🧪 Cleaning 8r8e_B_YOX.pdb  | Keeping ligand: YOX
+✔ Cleaned: 8r8e_B_YOX.pdb
+🧪 Cleaning 7akl_A_RK5.pdb  | Keeping ligand: RK5
+✔ Cleaned: 7akl_A_RK5.pdb
+🧪 Cleaning 5a4q_D_Y3L.pdb  | Keeping ligand: Y3L
+✔ Cleaned: 5a4q_D_Y3L.pdb
+🧪 Cleaning 7ajv_A_RKK.pdb  | Keeping ligand: RKK
+✔ Cleaned: 7ajv_A_RKK.pdb
+🧪 Cleaning 7zh8_A_IWU.pdb  | Keeping ligand: IWU
+✔ Cleaned: 7zh8_A_IWU.pdb
+🧪 Cleaning 6qu2_C_JHW.pdb  | Keeping ligand: JHW
+✔ Cleaned: 6qu2_C_JHW.pdb
+🧪 Cleaning 8c3r_B_R7O.pdb  | Keeping ligand: R7O
+✔ Cleaned: 8c3r_B_R7O.pdb
+🧪 Cleaning 6t6a_B_MLW.pdb  | Keeping ligand: MLW
+✔ Cleaned: 6t6a_B_MLW.pdb
+🧪 Cleaning 6eij_D_B5Z.pdb  | Keeping ligand: B5Z
+✔ Cleaned: 6eij_D_B5Z.pdb
+🧪 Cleaning 6eiv_A_B6Q.pdb  | Keeping ligand: B6Q
+✔ Cleaned: 6eiv_A_B6Q.pdb
+🧪 Cleaning 4mq2_A_2C4.pdb  | Keeping ligand: 2C4
+✔ Cleaned: 4mq2_A_2C4.pdb
+🧪 Cleaning 7fhs_D_4VZ.pdb  | Keeping ligand: 4VZ
+✔ Cleaned: 7fhs_D_4VZ.pdb
+🧪 Cleaning 5a4l_C_ZC3.pdb  | Keeping ligand: ZC3
+✔ Cleaned: 5a4l_C_ZC3.pdb
+🧪 Cleaning 9fpx_A_CC9.pdb  | Keeping ligand: CC9
+✔ Cleaned: 9fpx_A_CC9.pdb
+🧪 Cleaning 4yu2_D_4H5.pdb  | Keeping ligand: 4H5
+✔ Cleaned: 4yu2_D_4H5.pdb
+🧪 Cleaning 6ej4_B_B7W.pdb  | Keeping ligand: B7W
+✔ Cleaned: 6ej4_B_B7W.pdb
+🧪 Cleaning 6yf8_D_OPW.pdb  | Keeping ligand: OPW
+✔ Cleaned: 6yf8_D_OPW.pdb
+🧪 Cleaning 7z5n_B_3NG.pdb  | Keeping ligand: 3NG
+✔ Cleaned: 7z5n_B_3NG.pdb
+🧪 Cleaning 5a4q_C_Y3L.pdb  | Keeping ligand: Y3L
+✔ Cleaned: 5a4q_C_Y3L.pdb
+🧪 Cleaning 6eiq_C_B6Z.pdb  | Keeping ligand: B6Z
+✔ Cleaned: 6eiq_C_B6Z.pdb
+🧪 Cleaning 7ajm_B_RKW.pdb  | Keeping ligand: RKW
+✔ Cleaned: 7ajm_B_RKW.pdb
+🧪 Cleaning 6eij_A_B5Z.pdb  | Keeping ligand: B5Z
+✔ Cleaned: 6eij_A_B5Z.pdb
+🧪 Cleaning 5a4l_B_ZC3.pdb  | Keeping ligand: ZC3
+✔ Cleaned: 5a4l_B_ZC3.pdb
+🧪 Cleaning 6t6a_C_MLW.pdb  | Keeping ligand: MLW
+✔ Cleaned: 6t6a_C_MLW.pdb
+🧪 Cleaning 8yev_A_CUE.pdb  | Keeping ligand: CUE
+✔ Cleaned: 8yev_A_CUE.pdb
+🧪 Cleaning 7o7k_A_6ZV.pdb  | Keeping ligand: 6ZV
+✔ Cleaned: 7o7k_A_6ZV.pdb
+🧪 Cleaning 7z5n_F_3NG.pdb  | Keeping ligand: 3NG
+✔ Cleaned: 7z5n_F_3NG.pdb
+🧪 Cleaning 2vx3_D_D15.pdb  | Keeping ligand: D15
+✔ Cleaned: 2vx3_D_D15.pdb
+🧪 Cleaning 6eil_B_B6B.pdb  | Keeping ligand: B6B
+✔ Cleaned: 6eil_B_B6B.pdb
+🧪 Cleaning 4nct_B_2K2.pdb  | Keeping ligand: 2K2
+✔ Cleaned: 4nct_B_2K2.pdb
+🧪 Cleaning 4ylj_C_4E1.pdb  | Keeping ligand: 4E1
+✔ Cleaned: 4ylj_C_4E1.pdb
+🧪 Cleaning 7a5n_A_R05.pdb  | Keeping ligand: R05
+✔ Cleaned: 7a5n_A_R05.pdb
+🧪 Cleaning 4yu2_A_4H5.pdb  | Keeping ligand: 4H5
+✔ Cleaned: 4yu2_A_4H5.pdb
+🧪 Cleaning 5aik_D_AWR.pdb  | Keeping ligand: AWR
+✔ Cleaned: 5aik_D_AWR.pdb
+🧪 Cleaning 5a3x_A_QIV.pdb  | Keeping ligand: QIV
+✔ Cleaned: 5a3x_A_QIV.pdb
+🧪 Cleaning 4mq2_D_2C4.pdb  | Keeping ligand: 2C4
+✔ Cleaned: 4mq2_D_2C4.pdb
+🧪 Cleaning 7zh8_C_IWU.pdb  | Keeping ligand: IWU
+✔ Cleaned: 7zh8_C_IWU.pdb
+🧪 Cleaning 7ajm_A_RKW.pdb  | Keeping ligand: RKW
+✔ Cleaned: 7ajm_A_RKW.pdb
+🧪 Cleaning 6s14_A_KQW.pdb  | Keeping ligand: KQW
+✔ Cleaned: 6s14_A_KQW.pdb
+🧪 Cleaning 7z5n_H_3NG.pdb  | Keeping ligand: 3NG
+✔ Cleaned: 7z5n_H_3NG.pdb
+🧪 Cleaning 7aj2_A_RJ5.pdb  | Keeping ligand: RJ5
+✔ Cleaned: 7aj2_A_RJ5.pdb
+🧪 Cleaning 8r8e_C_YOX.pdb  | Keeping ligand: YOX
+✔ Cleaned: 8r8e_C_YOX.pdb
+🧪 Cleaning 5aik_C_AWR.pdb  | Keeping ligand: AWR
+✔ Cleaned: 5aik_C_AWR.pdb
+🧪 Cleaning 7ak2_A_RHH.pdb  | Keeping ligand: RHH
+✔ Cleaned: 7ak2_A_RHH.pdb
+🧪 Cleaning 6ej4_C_B7W.pdb  | Keeping ligand: B7W
+✔ Cleaned: 6ej4_C_B7W.pdb
+🧪 Cleaning 7a51_A_QYK.pdb  | Keeping ligand: QYK
+✔ Cleaned: 7a51_A_QYK.pdb
+🧪 Cleaning 6uwy_B_QKG.pdb  | Keeping ligand: QKG
+✔ Cleaned: 6uwy_B_QKG.pdb
+🧪 Cleaning 7a52_B_QYB.pdb  | Keeping ligand: QYB
+✔ Cleaned: 7a52_B_QYB.pdb
+🧪 Cleaning 7ajy_B_RKZ.pdb  | Keeping ligand: RKZ
+✔ Cleaned: 7ajy_B_RKZ.pdb
+🧪 Cleaning 7a5n_B_R05.pdb  | Keeping ligand: R05
+✔ Cleaned: 7a5n_B_R05.pdb
+🧪 Cleaning 6eis_D_B6N.pdb  | Keeping ligand: B6N
+✔ Cleaned: 6eis_D_B6N.pdb
+🧪 Cleaning 7aka_A_RK2.pdb  | Keeping ligand: RK2
+✔ Cleaned: 7aka_A_RK2.pdb
+🎉 DONE — All PDB files cleaned successfully!
+[12:17:51] 🚀 Running 6_SASA.py...
+📁 Scanning WARHEAD PDB ROOT: WAR_PDB
+🔎 Found 229 PDB files
+🧠 Using 11 cores
+✅ 6yf8_A_OPW.pdb: 8/21 exposed (0.38)
+✅ 9fpx_B_CC9.pdb: 13/27 exposed (0.48)
+✅ 7ajv_B_RKK.pdb: 10/25 exposed (0.40)✅ 5a4t_D_AJG.pdb: 7/15 exposed (0.47)
+✅ 7aj4_A_RHZ.pdb: 4/16 exposed (0.25)
+✅ 6eip_B_B7B.pdb: 7/31 exposed (0.23)
+✅ 3anq_B_EHB.pdb: 6/16 exposed (0.38)
+✅ 7a4w_A_QYH.pdb: 5/16 exposed (0.31)
+✅ 4aze_B_3RA.pdb: 8/23 exposed (0.35)
+✅ 7o7k_B_6ZV.pdb: 18/37 exposed (0.49)
+✅ 7z5n_A_3NG.pdb: 13/25 exposed (0.52)
+✅ 7a4r_B_QY8.pdb: 6/11 exposed (0.55)
+✅ 6eis_C_B6N.pdb: 8/31 exposed (0.26)
+✅ 7ajw_A_RKQ.pdb: 9/27 exposed (0.33)
+✅ 6eij_C_B5Z.pdb: 17/33 exposed (0.52)
+✅ 6ej4_A_B7W.pdb: 11/22 exposed (0.50)
+✅ 3anq_D_EHB.pdb: 5/16 exposed (0.31)
+✅ 7a52_A_QYB.pdb: 6/16 exposed (0.38)
+✅ 6eif_C_B5T.pdb: 8/25 exposed (0.32)
+✅ 5a4q_B_Y3L.pdb: 5/14 exposed (0.36)
+✅ 4aze_A_3RA.pdb: 6/23 exposed (0.26)
+✅ 6eir_D_B6H.pdb: 15/35 exposed (0.43)
+✅ 6s1i_C_KR8.pdb: 8/23 exposed (0.35)
+✅ 7fht_D_4WD.pdb: 5/18 exposed (0.28)
+✅ 8c3g_B_QS0.pdb: 11/32 exposed (0.34)
+📊 Progress: 25/229
+✅ 4nct_D_2K2.pdb: 18/43 exposed (0.42)
+✅ 6s11_A_KQE.pdb: 10/26 exposed (0.39)
+✅ 7fhs_C_4VZ.pdb: 6/18 exposed (0.33)
+✅ 6eis_A_B6N.pdb: 7/31 exposed (0.23)
+✅ 7ajs_A_RKH.pdb: 5/18 exposed (0.28)
+✅ 8c3g_C_QS0.pdb: 11/32 exposed (0.34)
+✅ 6eiv_B_B6Q.pdb: 17/33 exposed (0.52)
+✅ 7aja_A_RJ2.pdb: 7/21 exposed (0.33)
+✅ 4mq1_C_2C3.pdb: 18/37 exposed (0.49)
+✅ 6s1i_D_KR8.pdb: 7/23 exposed (0.30)
+✅ 7aj5_A_RHW.pdb: 5/17 exposed (0.29)
+✅ 8c3q_A_RUT.pdb: 11/43 exposed (0.26)
+✅ 3anr_A_HRM.pdb: 6/16 exposed (0.38)
+✅ 7fhs_B_4VZ.pdb: 7/18 exposed (0.39)
+✅ 7ake_B_RK8.pdb: 7/29 exposed (0.24)
+✅ 6eiv_C_B6Q.pdb: 15/33 exposed (0.46)
+✅ 6eif_D_B5T.pdb: 12/25 exposed (0.48)
+✅ 5a4l_D_ZC3.pdb: 6/14 exposed (0.43)
+✅ 6eiv_D_B6Q.pdb: 19/33 exposed (0.58)
+✅ 7fht_B_4WD.pdb: 7/18 exposed (0.39)
+✅ 9ft6_A_A05.pdb: 0/0 exposed (0.00)
+✅ 6s1i_A_KR8.pdb: 6/23 exposed (0.26)
+✅ 5a4l_A_ZC3.pdb: 3/14 exposed (0.21)
+✅ 7a5d_A_QYW.pdb: 5/19 exposed (0.26)
+✅ 5a4e_D_7QQ.pdb: 6/15 exposed (0.40)
+📊 Progress: 50/229
+✅ 6uip_B_Q8J.pdb: 10/32 exposed (0.31)
+✅ 6s17_A_KQK.pdb: 7/30 exposed (0.23)
+✅ 6eil_D_B6B.pdb: 9/24 exposed (0.38)
+✅ 6s11_B_KQE.pdb: 11/26 exposed (0.42)
+✅ 6eiq_A_B6Z.pdb: 15/30 exposed (0.50)
+✅ 5aik_B_AWR.pdb: 12/24 exposed (0.50)
+✅ 6yf8_B_OPW.pdb: 9/21 exposed (0.43)
+✅ 5a3x_C_QIV.pdb: 5/14 exposed (0.36)
+✅ 5a4t_C_AJG.pdb: 6/15 exposed (0.40)
+✅ 5a4t_A_AJG.pdb: 6/15 exposed (0.40)
+✅ 7a4s_A_QYE.pdb: 5/11 exposed (0.46)
+✅ 7aj8_A_RJ8.pdb: 5/16 exposed (0.31)
+✅ 7a4r_A_QY8.pdb: 5/11 exposed (0.46)
+✅ 4ylj_A_4E1.pdb: 8/21 exposed (0.38)
+✅ 7fht_C_4WD.pdb: 7/18 exposed (0.39)
+✅ 4ylj_B_4E1.pdb: 9/21 exposed (0.43)
+✅ 9cy5_B_A00.pdb: 0/0 exposed (0.00)
+✅ 7a4w_B_QYH.pdb: 5/16 exposed (0.31)
+✅ 6eir_B_B6H.pdb: 19/35 exposed (0.54)
+✅ 6eip_A_B7B.pdb: 11/31 exposed (0.35)
+✅ 6qu2_A_JHW.pdb: 8/23 exposed (0.35)
+✅ 4nct_C_2K2.pdb: 16/43 exposed (0.37)
+✅ 6eir_A_B6H.pdb: 18/35 exposed (0.51)
+✅ 5a4e_B_7QQ.pdb: 6/15 exposed (0.40)
+✅ 6s1b_A_KRQ.pdb: 7/27 exposed (0.26)
+📊 Progress: 75/229
+✅ 2vx3_B_D15.pdb: 16/32 exposed (0.50)
+✅ 7oy6_C_39I.pdb: 14/26 exposed (0.54)
+✅ 6eij_B_B5Z.pdb: 19/33 exposed (0.58)
+✅ 4yu2_B_4H5.pdb: 5/19 exposed (0.26)
+✅ 6uip_A_Q8J.pdb: 12/32 exposed (0.38)
+✅ 4aze_C_3RA.pdb: 6/23 exposed (0.26)
+✅ 6a1g_A_9OL.pdb: 14/25 exposed (0.56)
+✅ 7ake_A_RK8.pdb: 8/29 exposed (0.28)
+✅ 8c3r_A_R7O.pdb: 11/34 exposed (0.32)
+✅ 4mq2_C_2C4.pdb: 13/27 exposed (0.48)
+✅ 3anr_B_HRM.pdb: 6/16 exposed (0.38)
+✅ 5aik_A_AWR.pdb: 8/24 exposed (0.33)
+✅ 5a54_D_5PW.pdb: 6/16 exposed (0.38)
+✅ 6uwy_D_QKG.pdb: 12/41 exposed (0.29)
+✅ 9cy5_A_A00.pdb: 0/0 exposed (0.00)
+✅ 9ft3_A_A03.pdb: 0/0 exposed (0.00)
+✅ 5a54_C_5PW.pdb: 5/16 exposed (0.31)
+✅ 2vx3_C_D15.pdb: 17/32 exposed (0.53)
+✅ 6s1i_B_KR8.pdb: 8/23 exposed (0.35)
+✅ 7a5b_B_MFR.pdb: 6/18 exposed (0.33)
+✅ 7ak2_B_RHH.pdb: 7/27 exposed (0.26)
+✅ 7fht_A_4WD.pdb: 6/18 exposed (0.33)
+✅ 6uip_C_Q8J.pdb: 12/32 exposed (0.38)
+✅ 4mq1_B_2C3.pdb: 17/37 exposed (0.46)
+✅ 7z5n_G_3NG.pdb: 14/25 exposed (0.56)
+📊 Progress: 100/229
+✅ 6ln1_A_EKU.pdb: 10/27 exposed (0.37)
+✅ 2wo6_A_D15.pdb: 16/32 exposed (0.50)
+✅ 7a4z_A_6SD.pdb: 5/14 exposed (0.36)
+✅ 7a53_A_QYZ.pdb: 5/17 exposed (0.29)
+✅ 8c3q_B_RUT.pdb: 13/43 exposed (0.30)
+✅ 5a4t_B_AJG.pdb: 6/15 exposed (0.40)
+✅ 6eip_D_B7B.pdb: 11/31 exposed (0.35)
+✅ 6ln1_B_EKU.pdb: 6/27 exposed (0.22)
+✅ 8t2h_A_XIR.pdb: 15/31 exposed (0.48)
+✅ 8c3g_A_QS0.pdb: 10/32 exposed (0.31)
+✅ 6yf8_C_OPW.pdb: 8/21 exposed (0.38)
+✅ 6t6a_A_MLW.pdb: 7/16 exposed (0.44)
+✅ 5a4e_A_7QQ.pdb: 5/15 exposed (0.33)
+✅ 8yev_B_CUE.pdb: 10/20 exposed (0.50)
+✅ 6a1g_B_9OL.pdb: 16/25 exposed (0.64)
+✅ 7o7k_A_LI.pdb: 1/1 exposed (1.00)
+✅ 5a3x_B_QIV.pdb: 6/14 exposed (0.43)
+✅ 7a5l_A_QZW.pdb: 9/24 exposed (0.38)
+✅ 6eir_C_B6H.pdb: 17/35 exposed (0.49)
+✅ 7fhs_A_4VZ.pdb: 8/18 exposed (0.44)
+✅ 6qu2_B_JHW.pdb: 7/23 exposed (0.30)
+✅ 7ajy_A_RKZ.pdb: 7/28 exposed (0.25)
+✅ 4mq2_B_2C4.pdb: 12/27 exposed (0.44)
+✅ 4yll_A_4E3.pdb: 8/22 exposed (0.36)
+✅ 6eip_C_B7B.pdb: 9/31 exposed (0.29)
+📊 Progress: 125/229
+✅ 7a55_B_QZ2.pdb: 5/14 exposed (0.36)
+✅ 5a4e_C_7QQ.pdb: 4/15 exposed (0.27)
+✅ 9ft2_A_A02.pdb: 0/0 exposed (0.00)
+✅ 7z5n_E_3NG.pdb: 14/25 exposed (0.56)
+✅ 7aka_B_RK2.pdb: 8/28 exposed (0.29)
+✅ 3anr_D_HRM.pdb: 5/16 exposed (0.31)
+✅ 7z5n_D_3NG.pdb: 14/25 exposed (0.56)
+✅ 7a53_B_QYZ.pdb: 5/17 exposed (0.29)
+✅ 5a3x_D_QIV.pdb: 5/14 exposed (0.36)
+✅ 9fuf_A_A01.pdb: 0/0 exposed (0.00)
+✅ 3anq_A_EHB.pdb: 5/16 exposed (0.31)
+✅ 8r8e_D_YOX.pdb: 6/17 exposed (0.35)
+✅ 6a1f_A_9OF.pdb: 10/19 exposed (0.53)
+✅ 6eif_B_B5T.pdb: 13/25 exposed (0.52)
+✅ 2wo6_B_D15.pdb: 17/32 exposed (0.53)
+✅ 7akb_A_RJZ.pdb: 9/28 exposed (0.32)
+✅ 7ajs_B_RKH.pdb: 6/18 exposed (0.33)
+✅ 7zh8_D_IWU.pdb: 9/20 exposed (0.45)
+✅ 6qu2_D_JHW.pdb: 9/23 exposed (0.39)
+✅ 6eis_B_B6N.pdb: 9/31 exposed (0.29)
+✅ 6ej4_D_B7W.pdb: 9/22 exposed (0.41)
+✅ 6eiq_D_B6Z.pdb: 14/30 exposed (0.47)
+✅ 8c3g_D_QS0.pdb: 10/32 exposed (0.31)
+✅ 6s1h_A_KQZ.pdb: 7/31 exposed (0.23)
+✅ 7aj7_A_RHT.pdb: 4/18 exposed (0.22)
+📊 Progress: 150/229
+✅ 6uwy_A_QKG.pdb: 12/41 exposed (0.29)
+✅ 7a5b_A_MFR.pdb: 7/18 exposed (0.39)
+✅ 7a55_A_QZ2.pdb: 4/14 exposed (0.29)
+✅ 4ylk_A_4E2.pdb: 10/22 exposed (0.46)
+✅ 2vx3_A_D15.pdb: 16/32 exposed (0.50)
+✅ 4yu2_C_4H5.pdb: 5/19 exposed (0.26)
+✅ 6eif_A_B5T.pdb: 14/25 exposed (0.56)
+✅ 4nct_A_2K2.pdb: 21/43 exposed (0.49)
+✅ 6eiq_B_B6Z.pdb: 17/30 exposed (0.57)
+✅ 5a54_A_5PW.pdb: 5/16 exposed (0.31)
+✅ 7akb_B_RJZ.pdb: 9/28 exposed (0.32)
+✅ 6uwy_C_QKG.pdb: 12/41 exposed (0.29)
+✅ 3anr_C_HRM.pdb: 6/16 exposed (0.38)
+✅ 3anq_C_EHB.pdb: 5/16 exposed (0.31)
+✅ 4mq1_D_2C3.pdb: 16/37 exposed (0.43)
+✅ 7z5n_C_3NG.pdb: 14/25 exposed (0.56)
+✅ 7zh8_B_IWU.pdb: 8/20 exposed (0.40)
+✅ 4mq1_A_2C3.pdb: 17/37 exposed (0.46)
+✅ 7o7k_B_LI.pdb: 1/1 exposed (1.00)
+✅ 5a4q_A_Y3L.pdb: 5/14 exposed (0.36)
+✅ 8t2h_B_XIR.pdb: 15/31 exposed (0.48)
+✅ 4ylj_D_4E1.pdb: 8/21 exposed (0.38)
+✅ 5a54_B_5PW.pdb: 5/16 exposed (0.31)
+✅ 8r8e_A_YOX.pdb: 6/17 exposed (0.35)
+✅ 9ft4_A_A04.pdb: 0/0 exposed (0.00)
+📊 Progress: 175/229
+✅ 8r8e_B_YOX.pdb: 7/17 exposed (0.41)
+✅ 5a4q_D_Y3L.pdb: 5/14 exposed (0.36)
+✅ 7ajv_A_RKK.pdb: 8/25 exposed (0.32)
+✅ 6qu2_C_JHW.pdb: 8/23 exposed (0.35)
+✅ 7zh8_A_IWU.pdb: 10/20 exposed (0.50)
+✅ 6t6a_B_MLW.pdb: 5/16 exposed (0.31)
+✅ 8c3r_B_R7O.pdb: 15/34 exposed (0.44)
+✅ 7akl_A_RK5.pdb: 5/19 exposed (0.26)
+✅ 6s1j_A_KRK.pdb: 7/34 exposed (0.21)
+✅ 6eij_D_B5Z.pdb: 17/33 exposed (0.52)
+✅ 4yu2_D_4H5.pdb: 6/19 exposed (0.32)
+✅ 6eiv_A_B6Q.pdb: 16/33 exposed (0.48)
+✅ 4mq2_A_2C4.pdb: 12/27 exposed (0.44)
+✅ 5a4l_C_ZC3.pdb: 5/14 exposed (0.36)
+✅ 7fhs_D_4VZ.pdb: 7/18 exposed (0.39)
+✅ 6ej4_B_B7W.pdb: 14/22 exposed (0.64)
+✅ 9fpx_A_CC9.pdb: 14/27 exposed (0.52)
+✅ 6eil_A_B6B.pdb: 9/24 exposed (0.38)
+✅ 6yf8_D_OPW.pdb: 8/21 exposed (0.38)
+✅ 6eiq_C_B6Z.pdb: 15/30 exposed (0.50)
+✅ 5a4q_C_Y3L.pdb: 5/14 exposed (0.36)
+✅ 7z5n_B_3NG.pdb: 13/25 exposed (0.52)
+✅ 7ajm_B_RKW.pdb: 7/22 exposed (0.32)
+✅ 5a4l_B_ZC3.pdb: 6/14 exposed (0.43)
+✅ 6eij_A_B5Z.pdb: 18/33 exposed (0.55)
+📊 Progress: 200/229
+✅ 7z5n_F_3NG.pdb: 12/25 exposed (0.48)
+✅ 6t6a_C_MLW.pdb: 6/16 exposed (0.38)
+✅ 7o7k_A_6ZV.pdb: 15/37 exposed (0.41)
+✅ 8yev_A_CUE.pdb: 13/20 exposed (0.65)
+✅ 2vx3_D_D15.pdb: 16/32 exposed (0.50)
+✅ 4nct_B_2K2.pdb: 19/43 exposed (0.44)
+✅ 7a5n_A_R05.pdb: 9/27 exposed (0.33)
+✅ 5aik_D_AWR.pdb: 10/24 exposed (0.42)
+✅ 4yu2_A_4H5.pdb: 5/19 exposed (0.26)
+✅ 4mq2_D_2C4.pdb: 11/27 exposed (0.41)
+✅ 5a3x_A_QIV.pdb: 6/14 exposed (0.43)
+✅ 7ajm_A_RKW.pdb: 7/22 exposed (0.32)
+✅ 7zh8_C_IWU.pdb: 9/20 exposed (0.45)
+✅ 4ylj_C_4E1.pdb: 7/21 exposed (0.33)
+✅ 7z5n_H_3NG.pdb: 12/25 exposed (0.48)
+✅ 7aj2_A_RJ5.pdb: 5/15 exposed (0.33)
+✅ 6ej4_C_B7W.pdb: 9/22 exposed (0.41)
+✅ 7ak2_A_RHH.pdb: 10/27 exposed (0.37)
+✅ 8r8e_C_YOX.pdb: 6/17 exposed (0.35)
+✅ 5aik_C_AWR.pdb: 10/24 exposed (0.42)
+✅ 7a51_A_QYK.pdb: 5/14 exposed (0.36)
+✅ 6uwy_B_QKG.pdb: 14/41 exposed (0.34)
+✅ 6eil_B_B6B.pdb: 11/24 exposed (0.46)
+✅ 7a52_B_QYB.pdb: 6/16 exposed (0.38)
+✅ 7ajy_B_RKZ.pdb: 10/28 exposed (0.36)
+📊 Progress: 225/229
+✅ 7a5n_B_R05.pdb: 10/27 exposed (0.37)
+✅ 7aka_A_RK2.pdb: 9/28 exposed (0.32)
+✅ 6eis_D_B6N.pdb: 8/31 exposed (0.26)
+✅ 6s14_A_KQW.pdb: 6/34 exposed (0.18)
+🎉 WARHEAD SASA COMPLETE
+[12:18:09] 🚀 Running 7_metadata.py...
+📂 Using SMILES file: Components-smiles-stereo-oe.smi
+🧬 Loaded 49558 SMILES entries.
+🔎 Sample SMILES keys: ['000', '001', '002', '003', '004', '005', '006', '007', '008', '009', '00A', '00B', '00C', '00D', '00E']
+🤖 AUTO MODE: Warhead_SASA_summary.csv
+📥 Loaded SASA table.
+/home/jxs794/WEBTOOLs/PROTAC-Target-Builder/jobs/d6706e03/7_metadata.py:363: FutureWarning: DataFrame.applymap has been deprecated. Use DataFrame.map instead.
+  alias = alias.applymap(lambda x: str(x).strip() if x is not None else "")
+🧭 5CharMAP loaded: 6 (pdb,ligX)->lig5 mappings
+🧭 5CharMAP loaded: 6 (pdb,lig3)->lig5 mappings
+🔗 WAR_PDB chain map built: 91 (pdb,ligX) groups
+🔬 BEGIN RESOLUTION TRACE
+--------------------------------------------------
+Row 0
+  PDB: 6yf8
+  Warhead (input): OPW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: OPW
+  SMILES found? YES
+--------------------------------------------------
+Row 1
+  PDB: 9fpx
+  Warhead (input): CC9
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: CC9
+  SMILES found? YES
+--------------------------------------------------
+Row 2
+  PDB: 5a4t
+  Warhead (input): AJG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: AJG
+  SMILES found? YES
+--------------------------------------------------
+Row 3
+  PDB: 7ajv
+  Warhead (input): RKK
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RKK
+  SMILES found? YES
+--------------------------------------------------
+Row 4
+  PDB: 7aj4
+  Warhead (input): RHZ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RHZ
+  SMILES found? YES
+--------------------------------------------------
+Row 5
+  PDB: 6eip
+  Warhead (input): B7B
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B7B
+  SMILES found? YES
+--------------------------------------------------
+Row 6
+  PDB: 3anq
+  Warhead (input): EHB
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EHB
+  SMILES found? YES
+--------------------------------------------------
+Row 7
+  PDB: 7a4w
+  Warhead (input): QYH
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QYH
+  SMILES found? YES
+--------------------------------------------------
+Row 8
+  PDB: 4aze
+  Warhead (input): 3RA
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 3RA
+  SMILES found? YES
+--------------------------------------------------
+Row 9
+  PDB: 7o7k
+  Warhead (input): 6ZV
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6ZV
+  SMILES found? YES
+--------------------------------------------------
+Row 10
+  PDB: 7z5n
+  Warhead (input): 3NG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 3NG
+  SMILES found? YES
+--------------------------------------------------
+Row 11
+  PDB: 7a4r
+  Warhead (input): QY8
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QY8
+  SMILES found? YES
+--------------------------------------------------
+Row 12
+  PDB: 6eis
+  Warhead (input): B6N
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6N
+  SMILES found? YES
+--------------------------------------------------
+Row 13
+  PDB: 7ajw
+  Warhead (input): RKQ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RKQ
+  SMILES found? YES
+--------------------------------------------------
+Row 14
+  PDB: 6eij
+  Warhead (input): B5Z
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B5Z
+  SMILES found? YES
+--------------------------------------------------
+Row 15
+  PDB: 6ej4
+  Warhead (input): B7W
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B7W
+  SMILES found? YES
+--------------------------------------------------
+Row 16
+  PDB: 3anq
+  Warhead (input): EHB
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EHB
+  SMILES found? YES
+--------------------------------------------------
+Row 17
+  PDB: 7a52
+  Warhead (input): QYB
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QYB
+  SMILES found? YES
+--------------------------------------------------
+Row 18
+  PDB: 6eif
+  Warhead (input): B5T
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B5T
+  SMILES found? YES
+--------------------------------------------------
+Row 19
+  PDB: 5a4q
+  Warhead (input): Y3L
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: Y3L
+  SMILES found? YES
+--------------------------------------------------
+Row 20
+  PDB: 4aze
+  Warhead (input): 3RA
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 3RA
+  SMILES found? YES
+--------------------------------------------------
+Row 21
+  PDB: 6eir
+  Warhead (input): B6H
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6H
+  SMILES found? YES
+--------------------------------------------------
+Row 22
+  PDB: 6s1i
+  Warhead (input): KR8
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KR8
+  SMILES found? YES
+--------------------------------------------------
+Row 23
+  PDB: 7fht
+  Warhead (input): 4WD
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4WD
+  SMILES found? YES
+--------------------------------------------------
+Row 24
+  PDB: 8c3g
+  Warhead (input): QS0
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QS0
+  SMILES found? YES
+--------------------------------------------------
+Row 25
+  PDB: 4nct
+  Warhead (input): 2K2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2K2
+  SMILES found? YES
+--------------------------------------------------
+Row 26
+  PDB: 6s11
+  Warhead (input): KQE
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KQE
+  SMILES found? YES
+--------------------------------------------------
+Row 27
+  PDB: 7fhs
+  Warhead (input): 4VZ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4VZ
+  SMILES found? YES
+--------------------------------------------------
+Row 28
+  PDB: 6eis
+  Warhead (input): B6N
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6N
+  SMILES found? YES
+--------------------------------------------------
+Row 29
+  PDB: 7ajs
+  Warhead (input): RKH
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RKH
+  SMILES found? YES
+--------------------------------------------------
+Row 30
+  PDB: 8c3g
+  Warhead (input): QS0
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QS0
+  SMILES found? YES
+--------------------------------------------------
+Row 31
+  PDB: 6eiv
+  Warhead (input): B6Q
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6Q
+  SMILES found? YES
+--------------------------------------------------
+Row 32
+  PDB: 7aja
+  Warhead (input): RJ2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RJ2
+  SMILES found? YES
+--------------------------------------------------
+Row 33
+  PDB: 4mq1
+  Warhead (input): 2C3
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2C3
+  SMILES found? YES
+--------------------------------------------------
+Row 34
+  PDB: 6s1i
+  Warhead (input): KR8
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KR8
+  SMILES found? YES
+--------------------------------------------------
+Row 35
+  PDB: 7aj5
+  Warhead (input): RHW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RHW
+  SMILES found? YES
+--------------------------------------------------
+Row 36
+  PDB: 8c3q
+  Warhead (input): RUT
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RUT
+  SMILES found? YES
+--------------------------------------------------
+Row 37
+  PDB: 3anr
+  Warhead (input): HRM
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: HRM
+  SMILES found? YES
+--------------------------------------------------
+Row 38
+  PDB: 7fhs
+  Warhead (input): 4VZ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4VZ
+  SMILES found? YES
+--------------------------------------------------
+Row 39
+  PDB: 7ake
+  Warhead (input): RK8
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RK8
+  SMILES found? YES
+--------------------------------------------------
+Row 40
+  PDB: 6eiv
+  Warhead (input): B6Q
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6Q
+  SMILES found? YES
+--------------------------------------------------
+Row 41
+  PDB: 6eif
+  Warhead (input): B5T
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B5T
+  SMILES found? YES
+--------------------------------------------------
+Row 42
+  PDB: 5a4l
+  Warhead (input): ZC3
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: ZC3
+  SMILES found? YES
+--------------------------------------------------
+Row 43
+  PDB: 6eiv
+  Warhead (input): B6Q
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6Q
+  SMILES found? YES
+--------------------------------------------------
+Row 44
+  PDB: 7fht
+  Warhead (input): 4WD
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4WD
+  SMILES found? YES
+--------------------------------------------------
+Row 45
+  PDB: 9ft6
+  Warhead (input): A05
+  Warhead_5 (if mapped): A1IE8
+  SMILES lookup key: A1IE8
+  SMILES found? YES
+--------------------------------------------------
+Row 46
+  PDB: 6s1i
+  Warhead (input): KR8
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KR8
+  SMILES found? YES
+--------------------------------------------------
+Row 47
+  PDB: 5a4l
+  Warhead (input): ZC3
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: ZC3
+  SMILES found? YES
+--------------------------------------------------
+Row 48
+  PDB: 7a5d
+  Warhead (input): QYW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QYW
+  SMILES found? YES
+--------------------------------------------------
+Row 49
+  PDB: 5a4e
+  Warhead (input): 7QQ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 7QQ
+  SMILES found? YES
+--------------------------------------------------
+Row 50
+  PDB: 6uip
+  Warhead (input): Q8J
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: Q8J
+  SMILES found? YES
+--------------------------------------------------
+Row 51
+  PDB: 6s17
+  Warhead (input): KQK
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KQK
+  SMILES found? YES
+--------------------------------------------------
+Row 52
+  PDB: 6eil
+  Warhead (input): B6B
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6B
+  SMILES found? YES
+--------------------------------------------------
+Row 53
+  PDB: 6s11
+  Warhead (input): KQE
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KQE
+  SMILES found? YES
+--------------------------------------------------
+Row 54
+  PDB: 6eiq
+  Warhead (input): B6Z
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6Z
+  SMILES found? YES
+--------------------------------------------------
+Row 55
+  PDB: 5aik
+  Warhead (input): AWR
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: AWR
+  SMILES found? YES
+--------------------------------------------------
+Row 56
+  PDB: 6yf8
+  Warhead (input): OPW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: OPW
+  SMILES found? YES
+--------------------------------------------------
+Row 57
+  PDB: 5a3x
+  Warhead (input): QIV
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QIV
+  SMILES found? YES
+--------------------------------------------------
+Row 58
+  PDB: 5a4t
+  Warhead (input): AJG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: AJG
+  SMILES found? YES
+--------------------------------------------------
+Row 59
+  PDB: 5a4t
+  Warhead (input): AJG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: AJG
+  SMILES found? YES
+--------------------------------------------------
+Row 60
+  PDB: 7a4s
+  Warhead (input): QYE
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QYE
+  SMILES found? YES
+--------------------------------------------------
+Row 61
+  PDB: 7aj8
+  Warhead (input): RJ8
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RJ8
+  SMILES found? YES
+--------------------------------------------------
+Row 62
+  PDB: 7a4r
+  Warhead (input): QY8
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QY8
+  SMILES found? YES
+--------------------------------------------------
+Row 63
+  PDB: 4ylj
+  Warhead (input): 4E1
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4E1
+  SMILES found? YES
+--------------------------------------------------
+Row 64
+  PDB: 7fht
+  Warhead (input): 4WD
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4WD
+  SMILES found? YES
+--------------------------------------------------
+Row 65
+  PDB: 4ylj
+  Warhead (input): 4E1
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4E1
+  SMILES found? YES
+--------------------------------------------------
+Row 66
+  PDB: 9cy5
+  Warhead (input): A00
+  Warhead_5 (if mapped): A1A04
+  SMILES lookup key: A1A04
+  SMILES found? YES
+--------------------------------------------------
+Row 67
+  PDB: 7a4w
+  Warhead (input): QYH
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QYH
+  SMILES found? YES
+--------------------------------------------------
+Row 68
+  PDB: 6eir
+  Warhead (input): B6H
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6H
+  SMILES found? YES
+--------------------------------------------------
+Row 69
+  PDB: 6eip
+  Warhead (input): B7B
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B7B
+  SMILES found? YES
+--------------------------------------------------
+Row 70
+  PDB: 6qu2
+  Warhead (input): JHW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: JHW
+  SMILES found? YES
+--------------------------------------------------
+Row 71
+  PDB: 4nct
+  Warhead (input): 2K2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2K2
+  SMILES found? YES
+--------------------------------------------------
+Row 72
+  PDB: 6eir
+  Warhead (input): B6H
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6H
+  SMILES found? YES
+--------------------------------------------------
+Row 73
+  PDB: 5a4e
+  Warhead (input): 7QQ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 7QQ
+  SMILES found? YES
+--------------------------------------------------
+Row 74
+  PDB: 6s1b
+  Warhead (input): KRQ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KRQ
+  SMILES found? YES
+--------------------------------------------------
+Row 75
+  PDB: 2vx3
+  Warhead (input): D15
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D15
+  SMILES found? YES
+--------------------------------------------------
+Row 76
+  PDB: 7oy6
+  Warhead (input): 39I
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 39I
+  SMILES found? YES
+--------------------------------------------------
+Row 77
+  PDB: 6eij
+  Warhead (input): B5Z
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B5Z
+  SMILES found? YES
+--------------------------------------------------
+Row 78
+  PDB: 4yu2
+  Warhead (input): 4H5
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4H5
+  SMILES found? YES
+--------------------------------------------------
+Row 79
+  PDB: 6uip
+  Warhead (input): Q8J
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: Q8J
+  SMILES found? YES
+--------------------------------------------------
+Row 80
+  PDB: 4aze
+  Warhead (input): 3RA
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 3RA
+  SMILES found? YES
+--------------------------------------------------
+Row 81
+  PDB: 6a1g
+  Warhead (input): 9OL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 9OL
+  SMILES found? YES
+--------------------------------------------------
+Row 82
+  PDB: 7ake
+  Warhead (input): RK8
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RK8
+  SMILES found? YES
+--------------------------------------------------
+Row 83
+  PDB: 8c3r
+  Warhead (input): R7O
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: R7O
+  SMILES found? YES
+--------------------------------------------------
+Row 84
+  PDB: 4mq2
+  Warhead (input): 2C4
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2C4
+  SMILES found? YES
+--------------------------------------------------
+Row 85
+  PDB: 3anr
+  Warhead (input): HRM
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: HRM
+  SMILES found? YES
+--------------------------------------------------
+Row 86
+  PDB: 5aik
+  Warhead (input): AWR
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: AWR
+  SMILES found? YES
+--------------------------------------------------
+Row 87
+  PDB: 5a54
+  Warhead (input): 5PW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 5PW
+  SMILES found? YES
+--------------------------------------------------
+Row 88
+  PDB: 6uwy
+  Warhead (input): QKG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QKG
+  SMILES found? YES
+--------------------------------------------------
+Row 89
+  PDB: 9cy5
+  Warhead (input): A00
+  Warhead_5 (if mapped): A1A04
+  SMILES lookup key: A1A04
+  SMILES found? YES
+--------------------------------------------------
+Row 90
+  PDB: 9ft3
+  Warhead (input): A03
+  Warhead_5 (if mapped): A1IE7
+  SMILES lookup key: A1IE7
+  SMILES found? YES
+--------------------------------------------------
+Row 91
+  PDB: 5a54
+  Warhead (input): 5PW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 5PW
+  SMILES found? YES
+--------------------------------------------------
+Row 92
+  PDB: 2vx3
+  Warhead (input): D15
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D15
+  SMILES found? YES
+--------------------------------------------------
+Row 93
+  PDB: 6s1i
+  Warhead (input): KR8
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KR8
+  SMILES found? YES
+--------------------------------------------------
+Row 94
+  PDB: 7a5b
+  Warhead (input): MFR
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: MFR
+  SMILES found? YES
+--------------------------------------------------
+Row 95
+  PDB: 7ak2
+  Warhead (input): RHH
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RHH
+  SMILES found? YES
+--------------------------------------------------
+Row 96
+  PDB: 7fht
+  Warhead (input): 4WD
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4WD
+  SMILES found? YES
+--------------------------------------------------
+Row 97
+  PDB: 6uip
+  Warhead (input): Q8J
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: Q8J
+  SMILES found? YES
+--------------------------------------------------
+Row 98
+  PDB: 4mq1
+  Warhead (input): 2C3
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2C3
+  SMILES found? YES
+--------------------------------------------------
+Row 99
+  PDB: 7z5n
+  Warhead (input): 3NG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 3NG
+  SMILES found? YES
+--------------------------------------------------
+Row 100
+  PDB: 6ln1
+  Warhead (input): EKU
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EKU
+  SMILES found? YES
+--------------------------------------------------
+Row 101
+  PDB: 2wo6
+  Warhead (input): D15
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D15
+  SMILES found? YES
+--------------------------------------------------
+Row 102
+  PDB: 7a4z
+  Warhead (input): 6SD
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6SD
+  SMILES found? YES
+--------------------------------------------------
+Row 103
+  PDB: 7a53
+  Warhead (input): QYZ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QYZ
+  SMILES found? YES
+--------------------------------------------------
+Row 104
+  PDB: 8c3q
+  Warhead (input): RUT
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RUT
+  SMILES found? YES
+--------------------------------------------------
+Row 105
+  PDB: 5a4t
+  Warhead (input): AJG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: AJG
+  SMILES found? YES
+--------------------------------------------------
+Row 106
+  PDB: 6eip
+  Warhead (input): B7B
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B7B
+  SMILES found? YES
+--------------------------------------------------
+Row 107
+  PDB: 6ln1
+  Warhead (input): EKU
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EKU
+  SMILES found? YES
+--------------------------------------------------
+Row 108
+  PDB: 8t2h
+  Warhead (input): XIR
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: XIR
+  SMILES found? YES
+--------------------------------------------------
+Row 109
+  PDB: 8c3g
+  Warhead (input): QS0
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QS0
+  SMILES found? YES
+--------------------------------------------------
+Row 110
+  PDB: 6yf8
+  Warhead (input): OPW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: OPW
+  SMILES found? YES
+--------------------------------------------------
+Row 111
+  PDB: 6t6a
+  Warhead (input): MLW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: MLW
+  SMILES found? YES
+--------------------------------------------------
+Row 112
+  PDB: 5a4e
+  Warhead (input): 7QQ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 7QQ
+  SMILES found? YES
+--------------------------------------------------
+Row 113
+  PDB: 8yev
+  Warhead (input): CUE
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: CUE
+  SMILES found? YES
+--------------------------------------------------
+Row 114
+  PDB: 6a1g
+  Warhead (input): 9OL
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 9OL
+  SMILES found? YES
+🧹 ION DROP → Row 115 | PDB=7o7k | Warhead=LI | key=LI | reason=common_ion
+--------------------------------------------------
+Row 115
+  PDB: 7o7k
+  Warhead (input): LI
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: LI
+  SMILES found? NO
+  ❌ No SMILES for lookup key in smiles_map.
+--------------------------------------------------
+Row 116
+  PDB: 5a3x
+  Warhead (input): QIV
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QIV
+  SMILES found? YES
+--------------------------------------------------
+Row 117
+  PDB: 7a5l
+  Warhead (input): QZW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QZW
+  SMILES found? YES
+--------------------------------------------------
+Row 118
+  PDB: 6eir
+  Warhead (input): B6H
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6H
+  SMILES found? YES
+--------------------------------------------------
+Row 119
+  PDB: 7fhs
+  Warhead (input): 4VZ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4VZ
+  SMILES found? YES
+--------------------------------------------------
+Row 120
+  PDB: 6qu2
+  Warhead (input): JHW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: JHW
+  SMILES found? YES
+--------------------------------------------------
+Row 121
+  PDB: 7ajy
+  Warhead (input): RKZ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RKZ
+  SMILES found? YES
+--------------------------------------------------
+Row 122
+  PDB: 4mq2
+  Warhead (input): 2C4
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2C4
+  SMILES found? YES
+--------------------------------------------------
+Row 123
+  PDB: 4yll
+  Warhead (input): 4E3
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4E3
+  SMILES found? YES
+--------------------------------------------------
+Row 124
+  PDB: 6eip
+  Warhead (input): B7B
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B7B
+  SMILES found? YES
+--------------------------------------------------
+Row 125
+  PDB: 7a55
+  Warhead (input): QZ2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QZ2
+  SMILES found? YES
+--------------------------------------------------
+Row 126
+  PDB: 5a4e
+  Warhead (input): 7QQ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 7QQ
+  SMILES found? YES
+--------------------------------------------------
+Row 127
+  PDB: 9ft2
+  Warhead (input): A02
+  Warhead_5 (if mapped): A1IE6
+  SMILES lookup key: A1IE6
+  SMILES found? YES
+--------------------------------------------------
+Row 128
+  PDB: 7z5n
+  Warhead (input): 3NG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 3NG
+  SMILES found? YES
+--------------------------------------------------
+Row 129
+  PDB: 7aka
+  Warhead (input): RK2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RK2
+  SMILES found? YES
+--------------------------------------------------
+Row 130
+  PDB: 3anr
+  Warhead (input): HRM
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: HRM
+  SMILES found? YES
+--------------------------------------------------
+Row 131
+  PDB: 7z5n
+  Warhead (input): 3NG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 3NG
+  SMILES found? YES
+--------------------------------------------------
+Row 132
+  PDB: 7a53
+  Warhead (input): QYZ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QYZ
+  SMILES found? YES
+--------------------------------------------------
+Row 133
+  PDB: 5a3x
+  Warhead (input): QIV
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QIV
+  SMILES found? YES
+--------------------------------------------------
+Row 134
+  PDB: 9fuf
+  Warhead (input): A01
+  Warhead_5 (if mapped): A1IFO
+  SMILES lookup key: A1IFO
+  SMILES found? YES
+--------------------------------------------------
+Row 135
+  PDB: 3anq
+  Warhead (input): EHB
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EHB
+  SMILES found? YES
+--------------------------------------------------
+Row 136
+  PDB: 8r8e
+  Warhead (input): YOX
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: YOX
+  SMILES found? YES
+--------------------------------------------------
+Row 137
+  PDB: 6a1f
+  Warhead (input): 9OF
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 9OF
+  SMILES found? YES
+--------------------------------------------------
+Row 138
+  PDB: 6eif
+  Warhead (input): B5T
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B5T
+  SMILES found? YES
+--------------------------------------------------
+Row 139
+  PDB: 2wo6
+  Warhead (input): D15
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D15
+  SMILES found? YES
+--------------------------------------------------
+Row 140
+  PDB: 7akb
+  Warhead (input): RJZ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RJZ
+  SMILES found? YES
+--------------------------------------------------
+Row 141
+  PDB: 7ajs
+  Warhead (input): RKH
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RKH
+  SMILES found? YES
+--------------------------------------------------
+Row 142
+  PDB: 7zh8
+  Warhead (input): IWU
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: IWU
+  SMILES found? YES
+--------------------------------------------------
+Row 143
+  PDB: 6qu2
+  Warhead (input): JHW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: JHW
+  SMILES found? YES
+--------------------------------------------------
+Row 144
+  PDB: 6eis
+  Warhead (input): B6N
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6N
+  SMILES found? YES
+--------------------------------------------------
+Row 145
+  PDB: 6ej4
+  Warhead (input): B7W
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B7W
+  SMILES found? YES
+--------------------------------------------------
+Row 146
+  PDB: 6eiq
+  Warhead (input): B6Z
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6Z
+  SMILES found? YES
+--------------------------------------------------
+Row 147
+  PDB: 8c3g
+  Warhead (input): QS0
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QS0
+  SMILES found? YES
+--------------------------------------------------
+Row 148
+  PDB: 6s1h
+  Warhead (input): KQZ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KQZ
+  SMILES found? YES
+--------------------------------------------------
+Row 149
+  PDB: 7aj7
+  Warhead (input): RHT
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RHT
+  SMILES found? YES
+--------------------------------------------------
+Row 150
+  PDB: 6uwy
+  Warhead (input): QKG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QKG
+  SMILES found? YES
+--------------------------------------------------
+Row 151
+  PDB: 7a5b
+  Warhead (input): MFR
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: MFR
+  SMILES found? YES
+--------------------------------------------------
+Row 152
+  PDB: 7a55
+  Warhead (input): QZ2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QZ2
+  SMILES found? YES
+--------------------------------------------------
+Row 153
+  PDB: 4ylk
+  Warhead (input): 4E2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4E2
+  SMILES found? YES
+--------------------------------------------------
+Row 154
+  PDB: 2vx3
+  Warhead (input): D15
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D15
+  SMILES found? YES
+--------------------------------------------------
+Row 155
+  PDB: 4yu2
+  Warhead (input): 4H5
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4H5
+  SMILES found? YES
+--------------------------------------------------
+Row 156
+  PDB: 6eif
+  Warhead (input): B5T
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B5T
+  SMILES found? YES
+--------------------------------------------------
+Row 157
+  PDB: 4nct
+  Warhead (input): 2K2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2K2
+  SMILES found? YES
+--------------------------------------------------
+Row 158
+  PDB: 6eiq
+  Warhead (input): B6Z
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6Z
+  SMILES found? YES
+--------------------------------------------------
+Row 159
+  PDB: 5a54
+  Warhead (input): 5PW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 5PW
+  SMILES found? YES
+--------------------------------------------------
+Row 160
+  PDB: 7akb
+  Warhead (input): RJZ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RJZ
+  SMILES found? YES
+--------------------------------------------------
+Row 161
+  PDB: 6uwy
+  Warhead (input): QKG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QKG
+  SMILES found? YES
+--------------------------------------------------
+Row 162
+  PDB: 3anr
+  Warhead (input): HRM
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: HRM
+  SMILES found? YES
+--------------------------------------------------
+Row 163
+  PDB: 3anq
+  Warhead (input): EHB
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: EHB
+  SMILES found? YES
+--------------------------------------------------
+Row 164
+  PDB: 4mq1
+  Warhead (input): 2C3
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2C3
+  SMILES found? YES
+--------------------------------------------------
+Row 165
+  PDB: 7z5n
+  Warhead (input): 3NG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 3NG
+  SMILES found? YES
+--------------------------------------------------
+Row 166
+  PDB: 7zh8
+  Warhead (input): IWU
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: IWU
+  SMILES found? YES
+--------------------------------------------------
+Row 167
+  PDB: 4mq1
+  Warhead (input): 2C3
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2C3
+  SMILES found? YES
+🧹 ION DROP → Row 168 | PDB=7o7k | Warhead=LI | key=LI | reason=common_ion
+--------------------------------------------------
+Row 168
+  PDB: 7o7k
+  Warhead (input): LI
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: LI
+  SMILES found? NO
+  ❌ No SMILES for lookup key in smiles_map.
+--------------------------------------------------
+Row 169
+  PDB: 5a4q
+  Warhead (input): Y3L
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: Y3L
+  SMILES found? YES
+--------------------------------------------------
+Row 170
+  PDB: 8t2h
+  Warhead (input): XIR
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: XIR
+  SMILES found? YES
+--------------------------------------------------
+Row 171
+  PDB: 4ylj
+  Warhead (input): 4E1
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4E1
+  SMILES found? YES
+--------------------------------------------------
+Row 172
+  PDB: 5a54
+  Warhead (input): 5PW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 5PW
+  SMILES found? YES
+--------------------------------------------------
+Row 173
+  PDB: 8r8e
+  Warhead (input): YOX
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: YOX
+  SMILES found? YES
+--------------------------------------------------
+Row 174
+  PDB: 9ft4
+  Warhead (input): A04
+  Warhead_5 (if mapped): A1IFJ
+  SMILES lookup key: A1IFJ
+  SMILES found? YES
+--------------------------------------------------
+Row 175
+  PDB: 8r8e
+  Warhead (input): YOX
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: YOX
+  SMILES found? YES
+--------------------------------------------------
+Row 176
+  PDB: 5a4q
+  Warhead (input): Y3L
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: Y3L
+  SMILES found? YES
+--------------------------------------------------
+Row 177
+  PDB: 7ajv
+  Warhead (input): RKK
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RKK
+  SMILES found? YES
+--------------------------------------------------
+Row 178
+  PDB: 6qu2
+  Warhead (input): JHW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: JHW
+  SMILES found? YES
+--------------------------------------------------
+Row 179
+  PDB: 7zh8
+  Warhead (input): IWU
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: IWU
+  SMILES found? YES
+--------------------------------------------------
+Row 180
+  PDB: 6t6a
+  Warhead (input): MLW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: MLW
+  SMILES found? YES
+--------------------------------------------------
+Row 181
+  PDB: 8c3r
+  Warhead (input): R7O
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: R7O
+  SMILES found? YES
+--------------------------------------------------
+Row 182
+  PDB: 7akl
+  Warhead (input): RK5
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RK5
+  SMILES found? YES
+--------------------------------------------------
+Row 183
+  PDB: 6s1j
+  Warhead (input): KRK
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KRK
+  SMILES found? YES
+--------------------------------------------------
+Row 184
+  PDB: 6eij
+  Warhead (input): B5Z
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B5Z
+  SMILES found? YES
+--------------------------------------------------
+Row 185
+  PDB: 4yu2
+  Warhead (input): 4H5
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4H5
+  SMILES found? YES
+--------------------------------------------------
+Row 186
+  PDB: 6eiv
+  Warhead (input): B6Q
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6Q
+  SMILES found? YES
+--------------------------------------------------
+Row 187
+  PDB: 4mq2
+  Warhead (input): 2C4
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2C4
+  SMILES found? YES
+--------------------------------------------------
+Row 188
+  PDB: 5a4l
+  Warhead (input): ZC3
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: ZC3
+  SMILES found? YES
+--------------------------------------------------
+Row 189
+  PDB: 7fhs
+  Warhead (input): 4VZ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4VZ
+  SMILES found? YES
+--------------------------------------------------
+Row 190
+  PDB: 6ej4
+  Warhead (input): B7W
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B7W
+  SMILES found? YES
+--------------------------------------------------
+Row 191
+  PDB: 9fpx
+  Warhead (input): CC9
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: CC9
+  SMILES found? YES
+--------------------------------------------------
+Row 192
+  PDB: 6eil
+  Warhead (input): B6B
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6B
+  SMILES found? YES
+--------------------------------------------------
+Row 193
+  PDB: 6yf8
+  Warhead (input): OPW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: OPW
+  SMILES found? YES
+--------------------------------------------------
+Row 194
+  PDB: 6eiq
+  Warhead (input): B6Z
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6Z
+  SMILES found? YES
+--------------------------------------------------
+Row 195
+  PDB: 5a4q
+  Warhead (input): Y3L
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: Y3L
+  SMILES found? YES
+--------------------------------------------------
+Row 196
+  PDB: 7z5n
+  Warhead (input): 3NG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 3NG
+  SMILES found? YES
+--------------------------------------------------
+Row 197
+  PDB: 7ajm
+  Warhead (input): RKW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RKW
+  SMILES found? YES
+--------------------------------------------------
+Row 198
+  PDB: 5a4l
+  Warhead (input): ZC3
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: ZC3
+  SMILES found? YES
+--------------------------------------------------
+Row 199
+  PDB: 6eij
+  Warhead (input): B5Z
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B5Z
+  SMILES found? YES
+--------------------------------------------------
+Row 200
+  PDB: 7z5n
+  Warhead (input): 3NG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 3NG
+  SMILES found? YES
+--------------------------------------------------
+Row 201
+  PDB: 6t6a
+  Warhead (input): MLW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: MLW
+  SMILES found? YES
+--------------------------------------------------
+Row 202
+  PDB: 7o7k
+  Warhead (input): 6ZV
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 6ZV
+  SMILES found? YES
+--------------------------------------------------
+Row 203
+  PDB: 8yev
+  Warhead (input): CUE
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: CUE
+  SMILES found? YES
+--------------------------------------------------
+Row 204
+  PDB: 2vx3
+  Warhead (input): D15
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D15
+  SMILES found? YES
+--------------------------------------------------
+Row 205
+  PDB: 4nct
+  Warhead (input): 2K2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2K2
+  SMILES found? YES
+--------------------------------------------------
+Row 206
+  PDB: 7a5n
+  Warhead (input): R05
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: R05
+  SMILES found? YES
+--------------------------------------------------
+Row 207
+  PDB: 5aik
+  Warhead (input): AWR
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: AWR
+  SMILES found? YES
+--------------------------------------------------
+Row 208
+  PDB: 4yu2
+  Warhead (input): 4H5
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4H5
+  SMILES found? YES
+--------------------------------------------------
+Row 209
+  PDB: 4mq2
+  Warhead (input): 2C4
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2C4
+  SMILES found? YES
+--------------------------------------------------
+Row 210
+  PDB: 5a3x
+  Warhead (input): QIV
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QIV
+  SMILES found? YES
+--------------------------------------------------
+Row 211
+  PDB: 7ajm
+  Warhead (input): RKW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RKW
+  SMILES found? YES
+--------------------------------------------------
+Row 212
+  PDB: 7zh8
+  Warhead (input): IWU
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: IWU
+  SMILES found? YES
+--------------------------------------------------
+Row 213
+  PDB: 4ylj
+  Warhead (input): 4E1
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 4E1
+  SMILES found? YES
+--------------------------------------------------
+Row 214
+  PDB: 7z5n
+  Warhead (input): 3NG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 3NG
+  SMILES found? YES
+--------------------------------------------------
+Row 215
+  PDB: 7aj2
+  Warhead (input): RJ5
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RJ5
+  SMILES found? YES
+--------------------------------------------------
+Row 216
+  PDB: 6ej4
+  Warhead (input): B7W
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B7W
+  SMILES found? YES
+--------------------------------------------------
+Row 217
+  PDB: 7ak2
+  Warhead (input): RHH
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RHH
+  SMILES found? YES
+--------------------------------------------------
+Row 218
+  PDB: 8r8e
+  Warhead (input): YOX
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: YOX
+  SMILES found? YES
+--------------------------------------------------
+Row 219
+  PDB: 5aik
+  Warhead (input): AWR
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: AWR
+  SMILES found? YES
+--------------------------------------------------
+Row 220
+  PDB: 7a51
+  Warhead (input): QYK
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QYK
+  SMILES found? YES
+--------------------------------------------------
+Row 221
+  PDB: 6uwy
+  Warhead (input): QKG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QKG
+  SMILES found? YES
+--------------------------------------------------
+Row 222
+  PDB: 6eil
+  Warhead (input): B6B
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6B
+  SMILES found? YES
+--------------------------------------------------
+Row 223
+  PDB: 7a52
+  Warhead (input): QYB
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: QYB
+  SMILES found? YES
+--------------------------------------------------
+Row 224
+  PDB: 7ajy
+  Warhead (input): RKZ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RKZ
+  SMILES found? YES
+--------------------------------------------------
+Row 225
+  PDB: 7a5n
+  Warhead (input): R05
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: R05
+  SMILES found? YES
+--------------------------------------------------
+Row 226
+  PDB: 7aka
+  Warhead (input): RK2
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: RK2
+  SMILES found? YES
+--------------------------------------------------
+Row 227
+  PDB: 6eis
+  Warhead (input): B6N
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: B6N
+  SMILES found? YES
+--------------------------------------------------
+Row 228
+  PDB: 6s14
+  Warhead (input): KQW
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KQW
+  SMILES found? YES
+🔬 END RESOLUTION TRACE
+🧾 Wrote Dropped_Ion_Rows.csv (2 rows)
+📊 Ion-drop reason counts:
+Ion_Drop_Reason
+common_ion    2
+✅ Filtered SASA table: removed 2 ion-only rows; remaining 227 rows
+💾 Saved Resolved_SASA_Summary.csv
+💾 Saved Ligand_PDB_Index.csv
+🚀 Launching parallel engine with 12 cores...
+🧪 Computing descriptors:   0%|          | 0/89 [00:00<?, ?it/s]
+🧪 Computing descriptors:   1%|          | 1/89 [00:00<00:10,  8.10it/s]
+🧪 Computing descriptors:  28%|██▊       | 25/89 [00:00<00:00, 117.65it/s]
+🧪 Computing descriptors:  57%|█████▋    | 51/89 [00:00<00:00, 168.28it/s]
+🧪 Computing descriptors:  82%|████████▏ | 73/89 [00:00<00:00, 183.33it/s]
+🧪 Computing descriptors: 100%|██████████| 89/89 [00:00<00:00, 169.91it/s]
+🎉 COMPLETE → Ligand_Metadata.csv
+===================================================================
+[12:18:10] 🚀 Running 8_scaffold.py...
+📥 Loaded 227 rows from Resolved_SASA_Summary.csv
+🔬 Found 1 protein targets.
+✅ Stage 1 complete — base scaffold mapping and diversity scores saved.
+🎉 Stage 2 complete — advanced scaffold data saved.
+📦 All tables written to Target_Table/
+[12:18:12] 🚀 Running 9_2Dmapping.py...
+📥 Loading: Resolved_SASA_Summary.csv
+✅ Using: Target=Target, Ligand=Warhead, SMILES=SMILES
+🧬 Generating atom-level mapping...
+🎉 SUCCESS: All maps saved to Target_Table
+[12:18:12] 🚀 Running 10_2DmappingExtraction.py...
+✅ Extracted ligand atom coordinates for 5509 atoms
+💾 Saved → Ligand_3D_Atoms.csv
+[12:18:12] 🚀 Running 11_mcsMatcher.py...
+✅ Loaded 5CharMAP aliases: ligand3=6 ligand5=6
+🚀 Running MCS on 226 ligand occurrences using 12 cores
+⚙️ Using hard timeout (5s per ligand) via SIGALRM
+🧪 SDF 4mq1_A_2C3_501 → 4mq1_A_2C3_501.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 4mq1_C_2C3_501 → 4mq1_C_2C3_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[2C3 4mq1 A 501] 2D=37 3D=37 bonds3D=40 mapped=37 mode=GRAPH_FULL smiles_id=2C3
+[2C3 4mq1 C 501] 2D=37 3D=37 bonds3D=40 mapped=37 mode=GRAPH_FULL smiles_id=2C3
+🧪 SDF 4mq1_D_2C3_501 → 4mq1_D_2C3_501.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 4mq1_B_2C3_501 → 4mq1_B_2C3_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[2C3 4mq1 D 501] 2D=37 3D=37 bonds3D=40 mapped=37 mode=GRAPH_FULL smiles_id=2C3
+[2C3 4mq1 B 501] 2D=37 3D=37 bonds3D=40 mapped=37 mode=GRAPH_FULL smiles_id=2C3
+🧪 SDF 4mq2_A_2C4_501 → 4mq2_A_2C4_501.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 4mq2_B_2C4_501 → 4mq2_B_2C4_501.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 4mq2_C_2C4_501 → 4mq2_C_2C4_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[2C4 4mq2 A 501] 2D=27 3D=27 bonds3D=29 mapped=27 mode=GRAPH_FULL smiles_id=2C4
+[2C4 4mq2 C 501] 2D=27 3D=27 bonds3D=29 mapped=27 mode=GRAPH_FULL smiles_id=2C4
+[2C4 4mq2 B 501] 2D=27 3D=27 bonds3D=29 mapped=27 mode=GRAPH_FULL smiles_id=2C4
+🧪 SDF 4mq2_D_2C4_501 → 4mq2_D_2C4_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[2C4 4mq2 D 501] 2D=27 3D=27 bonds3D=29 mapped=27 mode=GRAPH_FULL smiles_id=2C4
+🧪 SDF 4nct_A_2K2_501 → 4nct_A_2K2_501.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 4nct_C_2K2_501 → 4nct_C_2K2_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[2K2 4nct A 501] 2D=43 3D=43 bonds3D=51 mapped=43 mode=GRAPH_FULL smiles_id=2K2
+[2K2 4nct C 501] 2D=43 3D=43 bonds3D=51 mapped=43 mode=GRAPH_FULL smiles_id=2K2
+🧪 SDF 4nct_B_2K2_501 → 4nct_B_2K2_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[2K2 4nct B 501] 2D=43 3D=43 bonds3D=51 mapped=43 mode=GRAPH_FULL smiles_id=2K2
+⏳ progress: 10/226
+🧪 SDF 4nct_D_2K2_501 → 4nct_D_2K2_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[2K2 4nct D 501] 2D=43 3D=43 bonds3D=51 mapped=43 mode=GRAPH_FULL smiles_id=2K2
+🧪 SDF 7z5n_B_3NG_501 → 7z5n_B_3NG_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[3NG 7z5n B 501] 2D=25 3D=25 bonds3D=28 mapped=25 mode=GRAPH_FULL smiles_id=3NG
+🧪 SDF 7z5n_A_3NG_501 → 7z5n_A_3NG_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[3NG 7z5n A 501] 2D=25 3D=25 bonds3D=28 mapped=25 mode=GRAPH_FULL smiles_id=3NG
+🧪 SDF 7oy6_C_39I_501 → 7oy6_C_39I_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[39I 7oy6 C 501] 2D=26 3D=26 bonds3D=30 mapped=26 mode=GRAPH_FULL smiles_id=39I
+🧪 SDF 7z5n_C_3NG_501 → 7z5n_C_3NG_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[3NG 7z5n C 501] 2D=25 3D=25 bonds3D=28 mapped=25 mode=GRAPH_FULL smiles_id=3NG
+🧪 SDF 7z5n_D_3NG_501 → 7z5n_D_3NG_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[3NG 7z5n D 501] 2D=25 3D=25 bonds3D=28 mapped=25 mode=GRAPH_FULL smiles_id=3NG
+🧪 SDF 7z5n_E_3NG_501 → 7z5n_E_3NG_501.sdf (0.02s) OK (warnings): 1 molecule converted🧪 SDF 7z5n_F_3NG_501 → 7z5n_F_3NG_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[3NG 7z5n F 501] 2D=25 3D=25 bonds3D=28 mapped=25 mode=GRAPH_FULL smiles_id=3NG
+[3NG 7z5n E 501] 2D=25 3D=25 bonds3D=28 mapped=25 mode=GRAPH_FULL smiles_id=3NG
+🧪 SDF 7z5n_G_3NG_501 → 7z5n_G_3NG_501.sdf (0.03s) OK (warnings): 1 molecule converted
+[3NG 7z5n G 501] 2D=25 3D=25 bonds3D=28 mapped=25 mode=GRAPH_FULL smiles_id=3NG
+⏳ progress: 20/226
+🧪 SDF 4aze_A_3RA_700 → 4aze_A_3RA_700.sdf (0.02s) OK (warnings): 1 molecule converted
+[3RA 4aze A 700] 2D=23 3D=23 bonds3D=26 mapped=23 mode=GRAPH_FULL smiles_id=3RA
+🧪 SDF 7z5n_H_3NG_501 → 7z5n_H_3NG_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[3NG 7z5n H 501] 2D=25 3D=25 bonds3D=28 mapped=25 mode=GRAPH_FULL smiles_id=3NG
+🧪 SDF 4aze_B_3RA_700 → 4aze_B_3RA_700.sdf (0.02s) OK (warnings): 1 molecule converted
+[3RA 4aze B 700] 2D=23 3D=23 bonds3D=26 mapped=23 mode=GRAPH_FULL smiles_id=3RA
+🧪 SDF 4aze_C_3RA_700 → 4aze_C_3RA_700.sdf (0.02s) OK (warnings): 1 molecule converted
+[3RA 4aze C 700] 2D=23 3D=23 bonds3D=26 mapped=23 mode=GRAPH_FULL smiles_id=3RA
+🧪 SDF 4ylj_C_4E1_503 → 4ylj_C_4E1_503.sdf (0.03s) OK (warnings): 1 molecule converted
+🧪 SDF 4ylj_A_4E1_505 → 4ylj_A_4E1_505.sdf (0.03s) OK (warnings): ==============================
+🧪 SDF 4ylj_D_4E1_505 → 4ylj_D_4E1_505.sdf (0.03s) OK (warnings): ==============================
+[4E1 4ylj A 505] 2D=21 3D=41 bonds3D=98 mapped=21 mode=GRAPH_FULL smiles_id=4E1
+[4E1 4ylj C 503] 2D=21 3D=41 bonds3D=102 mapped=21 mode=GRAPH_FULL smiles_id=4E1
+🧪 SDF 4ylj_B_4E1_508 → 4ylj_B_4E1_508.sdf (0.04s) OK (warnings): ==============================
+[4E1 4ylj B 508] 2D=21 3D=41 bonds3D=99 mapped=21 mode=GRAPH_FULL smiles_id=4E1
+🧪 SDF 4ylk_A_4E2_519 → 4ylk_A_4E2_519.sdf (0.03s) OK (warnings): 1 molecule converted
+[4E1 4ylj D 505] 2D=21 3D=41 bonds3D=118 mapped=21 mode=GRAPH_FULL smiles_id=4E1
+[4E2 4ylk A 519] 2D=22 3D=43 bonds3D=98 mapped=22 mode=GRAPH_FULL smiles_id=4E2
+🧪 SDF 4yll_A_4E3_515 → 4yll_A_4E3_515.sdf (0.02s) OK (warnings): ==============================
+[4E3 4yll A 515] 2D=22 3D=22 bonds3D=25 mapped=22 mode=GRAPH_FULL smiles_id=4E3
+⏳ progress: 30/226
+🧪 SDF 4yu2_D_4H5_501 → 4yu2_D_4H5_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[4H5 4yu2 D 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=4H5
+🧪 SDF 4yu2_A_4H5_502 → 4yu2_A_4H5_502.sdf (0.02s) OK (warnings): 1 molecule converted
+[4H5 4yu2 A 502] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=4H5
+🧪 SDF 4yu2_C_4H5_502 → 4yu2_C_4H5_502.sdf (0.02s) OK (warnings): 1 molecule converted
+[4H5 4yu2 C 502] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=4H5
+🧪 SDF 4yu2_B_4H5_502 → 4yu2_B_4H5_502.sdf (0.02s) OK (warnings): 1 molecule converted
+[4H5 4yu2 B 502] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=4H5
+🧪 SDF 7fhs_A_4VZ_501 → 7fhs_A_4VZ_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[4VZ 7fhs A 501] 2D=18 3D=18 bonds3D=19 mapped=18 mode=GRAPH_FULL smiles_id=4VZ
+🧪 SDF 7fhs_B_4VZ_501 → 7fhs_B_4VZ_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[4VZ 7fhs B 501] 2D=18 3D=18 bonds3D=19 mapped=18 mode=GRAPH_FULL smiles_id=4VZ
+🧪 SDF 7fhs_C_4VZ_501 → 7fhs_C_4VZ_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[4VZ 7fhs C 501] 2D=18 3D=18 bonds3D=19 mapped=18 mode=GRAPH_FULL smiles_id=4VZ
+🧪 SDF 7fhs_D_4VZ_501 → 7fhs_D_4VZ_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[4VZ 7fhs D 501] 2D=18 3D=18 bonds3D=19 mapped=18 mode=GRAPH_FULL smiles_id=4VZ
+🧪 SDF 7fht_A_4WD_501 → 7fht_A_4WD_501.sdf (0.03s) OK (warnings): 1 molecule converted
+[4WD 7fht A 501] 2D=18 3D=18 bonds3D=19 mapped=18 mode=GRAPH_FULL smiles_id=4WD
+🧪 SDF 7fht_B_4WD_501 → 7fht_B_4WD_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[4WD 7fht B 501] 2D=18 3D=18 bonds3D=19 mapped=18 mode=GRAPH_FULL smiles_id=4WD
+⏳ progress: 40/226
+🧪 SDF 7fht_C_4WD_501 → 7fht_C_4WD_501.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 7fht_D_4WD_501 → 7fht_D_4WD_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[4WD 7fht C 501] 2D=18 3D=18 bonds3D=19 mapped=18 mode=GRAPH_FULL smiles_id=4WD
+[4WD 7fht D 501] 2D=18 3D=18 bonds3D=19 mapped=18 mode=GRAPH_FULL smiles_id=4WD
+🧪 SDF 5a54_D_5PW_1481 → 5a54_D_5PW_1481.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 5a54_C_5PW_1481 → 5a54_C_5PW_1481.sdf (0.02s) OK (warnings): 1 molecule converted
+[12:18:13] WARNING: More than one matching pattern found - picking one
+[5PW 5a54 D 1481] 2D=16 3D=16 bonds3D=17 mapped=16 mode=TEMPLATE_FULL smiles_id=5PW
+[12:18:13] WARNING: More than one matching pattern found - picking one
+[5PW 5a54 C 1481] 2D=16 3D=16 bonds3D=17 mapped=16 mode=TEMPLATE_FULL smiles_id=5PW
+🧪 SDF 5a54_B_5PW_1482 → 5a54_B_5PW_1482.sdf (0.02s) OK (warnings): 1 molecule converted
+[12:18:13] WARNING: More than one matching pattern found - picking one
+[5PW 5a54 B 1482] 2D=16 3D=16 bonds3D=17 mapped=16 mode=TEMPLATE_FULL smiles_id=5PW
+🧪 SDF 5a54_A_5PW_1482 → 5a54_A_5PW_1482.sdf (0.03s) OK (warnings): 1 molecule converted
+[12:18:13] WARNING: More than one matching pattern found - picking one
+[5PW 5a54 A 1482] 2D=16 3D=16 bonds3D=17 mapped=16 mode=TEMPLATE_FULL smiles_id=5PW
+🧪 SDF 7a4z_A_6SD_501 → 7a4z_A_6SD_501.sdf (0.02s) OK (warnings): ==============================
+[6SD 7a4z A 501] 2D=14 3D=14 bonds3D=15 mapped=14 mode=GRAPH_FULL smiles_id=6SD
+🧪 SDF 7o7k_B_6ZV_504 → 7o7k_B_6ZV_504.sdf (0.02s) OK (warnings): 1 molecule converted
+[6ZV 7o7k B 504] 2D=37 3D=37 bonds3D=41 mapped=37 mode=GRAPH_FULL smiles_id=6ZV
+🧪 SDF 7o7k_A_6ZV_803 → 7o7k_A_6ZV_803.sdf (0.02s) OK (warnings): 1 molecule converted
+[6ZV 7o7k A 803] 2D=37 3D=37 bonds3D=41 mapped=37 mode=GRAPH_FULL smiles_id=6ZV
+🧪 SDF 5a4e_C_7QQ_1475 → 5a4e_C_7QQ_1475.sdf (0.03s) OK (warnings): ==============================
+[7QQ 5a4e C 1475] 2D=15 3D=30 bonds3D=88 mapped=15 mode=GRAPH_FULL smiles_id=7QQ
+⏳ progress: 50/226
+🧪 SDF 5a4e_A_7QQ_1482 → 5a4e_A_7QQ_1482.sdf (0.03s) OK (warnings): 1 molecule converted
+[7QQ 5a4e A 1482] 2D=15 3D=30 bonds3D=84 mapped=15 mode=GRAPH_FULL smiles_id=7QQ
+🧪 SDF 5a4e_B_7QQ_1482 → 5a4e_B_7QQ_1482.sdf (0.03s) OK (warnings): ==============================
+[7QQ 5a4e B 1482] 2D=15 3D=30 bonds3D=85 mapped=15 mode=GRAPH_FULL smiles_id=7QQ
+🧪 SDF 6a1f_A_9OF_807 → 6a1f_A_9OF_807.sdf (0.02s) OK (warnings): 1 molecule converted
+[9OF 6a1f A 807] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=9OF
+🧪 SDF 5a4e_D_7QQ_1482 → 5a4e_D_7QQ_1482.sdf (0.04s) OK (warnings): ==============================
+[7QQ 5a4e D 1482] 2D=15 3D=30 bonds3D=85 mapped=15 mode=GRAPH_FULL smiles_id=7QQ
+🧪 SDF 6a1g_A_9OL_801 → 6a1g_A_9OL_801.sdf (0.02s) OK (warnings): 1 molecule converted
+[9OL 6a1g A 801] 2D=25 3D=25 bonds3D=28 mapped=25 mode=GRAPH_FULL smiles_id=9OL
+🧪 SDF 5a4t_D_AJG_1481 → 5a4t_D_AJG_1481.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 6a1g_B_9OL_801 → 6a1g_B_9OL_801.sdf (0.02s) OK (warnings): 1 molecule converted
+[AJG 5a4t D 1481] 2D=15 3D=15 bonds3D=16 mapped=15 mode=GRAPH_FULL smiles_id=AJG
+[9OL 6a1g B 801] 2D=25 3D=25 bonds3D=28 mapped=25 mode=GRAPH_FULL smiles_id=9OL
+🧪 SDF 5a4t_C_AJG_1481 → 5a4t_C_AJG_1481.sdf (0.02s) OK (warnings): 1 molecule converted
+[AJG 5a4t C 1481] 2D=15 3D=15 bonds3D=16 mapped=15 mode=GRAPH_FULL smiles_id=AJG
+🧪 SDF 5a4t_A_AJG_1482 → 5a4t_A_AJG_1482.sdf (0.02s) OK (warnings): 1 molecule converted
+[AJG 5a4t A 1482] 2D=15 3D=15 bonds3D=16 mapped=15 mode=GRAPH_FULL smiles_id=AJG
+🧪 SDF 5a4t_B_AJG_1482 → 5a4t_B_AJG_1482.sdf (0.02s) OK (warnings): 1 molecule converted
+[AJG 5a4t B 1482] 2D=15 3D=15 bonds3D=16 mapped=15 mode=GRAPH_FULL smiles_id=AJG
+🧪 SDF 5aik_B_AWR_900 → 5aik_B_AWR_900.sdf (0.02s) OK (warnings): 1 molecule converted
+[AWR 5aik B 900] 2D=24 3D=24 bonds3D=26 mapped=24 mode=GRAPH_FULL smiles_id=AWR
+⏳ progress: 60/226
+🧪 SDF 5aik_A_AWR_900 → 5aik_A_AWR_900.sdf (0.02s) OK (warnings): 1 molecule converted
+[AWR 5aik A 900] 2D=24 3D=24 bonds3D=26 mapped=24 mode=GRAPH_FULL smiles_id=AWR
+🧪 SDF 5aik_C_AWR_900 → 5aik_C_AWR_900.sdf (0.02s) OK (warnings): 1 molecule converted
+[AWR 5aik C 900] 2D=24 3D=24 bonds3D=26 mapped=24 mode=GRAPH_FULL smiles_id=AWR
+🧪 SDF 5aik_D_AWR_900 → 5aik_D_AWR_900.sdf (0.02s) OK (warnings): 1 molecule converted
+[AWR 5aik D 900] 2D=24 3D=24 bonds3D=26 mapped=24 mode=GRAPH_FULL smiles_id=AWR
+🧪 SDF 6eif_B_B5T_501 → 6eif_B_B5T_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B5T 6eif B 501] 2D=25 3D=25 bonds3D=28 mapped=25 mode=GRAPH_FULL smiles_id=B5T
+🧪 SDF 6eif_A_B5T_501 → 6eif_A_B5T_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B5T 6eif A 501] 2D=25 3D=25 bonds3D=28 mapped=25 mode=GRAPH_FULL smiles_id=B5T
+🧪 SDF 6eif_C_B5T_501 → 6eif_C_B5T_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B5T 6eif C 501] 2D=25 3D=25 bonds3D=28 mapped=25 mode=GRAPH_FULL smiles_id=B5T
+🧪 SDF 6eif_D_B5T_501 → 6eif_D_B5T_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B5T 6eif D 501] 2D=25 3D=25 bonds3D=28 mapped=25 mode=GRAPH_FULL smiles_id=B5T
+🧪 SDF 6eij_A_B5Z_501 → 6eij_A_B5Z_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B5Z 6eij A 501] 2D=33 3D=33 bonds3D=37 mapped=33 mode=GRAPH_FULL smiles_id=B5Z
+🧪 SDF 6eij_B_B5Z_501 → 6eij_B_B5Z_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B5Z 6eij B 501] 2D=33 3D=33 bonds3D=37 mapped=33 mode=GRAPH_FULL smiles_id=B5Z
+⏳ progress: 70/226
+🧪 SDF 6eij_C_B5Z_501 → 6eij_C_B5Z_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B5Z 6eij C 501] 2D=33 3D=33 bonds3D=37 mapped=33 mode=GRAPH_FULL smiles_id=B5Z
+🧪 SDF 6eij_D_B5Z_501 → 6eij_D_B5Z_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B5Z 6eij D 501] 2D=33 3D=33 bonds3D=37 mapped=33 mode=GRAPH_FULL smiles_id=B5Z
+🧪 SDF 6eil_A_B6B_501 → 6eil_A_B6B_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B6B 6eil A 501] 2D=24 3D=24 bonds3D=26 mapped=24 mode=GRAPH_FULL smiles_id=B6B
+🧪 SDF 6eil_B_B6B_501 → 6eil_B_B6B_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B6B 6eil B 501] 2D=24 3D=24 bonds3D=26 mapped=24 mode=GRAPH_FULL smiles_id=B6B
+🧪 SDF 6eil_D_B6B_501 → 6eil_D_B6B_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B6B 6eil D 501] 2D=24 3D=24 bonds3D=26 mapped=24 mode=GRAPH_FULL smiles_id=B6B
+🧪 SDF 6eir_A_B6H_501 → 6eir_A_B6H_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B6H 6eir A 501] 2D=35 3D=35 bonds3D=38 mapped=35 mode=GRAPH_FULL smiles_id=B6H
+🧪 SDF 6eir_B_B6H_501 → 6eir_B_B6H_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B6H 6eir B 501] 2D=35 3D=35 bonds3D=38 mapped=35 mode=GRAPH_FULL smiles_id=B6H
+🧪 SDF 6eir_C_B6H_501 → 6eir_C_B6H_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B6H 6eir C 501] 2D=35 3D=35 bonds3D=38 mapped=35 mode=GRAPH_FULL smiles_id=B6H
+🧪 SDF 6eir_D_B6H_501 → 6eir_D_B6H_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B6H 6eir D 501] 2D=35 3D=35 bonds3D=38 mapped=35 mode=GRAPH_FULL smiles_id=B6H
+🧪 SDF 6eis_B_B6N_501 → 6eis_B_B6N_501.sdf (0.02s) OK (warnings): ==============================
+[B6N 6eis B 501] 2D=31 3D=31 bonds3D=35 mapped=31 mode=GRAPH_FULL smiles_id=B6N
+🧪 SDF 6eis_A_B6N_501 → 6eis_A_B6N_501.sdf (0.02s) OK (warnings): ==============================
+[B6N 6eis A 501] 2D=31 3D=31 bonds3D=35 mapped=31 mode=GRAPH_FULL smiles_id=B6N
+⏳ progress: 80/226
+🧪 SDF 6eis_C_B6N_501 → 6eis_C_B6N_501.sdf (0.02s) OK (warnings): ==============================
+[B6N 6eis C 501] 2D=31 3D=31 bonds3D=35 mapped=31 mode=GRAPH_FULL smiles_id=B6N
+🧪 SDF 6eis_D_B6N_501 → 6eis_D_B6N_501.sdf (0.02s) OK (warnings): ==============================
+[B6N 6eis D 501] 2D=31 3D=31 bonds3D=35 mapped=31 mode=GRAPH_FULL smiles_id=B6N
+🧪 SDF 6eiv_A_B6Q_501 → 6eiv_A_B6Q_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B6Q 6eiv A 501] 2D=33 3D=33 bonds3D=36 mapped=33 mode=GRAPH_FULL smiles_id=B6Q
+🧪 SDF 6eiv_B_B6Q_501 → 6eiv_B_B6Q_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B6Q 6eiv B 501] 2D=33 3D=33 bonds3D=36 mapped=33 mode=GRAPH_FULL smiles_id=B6Q
+🧪 SDF 6eiv_C_B6Q_501 → 6eiv_C_B6Q_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B6Q 6eiv C 501] 2D=33 3D=33 bonds3D=36 mapped=33 mode=GRAPH_FULL smiles_id=B6Q
+🧪 SDF 6eiq_A_B6Z_501 → 6eiq_A_B6Z_501.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 6eiv_D_B6Q_501 → 6eiv_D_B6Q_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B6Q 6eiv D 501] 2D=33 3D=33 bonds3D=36 mapped=33 mode=GRAPH_FULL smiles_id=B6Q
+[B6Z 6eiq A 501] 2D=30 3D=30 bonds3D=33 mapped=30 mode=GRAPH_FULL smiles_id=B6Z
+🧪 SDF 6eiq_B_B6Z_501 → 6eiq_B_B6Z_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B6Z 6eiq B 501] 2D=30 3D=30 bonds3D=33 mapped=30 mode=GRAPH_FULL smiles_id=B6Z
+🧪 SDF 6eip_A_B7B_501 → 6eip_A_B7B_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B7B 6eip A 501] 2D=31 3D=31 bonds3D=35 mapped=31 mode=GRAPH_FULL smiles_id=B7B
+🧪 SDF 6eiq_C_B6Z_501 → 6eiq_C_B6Z_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B6Z 6eiq C 501] 2D=30 3D=30 bonds3D=33 mapped=30 mode=GRAPH_FULL smiles_id=B6Z
+🧪 SDF 6eiq_D_B6Z_501 → 6eiq_D_B6Z_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B6Z 6eiq D 501] 2D=30 3D=30 bonds3D=33 mapped=30 mode=GRAPH_FULL smiles_id=B6Z
+⏳ progress: 90/226
+🧪 SDF 6eip_B_B7B_501 → 6eip_B_B7B_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B7B 6eip B 501] 2D=31 3D=31 bonds3D=35 mapped=31 mode=GRAPH_FULL smiles_id=B7B
+🧪 SDF 6eip_C_B7B_501 → 6eip_C_B7B_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B7B 6eip C 501] 2D=31 3D=31 bonds3D=35 mapped=31 mode=GRAPH_FULL smiles_id=B7B
+🧪 SDF 6ej4_B_B7W_501 → 6ej4_B_B7W_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B7W 6ej4 B 501] 2D=22 3D=22 bonds3D=25 mapped=22 mode=GRAPH_FULL smiles_id=B7W
+🧪 SDF 6ej4_A_B7W_501 → 6ej4_A_B7W_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B7W 6ej4 A 501] 2D=22 3D=22 bonds3D=25 mapped=22 mode=GRAPH_FULL smiles_id=B7W
+🧪 SDF 6eip_D_B7B_501 → 6eip_D_B7B_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B7B 6eip D 501] 2D=31 3D=31 bonds3D=35 mapped=31 mode=GRAPH_FULL smiles_id=B7B
+🧪 SDF 6ej4_C_B7W_501 → 6ej4_C_B7W_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B7W 6ej4 C 501] 2D=22 3D=22 bonds3D=25 mapped=22 mode=GRAPH_FULL smiles_id=B7W
+🧪 SDF 6ej4_D_B7W_501 → 6ej4_D_B7W_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[B7W 6ej4 D 501] 2D=22 3D=22 bonds3D=25 mapped=22 mode=GRAPH_FULL smiles_id=B7W
+🧪 SDF 9fpx_A_CC9_501 → 9fpx_A_CC9_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[CC9 9fpx A 501] 2D=27 3D=27 bonds3D=28 mapped=27 mode=GRAPH_FULL smiles_id=CC9
+🧪 SDF 9fpx_B_CC9_501 → 9fpx_B_CC9_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[CC9 9fpx B 501] 2D=27 3D=27 bonds3D=28 mapped=27 mode=GRAPH_FULL smiles_id=CC9
+⏳ progress: 100/226
+🧪 SDF 8yev_A_CUE_501 → 8yev_A_CUE_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[CUE 8yev A 501] 2D=20 3D=20 bonds3D=23 mapped=20 mode=GRAPH_FULL smiles_id=CUE
+🧪 SDF 8yev_B_CUE_501 → 8yev_B_CUE_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[CUE 8yev B 501] 2D=20 3D=20 bonds3D=23 mapped=20 mode=GRAPH_FULL smiles_id=CUE
+🧪 SDF 2vx3_A_D15_600 → 2vx3_A_D15_600.sdf (0.02s) OK (warnings): 1 molecule converted
+[D15 2vx3 A 600] 2D=32 3D=32 bonds3D=35 mapped=32 mode=GRAPH_FULL smiles_id=D15
+🧪 SDF 2vx3_B_D15_600 → 2vx3_B_D15_600.sdf (0.02s) OK (warnings): 1 molecule converted
+[D15 2vx3 B 600] 2D=32 3D=32 bonds3D=35 mapped=32 mode=GRAPH_FULL smiles_id=D15
+🧪 SDF 2vx3_C_D15_600 → 2vx3_C_D15_600.sdf (0.02s) OK (warnings): 1 molecule converted
+[D15 2vx3 C 600] 2D=32 3D=32 bonds3D=35 mapped=32 mode=GRAPH_FULL smiles_id=D15
+🧪 SDF 2vx3_D_D15_600 → 2vx3_D_D15_600.sdf (0.02s) OK (warnings): 1 molecule converted
+[D15 2vx3 D 600] 2D=32 3D=32 bonds3D=35 mapped=32 mode=GRAPH_FULL smiles_id=D15
+🧪 SDF 2wo6_A_D15_600 → 2wo6_A_D15_600.sdf (0.02s) OK (warnings): 1 molecule converted
+[D15 2wo6 A 600] 2D=32 3D=32 bonds3D=35 mapped=32 mode=GRAPH_FULL smiles_id=D15
+🧪 SDF 2wo6_B_D15_600 → 2wo6_B_D15_600.sdf (0.02s) OK (warnings): 1 molecule converted
+[D15 2wo6 B 600] 2D=32 3D=32 bonds3D=35 mapped=32 mode=GRAPH_FULL smiles_id=D15
+🧪 SDF 3anq_A_EHB_1 → 3anq_A_EHB_1.sdf (0.02s) OK (warnings): ==============================
+[EHB 3anq A 1] 2D=16 3D=16 bonds3D=17 mapped=16 mode=GRAPH_FULL smiles_id=EHB
+⏳ progress: 110/226
+🧪 SDF 3anq_B_EHB_1 → 3anq_B_EHB_1.sdf (0.02s) OK (warnings): ==============================
+[EHB 3anq B 1] 2D=16 3D=16 bonds3D=17 mapped=16 mode=GRAPH_FULL smiles_id=EHB
+🧪 SDF 3anq_C_EHB_1 → 3anq_C_EHB_1.sdf (0.02s) OK (warnings): ==============================
+[EHB 3anq C 1] 2D=16 3D=16 bonds3D=17 mapped=16 mode=GRAPH_FULL smiles_id=EHB
+🧪 SDF 3anq_D_EHB_1 → 3anq_D_EHB_1.sdf (0.02s) OK (warnings): ==============================
+[EHB 3anq D 1] 2D=16 3D=16 bonds3D=17 mapped=16 mode=GRAPH_FULL smiles_id=EHB
+🧪 SDF 6ln1_A_EKU_501 → 6ln1_A_EKU_501.sdf (0.02s) OK (warnings): ==============================
+[EKU 6ln1 A 501] 2D=19 3D=27 bonds3D=29 mapped=19 mode=GRAPH_FULL smiles_id=EKU
+🧪 SDF 3anr_A_HRM_1 → 3anr_A_HRM_1.sdf (0.02s) OK (warnings): ==============================
+🧪 SDF 6ln1_B_EKU_501 → 6ln1_B_EKU_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[EKU 6ln1 B 501] 2D=19 3D=27 bonds3D=29 mapped=19 mode=GRAPH_FULL smiles_id=EKU
+[HRM 3anr A 1] 2D=16 3D=16 bonds3D=18 mapped=16 mode=GRAPH_FULL smiles_id=HRM
+🧪 SDF 3anr_B_HRM_1 → 3anr_B_HRM_1.sdf (0.02s) OK (warnings): ==============================
+[HRM 3anr B 1] 2D=16 3D=16 bonds3D=18 mapped=16 mode=GRAPH_FULL smiles_id=HRM
+🧪 SDF 3anr_C_HRM_1 → 3anr_C_HRM_1.sdf (0.02s) OK (warnings): ==============================
+[HRM 3anr C 1] 2D=16 3D=16 bonds3D=18 mapped=16 mode=GRAPH_FULL smiles_id=HRM
+🧪 SDF 3anr_D_HRM_1 → 3anr_D_HRM_1.sdf (0.02s) OK (warnings): ==============================
+[HRM 3anr D 1] 2D=16 3D=16 bonds3D=18 mapped=16 mode=GRAPH_FULL smiles_id=HRM
+🧪 SDF 7zh8_A_IWU_501 → 7zh8_A_IWU_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[IWU 7zh8 A 501] 2D=10 3D=10 bonds3D=11 mapped=10 mode=GRAPH_FULL smiles_id=IWU
+⏳ progress: 120/226
+🧪 SDF 7zh8_B_IWU_501 → 7zh8_B_IWU_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[IWU 7zh8 B 501] 2D=10 3D=10 bonds3D=11 mapped=10 mode=GRAPH_FULL smiles_id=IWU
+🧪 SDF 7zh8_C_IWU_502 → 7zh8_C_IWU_502.sdf (0.02s) OK (warnings): 1 molecule converted
+[IWU 7zh8 C 502] 2D=10 3D=10 bonds3D=11 mapped=10 mode=GRAPH_FULL smiles_id=IWU
+🧪 SDF 7zh8_D_IWU_501 → 7zh8_D_IWU_501.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 7zh8_B_IWU_502 → 7zh8_B_IWU_502.sdf (0.02s) OK (warnings): 1 molecule converted
+[IWU 7zh8 D 501] 2D=10 3D=10 bonds3D=11 mapped=10 mode=GRAPH_FULL smiles_id=IWU
+[IWU 7zh8 B 502] 2D=10 3D=10 bonds3D=11 mapped=10 mode=GRAPH_FULL smiles_id=IWU
+🧪 SDF 7zh8_D_IWU_502 → 7zh8_D_IWU_502.sdf (0.02s) OK (warnings): 1 molecule converted
+[IWU 7zh8 D 502] 2D=10 3D=10 bonds3D=11 mapped=10 mode=GRAPH_FULL smiles_id=IWU
+🧪 SDF 7zh8_A_IWU_503 → 7zh8_A_IWU_503.sdf (0.02s) OK (warnings): 1 molecule converted
+[IWU 7zh8 A 503] 2D=10 3D=10 bonds3D=11 mapped=10 mode=GRAPH_FULL smiles_id=IWU
+🧪 SDF 6qu2_D_JHW_504 → 6qu2_D_JHW_504.sdf (0.02s) OK (warnings): 1 molecule converted
+[JHW 6qu2 D 504] 2D=23 3D=23 bonds3D=27 mapped=23 mode=GRAPH_FULL smiles_id=JHW
+🧪 SDF 7zh8_C_IWU_504 → 7zh8_C_IWU_504.sdf (0.02s) OK (warnings): 1 molecule converted
+[IWU 7zh8 C 504] 2D=10 3D=10 bonds3D=11 mapped=10 mode=GRAPH_FULL smiles_id=IWU
+🧪 SDF 6qu2_C_JHW_505 → 6qu2_C_JHW_505.sdf (0.02s) OK (warnings): 1 molecule converted
+[JHW 6qu2 C 505] 2D=23 3D=23 bonds3D=27 mapped=23 mode=GRAPH_FULL smiles_id=JHW
+🧪 SDF 6qu2_A_JHW_506 → 6qu2_A_JHW_506.sdf (0.02s) OK (warnings): 1 molecule converted
+[JHW 6qu2 A 506] 2D=23 3D=23 bonds3D=27 mapped=23 mode=GRAPH_FULL smiles_id=JHW
+🧪 SDF 6qu2_B_JHW_508 → 6qu2_B_JHW_508.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 6s11_B_KQE_501 → 6s11_B_KQE_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[JHW 6qu2 B 508] 2D=23 3D=23 bonds3D=27 mapped=23 mode=GRAPH_FULL smiles_id=JHW
+[KQE 6s11 B 501] 2D=26 3D=26 bonds3D=29 mapped=26 mode=GRAPH_FULL smiles_id=KQE
+⏳ progress: 130/226
+🧪 SDF 6s11_A_KQE_502 → 6s11_A_KQE_502.sdf (0.02s) OK (warnings): 1 molecule converted
+[KQE 6s11 A 502] 2D=26 3D=26 bonds3D=29 mapped=26 mode=GRAPH_FULL smiles_id=KQE
+🧪 SDF 6s17_A_KQK_511 → 6s17_A_KQK_511.sdf (0.02s) OK (warnings): 1 molecule converted
+[KQK 6s17 A 511] 2D=18 3D=30 bonds3D=32 mapped=18 mode=GRAPH_FULL smiles_id=KQK
+🧪 SDF 6s14_A_KQW_507 → 6s14_A_KQW_507.sdf (0.02s) OK (warnings): 1 molecule converted
+[KQW 6s14 A 507] 2D=20 3D=34 bonds3D=37 mapped=20 mode=GRAPH_FULL smiles_id=KQW
+🧪 SDF 6s1h_A_KQZ_504 → 6s1h_A_KQZ_504.sdf (0.02s) OK (warnings): 1 molecule converted
+[KQZ 6s1h A 504] 2D=18 3D=31 bonds3D=33 mapped=18 mode=GRAPH_FULL smiles_id=KQZ
+🧪 SDF 6s1i_A_KR8_503 → 6s1i_A_KR8_503.sdf (0.02s) OK (warnings): 1 molecule converted
+[KR8 6s1i A 503] 2D=23 3D=23 bonds3D=26 mapped=23 mode=GRAPH_FULL smiles_id=KR8
+🧪 SDF 6s1i_D_KR8_503 → 6s1i_D_KR8_503.sdf (0.02s) OK (warnings): 1 molecule converted
+[KR8 6s1i D 503] 2D=23 3D=23 bonds3D=26 mapped=23 mode=GRAPH_FULL smiles_id=KR8
+🧪 SDF 6s1i_C_KR8_505 → 6s1i_C_KR8_505.sdf (0.02s) OK (warnings): 1 molecule converted
+[KR8 6s1i C 505] 2D=23 3D=23 bonds3D=26 mapped=23 mode=GRAPH_FULL smiles_id=KR8
+🧪 SDF 6s1i_B_KR8_505 → 6s1i_B_KR8_505.sdf (0.02s) OK (warnings): 1 molecule converted
+[KR8 6s1i B 505] 2D=23 3D=23 bonds3D=26 mapped=23 mode=GRAPH_FULL smiles_id=KR8
+🧪 SDF 6s1j_A_KRK_501 → 6s1j_A_KRK_501.sdf (0.02s) OK (warnings): 1 molecule converted
+⏳ progress: 140/226
+[KRK 6s1j A 501] 2D=21 3D=34 bonds3D=37 mapped=21 mode=GRAPH_FULL smiles_id=KRK
+🧪 SDF 6s1b_A_KRQ_507 → 6s1b_A_KRQ_507.sdf (0.02s) OK (warnings): 1 molecule converted
+[KRQ 6s1b A 507] 2D=17 3D=27 bonds3D=29 mapped=17 mode=GRAPH_FULL smiles_id=KRQ
+🧪 SDF 7o7k_B_LI_516 → 7o7k_B_LI_516.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 7o7k_A_LI_813 → 7o7k_A_LI_813.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 7a5b_A_MFR_501 → 7a5b_A_MFR_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[MFR 7a5b A 501] 2D=18 3D=18 bonds3D=20 mapped=18 mode=GRAPH_FULL smiles_id=MFR
+🧪 SDF 7a5b_B_MFR_501 → 7a5b_B_MFR_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[MFR 7a5b B 501] 2D=18 3D=18 bonds3D=20 mapped=18 mode=GRAPH_FULL smiles_id=MFR
+🧪 SDF 6t6a_B_MLW_506 → 6t6a_B_MLW_506.sdf (0.02s) OK (warnings): ==============================
+[MLW 6t6a B 506] 2D=16 3D=16 bonds3D=18 mapped=16 mode=GRAPH_FULL smiles_id=MLW
+🧪 SDF 6t6a_C_MLW_506 → 6t6a_C_MLW_506.sdf (0.02s) OK (warnings): ==============================
+[MLW 6t6a C 506] 2D=16 3D=16 bonds3D=18 mapped=16 mode=GRAPH_FULL smiles_id=MLW
+🧪 SDF 6t6a_A_MLW_507 → 6t6a_A_MLW_507.sdf (0.02s) OK (warnings): ==============================
+[MLW 6t6a A 507] 2D=16 3D=16 bonds3D=18 mapped=16 mode=GRAPH_FULL smiles_id=MLW
+🧪 SDF 6yf8_A_OPW_501 → 6yf8_A_OPW_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[OPW 6yf8 A 501] 2D=21 3D=21 bonds3D=23 mapped=21 mode=GRAPH_FULL smiles_id=OPW
+⏳ progress: 150/226
+🧪 SDF 6yf8_B_OPW_501 → 6yf8_B_OPW_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[OPW 6yf8 B 501] 2D=21 3D=21 bonds3D=23 mapped=21 mode=GRAPH_FULL smiles_id=OPW
+🧪 SDF 6yf8_C_OPW_501 → 6yf8_C_OPW_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[OPW 6yf8 C 501] 2D=21 3D=21 bonds3D=23 mapped=21 mode=GRAPH_FULL smiles_id=OPW
+🧪 SDF 6yf8_D_OPW_501 → 6yf8_D_OPW_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[OPW 6yf8 D 501] 2D=21 3D=21 bonds3D=23 mapped=21 mode=GRAPH_FULL smiles_id=OPW
+🧪 SDF 6uip_A_Q8J_501 → 6uip_A_Q8J_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[Q8J 6uip A 501] 2D=32 3D=32 bonds3D=36 mapped=32 mode=GRAPH_FULL smiles_id=Q8J
+🧪 SDF 6uip_B_Q8J_501 → 6uip_B_Q8J_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[Q8J 6uip B 501] 2D=32 3D=32 bonds3D=36 mapped=32 mode=GRAPH_FULL smiles_id=Q8J
+🧪 SDF 6uip_C_Q8J_501 → 6uip_C_Q8J_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[Q8J 6uip C 501] 2D=32 3D=32 bonds3D=36 mapped=32 mode=GRAPH_FULL smiles_id=Q8J
+🧪 SDF 5a3x_D_QIV_1481 → 5a3x_D_QIV_1481.sdf (0.02s) OK (warnings): 1 molecule converted
+[QIV 5a3x D 1481] 2D=14 3D=14 bonds3D=15 mapped=14 mode=GRAPH_FULL smiles_id=QIV
+🧪 SDF 5a3x_A_QIV_1482 → 5a3x_A_QIV_1482.sdf (0.02s) OK (warnings): 1 molecule converted
+[QIV 5a3x A 1482] 2D=14 3D=14 bonds3D=15 mapped=14 mode=GRAPH_FULL smiles_id=QIV
+🧪 SDF 5a3x_B_QIV_1482 → 5a3x_B_QIV_1482.sdf (0.02s) OK (warnings): 1 molecule converted
+[QIV 5a3x B 1482] 2D=14 3D=14 bonds3D=15 mapped=14 mode=GRAPH_FULL smiles_id=QIV
+🧪 SDF 5a3x_C_QIV_1482 → 5a3x_C_QIV_1482.sdf (0.02s) OK (warnings): 1 molecule converted
+[QIV 5a3x C 1482] 2D=14 3D=14 bonds3D=15 mapped=14 mode=GRAPH_FULL smiles_id=QIV
+🧪 SDF 6uwy_A_QKG_501 → 6uwy_A_QKG_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[QKG 6uwy A 501] 2D=22 3D=41 bonds3D=43 mapped=22 mode=GRAPH_FULL smiles_id=QKG
+⏳ progress: 160/226
+🧪 SDF 6uwy_B_QKG_501 → 6uwy_B_QKG_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[QKG 6uwy B 501] 2D=22 3D=41 bonds3D=43 mapped=22 mode=GRAPH_FULL smiles_id=QKG
+🧪 SDF 6uwy_C_QKG_501 → 6uwy_C_QKG_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[QKG 6uwy C 501] 2D=22 3D=41 bonds3D=43 mapped=22 mode=GRAPH_FULL smiles_id=QKG
+🧪 SDF 6uwy_D_QKG_501 → 6uwy_D_QKG_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[QKG 6uwy D 501] 2D=22 3D=41 bonds3D=43 mapped=22 mode=GRAPH_FULL smiles_id=QKG
+🧪 SDF 8c3g_A_QS0_501 → 8c3g_A_QS0_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[QS0 8c3g A 501] 2D=32 3D=32 bonds3D=36 mapped=32 mode=GRAPH_FULL smiles_id=QS0
+🧪 SDF 8c3g_B_QS0_501 → 8c3g_B_QS0_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[QS0 8c3g B 501] 2D=32 3D=32 bonds3D=36 mapped=32 mode=GRAPH_FULL smiles_id=QS0
+🧪 SDF 8c3g_D_QS0_501 → 8c3g_D_QS0_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[QS0 8c3g D 501] 2D=32 3D=32 bonds3D=36 mapped=32 mode=GRAPH_FULL smiles_id=QS0
+🧪 SDF 8c3g_C_QS0_502 → 8c3g_C_QS0_502.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 7a4r_A_QY8_501 → 7a4r_A_QY8_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[QS0 8c3g C 502] 2D=32 3D=32 bonds3D=36 mapped=32 mode=GRAPH_FULL smiles_id=QS0
+[QY8 7a4r A 501] 2D=11 3D=11 bonds3D=12 mapped=11 mode=GRAPH_FULL smiles_id=QY8
+🧪 SDF 7a4r_B_QY8_501 → 7a4r_B_QY8_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[QY8 7a4r B 501] 2D=11 3D=11 bonds3D=12 mapped=11 mode=GRAPH_FULL smiles_id=QY8
+⏳ progress: 170/226
+🧪 SDF 7a4s_A_QYE_501 → 7a4s_A_QYE_501.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 7a52_B_QYB_501 → 7a52_B_QYB_501.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 7a52_A_QYB_501 → 7a52_A_QYB_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[QYE 7a4s A 501] 2D=11 3D=11 bonds3D=12 mapped=11 mode=GRAPH_FULL smiles_id=QYE
+[QYB 7a52 A 501] 2D=16 3D=16 bonds3D=18 mapped=16 mode=GRAPH_FULL smiles_id=QYB
+[QYB 7a52 B 501] 2D=16 3D=16 bonds3D=18 mapped=16 mode=GRAPH_FULL smiles_id=QYB
+🧪 SDF 7a4w_A_QYH_501 → 7a4w_A_QYH_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[QYH 7a4w A 501] 2D=16 3D=16 bonds3D=17 mapped=16 mode=GRAPH_FULL smiles_id=QYH
+🧪 SDF 7a4w_B_QYH_501 → 7a4w_B_QYH_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[QYH 7a4w B 501] 2D=16 3D=16 bonds3D=17 mapped=16 mode=GRAPH_FULL smiles_id=QYH
+🧪 SDF 7a51_A_QYK_501 → 7a51_A_QYK_501.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 7a5d_A_QYW_503 → 7a5d_A_QYW_503.sdf (0.02s) OK (warnings): 1 molecule converted
+[QYK 7a51 A 501] 2D=14 3D=14 bonds3D=15 mapped=14 mode=GRAPH_FULL smiles_id=QYK[QYW 7a5d A 503] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=QYW
+🧪 SDF 7a53_B_QYZ_501 → 7a53_B_QYZ_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[QYZ 7a53 B 501] 2D=17 3D=17 bonds3D=19 mapped=17 mode=GRAPH_FULL smiles_id=QYZ
+🧪 SDF 7a55_A_QZ2_501 → 7a55_A_QZ2_501.sdf (0.02s) OK (warnings): ==============================
+🧪 SDF 7a53_A_QYZ_501 → 7a53_A_QYZ_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[QZ2 7a55 A 501] 2D=14 3D=14 bonds3D=15 mapped=14 mode=GRAPH_FULL smiles_id=QZ2
+[QYZ 7a53 A 501] 2D=17 3D=17 bonds3D=19 mapped=17 mode=GRAPH_FULL smiles_id=QYZ
+🧪 SDF 7a55_B_QZ2_501 → 7a55_B_QZ2_501.sdf (0.02s) OK (warnings): ==============================
+[QZ2 7a55 B 501] 2D=14 3D=14 bonds3D=15 mapped=14 mode=GRAPH_FULL smiles_id=QZ2
+⏳ progress: 180/226
+🧪 SDF 8c3r_A_R7O_501 → 8c3r_A_R7O_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[R7O 8c3r A 501] 2D=34 3D=34 bonds3D=37 mapped=34 mode=GRAPH_FULL smiles_id=R7O
+🧪 SDF 7a5n_B_R05_501 → 7a5n_B_R05_501.sdf (0.02s) OK (warnings): 1 molecule converted
+🧪 SDF 7a5n_A_R05_501 → 7a5n_A_R05_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[R05 7a5n B 501] 2D=27 3D=27 bonds3D=30 mapped=27 mode=GRAPH_FULL smiles_id=R05
+🧪 SDF 7a5l_A_QZW_501 → 7a5l_A_QZW_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[QZW 7a5l A 501] 2D=24 3D=24 bonds3D=27 mapped=24 mode=GRAPH_FULL smiles_id=QZW
+[R05 7a5n A 501] 2D=27 3D=27 bonds3D=30 mapped=27 mode=GRAPH_FULL smiles_id=R05
+🧪 SDF 8c3r_B_R7O_501 → 8c3r_B_R7O_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[R7O 8c3r B 501] 2D=34 3D=34 bonds3D=37 mapped=34 mode=GRAPH_FULL smiles_id=R7O
+🧪 SDF 7ak2_A_RHH_501 → 7ak2_A_RHH_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RHH 7ak2 A 501] 2D=27 3D=27 bonds3D=30 mapped=27 mode=GRAPH_FULL smiles_id=RHH
+🧪 SDF 7aj7_A_RHT_501 → 7aj7_A_RHT_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RHT 7aj7 A 501] 2D=18 3D=18 bonds3D=20 mapped=18 mode=GRAPH_FULL smiles_id=RHT
+🧪 SDF 7ak2_B_RHH_501 → 7ak2_B_RHH_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RHH 7ak2 B 501] 2D=27 3D=27 bonds3D=30 mapped=27 mode=GRAPH_FULL smiles_id=RHH
+🧪 SDF 7aj4_A_RHZ_501 → 7aj4_A_RHZ_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RHZ 7aj4 A 501] 2D=16 3D=16 bonds3D=17 mapped=16 mode=GRAPH_FULL smiles_id=RHZ
+🧪 SDF 7aja_A_RJ2_501 → 7aja_A_RJ2_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RJ2 7aja A 501] 2D=21 3D=21 bonds3D=24 mapped=21 mode=GRAPH_FULL smiles_id=RJ2
+⏳ progress: 190/226
+🧪 SDF 7aj5_A_RHW_501 → 7aj5_A_RHW_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RHW 7aj5 A 501] 2D=17 3D=17 bonds3D=19 mapped=17 mode=GRAPH_FULL smiles_id=RHW
+🧪 SDF 7aj2_A_RJ5_501 → 7aj2_A_RJ5_501.sdf (0.02s) OK (warnings): ==============================
+[RJ5 7aj2 A 501] 2D=15 3D=30 bonds3D=71 mapped=15 mode=GRAPH_FULL smiles_id=RJ5
+🧪 SDF 7aj8_A_RJ8_501 → 7aj8_A_RJ8_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RJ8 7aj8 A 501] 2D=16 3D=16 bonds3D=18 mapped=16 mode=GRAPH_FULL smiles_id=RJ8
+🧪 SDF 7akb_A_RJZ_501 → 7akb_A_RJZ_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RJZ 7akb A 501] 2D=28 3D=28 bonds3D=31 mapped=28 mode=GRAPH_FULL smiles_id=RJZ
+🧪 SDF 7aka_A_RK2_501 → 7aka_A_RK2_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RK2 7aka A 501] 2D=28 3D=28 bonds3D=31 mapped=28 mode=GRAPH_FULL smiles_id=RK2
+🧪 SDF 7akb_B_RJZ_501 → 7akb_B_RJZ_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RJZ 7akb B 501] 2D=28 3D=28 bonds3D=31 mapped=28 mode=GRAPH_FULL smiles_id=RJZ
+🧪 SDF 7aka_B_RK2_501 → 7aka_B_RK2_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RK2 7aka B 501] 2D=28 3D=28 bonds3D=31 mapped=28 mode=GRAPH_FULL smiles_id=RK2
+🧪 SDF 7akl_A_RK5_501 → 7akl_A_RK5_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RK5 7akl A 501] 2D=19 3D=19 bonds3D=21 mapped=19 mode=GRAPH_FULL smiles_id=RK5
+🧪 SDF 7ake_A_RK8_501 → 7ake_A_RK8_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RK8 7ake A 501] 2D=29 3D=29 bonds3D=32 mapped=29 mode=GRAPH_FULL smiles_id=RK8
+⏳ progress: 200/226
+🧪 SDF 7ake_B_RK8_501 → 7ake_B_RK8_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RK8 7ake B 501] 2D=29 3D=29 bonds3D=32 mapped=29 mode=GRAPH_FULL smiles_id=RK8
+🧪 SDF 7ajs_A_RKH_501 → 7ajs_A_RKH_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RKH 7ajs A 501] 2D=18 3D=18 bonds3D=20 mapped=18 mode=GRAPH_FULL smiles_id=RKH
+🧪 SDF 7ajv_B_RKK_501 → 7ajv_B_RKK_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RKK 7ajv B 501] 2D=25 3D=25 bonds3D=27 mapped=25 mode=GRAPH_FULL smiles_id=RKK
+🧪 SDF 7ajs_B_RKH_501 → 7ajs_B_RKH_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RKH 7ajs B 501] 2D=18 3D=18 bonds3D=20 mapped=18 mode=GRAPH_FULL smiles_id=RKH
+🧪 SDF 7ajv_A_RKK_501 → 7ajv_A_RKK_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RKK 7ajv A 501] 2D=25 3D=25 bonds3D=27 mapped=25 mode=GRAPH_FULL smiles_id=RKK
+🧪 SDF 7ajm_A_RKW_501 → 7ajm_A_RKW_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RKW 7ajm A 501] 2D=22 3D=22 bonds3D=24 mapped=22 mode=GRAPH_FULL smiles_id=RKW
+🧪 SDF 7ajm_B_RKW_501 → 7ajm_B_RKW_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RKW 7ajm B 501] 2D=22 3D=22 bonds3D=24 mapped=22 mode=GRAPH_FULL smiles_id=RKW
+🧪 SDF 7ajw_A_RKQ_501 → 7ajw_A_RKQ_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RKQ 7ajw A 501] 2D=27 3D=27 bonds3D=30 mapped=27 mode=GRAPH_FULL smiles_id=RKQ
+🧪 SDF 7ajy_A_RKZ_501 → 7ajy_A_RKZ_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RKZ 7ajy A 501] 2D=28 3D=28 bonds3D=31 mapped=28 mode=GRAPH_FULL smiles_id=RKZ
+🧪 SDF 7ajy_B_RKZ_501 → 7ajy_B_RKZ_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RKZ 7ajy B 501] 2D=28 3D=28 bonds3D=31 mapped=28 mode=GRAPH_FULL smiles_id=RKZ
+🧪 SDF 8c3q_A_RUT_501 → 8c3q_A_RUT_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RUT 8c3q A 501] 2D=43 3D=43 bonds3D=47 mapped=43 mode=GRAPH_FULL smiles_id=RUT
+🧪 SDF 8t2h_A_XIR_500 → 8t2h_A_XIR_500.sdf (0.02s) OK (warnings): 1 molecule converted
+[XIR 8t2h A 500] 2D=31 3D=31 bonds3D=35 mapped=31 mode=GRAPH_FULL smiles_id=XIR
+⏳ progress: 210/226
+🧪 SDF 8c3q_B_RUT_501 → 8c3q_B_RUT_501.sdf (0.02s) OK (warnings): 1 molecule converted
+[RUT 8c3q B 501] 2D=43 3D=43 bonds3D=47 mapped=43 mode=GRAPH_FULL smiles_id=RUT
+🧪 SDF 5a4q_D_Y3L_1481 → 5a4q_D_Y3L_1481.sdf (0.02s) OK (warnings): 1 molecule converted
+[Y3L 5a4q D 1481] 2D=14 3D=14 bonds3D=15 mapped=14 mode=GRAPH_FULL smiles_id=Y3L
+🧪 SDF 5a4q_C_Y3L_1481 → 5a4q_C_Y3L_1481.sdf (0.02s) OK (warnings): 1 molecule converted
+[Y3L 5a4q C 1481] 2D=14 3D=14 bonds3D=15 mapped=14 mode=GRAPH_FULL smiles_id=Y3L
+🧪 SDF 8t2h_B_XIR_500 → 8t2h_B_XIR_500.sdf (0.02s) OK (warnings): 1 molecule converted
+[XIR 8t2h B 500] 2D=31 3D=31 bonds3D=35 mapped=31 mode=GRAPH_FULL smiles_id=XIR
+🧪 SDF 5a4q_A_Y3L_1482 → 5a4q_A_Y3L_1482.sdf (0.02s) OK (warnings): 1 molecule converted
+[Y3L 5a4q A 1482] 2D=14 3D=14 bonds3D=15 mapped=14 mode=GRAPH_FULL smiles_id=Y3L
+🧪 SDF 5a4q_B_Y3L_1482 → 5a4q_B_Y3L_1482.sdf (0.02s) OK (warnings): 1 molecule converted
+[Y3L 5a4q B 1482] 2D=14 3D=14 bonds3D=15 mapped=14 mode=GRAPH_FULL smiles_id=Y3L
+🧪 SDF 8r8e_D_YOX_501 → 8r8e_D_YOX_501.sdf (0.02s) OK (warnings): ==============================
+[YOX 8r8e D 501] 2D=17 3D=17 bonds3D=19 mapped=17 mode=GRAPH_FULL smiles_id=YOX
+🧪 SDF 8r8e_A_YOX_501 → 8r8e_A_YOX_501.sdf (0.02s) OK (warnings): ==============================
+[YOX 8r8e A 501] 2D=17 3D=17 bonds3D=19 mapped=17 mode=GRAPH_FULL smiles_id=YOX
+⏳ progress: 220/226
+🧪 SDF 8r8e_B_YOX_502 → 8r8e_B_YOX_502.sdf (0.02s) OK (warnings): ==============================
+[YOX 8r8e B 502] 2D=17 3D=17 bonds3D=19 mapped=17 mode=GRAPH_FULL smiles_id=YOX
+🧪 SDF 8r8e_C_YOX_502 → 8r8e_C_YOX_502.sdf (0.02s) OK (warnings): ==============================
+[YOX 8r8e C 502] 2D=17 3D=17 bonds3D=19 mapped=17 mode=GRAPH_FULL smiles_id=YOX
+🧪 SDF 5a4l_C_ZC3_1480 → 5a4l_C_ZC3_1480.sdf (0.02s) OK (warnings): 1 molecule converted
+[ZC3 5a4l C 1480] 2D=14 3D=14 bonds3D=15 mapped=14 mode=GRAPH_FULL smiles_id=ZC3
+🧪 SDF 5a4l_D_ZC3_1480 → 5a4l_D_ZC3_1480.sdf (0.02s) OK (warnings): 1 molecule converted
+[ZC3 5a4l D 1480] 2D=14 3D=14 bonds3D=15 mapped=14 mode=GRAPH_FULL smiles_id=ZC3
+🧪 SDF 5a4l_A_ZC3_1481 → 5a4l_A_ZC3_1481.sdf (0.02s) OK (warnings): 1 molecule converted
+[ZC3 5a4l A 1481] 2D=14 3D=28 bonds3D=70 mapped=14 mode=GRAPH_FULL smiles_id=ZC3
+🧪 SDF 5a4l_B_ZC3_1481 → 5a4l_B_ZC3_1481.sdf (0.02s) OK (warnings): 1 molecule converted
+[ZC3 5a4l B 1481] 2D=14 3D=14 bonds3D=15 mapped=14 mode=GRAPH_FULL smiles_id=ZC3
+⏳ progress: 226/226
+====================================================
+🎉 COMPLETED MCS MAPPING + SASA ANNOTATION
+📦 Map (MCS only)        → MCS_Output/Ligand_MCS_Map.csv
+🧪 SASA (MCS only)       → MCS_Output/Ligand_MCS_SASA.csv
+🧬 All atoms (debug)     → MCS_Output/Ligand_AllAtoms_Map.csv
+🧪 SASA (ALL atoms)      → MCS_Output/Ligand_MCS_SASA_ALL_ATOMS.csv
+⚠️ Failures              → MCS_Output/Ligand_MCS_Failures.csv
+====================================================
+🖼️  SVGs generated: 224 → MCS_Output/MCS_SVG
+⚠️  SVG failures: 2 → MCS_Output/MCS_SVG/SVG_failures.csv
+[12:18:15] 🚀 Running 12_Results.py...
+✅ Integrated 3DSASAmapped.csv created with standard headers.
+[12:18:16] 🚀 Running 15_ResultsMerged.py...
+🧬 Using SASA file: Warhead_SASA_atoms.csv
+✅ Wrote merged atom table: Ligand_3D_Atoms_with_SASA.csv
+📊 Total atoms: 5509
+🎉 RESULTS MERGE COMPLETE
+[12:18:16] 🚀 Running 16_ResultsDisplay.py...
+✅ Wrote /home/jxs794/WEBTOOLs/PROTAC-Target-Builder/jobs/d6706e03/Results_Display.csv (229 entries)
+[12:18:16] ✅ PIPELINE FINISHED SUCCESSFULLY
+[12:18:16] Access results in the Browse tab.
