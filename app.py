@@ -32,6 +32,30 @@ from api.sasa_api import bp as sasa_bp
 from routes import bp as routes_bp
 from api.handoff_server import hand_bp
 from api.sdf_resolver import resolve_sdf_path
+
+try:
+    from api.randy_archive_client import (
+        archive_enabled as randy_archive_enabled,
+        find_asset as randy_find_asset,
+        get_table_dataframe as randy_get_table_dataframe,
+        proxy_file_response as randy_proxy_file_response,
+        job_exists as randy_job_exists,
+    )
+except Exception:
+    def randy_archive_enabled() -> bool:
+        return False
+
+    def randy_find_asset(*args, **kwargs):
+        return None
+
+    def randy_get_table_dataframe(*args, **kwargs):
+        return None
+
+    def randy_proxy_file_response(*args, **kwargs):
+        return None
+
+    def randy_job_exists(*args, **kwargs) -> bool:
+        return False
 from pathlib import Path
 from flask import render_template, current_app
 import time
@@ -704,17 +728,31 @@ def sasa_bucket(exposure) -> str:
 def load_results_display(job_id: str) -> Optional[pd.DataFrame]:
     """
     Look for Results_Display.csv in:
-      1) jobs/<job>/TARGET_RESULTS/Results_Display.csv
-      2) jobs/<job>/Results_Display.csv
+      1) local jobs/<job>/TARGET_RESULTS/Results_Display.csv
+      2) local jobs/<job>/Results_Display.csv
+      3) RANDY archived job files
+
+    This is the first backend fallback needed by the results gallery.
+    If Heroku lost its local job folder after a restart, the gallery can still
+    build cards from RANDY's archived Results_Display.csv.
     """
     fp = _first_existing([
         target_results_dir(job_id) / "Results_Display.csv",
         job_root(job_id) / "Results_Display.csv",
     ])
-    if not fp:
-        return None
 
-    df = pd.read_csv(fp, dtype=str).fillna("")
+    df = None
+    if fp:
+        try:
+            df = pd.read_csv(fp, dtype=str).fillna("")
+        except Exception:
+            df = None
+
+    if df is None or df.empty:
+        df = randy_get_table_dataframe(job_id, ["Results_Display.csv"])
+
+    if df is None or df.empty:
+        return None
 
     # normalize expected keys for templates
     if "pdb" in df.columns and "pdb_id" not in df.columns:
@@ -729,7 +767,7 @@ def load_results_display(job_id: str) -> Optional[pd.DataFrame]:
         else:
             df["%Exposed"] = "0.0"
 
-    return df
+    return df.fillna("")
 
 
 def infer_chain_from_results(job_id: str, pdb: str, warhead: str) -> Optional[str]:
@@ -2964,6 +3002,25 @@ def api_svg(job_id, pdb, warhead, chain=None):
     if fp.exists():
         return _serve_themed_svg(fp)
 
+    # RANDY fallback for archived exposed SVGs.
+    asset = randy_find_asset(
+        job_id,
+        pdb=pdb,
+        chain=chain,
+        ligand=warhead,
+        resid=(request.args.get("resid") or ""),
+        kind="svg",
+        plain=False,
+    )
+    if asset:
+        proxied = randy_proxy_file_response(
+            job_id,
+            asset.get("relative_path", ""),
+            mimetype="image/svg+xml",
+        )
+        if proxied:
+            return proxied
+
     abort(404, description="Exposed SVG not found")
 
 
@@ -3008,6 +3065,25 @@ def api_svg_plain(job_id, pdb, warhead, chain=None):
     if legacy.exists():
         return _serve_themed_svg(legacy)
 
+    # RANDY fallback for archived plain SVGs.
+    asset = randy_find_asset(
+        job_id,
+        pdb=pdb,
+        chain=chain,
+        ligand=warhead,
+        resid=(request.args.get("resid") or ""),
+        kind="svg",
+        plain=True,
+    )
+    if asset:
+        proxied = randy_proxy_file_response(
+            job_id,
+            asset.get("relative_path", ""),
+            mimetype="image/svg+xml",
+        )
+        if proxied:
+            return proxied
+
     abort(404, description="Plain SVG not found")
 
 
@@ -3026,15 +3102,26 @@ def api_pdb(job_id, pdb_chain_warhead):
     warhead = "_".join(parts[2:])
 
     fp = lookup_pdb_file(job_id, pdb, chain, warhead)
-    if not fp or not fp.exists():
-        abort(404, description="PDB not found")
+    if fp and fp.exists():
+        return send_file(
+            fp,
+            mimetype="chemical/x-pdb",
+            as_attachment=False,
+            download_name=f"{pdb}_{chain}_{warhead}.pdb"
+        )
 
-    return send_file(
-        fp,
-        mimetype="chemical/x-pdb",
-        as_attachment=False,
-        download_name=f"{pdb}_{chain}_{warhead}.pdb"
-    )
+    # RANDY fallback for old jobs no longer present on Heroku local disk.
+    asset = randy_find_asset(job_id, pdb=pdb, chain=chain, ligand=warhead, kind="pdb")
+    if asset:
+        proxied = randy_proxy_file_response(
+            job_id,
+            asset.get("relative_path", ""),
+            mimetype="chemical/x-pdb",
+        )
+        if proxied:
+            return proxied
+
+    abort(404, description="PDB not found")
 
 
 # ----------------------------
@@ -3391,8 +3478,29 @@ def api_sdf(job_id, pdb, ligand, chain=None):
     fp, diag = resolve_sdf_path(job_root(job_id), pdb_n, chain_n, ligand_n, resid)
     if fp:
         if diag.get("ambiguous"):
-            app.logger.warning("Ambiguous SDF match for %s/%s/%s/%s: %s", job_id, pdb_n, chain_n, ligand_n, diag.get("matching_candidates"))
+            app.logger.warning(
+                "Ambiguous SDF match for %s/%s/%s/%s: %s",
+                job_id, pdb_n, chain_n, ligand_n, diag.get("matching_candidates")
+            )
         return send_file(fp, mimetype="chemical/x-mdl-sdfile")
+
+    # RANDY fallback for archived jobs.
+    asset = randy_find_asset(
+        job_id,
+        pdb=pdb_n,
+        chain=chain_n,
+        ligand=ligand_n,
+        resid=resid,
+        kind="sdf",
+    )
+    if asset:
+        proxied = randy_proxy_file_response(
+            job_id,
+            asset.get("relative_path", ""),
+            mimetype="chemical/x-mdl-sdfile",
+        )
+        if proxied:
+            return proxied
 
     return jsonify({
         "ok": False,
@@ -3438,10 +3546,15 @@ def api_sasa_overlay(job_id, pdb, chain, warhead):
     warhead = warhead.upper().strip()
 
     fp = warhead_sasa_atoms_path(job_id)
-    if not fp:
-        return jsonify([]), 200
-
-    df = pd.read_csv(fp, dtype=str).fillna("")
+    if fp:
+        df = pd.read_csv(fp, dtype=str).fillna("")
+    else:
+        df = randy_get_table_dataframe(
+            job_id,
+            ["Warhead_SASA_atoms.csv", "Ligand_3D_Atoms_with_SASA.csv"]
+        )
+        if df is None or df.empty:
+            return jsonify([]), 200
     needed = {"pdb_id", "Chain", "Warhead", "x", "y", "z", "Exposure_A2"}
     if not needed.issubset(df.columns):
         return jsonify([]), 200
@@ -3505,32 +3618,40 @@ def api_sasa_atommap(job_id, pdb, chain, warhead):
         target_results_dir(job_id) / "Ligand_3D_Atoms_with_SASA.csv",
         target_results_dir(job_id) / "3DSASA_MASTER.csv",
     ])
-    if not csv_path:
-        return jsonify([]), 200
+
+    rows = []
+    if csv_path:
+        with csv_path.open("r", newline="") as f:
+            rows = list(csv.DictReader(f))
+    else:
+        df = randy_get_table_dataframe(
+            job_id,
+            ["3DSASAmapped.csv", "Ligand_3D_Atoms_with_SASA.csv", "3DSASA_MASTER.csv"]
+        )
+        if df is None or df.empty:
+            return jsonify([]), 200
+        rows = df.fillna("").to_dict(orient="records")
 
     out = []
-    with csv_path.open("r", newline="") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            if row.get("pdb_id", "").lower().strip() != pdb:
-                continue
-            if row.get("Chain", "").upper().strip() != chain:
-                continue
-            if row.get("Warhead", "").upper().strip() != warhead:
-                continue
+    for row in rows:
+        if row.get("pdb_id", "").lower().strip() != pdb:
+            continue
+        if row.get("Chain", "").upper().strip() != chain:
+            continue
+        if row.get("Warhead", "").upper().strip() != warhead:
+            continue
 
-            ai = row.get("AtomIndex") or row.get("atom_index") or row.get("atomindex") or ""
-            exp = row.get("Exposure_A2") or row.get("exposure") or ""
-            try:
-                ai = int(float(ai))
-                exp = float(exp)
-            except Exception:
-                continue
+        ai = row.get("AtomIndex") or row.get("atom_index") or row.get("atomindex") or ""
+        exp = row.get("Exposure_A2") or row.get("exposure") or ""
+        try:
+            ai = int(float(ai))
+            exp = float(exp)
+        except Exception:
+            continue
 
-            out.append({"atomIndex": ai, "exposure": exp})
+        out.append({"atomIndex": ai, "exposure": exp})
 
     return jsonify(out), 200
-
 
 
 

@@ -1,13 +1,34 @@
 # routes.py
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Optional, Iterable, Dict, Any
 import os
+from pathlib import Path
+from typing import Any, Iterable, Optional
 
 import pandas as pd
-from flask import Blueprint, current_app, render_template, abort
+from flask import Blueprint, abort, current_app, render_template
 import job_state as disk_jobs
+
+try:
+    from api.randy_archive_client import (
+        archive_enabled,
+        get_job_index as randy_get_job_index,
+        get_table_dataframe as randy_get_table_dataframe,
+        job_exists as randy_job_exists,
+    )
+except Exception:  # keep local/dev boot safe even before api/randy_archive_client.py is dropped in
+    def archive_enabled() -> bool:
+        return False
+
+    def randy_get_job_index(job_id: str):
+        return None
+
+    def randy_get_table_dataframe(job_id: str, names):
+        return None
+
+    def randy_job_exists(job_id: str) -> bool:
+        return False
+
 
 bp = Blueprint("routes", __name__)
 
@@ -15,6 +36,12 @@ bp = Blueprint("routes", __name__)
 # -----------------------------------------------------------------------------
 # Helpers
 # -----------------------------------------------------------------------------
+def _safe_job_id(job_id: str) -> bool:
+    if not job_id or "/" in job_id or "\\" in job_id or ".." in job_id:
+        return False
+    return True
+
+
 def _first_existing(paths: Iterable[Path]) -> Optional[Path]:
     for p in paths:
         try:
@@ -26,13 +53,16 @@ def _first_existing(paths: Iterable[Path]) -> Optional[Path]:
 
 
 def _job_dir(job_id: str) -> Path:
-    """
-    Resolve job directory safely from JOBS_DIR.
-    """
-    if not job_id or "/" in job_id or "\\" in job_id or ".." in job_id:
+    """Resolve local Heroku/dev job directory safely from JOBS_DIR."""
+    if not _safe_job_id(job_id):
         abort(400, description="Invalid job_id")
-    base = current_app.config.get("JOBS_DIR", "jobs")
-    return (Path(base) / job_id).resolve()
+    base = Path(current_app.config.get("JOBS_DIR", "jobs")).resolve()
+    job_dir = (base / job_id).resolve()
+    try:
+        job_dir.relative_to(base)
+    except Exception:
+        abort(400, description="Invalid job path")
+    return job_dir
 
 
 def _load_csv_if_exists(path: Path, sep: str | None = None) -> Optional[pd.DataFrame]:
@@ -40,14 +70,13 @@ def _load_csv_if_exists(path: Path, sep: str | None = None) -> Optional[pd.DataF
         return None
     try:
         if sep is None:
-            return pd.read_csv(path, dtype=str)
-        return pd.read_csv(path, sep=sep, dtype=str)
+            return pd.read_csv(path, dtype=str).fillna("")
+        return pd.read_csv(path, sep=sep, dtype=str).fillna("")
     except Exception:
         return None
 
 
 def _norm_str(s: pd.Series) -> pd.Series:
-    # returns string series with stripped values; safe if s is mixed dtype
     return s.astype(str).fillna("").str.strip()
 
 
@@ -62,221 +91,182 @@ def _to_num(df: pd.DataFrame, col: str) -> None:
 
 
 def _normalize_percent_series(x: pd.Series) -> pd.Series:
-    """
-    Normalize a percent-ish series to 0..100.
-    - If values look like fractions (<=1), multiply by 100.
-    - If values look like already percent (>1), keep.
-    - Guard against double-multiplied values (>1000), divide by 100.
-    """
     s = pd.to_numeric(x, errors="coerce")
     if s.dropna().empty:
         return s
-
     mx = s.max(skipna=True)
     if pd.notna(mx) and mx <= 1.0:
         s = s * 100.0
-
-    # guard: if somehow 5280 etc., bring down once
     mx2 = s.max(skipna=True)
     if pd.notna(mx2) and mx2 > 1000.0:
         s = s / 100.0
-
-    # clamp
-    s = s.clip(lower=0.0, upper=100.0)
-    return s
+    return s.clip(lower=0.0, upper=100.0)
 
 
 def _compute_ligand3(df: pd.DataFrame) -> pd.Series:
-    """
-    Always return the canonical 3-letter ligand code used by MCS_Output filenames.
-
-    Priority:
-      1) Warhead if it is exactly 3 chars (authoritative if present)
-      2) Ligand_Resolved if it is exactly 3 chars
-      3) Ligand5_Resolved first 3 chars (last resort)
-      4) Ligand_Resolved first 3 chars (very last resort; better than blank)
-    """
     ligand3 = pd.Series([""] * len(df), index=df.index, dtype="object")
 
     war = _norm_str(df["Warhead"]).str.upper() if "Warhead" in df.columns else pd.Series([""] * len(df), index=df.index)
     lig_res = _norm_str(df["Ligand_Resolved"]).str.upper() if "Ligand_Resolved" in df.columns else pd.Series([""] * len(df), index=df.index)
     lig5 = _norm_str(df["Ligand5_Resolved"]).str.upper() if "Ligand5_Resolved" in df.columns else pd.Series([""] * len(df), index=df.index)
 
-    # 1) Warhead if exactly 3
     use_war = war.str.len() == 3
     ligand3.loc[use_war] = war.loc[use_war]
 
-    # 2) Ligand_Resolved only if exactly 3 and ligand3 not filled
     use_ligres = (ligand3 == "") & (lig_res.str.len() == 3)
     ligand3.loc[use_ligres] = lig_res.loc[use_ligres]
 
-    # 3) Ligand5 fallback slice
     use_lig5 = (ligand3 == "") & (lig5 != "")
     ligand3.loc[use_lig5] = lig5.loc[use_lig5].str.slice(0, 3)
 
-    # 4) final fallback: slice Ligand_Resolved
     use_ligres_slice = (ligand3 == "") & (lig_res != "")
     ligand3.loc[use_ligres_slice] = lig_res.loc[use_ligres_slice].str.slice(0, 3)
 
-    ligand3 = ligand3.replace({"NAN": "", "NONE": "", "?": ""})
-    return ligand3
+    return ligand3.replace({"NAN": "", "NONE": "", "?": ""})
 
 
-# -----------------------------------------------------------------------------
-# Load + normalize Resolved_SASA_Summary
-# -----------------------------------------------------------------------------
-def load_resolved_sasa_summary(job_id: str) -> pd.DataFrame:
-    jd = _job_dir(job_id)
-
-    fp = _first_existing(
-        [
-            jd / "Resolved_SASA_Summary.tsv",
-            jd / "Resolved_SASA_Summary.csv",
-            jd / "TARGET_RESULTS" / "Resolved_SASA_Summary.tsv",
-            jd / "TARGET_RESULTS" / "Resolved_SASA_Summary.csv",
-        ]
-    )
-    if not fp:
+def _normalize_gallery_df(df: pd.DataFrame) -> pd.DataFrame:
+    if df is None or df.empty:
         return pd.DataFrame()
 
-    sep = "\t" if fp.suffix.lower() == ".tsv" else ","
-
-    tmp = _load_csv_if_exists(fp, sep=sep)
-    df = tmp if tmp is not None else pd.DataFrame()
-    if df.empty:
-        return pd.DataFrame()
-
-    # normalize column names (strip)
+    df = df.copy().fillna("")
     df.columns = [str(c).strip() for c in df.columns]
 
-    # handle legacy/truncated column names
     rename = {
+        "pdb": "pdb_id",
         "Exposed_ato": "Exposed_atoms",
         "Exposed_atom": "Exposed_atoms",
         "SASA_in_com": "SASA_in_complex_A2",
         "SASA_in_complex": "SASA_in_complex_A2",
         "%Exposed ": "%Exposed",
         "%Buried ": "%Buried",
-        "pdb": "pdb_id",
     }
     df.rename(columns={k: v for k, v in rename.items() if k in df.columns}, inplace=True)
 
-    # ensure expected columns exist
-    _ensure_col(df, "pdb_id", "")
-    _ensure_col(df, "Chain", "A")
-    _ensure_col(df, "Warhead", "")
-    _ensure_col(df, "Ligand_Resolved", "")
-    _ensure_col(df, "Ligand5_Resolved", "")
-    _ensure_col(df, "SMILES", "")
-    _ensure_col(df, "Target", "")
-    _ensure_col(df, "Residue_ID", "")
-    _ensure_col(df, "Variant", "")
+    for col, default in {
+        "pdb_id": "",
+        "Chain": "A",
+        "Warhead": "",
+        "Ligand_Resolved": "",
+        "Ligand5_Resolved": "",
+        "ligand": "",
+        "SMILES": "",
+        "Target": "",
+        "Residue_ID": "",
+        "Variant": "",
+        "Total_atoms": "0",
+        "Exposed_atoms": "0",
+        "SASA_in_complex_A2": "0",
+        "%Exposed": "0",
+        "%Buried": "",
+    }.items():
+        _ensure_col(df, col, default)
 
-    _ensure_col(df, "Total_atoms", "")
-    _ensure_col(df, "Exposed_atoms", "")
-    _ensure_col(df, "SASA_in_complex_A2", "")
-    _ensure_col(df, "%Exposed", "")
-    _ensure_col(df, "%Buried", "")
-
-    # normalize pdb + chain
     df["pdb_id"] = _norm_str(df["pdb_id"]).str.lower()
-    df["Chain"] = (
-        _norm_str(df["Chain"]).str.upper()
-        .replace({"NAN": "A", "NONE": "A", "": "A", "?": "A"})
-    )
+    df["Chain"] = _norm_str(df["Chain"]).str.upper().replace({"NAN": "A", "NONE": "A", "": "A", "?": "A"})
 
-    # strip common string cols
-    for col in ("Warhead", "Ligand_Resolved", "Ligand5_Resolved", "SMILES", "Target"):
+    for col in ("Warhead", "Ligand_Resolved", "Ligand5_Resolved", "SMILES", "Target", "Variant"):
         if col in df.columns:
             df[col] = _norm_str(df[col])
 
-    # numeric columns
     for col in ("Residue_ID", "Total_atoms", "Exposed_atoms", "SASA_in_complex_A2", "%Exposed", "%Buried"):
         _to_num(df, col)
 
-    # normalize percent columns to 0..100
-    if "%Exposed" in df.columns:
-        df["%Exposed"] = _normalize_percent_series(df["%Exposed"])
-    if "%Buried" in df.columns:
+    df["%Exposed"] = _normalize_percent_series(df["%Exposed"])
+    buried = pd.to_numeric(df["%Buried"], errors="coerce")
+    if buried.isna().all():
+        df["%Buried"] = 100.0 - pd.to_numeric(df["%Exposed"], errors="coerce").fillna(0.0)
+    else:
         df["%Buried"] = _normalize_percent_series(df["%Buried"])
 
-    # Variant back-compat if missing/blank
-    if "Variant" not in df.columns or df["Variant"].isna().all():
-        if "Residue_ID" in df.columns:
-            df["Variant"] = pd.to_numeric(df["Residue_ID"], errors="coerce").fillna(0).astype(int).astype(str)
-        else:
-            df["Variant"] = "0"
-    else:
-        # keep as string-y for template usage
-        df["Variant"] = _norm_str(df["Variant"]).replace({"nan": "", "NaN": "", "NAN": ""})
+    # Preserve residue identifiers as string-ish for file names.
+    resid_num = pd.to_numeric(df["Residue_ID"], errors="coerce")
+    var_num = pd.to_numeric(df["Variant"], errors="coerce")
+    df["Residue_ID"] = resid_num.fillna(var_num)
+    df["Variant"] = df["Variant"].astype(str).replace({"nan": "", "NaN": "", "NAN": ""})
 
-    # If Residue_ID is missing/blank, derive from Variant
-    if "Residue_ID" in df.columns:
-        resid_num = pd.to_numeric(df["Residue_ID"], errors="coerce")
-        var_num = pd.to_numeric(df["Variant"], errors="coerce")
-        df["Residue_ID"] = resid_num.fillna(var_num)
-    else:
-        df["Residue_ID"] = pd.to_numeric(df["Variant"], errors="coerce")
-
-    # ---- Canonical 3-letter enforcement ----
+    # Canonical 3-letter ligand enforcement.
     df["Ligand3_Display"] = _compute_ligand3(df)
-
-    # IMPORTANT: make ALL frontend-visible ligand fields 3-letter
     df["Warhead"] = df["Ligand3_Display"]
-    df["Ligand_Resolved"] = df["Ligand3_Display"]  # <-- THIS FIXES YOUR TEMPLATE CHOOSING 5-LETTER
-    df["ligand"] = df["Ligand3_Display"]           # <-- optional alias for other templates/JS
-
-    # Drop the 5-letter column so it can't leak back out
+    df["Ligand_Resolved"] = df["Ligand3_Display"]
+    df["ligand"] = df["Ligand3_Display"]
     if "Ligand5_Resolved" in df.columns:
         df.drop(columns=["Ligand5_Resolved"], inplace=True)
+    if "Ligand3_Display" in df.columns:
+        df.drop(columns=["Ligand3_Display"], inplace=True)
 
     return df
 
 
+def _read_local_results_display(job_id: str) -> pd.DataFrame:
+    jd = _job_dir(job_id)
+    fp = _first_existing([
+        jd / "TARGET_RESULTS" / "Results_Display.csv",
+        jd / "Results_Display.csv",
+    ])
+    if not fp:
+        return pd.DataFrame()
+    df = _load_csv_if_exists(fp)
+    return _normalize_gallery_df(df) if df is not None else pd.DataFrame()
+
+
+def _read_randy_results_display(job_id: str) -> pd.DataFrame:
+    df = randy_get_table_dataframe(job_id, ["Results_Display.csv"])
+    return _normalize_gallery_df(df) if df is not None else pd.DataFrame()
+
+
+def _read_local_resolved_summary(job_id: str) -> pd.DataFrame:
+    jd = _job_dir(job_id)
+    fp = _first_existing([
+        jd / "Resolved_SASA_Summary.tsv",
+        jd / "Resolved_SASA_Summary.csv",
+        jd / "TARGET_RESULTS" / "Resolved_SASA_Summary.tsv",
+        jd / "TARGET_RESULTS" / "Resolved_SASA_Summary.csv",
+    ])
+    if not fp:
+        return pd.DataFrame()
+    sep = "\t" if fp.suffix.lower() == ".tsv" else ","
+    df = _load_csv_if_exists(fp, sep=sep)
+    return _normalize_gallery_df(df) if df is not None else pd.DataFrame()
+
+
+def _read_randy_resolved_summary(job_id: str) -> pd.DataFrame:
+    df = randy_get_table_dataframe(job_id, ["Resolved_SASA_Summary.csv", "Resolved_SASA_Summary.tsv"])
+    return _normalize_gallery_df(df) if df is not None else pd.DataFrame()
+
+
 # -----------------------------------------------------------------------------
-# Build the rows you show in the gallery
+# Public loaders used by app.py and this blueprint
 # -----------------------------------------------------------------------------
+def load_resolved_sasa_summary(job_id: str) -> pd.DataFrame:
+    df = _read_local_resolved_summary(job_id)
+    if df is not None and not df.empty:
+        return df
+    return _read_randy_resolved_summary(job_id)
+
+
 def build_pose_rows(job_id: str) -> pd.DataFrame:
     df = load_resolved_sasa_summary(job_id)
     if df is None or df.empty:
         return pd.DataFrame()
 
-    # group best-first (max %Exposed) per pose key
-    # Use canonical 3-letter columns now (Warhead)
-    group_cols = ["pdb_id", "Warhead", "Chain", "Residue_ID"]
-    group_cols = [c for c in group_cols if c in df.columns]
-
-    if "%Exposed" in df.columns:
-        exp = pd.to_numeric(df["%Exposed"], errors="coerce").fillna(0.0)
-        df["_exp_for_rank"] = exp
-    else:
-        df["_exp_for_rank"] = 0.0
+    group_cols = [c for c in ["pdb_id", "Warhead", "Chain", "Residue_ID"] if c in df.columns]
+    df = df.copy()
+    df["_exp_for_rank"] = pd.to_numeric(df.get("%Exposed", 0), errors="coerce").fillna(0.0)
 
     if group_cols:
         idx = df.groupby(group_cols, dropna=False)["_exp_for_rank"].idxmax()
         df = df.loc[idx].copy()
 
-    # sort best-first
     df = df.sort_values("_exp_for_rank", ascending=False)
-
-    # cleanup helpers
-    if "Ligand3_Display" in df.columns:
-        df.drop(columns=["Ligand3_Display"], inplace=True)
-    if "_exp_for_rank" in df.columns:
-        df.drop(columns=["_exp_for_rank"], inplace=True)
-
+    df.drop(columns=["_exp_for_rank"], inplace=True, errors="ignore")
     return df
 
-from pathlib import Path
-import pandas as pd
 
-def _read_protein_for_job(job_id: str) -> str:
-    # Adjust if your blueprint file is not in APP_ROOT; easiest is importing job_root
-    job_path = job_root(job_id)  # if available to import
-    fp = job_path / "Protein_Data.csv"
+def _read_protein_for_local_job(job_id: str) -> str:
+    fp = _job_dir(job_id) / "Protein_Data.csv"
     if not fp.exists():
         return ""
-
     try:
         df = pd.read_csv(fp, dtype=str).fillna("")
         if df.empty:
@@ -284,6 +274,29 @@ def _read_protein_for_job(job_id: str) -> str:
         return (df.iloc[0].get("protein") or "").strip()
     except Exception:
         return ""
+
+
+def _local_job_state(job_id: str) -> dict | None:
+    try:
+        return disk_jobs.hydrate_job_from_disk(job_id, current_app.config.get("JOBS_DIR"))
+    except Exception:
+        return None
+
+
+def _randy_job_state(job_id: str) -> dict | None:
+    data = randy_get_job_index(job_id)
+    if not data:
+        return None
+    return {
+        "job_id": job_id,
+        "status": "completed",
+        "target": data.get("target_name") or "",
+        "results_ready": bool(data.get("tables", {}).get("Results_Display.csv") or data.get("tables", {}).get("Resolved_SASA_Summary.csv")),
+        "source": data.get("source", "randy_hunter_job_archive"),
+        "current_step": "",
+        "error": None,
+    }
+
 
 # -----------------------------------------------------------------------------
 # Route
@@ -293,84 +306,34 @@ def view_results(job_id: str):
     """
     Durable results gallery route.
 
-    Source of truth:
-      1) Results_Display.csv if Step 16 already produced it.
-      2) Resolved_SASA_Summary.csv fallback if final display CSV is not ready.
-      3) Waiting page if job is still running.
-      4) Error only if job failed or completed without usable artifacts.
+    Source order:
+      1) local Heroku/dev Results_Display.csv
+      2) RANDY archived Results_Display.csv
+      3) local Resolved_SASA_Summary.csv fallback
+      4) RANDY archived Resolved_SASA_Summary.csv fallback
+      5) waiting/error page based on local or RANDY state
     """
-    jd = _job_dir(job_id)
+    if not _safe_job_id(job_id):
+        abort(400, description="Invalid job_id")
 
-    # 1) Prefer final Step 16 display artifact.
-    display_fp = _first_existing([
-        jd / "TARGET_RESULTS" / "Results_Display.csv",
-        jd / "Results_Display.csv",
-    ])
+    df = _read_local_results_display(job_id)
+    source = "local_results_display"
 
-    df = pd.DataFrame()
+    if df is None or df.empty:
+        df = _read_randy_results_display(job_id)
+        source = "randy_results_display"
 
-    if display_fp:
-        try:
-            df = pd.read_csv(display_fp, dtype=str).fillna("")
-            df.columns = [str(c).strip() for c in df.columns]
-
-            # Normalize expected template aliases.
-            if "pdb" in df.columns and "pdb_id" not in df.columns:
-                df["pdb_id"] = df["pdb"]
-
-            for col, default in {
-                "pdb_id": "",
-                "Chain": "A",
-                "Warhead": "",
-                "Ligand_Resolved": "",
-                "ligand": "",
-                "SMILES": "",
-                "Target": "",
-                "Residue_ID": "",
-                "Variant": "",
-                "Total_atoms": "0",
-                "Exposed_atoms": "0",
-                "SASA_in_complex_A2": "0",
-                "%Exposed": "0",
-                "%Buried": "",
-            }.items():
-                if col not in df.columns:
-                    df[col] = default
-
-            # Keep ligand aliases consistent for your template priority.
-            if "Warhead" in df.columns:
-                df["Warhead"] = df["Warhead"].astype(str).str.strip().str.upper()
-                df["Ligand_Resolved"] = df["Warhead"]
-                df["ligand"] = df["Warhead"]
-
-            if "%Exposed" in df.columns:
-                df["%Exposed"] = _normalize_percent_series(df["%Exposed"])
-
-            if "%Buried" in df.columns:
-                buried = pd.to_numeric(df["%Buried"], errors="coerce")
-                if buried.isna().all():
-                    df["%Buried"] = 100.0 - pd.to_numeric(df["%Exposed"], errors="coerce").fillna(0.0)
-                else:
-                    df["%Buried"] = _normalize_percent_series(df["%Buried"])
-            else:
-                df["%Buried"] = 100.0 - pd.to_numeric(df["%Exposed"], errors="coerce").fillna(0.0)
-
-        except Exception:
-            df = pd.DataFrame()
-
-    # 2) Fallback to older summary-driven route behavior.
     if df is None or df.empty:
         df = build_pose_rows(job_id)
+        source = "summary_fallback"
 
-    # 3) If still no rows, distinguish running vs failed vs missing.
     if df is None or df.empty:
-        job = disk_jobs.hydrate_job_from_disk(job_id, current_app.config.get("JOBS_DIR"))
+        job = _local_job_state(job_id) or _randy_job_state(job_id)
         if job is None:
             abort(404, description="Job not found.")
 
         status = str(job.get("status") or "unknown").lower()
-
-        if status in {"queued", "pending", "running"}:
+        if status in {"queued", "pending", "running", "unknown"}:
             return render_template(
                 "job_waiting.html",
                 job_id=job_id,
@@ -403,23 +366,27 @@ def view_results(job_id: str):
             refresh_url=f"/results/{job_id}",
         ), 202
 
-    # Pull Target directly.
     target_name = ""
     if "Target" in df.columns and not df.empty:
         target_name = str(df.iloc[0].get("Target") or "").strip()
 
     if not target_name:
-        job = disk_jobs.hydrate_job_from_disk(job_id, current_app.config.get("JOBS_DIR"))
-        if job:
-            target_name = str(job.get("target") or job.get("target_name") or "").strip()
+        local_job = _local_job_state(job_id)
+        if local_job:
+            target_name = str(local_job.get("target") or local_job.get("target_name") or "").strip()
+
+    if not target_name:
+        randy_job = _randy_job_state(job_id)
+        if randy_job:
+            target_name = str(randy_job.get("target") or "").strip()
 
     results = df.to_dict(orient="records")
-
     return render_template(
         "results_gallery.html",
         job_id=job_id,
         target_name=target_name,
         results=results,
+        results_source=source,
         protac_builder_base=os.environ.get(
             "PROTAC_BUILDER_BASE",
             current_app.config.get("PROTAC_BUILDER_BASE", "https://protacbuilder.com/copy/COPYindex"),
