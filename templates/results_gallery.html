@@ -3,6 +3,93 @@
 {% block page_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/protacable.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/protacable-2d-toggle.css') }}">
+
+<style>
+  /* 3D viewport loading overlay */
+  .cc-viewport {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .viewport-loading {
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    border-radius: inherit;
+    background:
+      radial-gradient(circle at 50% 42%, rgba(0, 238, 255, .13), transparent 28%),
+      linear-gradient(180deg, rgba(0, 0, 0, .62), rgba(0, 0, 0, .84));
+    backdrop-filter: blur(2px);
+  }
+
+  .viewport-loading.is-active {
+    display: flex !important;
+  }
+
+  .cc-viewport.is-loading .viewport {
+    opacity: .35;
+    filter: blur(1px) saturate(.75);
+  }
+
+  .viewport-loading-card {
+    min-width: 260px;
+    padding: 24px 28px;
+    text-align: center;
+    border: 1px solid rgba(0, 238, 255, .38);
+    border-radius: 18px;
+    background: rgba(0, 8, 14, .84);
+    box-shadow:
+      0 0 22px rgba(0, 238, 255, .20),
+      inset 0 0 28px rgba(0, 238, 255, .08);
+  }
+
+  .viewport-spinner {
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 238, 255, .22);
+    border-top-color: var(--tron-yellow, #ffe600);
+    border-right-color: rgba(0, 238, 255, .85);
+    animation: wh-spin .82s linear infinite;
+    box-shadow: 0 0 18px rgba(0, 238, 255, .30);
+  }
+
+  .viewport-loading-title {
+    color: var(--tron-yellow, #ffe600);
+    font-size: .92rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(255, 230, 0, .48);
+  }
+
+  .viewport-loading-detail {
+    margin-top: 8px;
+    color: rgba(99, 238, 255, .82);
+    font-size: .76rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .viewport-loading-error .viewport-spinner {
+    animation: none;
+    border-color: rgba(255, 40, 88, .65);
+    box-shadow: 0 0 18px rgba(255, 40, 88, .28);
+  }
+
+  .viewport-loading-error .viewport-loading-title {
+    color: #ff315f;
+    text-shadow: 0 0 10px rgba(255, 49, 95, .45);
+  }
+
+  @keyframes wh-spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -145,8 +232,12 @@
 
     <!-- CENTER -->
     <div class="glass-panel cc-center cc-viewport">
-      <div id="viewport-loading" class="viewport-loading" style="display:none;">
-        <span>Loading…</span>
+      <div id="viewport-loading" class="viewport-loading" style="display:none;" role="status" aria-live="polite" aria-hidden="true">
+        <div class="viewport-loading-card">
+          <div class="viewport-spinner" aria-hidden="true"></div>
+          <div id="viewport-loading-title" class="viewport-loading-title">Loading SDF into viewport</div>
+          <div id="viewport-loading-detail" class="viewport-loading-detail">Preparing molecular render</div>
+        </div>
       </div>
 
       <div id="viewport" class="viewport"></div>
@@ -251,6 +342,158 @@
     { job_id: {{ job_id|tojson }} }
   );
   window.PROTAC_BUILDER_BASE = {{ (protac_builder_base or 'https://protacbuilder.com/copy/COPYindex')|tojson }};
+</script>
+
+<script>
+  /*
+   * Lightweight loader bridge for the 3D viewport.
+   * It shows immediately when a result card is selected, and also tracks
+   * SDF/PDB network requests made by the rendering scripts.
+   */
+  (function () {
+    let activeStructureRequests = 0;
+    let fallbackTimer = null;
+    let hideTimer = null;
+
+    function getLoaderParts() {
+      return {
+        shell: document.querySelector('.cc-viewport'),
+        loader: document.getElementById('viewport-loading'),
+        title: document.getElementById('viewport-loading-title'),
+        detail: document.getElementById('viewport-loading-detail')
+      };
+    }
+
+    function setLoadingState(isLoading, title, detail, isError) {
+      const parts = getLoaderParts();
+      if (!parts.loader) return;
+
+      window.clearTimeout(hideTimer);
+      if (parts.title && title) parts.title.textContent = title;
+      if (parts.detail && detail) parts.detail.textContent = detail;
+
+      parts.loader.classList.toggle('is-active', isLoading);
+      parts.loader.classList.toggle('viewport-loading-error', Boolean(isError));
+      parts.loader.setAttribute('aria-hidden', isLoading ? 'false' : 'true');
+      if (parts.shell) parts.shell.classList.toggle('is-loading', isLoading);
+    }
+
+    window.showViewportLoading = function (title, detail) {
+      window.clearTimeout(fallbackTimer);
+      setLoadingState(true, title || 'Loading SDF into viewport', detail || 'Preparing molecular render', false);
+
+      // Safety valve so the UI never gets stuck if a request fails silently.
+      fallbackTimer = window.setTimeout(function () {
+        if (activeStructureRequests <= 0) window.hideViewportLoading(0);
+      }, 18000);
+    };
+
+    window.hideViewportLoading = function (delayMs) {
+      const delay = typeof delayMs === 'number' ? delayMs : 250;
+      window.clearTimeout(fallbackTimer);
+      window.clearTimeout(hideTimer);
+      hideTimer = window.setTimeout(function () {
+        setLoadingState(false);
+      }, delay);
+    };
+
+    window.failViewportLoading = function (title, detail) {
+      activeStructureRequests = 0;
+      window.clearTimeout(fallbackTimer);
+      setLoadingState(true, title || 'SDF load failed', detail || 'Check the browser console or file path', true);
+      window.hideViewportLoading(2600);
+    };
+
+    function isStructureUrl(value) {
+      const url = String(value || '');
+      return /(\.sdf(?:\?|$)|\.pdb(?:\?|$)|\/sdf(?:\/|\?|$)|\/pdb(?:\/|\?|$)|sdf_path=|pdb_path=|sdf=|pdb=)/i.test(url);
+    }
+
+    function beginTrackedLoad(url) {
+      activeStructureRequests += 1;
+      window.showViewportLoading('Loading molecular file', 'Fetching SDF/PDB asset');
+    }
+
+    function endTrackedLoad(ok, err) {
+      activeStructureRequests = Math.max(0, activeStructureRequests - 1);
+      if (!ok) {
+        window.failViewportLoading('Molecular file failed', err || 'Could not load SDF/PDB asset');
+        return;
+      }
+      if (activeStructureRequests === 0) window.hideViewportLoading(450);
+    }
+
+    // Show the loader immediately on card click/keyboard activation, before fetch starts.
+    document.addEventListener('click', function (event) {
+      const card = event.target.closest && event.target.closest('.result-card');
+      if (!card) return;
+      const pdb = (card.dataset.pdb || '').toUpperCase();
+      const chain = card.dataset.chain || 'A';
+      const warhead = card.dataset.warhead || 'Ligand';
+      window.showViewportLoading('Loading SDF into viewport', `${warhead} - ${pdb} chain ${chain}`);
+    }, true);
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      const card = event.target.closest && event.target.closest('.result-card');
+      if (!card) return;
+      const pdb = (card.dataset.pdb || '').toUpperCase();
+      const chain = card.dataset.chain || 'A';
+      const warhead = card.dataset.warhead || 'Ligand';
+      window.showViewportLoading('Loading SDF into viewport', `${warhead} - ${pdb} chain ${chain}`);
+    }, true);
+
+    // Hide once NGL creates/updates the viewport canvas.
+    document.addEventListener('DOMContentLoaded', function () {
+      const viewport = document.getElementById('viewport');
+      if (!viewport || !window.MutationObserver) return;
+      const observer = new MutationObserver(function () {
+        if (viewport.querySelector('canvas')) window.hideViewportLoading(650);
+      });
+      observer.observe(viewport, { childList: true, subtree: true });
+    });
+
+    // Track fetch-based file loads.
+    if (window.fetch) {
+      const originalFetch = window.fetch.bind(window);
+      window.fetch = function (input, init) {
+        const url = typeof input === 'string' ? input : (input && input.url);
+        const track = isStructureUrl(url);
+        if (track) beginTrackedLoad(url);
+        return originalFetch(input, init)
+          .then(function (response) {
+            if (track) endTrackedLoad(response.ok, response.status + ' ' + response.statusText);
+            return response;
+          })
+          .catch(function (error) {
+            if (track) endTrackedLoad(false, error && error.message);
+            throw error;
+          });
+      };
+    }
+
+    // Track XHR-based file loads, which NGL may use internally.
+    if (window.XMLHttpRequest) {
+      const originalOpen = XMLHttpRequest.prototype.open;
+      const originalSend = XMLHttpRequest.prototype.send;
+
+      XMLHttpRequest.prototype.open = function (method, url) {
+        this.__whTrackStructureLoad = isStructureUrl(url);
+        return originalOpen.apply(this, arguments);
+      };
+
+      XMLHttpRequest.prototype.send = function () {
+        if (this.__whTrackStructureLoad) {
+          beginTrackedLoad();
+          this.addEventListener('loadend', function () {
+            const ok = this.status >= 200 && this.status < 400;
+            endTrackedLoad(ok, this.status ? (this.status + ' ' + this.statusText) : 'Network error');
+          });
+        }
+        return originalSend.apply(this, arguments);
+      };
+    }
+  })();
 </script>
 <script defer src="https://unpkg.com/ngl@2.0.0-dev.37/dist/ngl.js"></script>
 <script defer src="{{ url_for('static', filename='js/3Drender.js') }}"></script>
