@@ -2,19 +2,55 @@
 from __future__ import annotations
 
 import json
+import os
+import shlex
 import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional, List
+from typing import Optional, List, Dict, Any, Tuple
 
+import requests
 from flask import Blueprint, current_app, abort, jsonify, request
 
 hand_bp = Blueprint("handoff", __name__, url_prefix="/api/handoff")
 
 # -----------------------------------------------------------------------------
-# CONFIG (single source of truth)
+# CONFIG
 # -----------------------------------------------------------------------------
-KYLE_HOST = "kyle"
-KYLE_BASE = Path("/home/jxs794/VLISEMOD/static/hunter_jobs")
+# Heroku-friendly mode: POST resolved job artifacts to RANDY through HTTPS Funnel.
+# Required on Heroku:
+#   WARHEAD_HANDOFF_STORAGE_URL=https://randy.rove-vernier.ts.net/backup/hunter-job-files
+#   WARHEAD_HANDOFF_TOKEN=<rotated token>
+# Optional:
+#   WARHEAD_HANDOFF_TIMEOUT_SECONDS=20
+#
+# Legacy SSH/SCP mode remains available for local/CARTMAN runs if no storage URL
+# is configured or if WARHEAD_HANDOFF_MODE=ssh is set explicitly.
+
+HANDOFF_MODE = os.getenv("WARHEAD_HANDOFF_MODE", "auto").strip().lower() or "auto"
+STORAGE_URL = os.getenv("WARHEAD_HANDOFF_STORAGE_URL", "").strip()
+HANDOFF_TOKEN = os.getenv("WARHEAD_HANDOFF_TOKEN", "").strip()
+HANDOFF_TIMEOUT_SECONDS = float(os.getenv("WARHEAD_HANDOFF_TIMEOUT_SECONDS", "20") or 20)
+
+REMOTE_HOST = os.getenv("WARHEAD_HANDOFF_REMOTE_HOST", "randy").strip() or "randy"
+REMOTE_BASE = Path(
+    os.getenv(
+        "WARHEAD_HANDOFF_REMOTE_BASE",
+        "/home/jxs794/PROTAC_BUILDER/warhead_hunter/hunter_jobs",
+    ).strip()
+)
+REMOTE_SSH_OPTS = shlex.split(os.getenv("WARHEAD_HANDOFF_SSH_OPTS", ""))
+
+
+def _effective_mode() -> str:
+    if HANDOFF_MODE in {"https", "http"}:
+        return "https"
+    if HANDOFF_MODE == "ssh":
+        return "ssh"
+    if STORAGE_URL:
+        return "https"
+    return "ssh"
+
 
 # -----------------------------------------------------------------------------
 # Helpers
@@ -25,130 +61,219 @@ def safe_job_id(job_id: str) -> str:
     return job_id
 
 
+def _safe_text(value: Any) -> str:
+    return str(value or "").strip()
+
+
+def _utc_now_iso() -> str:
+    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
 def run(cmd: List[str]) -> str:
-    """
-    Run a subprocess, fail loudly and clearly.
-    """
-    r = subprocess.run(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True
-    )
+    r = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     if r.returncode != 0:
         raise RuntimeError(r.stderr.strip() or f"Command failed: {' '.join(cmd)}")
     return (r.stdout or "").strip()
 
 
 def ssh(cmd: str) -> str:
-    """
-    Run a command on KYLE via SSH.
-    """
-    return run(["ssh", KYLE_HOST, cmd])
+    return run(["ssh", *REMOTE_SSH_OPTS, REMOTE_HOST, cmd])
 
 
 def scp(src: Path, dst_remote_path: str) -> None:
-    """
-    SCP a file to KYLE.
-    dst_remote_path should be an absolute path on KYLE.
-    """
-    run(["scp", str(src), f"{KYLE_HOST}:{dst_remote_path}"])
+    run(["scp", *REMOTE_SSH_OPTS, str(src), f"{REMOTE_HOST}:{dst_remote_path}"])
 
 
 def _pick_first(matches: List[Path], what: str) -> Path:
     if not matches:
         abort(404, f"{what} not found")
-    # deterministic: stable sort
-    matches = sorted(matches, key=lambda p: str(p))
-    return matches[0]
+    return sorted(matches, key=lambda p: str(p))[0]
 
 
 def find_pdb(jobs_dir: Path, job_id: str, pdb: str, chain: str, warhead: str) -> Path:
-    """
-    PDBs live here (per your tree):
-      jobs/<job_id>/TARGET_RESULTS/WAR_PDB/<TARGET>/<pdb>_<chain>_<warhead>.pdb
-    We don't assume TARGET; we rglob().
-    """
     base = jobs_dir / job_id / "TARGET_RESULTS" / "WAR_PDB"
     if not base.exists():
         abort(404, f"WAR_PDB directory not found: {base}")
-
     fname = f"{pdb}_{chain}_{warhead}.pdb"
     matches = list(base.rglob(fname))
     if not matches:
-        abort(404, f"Source PDB not found (expected under WAR_PDB): {fname}")
+        abort(404, f"Source PDB not found under WAR_PDB: {fname}")
     return _pick_first(matches, "PDB")
 
 
 def find_sdf(jobs_dir: Path, job_id: str, pdb: str, chain: str, warhead: str, resid: Optional[str]) -> Path:
-    """
-    SDFs live here (per your tree):
-      jobs/<job_id>/MCS_Output/MCS_SDF/<pdb>_<chain>_<warhead>_<resid>.sdf
+    roots = [
+        jobs_dir / job_id / "MCS_Output" / "MCS_SDF",
+        jobs_dir / job_id / "TARGET_RESULTS" / "MCS_Output" / "MCS_SDF",
+        jobs_dir / job_id / "LIGAND_SDF",
+        jobs_dir / job_id / "TARGET_RESULTS" / "LIGAND_SDF",
+    ]
+    existing_roots = [root for root in roots if root.exists()]
+    if not existing_roots:
+        abort(404, f"No SDF directory found for job {job_id}")
 
-    If resid is missing, we fall back to the first match:
-      <pdb>_<chain>_<warhead>_*.sdf
-    """
-    base = jobs_dir / job_id / "MCS_Output" / "MCS_SDF"
-    if not base.exists():
-        abort(404, f"MCS_SDF directory not found: {base}")
-
+    patterns = []
     if resid:
-        fname = f"{pdb}_{chain}_{warhead}_{resid}.sdf"
-        matches = list(base.glob(fname))
-        if not matches:
-            abort(404, f"Source SDF not found: {fname}")
-        return matches[0]
+        patterns.append(f"{pdb}_{chain}_{warhead}_{resid}.sdf")
+    patterns.append(f"{pdb}_{chain}_{warhead}_*.sdf")
+    patterns.append(f"{pdb}_{chain}_{warhead}.sdf")
 
-    # fallback: any resid
-    pattern = f"{pdb}_{chain}_{warhead}_*.sdf"
-    matches = list(base.glob(pattern))
+    matches: List[Path] = []
+    for root in existing_roots:
+        for pattern in patterns:
+            matches.extend(list(root.glob(pattern)))
     if not matches:
-        abort(404, f"Source SDF not found (pattern): {pattern}")
+        abort(404, f"Source SDF not found for {pdb}_{chain}_{warhead} resid={resid or ''}")
     return _pick_first(matches, "SDF")
 
 
+def find_svgs(jobs_dir: Path, job_id: str, pdb: str, chain: str, warhead: str, resid: Optional[str]) -> List[Path]:
+    roots = [
+        jobs_dir / job_id / "TARGET_RESULTS" / "MCS_Output" / "MCS_SVG",
+        jobs_dir / job_id / "MCS_Output" / "MCS_SVG",
+        jobs_dir / job_id / "TARGET_RESULTS" / "MCS_Output" / "MCS_SVGS",
+        jobs_dir / job_id / "MCS_Output" / "MCS_SVGS",
+    ]
+    existing_roots = [root for root in roots if root.exists()]
+    if not existing_roots:
+        abort(404, f"No MCS SVG directory found for job {job_id}")
 
-def find_svgs(
-    jobs_dir: Path,
+    patterns = []
+    if resid:
+        patterns.append(f"{pdb}_{chain}_{warhead}_{resid}_*.svg")
+    patterns.append(f"{pdb}_{chain}_{warhead}_*_*.svg")
+    patterns.append(f"{pdb}_{chain}_{warhead}*.svg")
+
+    matches: List[Path] = []
+    for root in existing_roots:
+        for pattern in patterns:
+            matches.extend(list(root.glob(pattern)))
+    matches = sorted(set(matches), key=lambda p: str(p))
+    if not matches:
+        abort(404, f"No SVGs found for {pdb}_{chain}_{warhead} resid={resid or ''}")
+    return matches
+
+
+def ensure_remote_dir(remote_dir: Path) -> None:
+    ssh(f"mkdir -p {shlex.quote(str(remote_dir))}")
+
+
+def _build_manifest(
+    *,
     job_id: str,
     pdb: str,
     chain: str,
     warhead: str,
-    resid: Optional[str]
-) -> List[Path]:
-    """
-    SVGs live here:
-      jobs/<job_id>/TARGET_RESULTS/MCS_Output/MCS_SVG/
-
-    Expected:
-      <pdb>_<chain>_<warhead>_<resid>_{plain|exposed}.svg
-
-    If resid missing → fallback to any matching resid.
-    """
-    base = jobs_dir / job_id / "TARGET_RESULTS" / "MCS_Output" / "MCS_SVG"
-    if not base.exists():
-        abort(404, f"MCS_SVG directory not found: {base}")
-
-    if resid:
-        pattern = f"{pdb}_{chain}_{warhead}_{resid}_*.svg"
-    else:
-        pattern = f"{pdb}_{chain}_{warhead}_*_*.svg"
-
-    matches = sorted(base.glob(pattern))
-    if not matches:
-        abort(404, f"No SVGs found (pattern): {pattern}")
-
-    return matches
-
-
+    resid: Optional[str],
+    src_pdb: Path,
+    src_sdf: Path,
+    src_svgs: List[Path],
+) -> Dict[str, Any]:
+    return {
+        "job_id": job_id,
+        "pdb": pdb,
+        "chain": chain,
+        "warhead": warhead,
+        "resid": resid,
+        "created_at_utc": _utc_now_iso(),
+        "files": {
+            "pdb": src_pdb.name,
+            "sdf": src_sdf.name,
+            "svg": [p.name for p in src_svgs],
+        },
+        "source_paths": {
+            "pdb": str(src_pdb),
+            "sdf": str(src_sdf),
+            "svg": [str(p) for p in src_svgs],
+        },
+        "source": "protac-builder-button",
+        "handoff_mode": _effective_mode(),
+    }
 
 
-def ensure_remote_dir(remote_dir: Path) -> None:
-    """
-    Ensure the hunter job folder exists on KYLE.
-    """
-    # Quote path safely enough for your use case (no spaces expected)
-    ssh(f"mkdir -p {remote_dir}")
+def _materialize_via_https(manifest: Dict[str, Any], files_to_send: List[Tuple[str, Path]]) -> Dict[str, Any]:
+    if not STORAGE_URL:
+        raise RuntimeError("WARHEAD_HANDOFF_STORAGE_URL is not configured")
+    if not HANDOFF_TOKEN:
+        raise RuntimeError("WARHEAD_HANDOFF_TOKEN is not configured")
+
+    form = {
+        "job_id": manifest["job_id"],
+        "pdb": manifest["pdb"],
+        "chain": manifest["chain"],
+        "warhead": manifest["warhead"],
+        "resid": manifest.get("resid") or "",
+        "source": manifest.get("source") or "protac-builder-button",
+        "manifest_json": json.dumps(manifest, sort_keys=True),
+    }
+
+    handles = []
+    multipart = []
+    try:
+        for field_label, path in files_to_send:
+            handle = path.open("rb")
+            handles.append(handle)
+            multipart.append(("files", (path.name, handle, "application/octet-stream")))
+
+        resp = requests.post(
+            STORAGE_URL,
+            headers={"Authorization": f"Bearer {HANDOFF_TOKEN}"},
+            data=form,
+            files=multipart,
+            timeout=HANDOFF_TIMEOUT_SECONDS,
+        )
+        try:
+            payload = resp.json()
+        except Exception:
+            payload = {"ok": False, "raw_response": resp.text[:1000]}
+        if resp.status_code >= 400 or not payload.get("ok"):
+            raise RuntimeError(f"RANDY handoff upload failed: HTTP {resp.status_code} {payload}")
+        return payload
+    finally:
+        for handle in handles:
+            try:
+                handle.close()
+            except Exception:
+                pass
+
+
+def _materialize_via_ssh(manifest: Dict[str, Any], files_to_send: List[Tuple[str, Path]]) -> Dict[str, Any]:
+    job_id = manifest["job_id"]
+    remote_job_dir = REMOTE_BASE / job_id
+    ensure_remote_dir(remote_job_dir)
+
+    for _label, path in files_to_send:
+        scp(path, str(remote_job_dir / path.name))
+
+    tmp_manifest = Path("/tmp") / f"hunter_manifest_{job_id}_{manifest['pdb']}_{manifest['chain']}_{manifest['warhead']}.json"
+    tmp_manifest.write_text(json.dumps({**manifest, "remote_host": REMOTE_HOST, "remote_base": str(REMOTE_BASE), "remote_dir": str(remote_job_dir)}, indent=2), encoding="utf-8")
+    try:
+        scp(tmp_manifest, str(remote_job_dir / "manifest.json"))
+    finally:
+        tmp_manifest.unlink(missing_ok=True)
+
+    return {
+        "ok": True,
+        "mode": "ssh",
+        "remote_dir": str(remote_job_dir),
+        "files": manifest["files"],
+    }
+
+
+@hand_bp.get("/config")
+def handoff_config():
+    mode = _effective_mode()
+    return jsonify({
+        "ok": True,
+        "mode": mode,
+        "storage_url_configured": bool(STORAGE_URL),
+        "storage_url": STORAGE_URL if STORAGE_URL else "",
+        "token_configured": bool(HANDOFF_TOKEN),
+        "timeout_seconds": HANDOFF_TIMEOUT_SECONDS,
+        "legacy_remote_host": REMOTE_HOST,
+        "legacy_remote_base": str(REMOTE_BASE),
+        "ssh_opts_enabled": bool(REMOTE_SSH_OPTS),
+    })
 
 
 # -----------------------------------------------------------------------------
@@ -157,101 +282,61 @@ def ensure_remote_dir(remote_dir: Path) -> None:
 @hand_bp.route("/materialize/<job_id>/<pdb>/<chain>/<warhead>", methods=["POST"])
 def materialize_hunter_job(job_id, pdb, chain, warhead):
     """
-    Copies the job-specific PDB + SDF from CARTMAN job outputs to:
-      kyle:/home/jxs794/VLISEMOD/static/hunter_jobs/<job_id>/
+    Resolve PDB/SDF/SVG artifacts from a Warhead Hunter job directory and store
+    them persistently on RANDY.
 
-    Notes:
-      - Does NOT depend on SMILES.
-      - Uses filesystem search, matching your actual output layout.
-      - Optional resid can be passed as query param ?resid=1101
+    Heroku/default path:
+      POST multipart files to WARHEAD_HANDOFF_STORAGE_URL over HTTPS Funnel.
+
+    Legacy/local fallback:
+      SSH/SCP to WARHEAD_HANDOFF_REMOTE_HOST when WARHEAD_HANDOFF_MODE=ssh or no
+      storage URL is configured.
     """
     try:
         job_id = safe_job_id(job_id)
-
-        pdb = str(pdb).lower().strip()
-        chain = str(chain).upper().strip()
-        warhead = str(warhead).upper().strip()
-
-        resid = (request.args.get("resid") or "").strip() or None
+        pdb = _safe_text(pdb).lower()
+        chain = _safe_text(chain).upper()
+        warhead = _safe_text(warhead).upper()
+        resid = _safe_text(request.args.get("resid")) or None
 
         jobs_dir = Path(current_app.config.get("JOBS_DIR", "jobs")).resolve()
 
-        # ---------------------------------------------------------------------
-        # 1) Resolve SOURCE files on CARTMAN (REAL locations)
-        # ---------------------------------------------------------------------
         src_pdb = find_pdb(jobs_dir, job_id, pdb, chain, warhead)
         src_sdf = find_sdf(jobs_dir, job_id, pdb, chain, warhead, resid=resid)
+        src_svgs = find_svgs(jobs_dir, job_id, pdb, chain, warhead, resid=resid)
 
-        pdb_name = src_pdb.name
-        sdf_name = src_sdf.name
+        manifest = _build_manifest(
+            job_id=job_id,
+            pdb=pdb,
+            chain=chain,
+            warhead=warhead,
+            resid=resid,
+            src_pdb=src_pdb,
+            src_sdf=src_sdf,
+            src_svgs=src_svgs,
+        )
+        files_to_send: List[Tuple[str, Path]] = [("pdb", src_pdb), ("sdf", src_sdf)] + [("svg", p) for p in src_svgs]
 
-        # ---------------------------------------------------------------------
-        # 1b) Resolve SVGs (optional but expected)
-        # ---------------------------------------------------------------------
-        src_svgs = find_svgs(jobs_dir, job_id, pdb, chain, warhead, resid)
-        svg_names = [p.name for p in src_svgs]
+        if _effective_mode() == "https":
+            uploaded = _materialize_via_https(manifest, files_to_send)
+            return jsonify({
+                "ok": True,
+                "mode": "https",
+                "storage_url": STORAGE_URL,
+                "remote_dir": uploaded.get("remote_dir", ""),
+                "files": manifest["files"],
+                "saved_files": uploaded.get("saved_files", []),
+                "resid": resid,
+            })
 
-
-        # ---------------------------------------------------------------------
-        # 2) Ensure DESTINATION directory exists on KYLE
-        # ---------------------------------------------------------------------
-        remote_job_dir = (KYLE_BASE / job_id)
-        ensure_remote_dir(remote_job_dir)
-
-        # ---------------------------------------------------------------------
-        # 3) SCP files to KYLE
-        # ---------------------------------------------------------------------
-        scp(src_pdb, str(remote_job_dir / pdb_name))
-        scp(src_sdf, str(remote_job_dir / sdf_name))
-
-        # ---------------------------------------------------------------------
-        # 3b) SCP SVGs
-        # ---------------------------------------------------------------------
-        for svg in src_svgs:
-            scp(svg, str(remote_job_dir / svg.name))
-
-
-        
-        
-
-
-        # ---------------------------------------------------------------------
-        # 4) Write + SCP manifest
-        # ---------------------------------------------------------------------
-        manifest = {
-            "job_id": job_id,
-            "pdb": pdb,
-            "chain": chain,
-            "warhead": warhead,
-            "resid": resid,
-            "files": {
-                "pdb": pdb_name,
-                "sdf": sdf_name,
-                "svg": svg_names
-            },
-            "source_paths": {
-                "pdb": str(src_pdb),
-                "sdf": str(src_sdf),
-                "svg": [str(p) for p in src_svgs]
-            },
-            "remote_dir": str(remote_job_dir),
-            "source": "protac-builder-button"
-        }
-
-        tmp_manifest = Path("/tmp") / f"hunter_manifest_{job_id}_{pdb}_{chain}_{warhead}.json"
-        with open(tmp_manifest, "w") as f:
-            json.dump(manifest, f, indent=2)
-
-        scp(tmp_manifest, str(remote_job_dir / "manifest.json"))
-        tmp_manifest.unlink(missing_ok=True)
-
+        uploaded = _materialize_via_ssh(manifest, files_to_send)
         return jsonify({
             "ok": True,
-            "remote_dir": str(remote_job_dir),
+            "mode": "ssh",
+            "remote_dir": uploaded.get("remote_dir", ""),
             "files": manifest["files"],
-            "resid": resid
+            "resid": resid,
         })
-
 
     except Exception as e:
         import traceback
