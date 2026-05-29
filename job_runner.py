@@ -23,6 +23,8 @@ import threading
 import uuid
 import time
 import sys
+import zipfile
+import requests
 import pandas as pd
 from pathlib import Path
 from datetime import datetime
@@ -485,6 +487,95 @@ def validate_required_display_artifacts(job_id: str, job_dir: str) -> None:
 
     log_message(job_id, f"✅ final SDF validation PASS: rows={len(results)} matched={matched} sdf_files={len(sdf_files)} dir={sdf_dir}")
 
+
+# =============================================================================
+# RANDY FULL-JOB BACKUP (BEST-EFFORT)
+# =============================================================================
+def _derive_job_backup_url() -> str:
+    explicit = os.environ.get("WARHEAD_JOB_BACKUP_URL", "").strip()
+    if explicit:
+        return explicit
+    handoff_url = os.environ.get("WARHEAD_HANDOFF_STORAGE_URL", "").strip()
+    if handoff_url.endswith("/backup/hunter-job-files"):
+        return handoff_url[: -len("/backup/hunter-job-files")] + "/backup/hunter-job-archive"
+    return ""
+
+
+def _job_backup_token() -> str:
+    return (
+        os.environ.get("WARHEAD_JOB_BACKUP_TOKEN", "").strip()
+        or os.environ.get("WARHEAD_HANDOFF_TOKEN", "").strip()
+        or os.environ.get("PROTAC_BACKUP_TOKEN", "").strip()
+    )
+
+
+def _job_backup_enabled() -> bool:
+    value = os.environ.get("WARHEAD_JOB_BACKUP_ENABLED", "1").strip().lower()
+    if value in {"0", "false", "no", "off"}:
+        return False
+    return bool(_derive_job_backup_url() and _job_backup_token())
+
+
+def _make_full_job_zip(job_id: str, job_dir: str) -> Path:
+    job_path = Path(job_dir).resolve()
+    backup_tmp = job_path / "_randy_backup"
+    backup_tmp.mkdir(parents=True, exist_ok=True)
+    out_zip = backup_tmp / f"{job_id}_warhead_hunter_full_job.zip"
+
+    skip_dir_names = {"__pycache__", ".git", ".pytest_cache", "_randy_backup"}
+    skip_suffixes = {".pyc", ".pyo", ".tmp"}
+
+    if out_zip.exists():
+        out_zip.unlink()
+
+    with zipfile.ZipFile(out_zip, "w", zipfile.ZIP_DEFLATED) as zf:
+        for fp in job_path.rglob("*"):
+            if not fp.is_file():
+                continue
+            rel = fp.relative_to(job_path)
+            if any(part in skip_dir_names for part in rel.parts):
+                continue
+            if fp.suffix.lower() in skip_suffixes:
+                continue
+            # Keep all scientific/job artifacts, including bundles and manifests.
+            zf.write(fp, arcname=rel.as_posix())
+    return out_zip
+
+
+def backup_job_dir_to_randy(job_id: str, job_dir: str) -> None:
+    """Best-effort full job backup to RANDY. Never let this fail the science pipeline."""
+    if not _job_backup_enabled():
+        log_message(job_id, "ℹ️ RANDY full-job backup skipped: WARHEAD_JOB_BACKUP_URL/WARHEAD_HANDOFF_STORAGE_URL or token not configured.")
+        return
+
+    url = _derive_job_backup_url()
+    token = _job_backup_token()
+    timeout = float(os.environ.get("WARHEAD_JOB_BACKUP_TIMEOUT_SECONDS", "120") or 120)
+
+    archive_path = _make_full_job_zip(job_id, job_dir)
+    size_mb = archive_path.stat().st_size / (1024 * 1024)
+    log_message(job_id, f"☁️ Backing up full job to RANDY: {archive_path.name} ({size_mb:.2f} MB)")
+
+    with archive_path.open("rb") as handle:
+        resp = requests.post(
+            url,
+            headers={"Authorization": f"Bearer {token}"},
+            data={
+                "job_id": job_id,
+                "source": "warhead-hunter-job-runner",
+                "status": "completed",
+            },
+            files={"archive": (archive_path.name, handle, "application/zip")},
+            timeout=timeout,
+        )
+    try:
+        payload = resp.json()
+    except Exception:
+        payload = {"ok": False, "raw_response": resp.text[:1000]}
+    if resp.status_code >= 400 or not payload.get("ok"):
+        raise RuntimeError(f"RANDY full-job backup failed: HTTP {resp.status_code} {payload}")
+    log_message(job_id, f"✅ RANDY full-job backup complete: event_id={payload.get('event_id')} remote_dir={payload.get('remote_dir', '')}")
+
 def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_seq: str) -> None:
     job_dir = os.path.join(JOBS_DIR, job_id)
 
@@ -577,6 +668,11 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
             _run_cleanup_packaging(job_id, job_dir)
         except Exception as cleanup_error:
             log_message(job_id, f"⚠️ Cleanup packaging step failed: {cleanup_error}")
+
+        try:
+            backup_job_dir_to_randy(job_id, job_dir)
+        except Exception as backup_error:
+            log_message(job_id, f"⚠️ RANDY full-job backup failed/skipped: {backup_error}")
 
         log_message(job_id, "✅ PIPELINE FINISHED SUCCESSFULLY")
         log_message(job_id, "Access results in the Browse tab.")
