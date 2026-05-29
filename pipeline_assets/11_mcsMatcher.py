@@ -973,7 +973,7 @@ def compute_mcs(key, grouped):
     dbg(f"END key={key} mode={mode} mapped={len(map_3d_to_2d)} dt={dt_total:.2f}s")
     return rows_mcs, rows_all, (errs if errs else None)
 
-PER_KEY_TIMEOUT = 8  # seconds; tune as needed
+PER_KEY_TIMEOUT = int(os.environ.get("WARHEAD_MCS_PER_KEY_TIMEOUT", "60"))
 
 def compute_mcs_timed(key, group_df):
     ligand, target, pdb_id, resid, chain = key
@@ -1106,7 +1106,7 @@ if __name__ == "__main__":
 
     print("⚙️ Using hard timeout (5s per ligand) via SIGALRM")
 
-    HARD_GIVEUP_SEC = 10  # <- choose: 20–60 is reasonable
+    HARD_GIVEUP_SEC = int(os.environ.get("WARHEAD_MCS_HARD_GIVEUP_SEC", "60"))
 
     with Pool(processes=NPROC, maxtasksperchild=50) as pool:
         pending = {}
