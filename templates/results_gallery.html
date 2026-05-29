@@ -86,6 +86,118 @@
     text-shadow: 0 0 10px rgba(255, 49, 95, .45);
   }
 
+
+  /* Full-page results loading modal shown during initial SDF/PDB validation + first render */
+  .results-loading-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background:
+      radial-gradient(circle at 50% 38%, rgba(0, 238, 255, .16), transparent 30%),
+      radial-gradient(circle at 58% 58%, rgba(255, 214, 0, .08), transparent 28%),
+      rgba(0, 4, 10, .86);
+    backdrop-filter: blur(5px);
+  }
+
+  .results-loading-modal.is-active {
+    display: flex;
+  }
+
+  .results-loading-card {
+    width: min(520px, calc(100vw - 48px));
+    padding: 30px 34px;
+    border: 1px solid rgba(0, 238, 255, .42);
+    border-radius: 22px;
+    background: rgba(0, 8, 14, .92);
+    box-shadow:
+      0 0 34px rgba(0, 238, 255, .24),
+      0 0 72px rgba(255, 214, 0, .08),
+      inset 0 0 34px rgba(0, 238, 255, .09);
+    text-align: center;
+  }
+
+  .results-loading-orbit {
+    position: relative;
+    width: 92px;
+    height: 92px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 238, 255, .18);
+    box-shadow: inset 0 0 22px rgba(0, 238, 255, .14);
+  }
+
+  .results-loading-orbit::before,
+  .results-loading-orbit::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    animation: wh-spin .95s linear infinite;
+  }
+
+  .results-loading-orbit::before {
+    border-top-color: var(--tron-yellow, #ffe600);
+    border-right-color: rgba(0, 238, 255, .92);
+  }
+
+  .results-loading-orbit::after {
+    inset: 16px;
+    border-bottom-color: rgba(0, 238, 255, .78);
+    border-left-color: rgba(255, 214, 0, .78);
+    animation-direction: reverse;
+    animation-duration: 1.35s;
+  }
+
+  .results-loading-title {
+    color: var(--tron-yellow, #ffe600);
+    font-size: 1.05rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    text-shadow: 0 0 12px rgba(255, 230, 0, .48);
+  }
+
+  .results-loading-detail {
+    min-height: 1.25em;
+    margin-top: 10px;
+    color: rgba(99, 238, 255, .88);
+    font-size: .82rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .results-loading-progress {
+    height: 8px;
+    margin-top: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 238, 255, .22);
+    border-radius: 99px;
+    background: rgba(255, 255, 255, .06);
+  }
+
+  .results-loading-progress > span {
+    display: block;
+    width: var(--results-progress, 8%);
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, rgba(0,238,255,.35), var(--tron-yellow, #ffe600));
+    box-shadow: 0 0 18px rgba(255, 214, 0, .32);
+    transition: width .22s ease;
+  }
+
+  .results-loading-current {
+    min-height: 1.15em;
+    margin-top: 12px;
+    color: rgba(255, 255, 255, .54);
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
   @keyframes wh-spin {
     to { transform: rotate(360deg); }
   }
@@ -93,6 +205,16 @@
 {% endblock %}
 
 {% block content %}
+<div id="results-loading-modal" class="results-loading-modal is-active" role="status" aria-live="polite" aria-hidden="false">
+  <div class="results-loading-card">
+    <div class="results-loading-orbit" aria-hidden="true"></div>
+    <div id="results-loading-title" class="results-loading-title">Loading warhead results</div>
+    <div id="results-loading-detail" class="results-loading-detail">Checking SDF, PDB, and SASA assets</div>
+    <div class="results-loading-progress" aria-hidden="true"><span id="results-loading-progress"></span></div>
+    <div id="results-loading-current" class="results-loading-current">Initializing molecular viewer</div>
+  </div>
+</div>
+
 <div class="container-fluid cc-wrap">
   <h1 class="glow-text cc-title">
     WARHEAD COMMAND CENTER:

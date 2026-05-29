@@ -53,47 +53,6 @@
   // ============================================================================
   const $ = (id) => document.getElementById(id);
 
-  function setResultsLoading(on, title, detail, progress, current) {
-    const modal = $("results-loading-modal");
-    if (!modal) return;
-
-    const titleNode = $("results-loading-title");
-    const detailNode = $("results-loading-detail");
-    const progressNode = $("results-loading-progress");
-    const currentNode = $("results-loading-current");
-
-    if (titleNode && title) titleNode.textContent = title;
-    if (detailNode && detail) detailNode.textContent = detail;
-    if (currentNode && current) currentNode.textContent = current;
-
-    if (progressNode && Number.isFinite(Number(progress))) {
-      const pct = Math.max(3, Math.min(100, Number(progress)));
-      progressNode.style.width = `${pct}%`;
-      progressNode.parentElement?.style.setProperty("--results-progress", `${pct}%`);
-    }
-
-    modal.classList.toggle("is-active", Boolean(on));
-    modal.setAttribute("aria-hidden", on ? "false" : "true");
-  }
-
-  function showResultsLoading(title, detail, current) {
-    setResultsLoading(true, title || "Loading warhead results", detail || "Preparing molecular viewer", 8, current || "Initializing");
-  }
-
-  function updateResultsLoading(detail, progress, current) {
-    setResultsLoading(true, null, detail, progress, current);
-  }
-
-  function hideResultsLoading(delayMs = 250) {
-    window.setTimeout(() => setResultsLoading(false), delayMs);
-  }
-
-  window.WHResultsLoader = {
-    show: showResultsLoading,
-    update: updateResultsLoading,
-    hide: hideResultsLoading
-  };
-
   function escapeHtml(s) {
     return String(s || "")
       .replace(/&/g,"&amp;")
@@ -479,36 +438,18 @@
   async function filterRenderableCards() {
     const cards = Array.from(document.querySelectorAll(".result-card"));
     const renderable = [];
-    const total = cards.length || 1;
 
-    showResultsLoading(
-      "Loading warhead results",
-      `Checking ${cards.length} ligand result${cards.length === 1 ? "" : "s"}`,
-      "Validating SDF, PDB, and SASA assets"
-    );
-    updateResultsLoading("Starting artifact validation", 6, "Preparing result cards");
-
-    for (let i = 0; i < cards.length; i += 1) {
-      const card = cards[i];
+    for (const card of cards) {
       const pdb = String(card.dataset.pdb || "").trim().toLowerCase();
       const chain = String(card.dataset.chain || "").trim().toUpperCase();
       const warhead = String(card.dataset.warhead || "").trim().toUpperCase();
       let resid = String(card.dataset.resid || "").trim();
-
-      const cardLabel = `${warhead || "ligand"} / ${pdb || "pdb"} chain ${chain || "?"}`;
-      const baseProgress = 8 + ((i / total) * 74);
-      updateResultsLoading(
-        `Checking result ${i + 1} of ${cards.length}`,
-        baseProgress,
-        cardLabel
-      );
 
       if (!pdb || !chain || !warhead) {
         markCardArtifactMissing(card, "SDF missing — pipeline artifact incomplete");
         continue;
       }
 
-      updateResultsLoading(`Resolving ligand residue ${i + 1} of ${cards.length}`, baseProgress + 2, cardLabel);
       resid = await resolveResid(pdb, chain, warhead, resid);
       if (resid) card.dataset.resid = resid;
 
@@ -521,10 +462,7 @@
       const sdfUrl =
         `/api/sdf/${encodeURIComponent(JOB_ID)}/${encodeURIComponent(pdb)}/${encodeURIComponent(chain)}/${encodeURIComponent(warhead)}${sdfQuery}`;
 
-      updateResultsLoading(`Checking protein artifact ${i + 1} of ${cards.length}`, baseProgress + 4, cardLabel);
       const okProtein = await headOrGetOk(proteinUrl);
-
-      updateResultsLoading(`Checking SDF artifact ${i + 1} of ${cards.length}`, baseProgress + 8, cardLabel);
       const okSdf = await headOrGetOk(sdfUrl);
 
       if (!okSdf) {
@@ -546,7 +484,6 @@
           `&chain=${encodeURIComponent(chain)}` +
           `&residue_id=${encodeURIComponent(resid)}`;
 
-        updateResultsLoading(`Checking SASA atoms ${i + 1} of ${cards.length}`, baseProgress + 11, cardLabel);
         const okSasa = await headOrGetOk(sasaUrl);
 
         if (!okSasa) {
@@ -559,19 +496,12 @@
       card.classList.remove("pending");
       card.dataset.renderable = "true";
       renderable.push(card);
-
-      updateResultsLoading(
-        `${renderable.length} renderable ligand${renderable.length === 1 ? "" : "s"} found`,
-        Math.min(88, baseProgress + 13),
-        cardLabel
-      );
     }
 
     if (!renderable.length) {
       console.warn("No result cards have required SDF artifacts. SDF is a required display contract.");
     }
 
-    updateResultsLoading("Artifact validation complete", 90, `${renderable.length} renderable ligand${renderable.length === 1 ? "" : "s"} ready`);
     return renderable;
   }
 
@@ -934,14 +864,8 @@ function openBuilderFallback(smiles, opts = {}) {
     await load2DMap(PDB, chain, WAR, RESID);
 
     if (window.Render3D && typeof window.Render3D.load === "function") {
-      try {
-        await window.Render3D.load({ pdb: PDB, chain, warhead: WAR, resid: RESID });
-        setHUD(PDB, chain, WAR, exposedValue, "Loaded");
-      } catch (err) {
-        const msg = err && err.message ? err.message : String(err || "Unknown 3D render error");
-        setHUD(PDB, chain, WAR, exposedValue, `3D load failed: ${msg}`);
-        console.warn("Render3D load failed:", err);
-      }
+      window.Render3D.load({ pdb: PDB, chain, warhead: WAR, resid: RESID });
+      setHUD(PDB, chain, WAR, exposedValue, "Loaded");
     } else {
       setHUD(PDB, chain, WAR, exposedValue, "3D renderer not loaded.");
       console.warn("Render3D not available. Check script order in HTML.");
@@ -967,59 +891,36 @@ function openBuilderFallback(smiles, opts = {}) {
   // 9) BOOT
   // ============================================================================
   document.addEventListener("DOMContentLoaded", async () => {
-    showResultsLoading(
-      "Loading warhead results",
-      "Preparing controls and molecular viewer",
-      "Binding interface actions"
-    );
+    bindMapToggle();
+    bindSmilesActions();
+    bindDownloadPDB();
+    bindProtacBuilder();
 
-    try {
-      bindMapToggle();
-      bindSmilesActions();
-      bindDownloadPDB();
-      bindProtacBuilder();
+    const validCards = await filterRenderableCards();
 
-      const validCards = await filterRenderableCards();
+    bindCards();
 
-      bindCards();
+    const first = validCards[0];
 
-      const first = validCards[0];
+    if (first) {
+      const pdb = first.dataset.pdb;
+      const chain = first.dataset.chain;
+      const warhead = first.dataset.warhead;
+      const smiles = first.dataset.smiles || "";
+      const resid = (first.dataset.resid || "").trim();
+      const exposedValue = Number(first.dataset.exposed || 0);
 
-      if (first) {
-        const pdb = first.dataset.pdb;
-        const chain = first.dataset.chain;
-        const warhead = first.dataset.warhead;
-        const smiles = first.dataset.smiles || "";
-        const resid = (first.dataset.resid || "").trim();
-        const exposedValue = Number(first.dataset.exposed || 0);
-
-        updateResultsLoading(
-          "Loading first molecular viewport",
-          94,
-          `${warhead || "ligand"} / ${pdb || "pdb"} chain ${chain || "?"}`
-        );
-
-        await window.syncView(pdb, chain, warhead, resid, smiles, exposedValue);
-        updateResultsLoading("Results ready", 100, "Warhead command center online");
-        hideResultsLoading(350);
-      } else {
-        setHUD("—", "—", "—", null, "No renderable ligands found for this job.");
-        const viewport = $("viewport");
-        if (viewport) {
-          viewport.innerHTML = `
-            <div style="padding:24px;color:#ffd600;font-family:monospace;">
-              No complete ligand/protein/SASA entries found for this job.
-            </div>
-          `;
-        }
-        updateResultsLoading("No renderable ligands found", 100, "Check generated SDF/PDB artifacts");
-        hideResultsLoading(1200);
+      window.syncView(pdb, chain, warhead, resid, smiles, exposedValue);
+    } else {
+      setHUD("—", "—", "—", null, "No renderable ligands found for this job.");
+      const viewport = $("viewport");
+      if (viewport) {
+        viewport.innerHTML = `
+          <div style="padding:24px;color:#ffd600;font-family:monospace;">
+            No complete ligand/protein/SASA entries found for this job.
+          </div>
+        `;
       }
-    } catch (err) {
-      const msg = err && err.message ? err.message : String(err || "Unknown loading error");
-      console.error("Result page boot failed:", err);
-      setHUD("—", "—", "—", null, `Result page load failed: ${msg}`);
-      updateResultsLoading("Result page load failed", 100, msg);
-      hideResultsLoading(2200);
     }
-  });})();
+  });
+})();

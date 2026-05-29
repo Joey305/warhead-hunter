@@ -125,30 +125,11 @@
   // ============================================================================
   const $ = (id) => document.getElementById(id);
 
-  function setViewportLoading(on, msg = "Loading...") {
-    // Prefer the richer loader bridge from results_gallery.html when present.
-    if (on && typeof window.showViewportLoading === "function") {
-      window.showViewportLoading("Loading 3D viewport", msg || "Fetching molecular render assets");
-      return;
-    }
-    if (!on && typeof window.hideViewportLoading === "function") {
-      window.hideViewportLoading(150);
-      return;
-    }
-
+  function setViewportLoading(on, msg = "Loading…") {
     const el = $("viewport-loading");
     if (!el) return;
-
     el.style.display = on ? "flex" : "none";
-    el.classList.toggle("is-active", Boolean(on));
-    el.setAttribute("aria-hidden", on ? "false" : "true");
-
-    const title = $("viewport-loading-title");
-    const detail = $("viewport-loading-detail");
     const label = el.querySelector("span");
-
-    if (title) title.textContent = on ? "Loading 3D viewport" : "";
-    if (detail) detail.textContent = msg || "Fetching molecular render assets";
     if (label) label.textContent = msg;
   }
 
