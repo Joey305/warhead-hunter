@@ -290,18 +290,99 @@ def _read_protein_for_job(job_id: str) -> str:
 # -----------------------------------------------------------------------------
 @bp.route("/results/<job_id>")
 def view_results(job_id: str):
-    df = build_pose_rows(job_id)
+    """
+    Durable results gallery route.
+
+    Source of truth:
+      1) Results_Display.csv if Step 16 already produced it.
+      2) Resolved_SASA_Summary.csv fallback if final display CSV is not ready.
+      3) Waiting page if job is still running.
+      4) Error only if job failed or completed without usable artifacts.
+    """
+    jd = _job_dir(job_id)
+
+    # 1) Prefer final Step 16 display artifact.
+    display_fp = _first_existing([
+        jd / "TARGET_RESULTS" / "Results_Display.csv",
+        jd / "Results_Display.csv",
+    ])
+
+    df = pd.DataFrame()
+
+    if display_fp:
+        try:
+            df = pd.read_csv(display_fp, dtype=str).fillna("")
+            df.columns = [str(c).strip() for c in df.columns]
+
+            # Normalize expected template aliases.
+            if "pdb" in df.columns and "pdb_id" not in df.columns:
+                df["pdb_id"] = df["pdb"]
+
+            for col, default in {
+                "pdb_id": "",
+                "Chain": "A",
+                "Warhead": "",
+                "Ligand_Resolved": "",
+                "ligand": "",
+                "SMILES": "",
+                "Target": "",
+                "Residue_ID": "",
+                "Variant": "",
+                "Total_atoms": "0",
+                "Exposed_atoms": "0",
+                "SASA_in_complex_A2": "0",
+                "%Exposed": "0",
+                "%Buried": "",
+            }.items():
+                if col not in df.columns:
+                    df[col] = default
+
+            # Keep ligand aliases consistent for your template priority.
+            if "Warhead" in df.columns:
+                df["Warhead"] = df["Warhead"].astype(str).str.strip().str.upper()
+                df["Ligand_Resolved"] = df["Warhead"]
+                df["ligand"] = df["Warhead"]
+
+            if "%Exposed" in df.columns:
+                df["%Exposed"] = _normalize_percent_series(df["%Exposed"])
+
+            if "%Buried" in df.columns:
+                buried = pd.to_numeric(df["%Buried"], errors="coerce")
+                if buried.isna().all():
+                    df["%Buried"] = 100.0 - pd.to_numeric(df["%Exposed"], errors="coerce").fillna(0.0)
+                else:
+                    df["%Buried"] = _normalize_percent_series(df["%Buried"])
+            else:
+                df["%Buried"] = 100.0 - pd.to_numeric(df["%Exposed"], errors="coerce").fillna(0.0)
+
+        except Exception:
+            df = pd.DataFrame()
+
+    # 2) Fallback to older summary-driven route behavior.
+    if df is None or df.empty:
+        df = build_pose_rows(job_id)
+
+    # 3) If still no rows, distinguish running vs failed vs missing.
     if df is None or df.empty:
         job = disk_jobs.hydrate_job_from_disk(job_id, current_app.config.get("JOBS_DIR"))
         if job is None:
             abort(404, description="Job not found.")
 
         status = str(job.get("status") or "unknown").lower()
+
         if status in {"queued", "pending", "running"}:
             return render_template(
-                "error.html",
-                message=f"Job {job_id} is still running. Results are not ready yet."
-            ), 409
+                "job_waiting.html",
+                job_id=job_id,
+                title="Results are still being prepared",
+                message="The backend job is still running or packaging final artifacts. You can safely refresh this page later.",
+                status=status,
+                current_step=job.get("current_step", ""),
+                status_url=f"/api/jobs/{job_id}",
+                results_api_url=f"/api/jobs/{job_id}/results",
+                refresh_url=f"/results/{job_id}",
+            ), 202
+
         if status == "failed":
             err = job.get("error") or {}
             reason = err.get("message") if isinstance(err, dict) else str(err or "")
@@ -311,17 +392,29 @@ def view_results(job_id: str):
             return render_template("error.html", message=message), 409
 
         return render_template(
-            "error.html",
-            message=f"Job {job_id} completed without a readable Resolved_SASA_Summary artifact."
-        ), 404
+            "job_waiting.html",
+            job_id=job_id,
+            title="Results not ready yet",
+            message="The job exists, but the final gallery artifact is not readable yet. Try refreshing in a moment.",
+            status=status,
+            current_step=job.get("current_step", ""),
+            status_url=f"/api/jobs/{job_id}",
+            results_api_url=f"/api/jobs/{job_id}/results",
+            refresh_url=f"/results/{job_id}",
+        ), 202
 
-    # Pull Target directly (no inference)
-    target_col = "Target" if "Target" in df.columns else None
+    # Pull Target directly.
     target_name = ""
-    if target_col:
-        target_name = str(df.iloc[0][target_col]).strip()
+    if "Target" in df.columns and not df.empty:
+        target_name = str(df.iloc[0].get("Target") or "").strip()
+
+    if not target_name:
+        job = disk_jobs.hydrate_job_from_disk(job_id, current_app.config.get("JOBS_DIR"))
+        if job:
+            target_name = str(job.get("target") or job.get("target_name") or "").strip()
 
     results = df.to_dict(orient="records")
+
     return render_template(
         "results_gallery.html",
         job_id=job_id,

@@ -429,6 +429,30 @@ def inject_year():
     }
 
 
+
+def compute_results_ready(job_id: str) -> Dict[str, Any]:
+    df = load_results_display(job_id)
+    has_rows = bool(df is not None and not df.empty)
+
+    results_csv = _first_existing([
+        target_results_dir(job_id) / "Results_Display.csv",
+        job_root(job_id) / "Results_Display.csv",
+    ])
+
+    return {
+        "has_results": has_rows,
+        "results_ready": has_rows,
+        "results_row_count": int(len(df.index)) if df is not None else 0,
+        "results_csv": str(results_csv) if results_csv else "",
+        "browser_results_url": f"/results/{job_id}",
+        "results_url": f"/api/jobs/{job_id}/results",
+        "files_url": f"/api/jobs/{job_id}/files",
+        "bundle_url": f"/api/jobs/{job_id}/bundle",
+    }
+
+
+
+
 def _utc_now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -991,6 +1015,9 @@ def api_job_status(job_id):
         "outputs": meta.get("outputs", {}),
         "error": meta.get("error"),
     })
+    disk_state = compute_results_ready(job_id)
+    meta.update(disk_state)
+
     return _api_json({"ok": True, **meta})
 
 

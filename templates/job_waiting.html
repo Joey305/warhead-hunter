@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container" style="max-width: 850px; padding-top: 60px;">
+  <div class="glass-panel" style="padding: 28px;">
+    <h1 class="glow-text">{{ title or "Job status" }}</h1>
+
+    <p>{{ message or "The job is still being processed." }}</p>
+
+    {% if status %}
+      <p><strong>Status:</strong> {{ status }}</p>
+    {% endif %}
+
+    {% if current_step %}
+      <p><strong>Current step:</strong> {{ current_step }}</p>
+    {% endif %}
+
+    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;">
+      <a class="btn btn-primary" href="{{ refresh_url }}">Refresh results</a>
+      <a class="btn btn-secondary" href="{{ status_url }}" target="_blank">View job status JSON</a>
+      {% if results_api_url %}
+        <a class="btn btn-secondary" href="{{ results_api_url }}" target="_blank">View results API</a>
+      {% endif %}
+    </div>
+
+    <p style="margin-top:18px; opacity:.75;">
+      You can close this tab and reopen this job later. Results are checked from backend storage.
+    </p>
+  </div>
+</div>
+
+<script>
+  setTimeout(function () {
+    window.location.reload();
+  }, 20000);
+</script>
+{% endblock %}
