@@ -3,215 +3,22 @@
 {% block page_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/protacable.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/protacable-2d-toggle.css') }}">
-
-<style>
-  /* 3D viewport loading overlay */
-  .cc-viewport {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .viewport-loading {
-    position: absolute;
-    inset: 0;
-    z-index: 40;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    border-radius: inherit;
-    background:
-      radial-gradient(circle at 50% 42%, rgba(0, 238, 255, .13), transparent 28%),
-      linear-gradient(180deg, rgba(0, 0, 0, .62), rgba(0, 0, 0, .84));
-    backdrop-filter: blur(2px);
-  }
-
-  .viewport-loading.is-active {
-    display: flex !important;
-  }
-
-  .cc-viewport.is-loading .viewport {
-    opacity: .35;
-    filter: blur(1px) saturate(.75);
-  }
-
-  .viewport-loading-card {
-    min-width: 260px;
-    padding: 24px 28px;
-    text-align: center;
-    border: 1px solid rgba(0, 238, 255, .38);
-    border-radius: 18px;
-    background: rgba(0, 8, 14, .84);
-    box-shadow:
-      0 0 22px rgba(0, 238, 255, .20),
-      inset 0 0 28px rgba(0, 238, 255, .08);
-  }
-
-  .viewport-spinner {
-    width: 68px;
-    height: 68px;
-    margin: 0 auto 16px;
-    border-radius: 50%;
-    border: 2px solid rgba(0, 238, 255, .22);
-    border-top-color: var(--tron-yellow, #ffe600);
-    border-right-color: rgba(0, 238, 255, .85);
-    animation: wh-spin .82s linear infinite;
-    box-shadow: 0 0 18px rgba(0, 238, 255, .30);
-  }
-
-  .viewport-loading-title {
-    color: var(--tron-yellow, #ffe600);
-    font-size: .92rem;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    text-shadow: 0 0 10px rgba(255, 230, 0, .48);
-  }
-
-  .viewport-loading-detail {
-    margin-top: 8px;
-    color: rgba(99, 238, 255, .82);
-    font-size: .76rem;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-  }
-
-  .viewport-loading-error .viewport-spinner {
-    animation: none;
-    border-color: rgba(255, 40, 88, .65);
-    box-shadow: 0 0 18px rgba(255, 40, 88, .28);
-  }
-
-  .viewport-loading-error .viewport-loading-title {
-    color: #ff315f;
-    text-shadow: 0 0 10px rgba(255, 49, 95, .45);
-  }
-
-
-  /* Full-page results loading modal shown during initial SDF/PDB validation + first render */
-  .results-loading-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    background:
-      radial-gradient(circle at 50% 38%, rgba(0, 238, 255, .16), transparent 30%),
-      radial-gradient(circle at 58% 58%, rgba(255, 214, 0, .08), transparent 28%),
-      rgba(0, 4, 10, .86);
-    backdrop-filter: blur(5px);
-  }
-
-  .results-loading-modal.is-active {
-    display: flex;
-  }
-
-  .results-loading-card {
-    width: min(520px, calc(100vw - 48px));
-    padding: 30px 34px;
-    border: 1px solid rgba(0, 238, 255, .42);
-    border-radius: 22px;
-    background: rgba(0, 8, 14, .92);
-    box-shadow:
-      0 0 34px rgba(0, 238, 255, .24),
-      0 0 72px rgba(255, 214, 0, .08),
-      inset 0 0 34px rgba(0, 238, 255, .09);
-    text-align: center;
-  }
-
-  .results-loading-orbit {
-    position: relative;
-    width: 92px;
-    height: 92px;
-    margin: 0 auto 20px;
-    border-radius: 50%;
-    border: 2px solid rgba(0, 238, 255, .18);
-    box-shadow: inset 0 0 22px rgba(0, 238, 255, .14);
-  }
-
-  .results-loading-orbit::before,
-  .results-loading-orbit::after {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: 50%;
-    border: 2px solid transparent;
-    animation: wh-spin .95s linear infinite;
-  }
-
-  .results-loading-orbit::before {
-    border-top-color: var(--tron-yellow, #ffe600);
-    border-right-color: rgba(0, 238, 255, .92);
-  }
-
-  .results-loading-orbit::after {
-    inset: 16px;
-    border-bottom-color: rgba(0, 238, 255, .78);
-    border-left-color: rgba(255, 214, 0, .78);
-    animation-direction: reverse;
-    animation-duration: 1.35s;
-  }
-
-  .results-loading-title {
-    color: var(--tron-yellow, #ffe600);
-    font-size: 1.05rem;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    text-shadow: 0 0 12px rgba(255, 230, 0, .48);
-  }
-
-  .results-loading-detail {
-    min-height: 1.25em;
-    margin-top: 10px;
-    color: rgba(99, 238, 255, .88);
-    font-size: .82rem;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-  }
-
-  .results-loading-progress {
-    height: 8px;
-    margin-top: 22px;
-    overflow: hidden;
-    border: 1px solid rgba(0, 238, 255, .22);
-    border-radius: 99px;
-    background: rgba(255, 255, 255, .06);
-  }
-
-  .results-loading-progress > span {
-    display: block;
-    width: var(--results-progress, 8%);
-    height: 100%;
-    border-radius: inherit;
-    background: linear-gradient(90deg, rgba(0,238,255,.35), var(--tron-yellow, #ffe600));
-    box-shadow: 0 0 18px rgba(255, 214, 0, .32);
-    transition: width .22s ease;
-  }
-
-  .results-loading-current {
-    min-height: 1.15em;
-    margin-top: 12px;
-    color: rgba(255, 255, 255, .54);
-    font-size: .72rem;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-  }
-
-  @keyframes wh-spin {
-    to { transform: rotate(360deg); }
-  }
-</style>
 {% endblock %}
 
 {% block content %}
-<div id="results-loading-modal" class="results-loading-modal is-active" role="status" aria-live="polite" aria-hidden="false">
-  <div class="results-loading-card">
-    <div class="results-loading-orbit" aria-hidden="true"></div>
-    <div id="results-loading-title" class="results-loading-title">Loading warhead results</div>
-    <div id="results-loading-detail" class="results-loading-detail">Checking SDF, PDB, and SASA assets</div>
-    <div class="results-loading-progress" aria-hidden="true"><span id="results-loading-progress"></span></div>
-    <div id="results-loading-current" class="results-loading-current">Initializing molecular viewer</div>
+<div id="warhead-results-loader" class="warhead-results-loader is-active" role="status" aria-live="polite" aria-atomic="true" aria-hidden="false" data-state="loading">
+  <div class="warhead-results-loader-card">
+    <div class="warhead-results-loader-orbit" aria-hidden="true"></div>
+    <div id="warhead-results-loader-title" class="warhead-results-loader-title">Loading Warhead Results</div>
+    <div id="warhead-results-loader-detail" class="warhead-results-loader-detail">Checking molecular artifacts</div>
+    <div class="warhead-results-loader-progress" aria-hidden="true"><span id="warhead-results-loader-progress"></span></div>
+    <div id="warhead-results-loader-current" class="warhead-results-loader-current">Initializing results command center</div>
+    <div id="warhead-results-loader-state" class="warhead-results-loader-state">Preparing the first usable ligand.</div>
+    <div id="warhead-results-loader-steps" class="warhead-results-loader-steps" hidden></div>
+    <div id="warhead-results-loader-actions" class="warhead-results-loader-actions" hidden>
+      <button id="warhead-results-loader-continue" type="button" class="warhead-results-loader-btn">Continue to results</button>
+      <button id="warhead-results-loader-refresh" type="button" class="warhead-results-loader-btn is-secondary">Refresh</button>
+    </div>
   </div>
 </div>
 

@@ -53,46 +53,219 @@
   // ============================================================================
   const $ = (id) => document.getElementById(id);
 
-  function setResultsLoading(on, title, detail, progress, current) {
-    const modal = $("results-loading-modal");
-    if (!modal) return;
+  const RESULTS_LOADER_STEP_ORDER = [
+    "boot",
+    "artifacts",
+    "selection",
+    "map",
+    "properties",
+    "viewport"
+  ];
+  const RESULTS_LOADER_SAFETY_TIMEOUT_MS = 30000;
 
-    const titleNode = $("results-loading-title");
-    const detailNode = $("results-loading-detail");
-    const progressNode = $("results-loading-progress");
-    const currentNode = $("results-loading-current");
+  const ResultsLoader = (() => {
+    const state = {
+      visible: true,
+      mode: "loading",
+      title: "Loading Warhead Results",
+      detail: "Preparing results command center",
+      current: "Initializing gallery boot sequence",
+      progress: 6,
+      steps: {},
+      startedAt: 0,
+      hidden: false,
+      timeoutId: null,
+      actionsVisible: false,
+      continueLabel: "Continue to results"
+    };
 
-    if (titleNode && title) titleNode.textContent = title;
-    if (detailNode && detail) detailNode.textContent = detail;
-    if (currentNode && current) currentNode.textContent = current;
-
-    if (progressNode && Number.isFinite(Number(progress))) {
-      const pct = Math.max(3, Math.min(100, Number(progress)));
-      progressNode.style.width = `${pct}%`;
-      progressNode.parentElement?.style.setProperty("--results-progress", `${pct}%`);
+    function getParts() {
+      return {
+        modal: $("warhead-results-loader"),
+        title: $("warhead-results-loader-title"),
+        detail: $("warhead-results-loader-detail"),
+        progress: $("warhead-results-loader-progress"),
+        current: $("warhead-results-loader-current"),
+        status: $("warhead-results-loader-state"),
+        steps: $("warhead-results-loader-steps"),
+        actions: $("warhead-results-loader-actions"),
+        continueBtn: $("warhead-results-loader-continue"),
+        refreshBtn: $("warhead-results-loader-refresh")
+      };
     }
 
-    modal.classList.toggle("is-active", Boolean(on));
-    modal.setAttribute("aria-hidden", on ? "false" : "true");
-  }
+    function escapeText(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
 
-  function showResultsLoading(title, detail, current) {
-    setResultsLoading(true, title || "Loading warhead results", detail || "Preparing molecular viewer", 8, current || "Initializing");
-  }
+    function renderSteps(parts) {
+      if (!parts.steps) return;
 
-  function updateResultsLoading(detail, progress, current) {
-    setResultsLoading(true, null, detail, progress, current);
-  }
+      const html = RESULTS_LOADER_STEP_ORDER
+        .filter((name) => state.steps[name])
+        .map((name) => {
+          const step = state.steps[name];
+          const stepState = step.state || "pending";
+          const detail = step.detail ? `: ${escapeText(step.detail)}` : "";
+          return `<div class="warhead-results-loader-step is-${escapeText(stepState)}"><span>${escapeText(step.label || name)}</span><span>${detail}</span></div>`;
+        })
+        .join("");
 
-  function hideResultsLoading(delayMs = 250) {
-    window.setTimeout(() => setResultsLoading(false), delayMs);
-  }
+      parts.steps.innerHTML = html;
+      parts.steps.hidden = !html;
+    }
 
-  window.WHResultsLoader = {
-    show: showResultsLoading,
-    update: updateResultsLoading,
-    hide: hideResultsLoading
-  };
+    function apply() {
+      const parts = getParts();
+      if (!parts.modal) return;
+
+      if (parts.title) parts.title.textContent = state.title;
+      if (parts.detail) parts.detail.textContent = state.detail;
+      if (parts.current) parts.current.textContent = state.current;
+      if (parts.status) parts.status.textContent = state.mode === "error"
+        ? "Results loader paused in an error state."
+        : state.mode === "partial"
+          ? "Results loader paused in a degraded state."
+          : "Results loader is preparing the first usable ligand.";
+
+      if (parts.progress && Number.isFinite(Number(state.progress))) {
+        const pct = Math.max(3, Math.min(100, Number(state.progress)));
+        parts.progress.style.width = `${pct}%`;
+        parts.progress.parentElement?.style.setProperty("--results-progress", `${pct}%`);
+      }
+
+      parts.modal.classList.toggle("is-active", Boolean(state.visible));
+      parts.modal.classList.toggle("is-error", state.mode === "error");
+      parts.modal.classList.toggle("is-partial", state.mode === "partial");
+      parts.modal.setAttribute("aria-hidden", state.visible ? "false" : "true");
+      parts.modal.setAttribute("role", state.mode === "error" ? "alert" : "status");
+      parts.modal.dataset.state = state.mode;
+
+      if (parts.actions) parts.actions.hidden = !state.actionsVisible;
+      if (parts.continueBtn) parts.continueBtn.textContent = state.continueLabel;
+
+      renderSteps(parts);
+    }
+
+    function startSafetyTimeout() {
+      window.clearTimeout(state.timeoutId);
+      state.timeoutId = window.setTimeout(() => {
+        if (state.hidden || !state.visible || state.mode !== "loading") return;
+        console.warn("[results-loader] safety timeout reached");
+        state.mode = "partial";
+        state.title = "Results are taking longer than expected";
+        state.detail = "The gallery is still preparing molecular assets.";
+        state.current = "You can continue with partial results or refresh and retry.";
+        state.progress = Math.max(state.progress, 95);
+        state.actionsVisible = true;
+        state.continueLabel = "Continue with partial results";
+        apply();
+      }, RESULTS_LOADER_SAFETY_TIMEOUT_MS);
+    }
+
+    function ensureStarted() {
+      if (!state.startedAt) state.startedAt = Date.now();
+      state.hidden = false;
+      startSafetyTimeout();
+    }
+
+    function bindActions() {
+      const parts = getParts();
+      if (parts.continueBtn && parts.continueBtn.dataset.bound !== "1") {
+        parts.continueBtn.dataset.bound = "1";
+        parts.continueBtn.addEventListener("click", () => api.hide(0, { force: true }));
+      }
+      if (parts.refreshBtn && parts.refreshBtn.dataset.bound !== "1") {
+        parts.refreshBtn.dataset.bound = "1";
+        parts.refreshBtn.addEventListener("click", () => window.location.reload());
+      }
+    }
+
+    const api = {
+      show(title, detail, current = "Initializing gallery boot sequence") {
+        ensureStarted();
+        state.visible = true;
+        state.mode = "loading";
+        state.title = title || "Loading Warhead Results";
+        state.detail = detail || "Preparing results command center";
+        state.current = current || "Initializing gallery boot sequence";
+        state.progress = Math.max(3, state.progress || 6);
+        state.actionsVisible = false;
+        state.continueLabel = "Continue to results";
+        bindActions();
+        apply();
+      },
+      update(title, detail, options = {}) {
+        ensureStarted();
+        state.visible = true;
+        state.mode = options.mode || "loading";
+        if (title) state.title = title;
+        if (detail) state.detail = detail;
+        if (options.current) state.current = options.current;
+        if (Number.isFinite(Number(options.progress))) state.progress = Number(options.progress);
+        if (typeof options.actionsVisible === "boolean") state.actionsVisible = options.actionsVisible;
+        if (options.continueLabel) state.continueLabel = options.continueLabel;
+        bindActions();
+        apply();
+      },
+      hide(delayMs = 250, options = {}) {
+        window.clearTimeout(state.timeoutId);
+        const delay = Number.isFinite(Number(delayMs)) ? Number(delayMs) : 250;
+        window.setTimeout(() => {
+          if (!options.force && (state.mode === "error" || state.mode === "partial")) return;
+          state.visible = false;
+          state.hidden = true;
+          state.actionsVisible = false;
+          apply();
+        }, delay);
+      },
+      fail(title, detail, options = {}) {
+        ensureStarted();
+        window.clearTimeout(state.timeoutId);
+        state.visible = true;
+        state.mode = options.mode || "error";
+        state.title = title || "Could not prepare results";
+        state.detail = detail || "The gallery did not finish loading.";
+        state.current = options.current || "Refresh to retry this job, or continue if partial metadata is already visible.";
+        state.progress = Number.isFinite(Number(options.progress)) ? Number(options.progress) : Math.max(state.progress, 100);
+        state.actionsVisible = options.actionsVisible !== false;
+        state.continueLabel = options.continueLabel || "Continue to results";
+        bindActions();
+        apply();
+      },
+      markStep(name, stepState, detail) {
+        const labels = {
+          boot: "Boot",
+          artifacts: "Artifacts",
+          selection: "Selection",
+          map: "2D Map",
+          properties: "Properties",
+          viewport: "3D Viewport"
+        };
+        state.steps[name] = {
+          label: labels[name] || name,
+          state: stepState || "pending",
+          detail: detail || ""
+        };
+        apply();
+      }
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      bindActions();
+      apply();
+    });
+
+    return api;
+  })();
+
+  window.WarheadResultsLoader = ResultsLoader;
+  window.WHResultsLoader = ResultsLoader;
 
   function escapeHtml(s) {
     return String(s || "")
@@ -365,13 +538,22 @@
       renderRules({});
       setQEDChip(null);
       setQEDBar(null);
-      return;
+      return {
+        ok: false,
+        degraded: true,
+        message: "Ligand properties were unavailable."
+      };
     }
 
     renderProperties(r.data, ligandCode);
     renderRules(r.data);
     setQEDChip(r.data.QED);
     setQEDBar(r.data.QED);
+    return {
+      ok: true,
+      degraded: false,
+      message: "Ligand properties loaded."
+    };
   }
 
   // ============================================================================
@@ -379,7 +561,13 @@
   // ============================================================================
   async function load2DMap(pdb, chain, warhead, resid) {
     const node = $("2d-map");
-    if (!node) return;
+    if (!node) {
+      return {
+        ok: false,
+        degraded: true,
+        message: "2D map element is missing."
+      };
+    }
 
     const base = (State.mapMode === "normal") ? "svg-plain" : "svg";
 
@@ -401,16 +589,39 @@
     }
 
     if (node.tagName === "IMG") {
-      node.src = url;
-      return;
+      const requestToken = `${Date.now()}:${Math.random().toString(16).slice(2)}`;
+      node.dataset.loadToken = requestToken;
+
+      return await new Promise((resolve) => {
+        function settle(ok, message) {
+          if (node.dataset.loadToken !== requestToken) return;
+          resolve({ ok, degraded: !ok, message, url });
+        }
+
+        node.addEventListener("load", () => settle(true, "2D ligand map loaded."), { once: true });
+        node.addEventListener("error", () => {
+          node.alt = "2D ligand map failed to load";
+          settle(false, "2D ligand map failed to load.");
+        }, { once: true });
+        node.src = url;
+      });
     }
 
     const t = await fetchText(url);
     if (!t.ok || !t.data) {
       node.innerHTML = `<div style="color:#888;padding:8px;">Failed to load 2D map.</div>`;
-      return;
+      return {
+        ok: false,
+        degraded: true,
+        message: "2D ligand map failed to load."
+      };
     }
     node.innerHTML = t.data;
+    return {
+      ok: true,
+      degraded: false,
+      message: "2D ligand map loaded."
+    };
   }
 
   function bindMapToggle() {
@@ -481,12 +692,16 @@
     const renderable = [];
     const total = cards.length || 1;
 
-    showResultsLoading(
+    ResultsLoader.markStep("artifacts", "loading", `Checking ${cards.length} ligand result${cards.length === 1 ? "" : "s"}`);
+    ResultsLoader.show(
       "Loading warhead results",
       `Checking ${cards.length} ligand result${cards.length === 1 ? "" : "s"}`,
       "Validating SDF, PDB, and SASA assets"
     );
-    updateResultsLoading("Starting artifact validation", 6, "Preparing result cards");
+    ResultsLoader.update("Loading warhead results", "Starting artifact validation", {
+      progress: 6,
+      current: "Preparing result cards"
+    });
 
     for (let i = 0; i < cards.length; i += 1) {
       const card = cards[i];
@@ -497,18 +712,20 @@
 
       const cardLabel = `${warhead || "ligand"} / ${pdb || "pdb"} chain ${chain || "?"}`;
       const baseProgress = 8 + ((i / total) * 74);
-      updateResultsLoading(
-        `Checking result ${i + 1} of ${cards.length}`,
-        baseProgress,
-        cardLabel
-      );
+      ResultsLoader.update("Loading warhead results", `Checking result ${i + 1} of ${cards.length}`, {
+        progress: baseProgress,
+        current: cardLabel
+      });
 
       if (!pdb || !chain || !warhead) {
         markCardArtifactMissing(card, "SDF missing — pipeline artifact incomplete");
         continue;
       }
 
-      updateResultsLoading(`Resolving ligand residue ${i + 1} of ${cards.length}`, baseProgress + 2, cardLabel);
+      ResultsLoader.update("Loading warhead results", `Resolving ligand residue ${i + 1} of ${cards.length}`, {
+        progress: baseProgress + 2,
+        current: cardLabel
+      });
       resid = await resolveResid(pdb, chain, warhead, resid);
       if (resid) card.dataset.resid = resid;
 
@@ -521,10 +738,16 @@
       const sdfUrl =
         `/api/sdf/${encodeURIComponent(JOB_ID)}/${encodeURIComponent(pdb)}/${encodeURIComponent(chain)}/${encodeURIComponent(warhead)}${sdfQuery}`;
 
-      updateResultsLoading(`Checking protein artifact ${i + 1} of ${cards.length}`, baseProgress + 4, cardLabel);
+      ResultsLoader.update("Loading warhead results", `Checking protein artifact ${i + 1} of ${cards.length}`, {
+        progress: baseProgress + 4,
+        current: cardLabel
+      });
       const okProtein = await headOrGetOk(proteinUrl);
 
-      updateResultsLoading(`Checking SDF artifact ${i + 1} of ${cards.length}`, baseProgress + 8, cardLabel);
+      ResultsLoader.update("Loading warhead results", `Checking SDF artifact ${i + 1} of ${cards.length}`, {
+        progress: baseProgress + 8,
+        current: cardLabel
+      });
       const okSdf = await headOrGetOk(sdfUrl);
 
       if (!okSdf) {
@@ -546,7 +769,10 @@
           `&chain=${encodeURIComponent(chain)}` +
           `&residue_id=${encodeURIComponent(resid)}`;
 
-        updateResultsLoading(`Checking SASA atoms ${i + 1} of ${cards.length}`, baseProgress + 11, cardLabel);
+        ResultsLoader.update("Loading warhead results", `Checking SASA atoms ${i + 1} of ${cards.length}`, {
+          progress: baseProgress + 11,
+          current: cardLabel
+        });
         const okSasa = await headOrGetOk(sasaUrl);
 
         if (!okSasa) {
@@ -560,18 +786,27 @@
       card.dataset.renderable = "true";
       renderable.push(card);
 
-      updateResultsLoading(
+      ResultsLoader.update(
+        "Loading warhead results",
         `${renderable.length} renderable ligand${renderable.length === 1 ? "" : "s"} found`,
-        Math.min(88, baseProgress + 13),
-        cardLabel
+        {
+          progress: Math.min(88, baseProgress + 13),
+          current: cardLabel
+        }
       );
     }
 
     if (!renderable.length) {
       console.warn("No result cards have required SDF artifacts. SDF is a required display contract.");
+      ResultsLoader.markStep("artifacts", "error", "No renderable ligands found");
+    } else {
+      ResultsLoader.markStep("artifacts", "success", `${renderable.length} renderable ligand${renderable.length === 1 ? "" : "s"} ready`);
     }
 
-    updateResultsLoading("Artifact validation complete", 90, `${renderable.length} renderable ligand${renderable.length === 1 ? "" : "s"} ready`);
+    ResultsLoader.update("Loading warhead results", "Artifact validation complete", {
+      progress: 90,
+      current: `${renderable.length} renderable ligand${renderable.length === 1 ? "" : "s"} ready`
+    });
     return renderable;
   }
 
@@ -912,14 +1147,45 @@ function openBuilderFallback(smiles, opts = {}) {
     return raw;
   }
 
+  function nextFrame() {
+    return new Promise((resolve) => window.requestAnimationFrame(() => resolve()));
+  }
+
+  async function waitForInitialViewportPaint(maxMs = 1200) {
+    const viewport = $("viewport");
+    if (!viewport) return false;
+
+    await nextFrame();
+    await nextFrame();
+
+    if (viewport.querySelector("canvas")) return true;
+
+    const startedAt = Date.now();
+    while ((Date.now() - startedAt) < maxMs) {
+      await nextFrame();
+      if (viewport.querySelector("canvas")) return true;
+    }
+
+    return Boolean(viewport.querySelector("canvas"));
+  }
+
   // ============================================================================
   // 7) syncView (UI + calls Render3D)
   // ============================================================================
-  window.syncView = async function syncView(pdb, chainFromResults, warhead, resid, smiles, exposedValue) {
+  window.syncView = async function syncView(pdb, chainFromResults, warhead, resid, smiles, exposedValue, options = {}) {
     const PDB = String(pdb || "").toLowerCase().trim();
     const WAR = String(warhead || "").toUpperCase().trim();
+    const initialBoot = Boolean(options && options.initialBoot);
+    const loader = window.WarheadResultsLoader;
 
     const chain = await bestChain(PDB, chainFromResults, WAR);
+    if (initialBoot) {
+      loader?.markStep("selection", "loading", `${WAR || "ligand"} / ${PDB || "pdb"} chain ${chain || "?"}`);
+      loader?.update("Loading Warhead Results", "Preparing first ligand", {
+        progress: 92,
+        current: `${WAR || "ligand"} / ${PDB || "pdb"} chain ${chain || "?"}`
+      });
+    }
 
     let RESID = (resid == null) ? "" : String(resid).trim();
     RESID = await resolveResid(PDB, chain, WAR, RESID);
@@ -930,22 +1196,109 @@ function openBuilderFallback(smiles, opts = {}) {
     renderSmiles(smiles || "");
     setHUD(PDB, chain, WAR, exposedValue, "Loading…");
 
-    loadLigandProps(WAR, smiles || "", PDB, chain, RESID);
-    await load2DMap(PDB, chain, WAR, RESID);
+    if (initialBoot) {
+      loader?.markStep("selection", "success", `${WAR || "ligand"} selected`);
+      loader?.markStep("map", "loading", "Loading 2D ligand map");
+      loader?.markStep("properties", "loading", "Loading molecular properties");
+      loader?.markStep("viewport", "loading", "Rendering 3D viewport");
+    }
 
-    if (window.Render3D && typeof window.Render3D.load === "function") {
-      try {
-        await window.Render3D.load({ pdb: PDB, chain, warhead: WAR, resid: RESID });
-        setHUD(PDB, chain, WAR, exposedValue, "Loaded");
-      } catch (err) {
-        const msg = err && err.message ? err.message : String(err || "Unknown 3D render error");
-        setHUD(PDB, chain, WAR, exposedValue, `3D load failed: ${msg}`);
-        console.warn("Render3D load failed:", err);
-      }
-    } else {
+    const propsPromise = loadLigandProps(WAR, smiles || "", PDB, chain, RESID)
+      .then((result) => {
+        if (initialBoot) {
+          loader?.markStep("properties", result.ok ? "success" : "warn", result.message);
+        }
+        return result;
+      })
+      .catch((err) => {
+        const msg = err && err.message ? err.message : String(err || "Ligand properties failed.");
+        if (initialBoot) loader?.markStep("properties", "warn", msg);
+        return { ok: false, degraded: true, message: msg };
+      });
+
+    const mapPromise = load2DMap(PDB, chain, WAR, RESID)
+      .then((result) => {
+        if (initialBoot) {
+          loader?.markStep("map", result.ok ? "success" : "warn", result.message);
+        }
+        return result;
+      })
+      .catch((err) => {
+        const msg = err && err.message ? err.message : String(err || "2D ligand map failed.");
+        if (initialBoot) loader?.markStep("map", "warn", msg);
+        return { ok: false, degraded: true, message: msg };
+      });
+
+    const renderPromise = (window.Render3D && typeof window.Render3D.load === "function")
+      ? window.Render3D.load({ pdb: PDB, chain, warhead: WAR, resid: RESID })
+          .then(async (result) => {
+            const canvasPresent = await waitForInitialViewportPaint();
+            const merged = Object.assign({}, result || {}, {
+              canvasPresent: Boolean(result && result.canvasPresent) || canvasPresent
+            });
+            if (initialBoot) {
+              const stepState = merged.usable ? "success" : (merged.canvasPresent || merged.protein?.ok ? "warn" : "error");
+              const detail = merged.usable
+                ? "3D viewport rendered."
+                : merged.canvasPresent
+                  ? "3D viewport loaded with degraded assets."
+                  : "3D viewport did not finish rendering.";
+              loader?.markStep("viewport", stepState, detail);
+            }
+            return merged;
+          })
+          .catch((err) => {
+            const msg = err && err.message ? err.message : String(err || "Unknown 3D render error");
+            if (initialBoot) loader?.markStep("viewport", "error", msg);
+            return {
+              ok: false,
+              usable: false,
+              canvasPresent: false,
+              protein: { ok: false, message: "" },
+              ligand: { ok: false, message: msg },
+              sasa: { ok: false, skipped: false, message: "" }
+            };
+          })
+      : Promise.resolve({
+          ok: false,
+          usable: false,
+          canvasPresent: false,
+          protein: { ok: false, message: "" },
+          ligand: { ok: false, message: "3D renderer not loaded." },
+          sasa: { ok: false, skipped: false, message: "" }
+        });
+
+    if (!window.Render3D || typeof window.Render3D.load !== "function") {
       setHUD(PDB, chain, WAR, exposedValue, "3D renderer not loaded.");
       console.warn("Render3D not available. Check script order in HTML.");
+      if (initialBoot) loader?.markStep("viewport", "error", "3D renderer not loaded.");
     }
+
+    const [propsResult, mapResult, renderResult] = await Promise.all([
+      propsPromise,
+      mapPromise,
+      renderPromise
+    ]);
+
+    const issues = [];
+    if (!propsResult.ok) issues.push("properties unavailable");
+    if (!mapResult.ok) issues.push("2D map unavailable");
+    if (!renderResult.usable) issues.push("3D viewport unavailable");
+
+    if (!issues.length) {
+      setHUD(PDB, chain, WAR, exposedValue, "Loaded");
+    } else {
+      setHUD(PDB, chain, WAR, exposedValue, `Loaded with issues: ${issues.join(", ")}`);
+    }
+
+    return {
+      ok: !issues.length,
+      usable: mapResult.ok || propsResult.ok || renderResult.usable,
+      props: propsResult,
+      map: mapResult,
+      render3d: renderResult,
+      issues
+    };
   };
 
   // ============================================================================
@@ -966,60 +1319,122 @@ function openBuilderFallback(smiles, opts = {}) {
   // ============================================================================
   // 9) BOOT
   // ============================================================================
-  document.addEventListener("DOMContentLoaded", async () => {
-    showResultsLoading(
-      "Loading warhead results",
+  async function initializeResultsGallery() {
+    ResultsLoader.show(
+      "Loading Warhead Results",
       "Preparing controls and molecular viewer",
       "Binding interface actions"
     );
+    ResultsLoader.markStep("boot", "loading", "Binding UI controls");
 
-    try {
-      bindMapToggle();
-      bindSmilesActions();
-      bindDownloadPDB();
-      bindProtacBuilder();
+    bindMapToggle();
+    bindSmilesActions();
+    bindDownloadPDB();
+    bindProtacBuilder();
+    bindCards();
 
-      const validCards = await filterRenderableCards();
+    ResultsLoader.markStep("boot", "success", "Interface actions bound");
 
-      bindCards();
+    const validCards = await filterRenderableCards();
+    const first = validCards[0];
 
-      const first = validCards[0];
-
-      if (first) {
-        const pdb = first.dataset.pdb;
-        const chain = first.dataset.chain;
-        const warhead = first.dataset.warhead;
-        const smiles = first.dataset.smiles || "";
-        const resid = (first.dataset.resid || "").trim();
-        const exposedValue = Number(first.dataset.exposed || 0);
-
-        updateResultsLoading(
-          "Loading first molecular viewport",
-          94,
-          `${warhead || "ligand"} / ${pdb || "pdb"} chain ${chain || "?"}`
-        );
-
-        await window.syncView(pdb, chain, warhead, resid, smiles, exposedValue);
-        updateResultsLoading("Results ready", 100, "Warhead command center online");
-        hideResultsLoading(350);
-      } else {
-        setHUD("—", "—", "—", null, "No renderable ligands found for this job.");
-        const viewport = $("viewport");
-        if (viewport) {
-          viewport.innerHTML = `
-            <div style="padding:24px;color:#ffd600;font-family:monospace;">
-              No complete ligand/protein/SASA entries found for this job.
-            </div>
-          `;
-        }
-        updateResultsLoading("No renderable ligands found", 100, "Check generated SDF/PDB artifacts");
-        hideResultsLoading(1200);
+    if (!first) {
+      setHUD("—", "—", "—", null, "No renderable ligands found for this job.");
+      const viewport = $("viewport");
+      if (viewport) {
+        viewport.innerHTML = `
+          <div style="padding:24px;color:#ffd600;font-family:monospace;">
+            No complete ligand/protein artifact pair was available for this job.
+          </div>
+        `;
       }
+      ResultsLoader.fail(
+        "No renderable ligands found",
+        "Required SDF or protein artifacts were not available for this job.",
+        {
+          current: "Refresh if the job is still writing artifacts, or inspect the missing-card warnings.",
+          progress: 100,
+          actionsVisible: true,
+          continueLabel: "Continue to empty results"
+        }
+      );
+      return;
+    }
+
+    const pdb = first.dataset.pdb;
+    const chain = first.dataset.chain;
+    const warhead = first.dataset.warhead;
+    const smiles = first.dataset.smiles || "";
+    const resid = (first.dataset.resid || "").trim();
+    const exposedValue = Number(first.dataset.exposed || 0);
+
+    ResultsLoader.markStep("selection", "loading", `${warhead || "ligand"} / ${pdb || "pdb"} chain ${chain || "?"}`);
+    ResultsLoader.update("Loading Warhead Results", "Preparing first ligand", {
+      progress: 94,
+      current: `${warhead || "ligand"} / ${pdb || "pdb"} chain ${chain || "?"}`
+    });
+
+    const readiness = await window.syncView(
+      pdb,
+      chain,
+      warhead,
+      resid,
+      smiles,
+      exposedValue,
+      { initialBoot: true }
+    );
+
+    if (readiness.ok) {
+      ResultsLoader.update("Loading Warhead Results", "Results ready", {
+        progress: 100,
+        current: "Warhead command center online"
+      });
+      ResultsLoader.hide(350);
+      return;
+    }
+
+    if (readiness.usable) {
+      const summary = readiness.issues.join(", ");
+      ResultsLoader.fail(
+        "Results loaded with degraded assets",
+        "The first ligand is available, but one or more panels did not finish cleanly.",
+        {
+          mode: "partial",
+          current: summary ? `Degraded components: ${summary}.` : "You can continue with partial results.",
+          progress: 100,
+          actionsVisible: true,
+          continueLabel: "Continue with degraded results"
+        }
+      );
+      return;
+    }
+
+    ResultsLoader.fail(
+      "Could not prepare the first ligand",
+      readiness.issues.length
+        ? `Initial readiness failed: ${readiness.issues.join(", ")}.`
+        : "The gallery did not finish loading.",
+      {
+        current: "Refresh to retry this job. If this persists, inspect browser diagnostics for missing assets.",
+        progress: 100,
+        actionsVisible: true
+      }
+    );
+  }
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    try {
+      await initializeResultsGallery();
     } catch (err) {
       const msg = err && err.message ? err.message : String(err || "Unknown loading error");
-      console.error("Result page boot failed:", err);
+      console.error("[results-loader] initial gallery boot failed", err);
       setHUD("—", "—", "—", null, `Result page load failed: ${msg}`);
-      updateResultsLoading("Result page load failed", 100, msg);
-      hideResultsLoading(2200);
+      ResultsLoader.markStep("boot", "error", msg);
+      ResultsLoader.fail("Could not prepare results", msg, {
+        current: "Refresh to retry this job.",
+        progress: 100,
+        actionsVisible: true
+      });
     }
-  });})();
+  });
+})();

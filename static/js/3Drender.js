@@ -157,6 +157,34 @@
     if (node) node.innerText = msg || "";
   }
 
+  function nextAnimationFrame() {
+    return new Promise((resolve) => {
+      window.requestAnimationFrame(() => resolve());
+    });
+  }
+
+  async function waitForViewportCanvas(maxMs = 1400) {
+    const viewport = $("viewport");
+    if (!viewport) return false;
+
+    await nextAnimationFrame();
+    await nextAnimationFrame();
+
+    if (viewport.querySelector("canvas")) return true;
+
+    const startedAt = Date.now();
+    while ((Date.now() - startedAt) < maxMs) {
+      try {
+        State.stage?.viewer?.requestRender?.();
+      } catch {}
+
+      await nextAnimationFrame();
+      if (viewport.querySelector("canvas")) return true;
+    }
+
+    return Boolean(viewport.querySelector("canvas"));
+  }
+
   // ============================================================================
   // 6) Fetch helper
   // ============================================================================
@@ -739,13 +767,24 @@
   // 15) Public load()
   // ============================================================================
   async function load({ pdb, chain, warhead, resid }) {
+    const result = {
+      ok: false,
+      usable: false,
+      canvasPresent: false,
+      protein: { ok: false, message: "" },
+      ligand: { ok: false, message: "" },
+      sasa: { ok: false, skipped: false, message: "" }
+    };
+
     if (!JOB_ID) {
       console.warn("Render3D: Missing job_id in window.PROTACABLE_CONFIG");
-      return;
+      result.ligand.message = "Missing job_id in window.PROTACABLE_CONFIG";
+      return result;
     }
     if (!initNGL()) {
       setHudDebug("NGL not loaded.");
-      return;
+      result.ligand.message = "NGL not loaded.";
+      return result;
     }
 
     const PDB = String(pdb || "").toLowerCase().trim();
@@ -761,31 +800,56 @@
     clearAllComponents();
 
     try {
-      State.proteinComp = await loadProtein(PDB, CH);
-    } catch (e) {
-      console.warn("Protein load failed", e);
-      setHudDebug(`Protein load failed: ${e.message || e}`);
-    }
-
-    try {
-      State.ligandComp = await loadLigand(PDB, CH, WAR, RES);
-    } catch (e) {
-      console.warn("Ligand load failed", e);
-      setHudDebug(`Ligand load failed: ${e.message || e}`);
-    }
-
-    if (RES) {
       try {
-        await applySasaOverlay(PDB, CH, RES);
+        State.proteinComp = await loadProtein(PDB, CH);
+        result.protein.ok = true;
       } catch (e) {
-        console.warn("SASA overlay failed", e);
-        setHudDebug(`SASA overlay failed: ${e.message || e}`);
+        const msg = e && e.message ? e.message : String(e || "Unknown protein load error");
+        result.protein.message = msg;
+        console.warn("Protein load failed", e);
+        setHudDebug(`Protein load failed: ${msg}`);
       }
-    } else {
-      setHudDebug("SASA skipped: missing resid.");
-    }
 
-    setViewportLoading(false);
+      try {
+        State.ligandComp = await loadLigand(PDB, CH, WAR, RES);
+        result.ligand.ok = true;
+      } catch (e) {
+        const msg = e && e.message ? e.message : String(e || "Unknown ligand load error");
+        result.ligand.message = msg;
+        console.warn("Ligand load failed", e);
+        setHudDebug(`Ligand load failed: ${msg}`);
+      }
+
+      if (RES) {
+        try {
+          await applySasaOverlay(PDB, CH, RES);
+          result.sasa.ok = true;
+        } catch (e) {
+          const msg = e && e.message ? e.message : String(e || "Unknown SASA load error");
+          result.sasa.message = msg;
+          console.warn("SASA overlay failed", e);
+          setHudDebug(`SASA overlay failed: ${msg}`);
+        }
+      } else {
+        result.sasa.skipped = true;
+        result.sasa.message = "Missing residue ID.";
+        setHudDebug("SASA skipped: missing resid.");
+      }
+
+      result.canvasPresent = await waitForViewportCanvas();
+      result.usable = Boolean(result.ligand.ok && result.canvasPresent);
+      result.ok = Boolean(result.usable && result.protein.ok);
+
+      if (!result.usable && !result.protein.ok && !result.ligand.ok) {
+        setHudDebug("3D viewport could not render protein or ligand assets.");
+      } else if (!result.canvasPresent) {
+        setHudDebug("3D viewport assets loaded, but canvas did not paint in time.");
+      }
+
+      return result;
+    } finally {
+      setViewportLoading(false);
+    }
   }
 
   // ============================================================================
@@ -820,4 +884,3 @@
     debugProteinResnames
   };
 })();
-
