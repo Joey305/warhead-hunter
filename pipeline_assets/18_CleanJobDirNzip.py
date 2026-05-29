@@ -804,6 +804,8 @@ def make_public_zip(
                 continue
             if rec.relative_path.startswith("bundles/") or rec.relative_path.startswith("_archive/"):
                 continue
+            if rec.relative_path in {"job_result_manifest.json", "cleanup_report.md"}:
+                continue
             zf.write(src, arcname=rec.relative_path)
     return out_zip
 
@@ -883,6 +885,49 @@ def delete_candidates(job_dir: Path, records: List[FileRecord], *, allow_delete_
                         pass
             except Exception:
                 pass
+    return deleted
+
+
+def force_delete_cif_files(job_dir: Path, *, verbose: bool = False) -> List[Dict]:
+    """Delete all .cif files under a completed job directory regardless of manifest references."""
+    deleted: List[Dict] = []
+
+    for src in sorted(job_dir.rglob("*")):
+        if not src.is_file():
+            continue
+        if src.suffix.lower() != ".cif":
+            continue
+
+        try:
+            rel = src.relative_to(job_dir).as_posix()
+            size = src.stat().st_size
+            src.unlink()
+            deleted.append({
+                "relative_path": rel,
+                "size": size,
+                "reason": "Force-deleted CIF after completed job cleanup.",
+                "timestamp": now_iso(),
+            })
+            if verbose:
+                print(f"[force-delete-cif] {rel}")
+        except Exception as exc:
+            if verbose:
+                print(f"[force-delete-cif-warning] {src}: {exc}")
+
+    # Remove empty directories left behind by CIF deletion.
+    for d in sorted(job_dir.rglob("*"), reverse=True):
+        if d.is_dir():
+            try:
+                next(d.iterdir())
+            except StopIteration:
+                if d != job_dir:
+                    try:
+                        d.rmdir()
+                    except Exception:
+                        pass
+            except Exception:
+                pass
+
     return deleted
 
 
@@ -1005,7 +1050,7 @@ def process_job(job_dir: Path, args) -> Dict:
             warnings.append("Archive copies were requested but not applied because --apply was not provided.")
         if args.delete_rebuildable and not effective_apply:
             warnings.append("Deletion was requested but not applied because --apply was not provided.")
-        if args.allow_delete_cif and not (args.apply and args.delete_rebuildable):
+        if (args.allow_delete_cif or args.force_delete_cif) and not (args.apply and args.delete_rebuildable):
             warnings.append("CIF deletion was requested but not applied because destructive flags were not provided.")
         warnings.append("Dry-run mode: no manifest, report, or ZIP files were written.")
     else:
@@ -1023,7 +1068,16 @@ def process_job(job_dir: Path, args) -> Dict:
             archive_zip_written = make_archive_zip(job_dir, records, archive_zip_path)
 
         if args.delete_rebuildable and effective_apply:
-            deleted = delete_candidates(job_dir, records, allow_delete_cif=args.allow_delete_cif, verbose=args.verbose)
+            deleted = delete_candidates(
+                job_dir,
+                records,
+                allow_delete_cif=args.allow_delete_cif,
+                verbose=args.verbose,
+            )
+
+            if args.force_delete_cif:
+                deleted.extend(force_delete_cif_files(job_dir, verbose=args.verbose))
+
             write_deleted_log(job_dir, deleted)
 
         report_path = write_cleanup_report(job_dir, manifest, records, total_size_before, public_zip_written, archive_zip_written, archived_count, deleted, warnings)
@@ -1053,6 +1107,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--all-completed", action="store_true")
     p.add_argument("--trace-downstream", action="store_true", default=True)
     p.add_argument("--allow-delete-cif", action="store_true")
+    p.add_argument("--force-delete-cif", action="store_true")
     p.add_argument("--show-gallery-required", action="store_true")
     p.add_argument("--show-unused", action="store_true")
     p.add_argument("--show-cif", action="store_true")
