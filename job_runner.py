@@ -522,25 +522,84 @@ def _make_full_job_zip(job_id: str, job_dir: str) -> Path:
     backup_tmp.mkdir(parents=True, exist_ok=True)
     out_zip = backup_tmp / f"{job_id}_warhead_hunter_full_job.zip"
 
-    skip_dir_names = {"__pycache__", ".git", ".pytest_cache", "_randy_backup"}
-    skip_suffixes = {".pyc", ".pyo", ".tmp"}
+    skip_dir_names = {
+        "__pycache__",
+        ".git",
+        ".pytest_cache",
+        "_randy_backup",
+    }
+
+    # Keep RANDY backups lean. CIF files are large/rebuildable inputs and are
+    # not needed for PROTAC Builder handoff once cleaned PDB/SDF/SVG results exist.
+    exclude_cif = os.environ.get("WARHEAD_JOB_BACKUP_EXCLUDE_CIF", "1").strip().lower() not in {
+        "0", "false", "no", "off"
+    }
+
+    skip_suffixes = {
+        ".pyc",
+        ".pyo",
+        ".tmp",
+    }
+
+    if exclude_cif:
+        skip_suffixes.add(".cif")
+
+    # Optional: also skip very large raw coordinate metadata if you decide it is not needed.
+    skip_names = {
+        ".DS_Store",
+    }
 
     if out_zip.exists():
         out_zip.unlink()
+
+    skipped_cif_count = 0
+    skipped_cif_bytes = 0
+    included_count = 0
+    included_bytes = 0
 
     with zipfile.ZipFile(out_zip, "w", zipfile.ZIP_DEFLATED) as zf:
         for fp in job_path.rglob("*"):
             if not fp.is_file():
                 continue
+
             rel = fp.relative_to(job_path)
+
             if any(part in skip_dir_names for part in rel.parts):
                 continue
-            if fp.suffix.lower() in skip_suffixes:
-                continue
-            # Keep all scientific/job artifacts, including bundles and manifests.
-            zf.write(fp, arcname=rel.as_posix())
-    return out_zip
 
+            if fp.name in skip_names:
+                continue
+
+            suffix = fp.suffix.lower()
+
+            if suffix in skip_suffixes:
+                if suffix == ".cif":
+                    skipped_cif_count += 1
+                    try:
+                        skipped_cif_bytes += fp.stat().st_size
+                    except Exception:
+                        pass
+                continue
+
+            zf.write(fp, arcname=rel.as_posix())
+            included_count += 1
+            try:
+                included_bytes += fp.stat().st_size
+            except Exception:
+                pass
+
+    skipped_cif_mb = skipped_cif_bytes / (1024 * 1024)
+    included_mb = included_bytes / (1024 * 1024)
+
+    log_message(
+        job_id,
+        f"☁️ RANDY backup ZIP prepared: included_files={included_count} "
+        f"included_size={included_mb:.2f} MB "
+        f"skipped_cif_files={skipped_cif_count} "
+        f"skipped_cif_size={skipped_cif_mb:.2f} MB"
+    )
+
+    return out_zip
 
 def backup_job_dir_to_randy(job_id: str, job_dir: str) -> None:
     """Best-effort full job backup to RANDY. Never let this fail the science pipeline."""
