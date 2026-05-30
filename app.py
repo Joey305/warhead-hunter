@@ -2994,13 +2994,11 @@ def api_svg(job_id, pdb, warhead, chain=None):
 
     # --- Legacy fallback (old LIGAND_SVGS behavior) ---
     base_dir = ligand_svgs_dir(job_id)
-    if not base_dir:
-        abort(404)
-
-    fname = f"{pdb}_{chain}_{warhead}_exposed.svg"
-    fp = base_dir / fname
-    if fp.exists():
-        return _serve_themed_svg(fp)
+    if base_dir:
+        fname = f"{pdb}_{chain}_{warhead}_exposed.svg"
+        fp = base_dir / fname
+        if fp.exists():
+            return _serve_themed_svg(fp)
 
     # RANDY fallback for archived exposed SVGs.
     asset = randy_find_asset(
@@ -3053,17 +3051,15 @@ def api_svg_plain(job_id, pdb, warhead, chain=None):
 
     # --- Legacy fallback (old LIGAND_SVGS behavior) ---
     base_dir = ligand_svgs_dir(job_id)
-    if not base_dir:
-        abort(404, description="LIGAND_SVGS folder not found")
+    if base_dir:
+        fname = f"{pdb}_{chain}_{warhead}_plain.svg"
+        fp = base_dir / fname
+        if fp.exists():
+            return _serve_themed_svg(fp)
 
-    fname = f"{pdb}_{chain}_{warhead}_plain.svg"
-    fp = base_dir / fname
-    if fp.exists():
-        return _serve_themed_svg(fp)
-
-    legacy = base_dir / f"{pdb}_{chain}_{warhead}.svg"
-    if legacy.exists():
-        return _serve_themed_svg(legacy)
+        legacy = base_dir / f"{pdb}_{chain}_{warhead}.svg"
+        if legacy.exists():
+            return _serve_themed_svg(legacy)
 
     # RANDY fallback for archived plain SVGs.
     asset = randy_find_asset(

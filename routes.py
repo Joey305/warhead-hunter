@@ -15,6 +15,7 @@ try:
         get_job_index as randy_get_job_index,
         get_table_dataframe as randy_get_table_dataframe,
         job_exists as randy_job_exists,
+        last_table_diagnostic as randy_last_table_diagnostic,
     )
 except Exception:  # keep local/dev boot safe even before api/randy_archive_client.py is dropped in
     def archive_enabled() -> bool:
@@ -28,6 +29,9 @@ except Exception:  # keep local/dev boot safe even before api/randy_archive_clie
 
     def randy_job_exists(job_id: str) -> bool:
         return False
+
+    def randy_last_table_diagnostic() -> dict:
+        return {}
 
 
 bp = Blueprint("routes", __name__)
@@ -287,14 +291,23 @@ def _randy_job_state(job_id: str) -> dict | None:
     data = randy_get_job_index(job_id)
     if not data:
         return None
+    tables = data.get("tables", {}) if isinstance(data.get("tables"), dict) else {}
+    available_tables = data.get("available_tables", {}) if isinstance(data.get("available_tables"), dict) else {}
     return {
         "job_id": job_id,
         "status": "completed",
         "target": data.get("target_name") or "",
-        "results_ready": bool(data.get("tables", {}).get("Results_Display.csv") or data.get("tables", {}).get("Resolved_SASA_Summary.csv")),
+        "results_ready": bool(
+            tables.get("Results_Display.csv")
+            or tables.get("Resolved_SASA_Summary.csv")
+            or available_tables.get("Results_Display.csv")
+            or available_tables.get("Resolved_SASA_Summary.csv")
+        ),
         "source": data.get("source", "randy_hunter_job_archive"),
         "current_step": "",
         "error": None,
+        "archive_layout": data.get("archive_layout") or {},
+        "available_tables": available_tables,
     }
 
 
@@ -353,6 +366,34 @@ def view_results(job_id: str):
             if reason:
                 message = f"{message} {reason}"
             return render_template("error.html", message=message), 409
+
+        if job.get("source") == "randy_hunter_job_archive":
+            diag = randy_last_table_diagnostic()
+            attempted = diag.get("attempted_paths") if isinstance(diag, dict) else []
+            attempted_text = ""
+            if attempted:
+                attempted_paths = []
+                for item in attempted[:12]:
+                    if isinstance(item, dict):
+                        attempted_paths.append(str(item.get("relative_path") or ""))
+                    else:
+                        attempted_paths.append(str(item))
+                attempted_text = " Paths attempted: " + ", ".join([p for p in attempted_paths if p])
+            message = (
+                f"Archived job {job_id} exists on RANDY, but the gallery table artifact could not be resolved."
+                f"{attempted_text} Next diagnostic: python scripts/debug_randy_results_fallback.py {job_id}"
+            )
+            return render_template(
+                "job_waiting.html",
+                job_id=job_id,
+                title="Archived results need attention",
+                message=message,
+                status="archived-incomplete",
+                current_step="RANDY archive table lookup",
+                status_url=f"/api/jobs/{job_id}",
+                results_api_url=f"/api/jobs/{job_id}/results",
+                refresh_url=f"/results/{job_id}",
+            ), 424
 
         return render_template(
             "job_waiting.html",
