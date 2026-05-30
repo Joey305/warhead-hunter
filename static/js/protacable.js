@@ -797,7 +797,7 @@
     }
 
     if (!renderable.length) {
-      console.warn("No result cards have required SDF artifacts. SDF is a required display contract.");
+      console.warn("No result cards have required SDF/protein artifacts. SDF and protein PDB are required display contracts.");
       ResultsLoader.markStep("artifacts", "error", "No renderable ligands found");
     } else {
       ResultsLoader.markStep("artifacts", "success", `${renderable.length} renderable ligand${renderable.length === 1 ? "" : "s"} ready`);

@@ -10,6 +10,18 @@ from typing import Dict, Tuple, List, Any, Optional
 
 from flask import Blueprint, request, jsonify, current_app, abort, make_response
 
+try:
+    from api.randy_archive_client import (
+        get_table_dataframe as randy_get_table_dataframe,
+        last_table_diagnostic as randy_last_table_diagnostic,
+    )
+except Exception:
+    def randy_get_table_dataframe(*args, **kwargs):
+        return None
+
+    def randy_last_table_diagnostic() -> Dict[str, Any]:
+        return {}
+
 bp = Blueprint("sasa_api", __name__)
 
 # ----------------------------
@@ -221,6 +233,102 @@ def _build_store(csv_path: str) -> JobSasaStore:
     )
 
 
+def _randy_table_rows(job_id: str, names: List[str]) -> Tuple[List[Dict[str, Any]], str]:
+    df = randy_get_table_dataframe(job_id, names)
+    if df is None or df.empty:
+        return [], ""
+    diag = randy_last_table_diagnostic()
+    table_path = str(diag.get("table_path") or "")
+    return df.fillna("").to_dict(orient="records"), table_path
+
+
+def _randy_residue_for_ligand(job_id: str, pdb_id: str, chain: str, ligand: str) -> Tuple[str, str]:
+    rows, table_path = _randy_table_rows(job_id, [
+        "Resolved_SASA_Summary.csv",
+        "Resolved_SASA_Summary.tsv",
+        "Warhead_SASA_atoms.csv",
+        "Ligand_3D_Atoms.csv",
+        "Ligand_3D_Atoms_with_SASA.csv",
+    ])
+    for row in rows:
+        rpdb = _field(row, "pdb_id", "pdb").strip().lower()
+        rchain = _field(row, "Chain", "chain").strip().upper()
+        rlig = _field(row, "Warhead", "Ligand", "ligand", "Ligand_Resolved", "warhead").strip().upper()
+        resid = _norm_resid(_field(row, "Residue_ID", "residue_id", "resid", "Variant"))
+        if rpdb == pdb_id and rchain == chain and rlig == ligand and resid:
+            return resid, table_path
+    return "", table_path
+
+
+def _randy_sasa_atoms_payload(job_id: str, pdb_id: str, chain: str, residue_id: str) -> Tuple[Optional[Dict[str, Any]], str]:
+    rows, table_path = _randy_table_rows(job_id, [
+        "Warhead_SASA_atoms.csv",
+        "Ligand_3D_Atoms_with_SASA.csv",
+        "Ligand_3D_Atoms.csv",
+    ])
+    atoms: List[dict] = []
+    exposures: List[float] = []
+    for row in rows:
+        rpdb = _field(row, "pdb_id", "pdb").strip().lower()
+        rchain = _field(row, "Chain", "chain").strip().upper()
+        resid = _norm_resid(_field(row, "Residue_ID", "residue_id", "resid", "Variant"))
+        if (rpdb, rchain, resid) != (pdb_id, chain, residue_id):
+            continue
+        try:
+            x = float(_field(row, "x"))
+            y = float(_field(row, "y"))
+            z = float(_field(row, "z"))
+        except Exception:
+            continue
+        try:
+            exposure = float(_field(row, "Exposure_A2", "exposure", "exposure_a2") or 0.0)
+        except Exception:
+            exposure = 0.0
+        exposures.append(exposure)
+        atom_id = None
+        try:
+            raw_atom_id = _field(row, "atom_id", "serial", "pdb_serial")
+            if raw_atom_id:
+                atom_id = int(float(raw_atom_id))
+        except Exception:
+            atom_id = None
+        rdkit_idx = None
+        try:
+            raw_idx = _field(row, "AtomIndex", "atom_index", "rdkit_atom_index")
+            if raw_idx:
+                rdkit_idx = int(float(raw_idx))
+        except Exception:
+            rdkit_idx = None
+        atoms.append({
+            "atom_name": _field(row, "atom_name", "exact_atom", "AtomName").strip(),
+            "element": _field(row, "AtomSymbol", "element", "atom_symbol").strip(),
+            "atom_id": atom_id,
+            "x": x,
+            "y": y,
+            "z": z,
+            "exposure": exposure,
+            "exposure_a2": exposure,
+            "rdkit_atom_index": rdkit_idx,
+        })
+    if not atoms:
+        return None, table_path
+    return {
+        "ok": True,
+        "key": f"{pdb_id}|{chain}|{residue_id}",
+        "pdb_id": pdb_id,
+        "chain": chain,
+        "residue_id": residue_id,
+        "stats": {
+            "min": float(min(exposures)) if exposures else 0.0,
+            "max": float(max(exposures)) if exposures else 0.0,
+            "p95": _calc_p95(exposures),
+        },
+        "atoms": atoms,
+        "source": "randy_archive",
+        "table_path": table_path,
+    }, table_path
+
+
 
 def _get_store(job_id: str) -> JobSasaStore:
     csv_path = _job_csv_path(job_id)
@@ -275,7 +383,31 @@ def sasa_available(job_id: str):
 
 @bp.get("/api/jobs/<job_id>/sasa/atoms")
 def sasa_atoms(job_id: str):
-    store = _get_store(job_id)
+    try:
+        store = _get_store(job_id)
+    except Exception:
+        store = None
+
+    if store is None:
+        pdb_id = (request.args.get("pdb_id") or "").strip().lower()
+        chain = (request.args.get("chain") or "").strip().upper()
+        residue_id = _norm_resid(str(request.args.get("residue_id") or "").strip())
+        if not (pdb_id and chain and residue_id):
+            return jsonify({"ok": False, "error": "Require pdb_id, chain, residue_id"}), 400
+        payload, table_path = _randy_sasa_atoms_payload(job_id, pdb_id, chain, residue_id)
+        if payload:
+            return jsonify(payload), 200
+        return jsonify({
+            "ok": False,
+            "error": f"No SASA data for {pdb_id}|{chain}|{residue_id}",
+            "job_id": job_id,
+            "pdb_id": pdb_id,
+            "chain": chain,
+            "residue_id": residue_id,
+            "source": "randy_archive",
+            "table_path": table_path,
+        }), 404
+
     maybe = _maybe_304(store)
     if maybe:
         return maybe
@@ -351,11 +483,6 @@ def sasa_bulk(job_id: str):
 
 @bp.get("/api/jobs/<job_id>/sasa/residue_for_ligand")
 def sasa_residue_for_ligand(job_id: str):
-    store = _get_store(job_id)
-    maybe = _maybe_304(store)
-    if maybe:
-        return maybe
-
     pdb_id = (request.args.get("pdb_id") or "").strip().lower()
     chain  = (request.args.get("chain") or "").strip().upper()
     ligand = (request.args.get("ligand") or "").strip().upper()
@@ -363,17 +490,51 @@ def sasa_residue_for_ligand(job_id: str):
     if not (pdb_id and chain and ligand):
         return jsonify({"ok": False, "error": "Require pdb_id, chain, ligand"}), 400
 
-    resid = store.resid_by_ligand.get((pdb_id, chain, ligand))
-    if not resid:
-        return jsonify({"ok": False, "error": f"No residue_id for {pdb_id}|{chain}|{ligand}"}), 404
+    try:
+        store = _get_store(job_id)
+    except Exception:
+        store = None
 
-    resp = jsonify({
+    if store is not None:
+        maybe = _maybe_304(store)
+        if maybe:
+            return maybe
+        resid = store.resid_by_ligand.get((pdb_id, chain, ligand))
+        if resid:
+            resp = jsonify({
+                "ok": True,
+                "pdb_id": pdb_id,
+                "chain": chain,
+                "ligand": ligand,
+                "residue_id": resid,
+                "resid": resid,
+                "source": "local_sasa_store",
+            })
+            resp.headers["ETag"] = f"\"{store.etag}\""
+            resp.headers["Cache-Control"] = "public, max-age=3600"
+            return resp
+
+    resid, table_path = _randy_residue_for_ligand(job_id, pdb_id, chain, ligand)
+    if not resid:
+        return jsonify({
+            "ok": False,
+            "error": f"No residue_id for {pdb_id}|{chain}|{ligand}",
+            "job_id": job_id,
+            "pdb_id": pdb_id,
+            "chain": chain,
+            "ligand": ligand,
+            "source": "local_then_randy_archive",
+            "table_path": table_path,
+        }), 404
+
+    return jsonify({
         "ok": True,
+        "job_id": job_id,
         "pdb_id": pdb_id,
         "chain": chain,
         "ligand": ligand,
-        "residue_id": resid
-    })
-    resp.headers["ETag"] = f"\"{store.etag}\""
-    resp.headers["Cache-Control"] = "public, max-age=3600"
-    return resp
+        "residue_id": resid,
+        "resid": resid,
+        "source": "randy_archive",
+        "table_path": table_path,
+    }), 200

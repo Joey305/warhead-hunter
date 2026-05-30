@@ -37,6 +37,8 @@ try:
     from api.randy_archive_client import (
         archive_enabled as randy_archive_enabled,
         find_asset as randy_find_asset,
+        find_protein_pdb_asset as randy_find_protein_pdb_asset,
+        get_file_bytes as randy_get_file_bytes,
         get_table_dataframe as randy_get_table_dataframe,
         proxy_file_response as randy_proxy_file_response,
         job_exists as randy_job_exists,
@@ -46,6 +48,12 @@ except Exception:
         return False
 
     def randy_find_asset(*args, **kwargs):
+        return None
+
+    def randy_find_protein_pdb_asset(*args, **kwargs):
+        return None
+
+    def randy_get_file_bytes(*args, **kwargs):
         return None
 
     def randy_get_table_dataframe(*args, **kwargs):
@@ -3127,6 +3135,26 @@ def api_pdb(job_id, pdb_chain_warhead):
 def api_protein(job_id, pdb, chain):
     pdb = pdb.lower().strip()
     chain = chain.upper().strip()
+    ligand_hint = (request.args.get("ligand") or request.args.get("warhead") or "").upper().strip()
+
+    def protein_response_from_text(text: str, source: str):
+        lines = []
+        for ln in str(text or "").splitlines():
+            if ln.startswith("ATOM") and len(ln) > 21 and ln[21].upper() == chain:
+                lines.append(ln.rstrip("\n") + "\n")
+            elif ln.startswith("TER"):
+                lines.append(ln.rstrip("\n") + "\n")
+        if not any(ln.startswith("ATOM") for ln in lines):
+            return None
+        lines.append("END\n")
+        return Response(
+            "".join(lines),
+            mimetype="chemical/x-pdb",
+            headers={
+                "Content-Disposition": f"inline; filename={pdb}_{chain}_protein.pdb",
+                "X-Warhead-Handoff-Source": source,
+            }
+        )
 
     # Find ANY ligand PDB for this chain (then filter ATOM lines)
     base = target_results_dir(job_id)
@@ -3140,29 +3168,46 @@ def api_protein(job_id, pdb, chain):
         if root.exists():
             candidates.extend(list(root.rglob(f"{pdb}_{chain}_*.pdb")))
 
-    if not candidates:
-        abort(404, description="Protein PDB not found")
+    if candidates:
+        if ligand_hint:
+            preferred = [fp for fp in candidates if fp.name.lower() == f"{pdb}_{chain}_{ligand_hint}.pdb".lower()]
+            if preferred:
+                candidates = preferred
+        src = sorted(candidates, key=lambda p: str(p))[0]
+        try:
+            rendered = protein_response_from_text(src.read_text(encoding="utf-8", errors="replace"), "LOCAL_JOB")
+            if rendered:
+                return rendered
+        except Exception:
+            pass
 
-    src = candidates[0]
-
-    lines = []
-    with src.open() as fh:
-        for ln in fh:
-            if ln.startswith("ATOM") and ln[21].upper() == chain:
-                lines.append(ln)
-            elif ln.startswith("TER"):
-                lines.append(ln)
-
-    if not lines:
-        abort(404, description="No protein atoms found")
-
-    lines.append("END\n")
-
-    return Response(
-        "".join(lines),
-        mimetype="chemical/x-pdb",
-        headers={"Content-Disposition": f"inline; filename={pdb}_{chain}_protein.pdb"}
+    asset = randy_find_protein_pdb_asset(
+        job_id,
+        pdb=pdb,
+        chain=chain,
+        ligand=ligand_hint,
     )
+    if asset:
+        got = randy_get_file_bytes(job_id, asset.get("relative_path", ""))
+        if got:
+            content, _content_type = got
+            rendered = protein_response_from_text(
+                content.decode("utf-8", errors="replace"),
+                str(asset.get("source") or "RANDY_ARCHIVE"),
+            )
+            if rendered:
+                rendered.headers["X-Warhead-Archive-Path"] = str(asset.get("relative_path", ""))
+                return rendered
+
+    return jsonify({
+        "ok": False,
+        "error": "Protein PDB not found",
+        "job_id": job_id,
+        "pdb_id": pdb,
+        "chain": chain,
+        "ligand": ligand_hint or None,
+        "source": "local_then_randy_archive",
+    }), 404
 
 
 # ----------------------------

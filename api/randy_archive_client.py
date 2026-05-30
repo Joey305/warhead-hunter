@@ -54,6 +54,12 @@ TABLE_CANDIDATES = {
         "job_files/Warhead_SASA_atoms.csv",
         "job_files/TARGET_RESULTS/Warhead_SASA_atoms.csv",
     ],
+    "Ligand_3D_Atoms.csv": [
+        "Ligand_3D_Atoms.csv",
+        "TARGET_RESULTS/Ligand_3D_Atoms.csv",
+        "job_files/Ligand_3D_Atoms.csv",
+        "job_files/TARGET_RESULTS/Ligand_3D_Atoms.csv",
+    ],
     "Ligand_3D_Atoms_with_SASA.csv": [
         "Ligand_3D_Atoms_with_SASA.csv",
         "TARGET_RESULTS/Ligand_3D_Atoms_with_SASA.csv",
@@ -263,6 +269,57 @@ def find_asset(
         }
 
     return None
+
+
+def find_protein_pdb_asset(
+    job_id: str,
+    *,
+    pdb: str = "",
+    chain: str = "",
+    ligand: str = "",
+) -> Optional[Dict[str, Any]]:
+    """Find a full complex PDB that can be filtered into a protein-only response."""
+    asset = find_asset(job_id, pdb=pdb, chain=chain, ligand=ligand, kind="pdb")
+    if asset:
+        return {**asset, "source": asset.get("source", "randy_protein_asset")}
+
+    payload = get_job(job_id)
+    if not payload:
+        return None
+
+    pdb_l = _norm(pdb, lower=True)
+    chain_u = _norm(chain, upper=True)
+    ligand_u = _norm(ligand, upper=True)
+    prefix = f"{pdb_l}_{chain_u.lower()}_"
+    matches: list[Dict[str, Any]] = []
+    for item in _candidate_files(payload):
+        rel = str(item.get("relative_path") or item.get("filename") or item.get("name") or "")
+        name = Path(rel).name
+        low = name.lower()
+        if not low.endswith(".pdb"):
+            continue
+        if pdb_l and not low.startswith(prefix):
+            continue
+        if ligand_u and ligand_u.lower() not in low:
+            continue
+        score = 0
+        rel_low = rel.lower()
+        if "/war_pdb/" in f"/{rel_low}":
+            score -= 10
+        if rel_low.startswith("job_files/"):
+            score -= 2
+        matches.append({
+            **item,
+            "relative_path": rel.lstrip("/"),
+            "filename": name,
+            "source": "randy_protein_files",
+            "_score": score,
+        })
+    if not matches:
+        return None
+    best = sorted(matches, key=lambda item: (int(item.get("_score", 0)), str(item.get("relative_path", ""))))[0]
+    best.pop("_score", None)
+    return best
 
 
 def find_table(job_id: str, names: Iterable[str]) -> Optional[Dict[str, Any]]:

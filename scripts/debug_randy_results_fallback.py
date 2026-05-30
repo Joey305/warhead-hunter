@@ -125,6 +125,7 @@ def main() -> int:
     status, detail = get_json(detail_url)
     print(f"\nJob detail: HTTP {status}, ok={detail.get('ok')}")
     print(f"Archive layout: {detail.get('archive_layout') or 'not reported'}")
+    print(f"ZIP index: {detail.get('zip_index') or 'not reported'}")
     print(f"Available tables: {detail.get('available_tables') or detail.get('tables') or 'none reported'}")
     if status != 200 or not detail.get("ok"):
         return 1
@@ -161,6 +162,7 @@ def main() -> int:
             qs = f"?{urlencode({'resid': resid})}" if resid else ""
             endpoints = [
                 f"/api/sdf/{job_id}/{pdb}/{chain}/{ligand}{qs}",
+                f"/api/protein/{job_id}/{pdb}/{chain}",
                 f"/api/pdb/{job_id}/{pdb}_{chain}_{ligand}.pdb",
                 f"/api/svg/{job_id}/{pdb}/{chain}/{ligand}{qs}",
                 f"/api/svg-plain/{job_id}/{pdb}/{chain}/{ligand}{qs}",
@@ -168,6 +170,12 @@ def main() -> int:
             print("\nFirst-row asset endpoints:")
             for endpoint in endpoints:
                 print(f"{endpoint}: HTTP {head(hunter_url() + endpoint)}")
+            residue_endpoint = (
+                f"/api/jobs/{job_id}/sasa/residue_for_ligand?"
+                f"{urlencode({'pdb_id': pdb, 'chain': chain, 'ligand': ligand})}"
+            )
+            code, residue_payload = get_json(hunter_url() + residue_endpoint)
+            print(f"{residue_endpoint}: HTTP {code}, ok={residue_payload.get('ok')}, resid={residue_payload.get('resid') or residue_payload.get('residue_id') or ''}")
         else:
             print("First row does not expose pdb/chain/ligand fields for asset checks.")
 
