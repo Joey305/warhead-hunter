@@ -35,48 +35,64 @@ TABLE_CANDIDATES = {
         "TARGET_RESULTS/Results_Display.csv",
         "job_files/Results_Display.csv",
         "job_files/TARGET_RESULTS/Results_Display.csv",
+        "archives/Results_Display.csv",
+        "archives/TARGET_RESULTS/Results_Display.csv",
     ],
     "Resolved_SASA_Summary.csv": [
         "Resolved_SASA_Summary.csv",
         "TARGET_RESULTS/Resolved_SASA_Summary.csv",
         "job_files/Resolved_SASA_Summary.csv",
         "job_files/TARGET_RESULTS/Resolved_SASA_Summary.csv",
+        "archives/Resolved_SASA_Summary.csv",
+        "archives/TARGET_RESULTS/Resolved_SASA_Summary.csv",
     ],
     "Resolved_SASA_Summary.tsv": [
         "Resolved_SASA_Summary.tsv",
         "TARGET_RESULTS/Resolved_SASA_Summary.tsv",
         "job_files/Resolved_SASA_Summary.tsv",
         "job_files/TARGET_RESULTS/Resolved_SASA_Summary.tsv",
+        "archives/Resolved_SASA_Summary.tsv",
+        "archives/TARGET_RESULTS/Resolved_SASA_Summary.tsv",
     ],
     "Warhead_SASA_atoms.csv": [
         "Warhead_SASA_atoms.csv",
         "TARGET_RESULTS/Warhead_SASA_atoms.csv",
         "job_files/Warhead_SASA_atoms.csv",
         "job_files/TARGET_RESULTS/Warhead_SASA_atoms.csv",
+        "archives/Warhead_SASA_atoms.csv",
+        "archives/TARGET_RESULTS/Warhead_SASA_atoms.csv",
     ],
     "Ligand_3D_Atoms.csv": [
         "Ligand_3D_Atoms.csv",
         "TARGET_RESULTS/Ligand_3D_Atoms.csv",
         "job_files/Ligand_3D_Atoms.csv",
         "job_files/TARGET_RESULTS/Ligand_3D_Atoms.csv",
+        "archives/Ligand_3D_Atoms.csv",
+        "archives/TARGET_RESULTS/Ligand_3D_Atoms.csv",
     ],
     "Ligand_3D_Atoms_with_SASA.csv": [
         "Ligand_3D_Atoms_with_SASA.csv",
         "TARGET_RESULTS/Ligand_3D_Atoms_with_SASA.csv",
         "job_files/Ligand_3D_Atoms_with_SASA.csv",
         "job_files/TARGET_RESULTS/Ligand_3D_Atoms_with_SASA.csv",
+        "archives/Ligand_3D_Atoms_with_SASA.csv",
+        "archives/TARGET_RESULTS/Ligand_3D_Atoms_with_SASA.csv",
     ],
     "3DSASAmapped.csv": [
         "3DSASAmapped.csv",
         "TARGET_RESULTS/3DSASAmapped.csv",
         "job_files/3DSASAmapped.csv",
         "job_files/TARGET_RESULTS/3DSASAmapped.csv",
+        "archives/3DSASAmapped.csv",
+        "archives/TARGET_RESULTS/3DSASAmapped.csv",
     ],
     "Ligand_Metadata.csv": [
         "Ligand_Metadata.csv",
         "TARGET_RESULTS/Ligand_Metadata.csv",
         "job_files/Ligand_Metadata.csv",
         "job_files/TARGET_RESULTS/Ligand_Metadata.csv",
+        "archives/Ligand_Metadata.csv",
+        "archives/TARGET_RESULTS/Ligand_Metadata.csv",
     ],
 }
 
@@ -268,6 +284,30 @@ def find_asset(
             "source": "randy_files",
         }
 
+    if pdb_l and chain_u and ligand_u:
+        stem = f"{pdb_l}_{chain_u}_{ligand_u}"
+        if kind == "pdb":
+            return {
+                "relative_path": f"WAR_PDB/{stem}.pdb",
+                "filename": f"{stem}.pdb",
+                "source": "randy_logical_candidate",
+            }
+        if kind == "sdf":
+            filename = f"{stem}_{resid_s}.sdf" if resid_s else f"{stem}.sdf"
+            return {
+                "relative_path": f"MCS_Output/MCS_SDF/{filename}",
+                "filename": filename,
+                "source": "randy_logical_candidate",
+            }
+        if kind == "svg" and resid_s:
+            tag = "plain" if plain else "exposed"
+            filename = f"{stem}_{resid_s}_{tag}.svg"
+            return {
+                "relative_path": f"MCS_Output/MCS_SVG/{filename}",
+                "filename": filename,
+                "source": "randy_logical_candidate",
+            }
+
     return None
 
 
@@ -316,6 +356,13 @@ def find_protein_pdb_asset(
             "_score": score,
         })
     if not matches:
+        if pdb_l and chain_u and ligand_u:
+            filename = f"{pdb_l}_{chain_u}_{ligand_u}.pdb"
+            return {
+                "relative_path": f"WAR_PDB/{filename}",
+                "filename": filename,
+                "source": "randy_protein_logical_candidate",
+            }
         return None
     best = sorted(matches, key=lambda item: (int(item.get("_score", 0)), str(item.get("relative_path", ""))))[0]
     best.pop("_score", None)

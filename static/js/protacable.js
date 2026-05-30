@@ -729,8 +729,11 @@
       resid = await resolveResid(pdb, chain, warhead, resid);
       if (resid) card.dataset.resid = resid;
 
+      const proteinQs = new URLSearchParams();
+      proteinQs.set("ligand", warhead);
+      if (resid) proteinQs.set("resid", resid);
       const proteinUrl =
-        `/api/protein/${encodeURIComponent(JOB_ID)}/${encodeURIComponent(pdb)}/${encodeURIComponent(chain)}`;
+        `/api/protein/${encodeURIComponent(JOB_ID)}/${encodeURIComponent(pdb)}/${encodeURIComponent(chain)}?${proteinQs.toString()}`;
 
       const sdfQs = new URLSearchParams();
       if (resid) sdfQs.set("resid", resid);

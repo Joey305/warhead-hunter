@@ -102,7 +102,10 @@ def main(argv: list[str]) -> int:
             continue
         qs = f"?{urlencode({'resid': resid})}" if resid else ""
         sdf_url = f"{base_url}/api/sdf/{quote(job_id)}/{quote(pdb)}/{quote(chain)}/{quote(ligand)}{qs}"
+        protein_qs = urlencode({k: v for k, v in {"ligand": ligand, "resid": resid}.items() if v})
         protein_url = f"{base_url}/api/protein/{quote(job_id)}/{quote(pdb)}/{quote(chain)}"
+        if protein_qs:
+            protein_url += f"?{protein_qs}"
         sdf_status = head_status(sdf_url)
         protein_status = head_status(protein_url)
         checked += 1

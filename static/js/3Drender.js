@@ -399,8 +399,12 @@
     return `polymer and chain ${chain} and not hetero`;
   }
 
-  async function loadProtein(pdb, chain) {
-    const url = `/api/protein/${JOB_ID}/${pdb}/${chain}`;
+  async function loadProtein(pdb, chain, warhead, resid) {
+    const qs = new URLSearchParams();
+    if (warhead) qs.set("ligand", warhead);
+    if (resid) qs.set("resid", resid);
+    const suffix = qs.toString() ? `?${qs.toString()}` : "";
+    const url = `/api/protein/${JOB_ID}/${pdb}/${chain}${suffix}`;
     const comp = await State.stage.loadFile(url, { ext: "pdb", defaultRepresentation: false });
 
     // One continuous protein surface
@@ -801,7 +805,7 @@
 
     try {
       try {
-        State.proteinComp = await loadProtein(PDB, CH);
+        State.proteinComp = await loadProtein(PDB, CH, WAR, RESID);
         result.protein.ok = true;
       } catch (e) {
         const msg = e && e.message ? e.message : String(e || "Unknown protein load error");

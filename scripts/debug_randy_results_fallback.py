@@ -160,9 +160,10 @@ def main() -> int:
         resid = first_value(row, "Residue_ID", "residue_id", "resid", "Variant")
         if pdb and chain and ligand:
             qs = f"?{urlencode({'resid': resid})}" if resid else ""
+            protein_qs = f"?{urlencode({k: v for k, v in {'ligand': ligand, 'resid': resid}.items() if v})}"
             endpoints = [
                 f"/api/sdf/{job_id}/{pdb}/{chain}/{ligand}{qs}",
-                f"/api/protein/{job_id}/{pdb}/{chain}",
+                f"/api/protein/{job_id}/{pdb}/{chain}{protein_qs}",
                 f"/api/pdb/{job_id}/{pdb}_{chain}_{ligand}.pdb",
                 f"/api/svg/{job_id}/{pdb}/{chain}/{ligand}{qs}",
                 f"/api/svg-plain/{job_id}/{pdb}/{chain}/{ligand}{qs}",
