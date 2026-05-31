@@ -114,6 +114,9 @@ app.register_blueprint(sasa_bp)
 app.register_blueprint(routes_bp)
 app.register_blueprint(hand_bp)
 
+ARTIFACT_INDEX_CACHE_TTL_SECONDS = int(os.getenv("WARHEAD_RESULTS_INDEX_TTL", "600") or "600")
+_ARTIFACT_INDEX_CACHE: Dict[str, Dict[str, Any]] = {}
+
 
 # Subfolders for organization (uploads area)
 FOLDERS = {
@@ -916,6 +919,28 @@ def _job_relative_path(job_id: str, fp: Path) -> str:
         return fp.resolve().relative_to(job_root(job_id).resolve()).as_posix()
     except Exception:
         return fp.name
+
+
+def _normalize_resid_token(value: Any) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    try:
+        number = float(text)
+        if number.is_integer():
+            return str(int(number))
+    except Exception:
+        pass
+    return text
+
+
+def _row_pick(row: Dict[str, Any], *keys: str) -> str:
+    for key in keys:
+        if key in row:
+            value = str(row.get(key, "") or "").strip()
+            if value:
+                return value
+    return ""
 
 
 def _candidate_ligands_for_pdb_chain(job_id: str, pdb: str, chain: str, ligand_hint: str = "") -> List[str]:
@@ -3488,6 +3513,236 @@ def api_protein(job_id, pdb, chain):
         if relative_path:
             response.headers["X-WH-Resolved-Path"] = relative_path
     return response, 404
+
+
+def _resolve_local_svg_asset(job_id: str, pdb: str, chain: str, ligand: str, resid: str, plain: bool) -> Optional[Dict[str, Any]]:
+    mcs_dir = mcs_svgs_dir(job_id)
+    if not mcs_dir or not mcs_dir.exists():
+        return None
+
+    tag = "plain" if plain else "exposed"
+    wanted_resid = _normalize_resid_token(resid)
+    if wanted_resid:
+        exact = mcs_dir / f"{pdb}_{chain}_{ligand}_{wanted_resid}_{tag}.svg"
+        if exact.exists() and exact.is_file():
+            return {
+                "ok": True,
+                "source": "local_job",
+                "relative_path": _job_relative_path(job_id, exact),
+                "filename": exact.name,
+                "local_path": exact.resolve(),
+            }
+
+    pattern = f"{pdb}_{chain}_{ligand}_*_{tag}.svg"
+    hits = sorted(fp.resolve() for fp in mcs_dir.glob(pattern) if fp.exists() and fp.is_file())
+    if hits:
+        chosen = hits[0]
+        return {
+            "ok": True,
+            "source": "local_job_glob",
+            "relative_path": _job_relative_path(job_id, chosen),
+            "filename": chosen.name,
+            "local_path": chosen,
+        }
+    return None
+
+
+def _resolve_svg_artifact(job_id: str, pdb: str, chain: str, ligand: str, resid: str, plain: bool) -> Dict[str, Any]:
+    local = _resolve_local_svg_asset(job_id, pdb, chain, ligand, resid, plain)
+    if local:
+        return local
+
+    asset = randy_find_asset(
+        job_id,
+        pdb=pdb,
+        chain=chain,
+        ligand=ligand,
+        resid=resid,
+        kind="svg",
+        plain=plain,
+    )
+    if asset and asset.get("relative_path"):
+        return {
+            "ok": True,
+            "source": str(asset.get("source") or "randy_archive"),
+            "relative_path": str(asset.get("relative_path") or ""),
+            "filename": str(asset.get("filename") or Path(str(asset.get("relative_path") or "")).name),
+            "remote_asset": asset,
+        }
+    return {"ok": False}
+
+
+def _resolve_sdf_artifact(job_id: str, pdb: str, chain: str, ligand: str, resid: str) -> Dict[str, Any]:
+    sdf_path, _diag = resolve_sdf_path(job_root(job_id), pdb, chain, ligand, resid)
+    if sdf_path and sdf_path.exists():
+        return {
+            "ok": True,
+            "source": "local_job",
+            "relative_path": _job_relative_path(job_id, sdf_path),
+            "filename": sdf_path.name,
+            "local_path": sdf_path.resolve(),
+        }
+
+    asset = randy_find_asset(job_id, pdb=pdb, chain=chain, ligand=ligand, resid=resid, kind="sdf")
+    if asset and asset.get("relative_path"):
+        return {
+            "ok": True,
+            "source": str(asset.get("source") or "randy_archive"),
+            "relative_path": str(asset.get("relative_path") or ""),
+            "filename": str(asset.get("filename") or Path(str(asset.get("relative_path") or "")).name),
+            "remote_asset": asset,
+        }
+    return {"ok": False}
+
+
+def _artifact_index_row_payload(job_id: str, row_index: int, row: Dict[str, Any]) -> Dict[str, Any]:
+    pdb = _norm_str(_row_pick(row, "pdb_id", "pdb"), lower=True)
+    chain = _norm_str(_row_pick(row, "Chain", "chain") or "A", upper=True)
+    ligand = _norm_str(_row_pick(row, "Warhead", "Ligand_Resolved", "ligand", "Ligand"), upper=True)
+    smiles = _row_pick(row, "SMILES", "smiles")
+    resid = _normalize_resid_token(_row_pick(row, "Residue_ID", "residue_id", "resid", "Variant"))
+    if not resid and pdb and chain and ligand:
+        resid = _normalize_resid_token(infer_residue_from_mcs(job_id, pdb, chain, ligand) or "")
+
+    protein = {"ok": False, "url": ""}
+    sdf = {"ok": False, "url": ""}
+    svg = {"ok": False, "plain_url": "", "exposed_url": ""}
+    warnings: List[str] = []
+
+    protein_url = ""
+    if pdb and chain:
+        qs = [f"ligand={quote(ligand)}"] if ligand else []
+        if resid:
+            qs.append(f"resid={quote(resid)}")
+        protein_url = f"/api/protein/{quote(job_id)}/{quote(pdb)}/{quote(chain)}"
+        if qs:
+            protein_url = f"{protein_url}?{'&'.join(qs)}"
+
+    sdf_url = ""
+    if pdb and chain and ligand:
+        sdf_url = f"/api/sdf/{quote(job_id)}/{quote(pdb)}/{quote(chain)}/{quote(ligand)}"
+        if resid:
+            sdf_url = f"{sdf_url}?resid={quote(resid)}"
+
+    protein_asset = _resolve_complex_pdb_artifact(job_id, pdb, chain, ligand, resid) if pdb and chain else {"ok": False}
+    if protein_asset.get("ok"):
+        protein = {
+            "ok": True,
+            "url": protein_url,
+            "source": str(protein_asset.get("source") or ""),
+            "relative_path": str(protein_asset.get("relative_path") or ""),
+        }
+    else:
+        warnings.append("protein_missing")
+
+    sdf_asset = _resolve_sdf_artifact(job_id, pdb, chain, ligand, resid) if pdb and chain and ligand else {"ok": False}
+    if sdf_asset.get("ok"):
+        sdf = {
+            "ok": True,
+            "url": sdf_url,
+            "source": str(sdf_asset.get("source") or ""),
+            "relative_path": str(sdf_asset.get("relative_path") or ""),
+        }
+    else:
+        warnings.append("sdf_missing")
+
+    if pdb and chain and ligand:
+        plain_asset = _resolve_svg_artifact(job_id, pdb, chain, ligand, resid, True)
+        exposed_asset = _resolve_svg_artifact(job_id, pdb, chain, ligand, resid, False)
+        svg = {
+            "ok": bool(plain_asset.get("ok") or exposed_asset.get("ok")),
+            "plain_url": f"/api/svg-plain/{quote(job_id)}/{quote(pdb)}/{quote(chain)}/{quote(ligand)}" + (f"?resid={quote(resid)}" if resid else ""),
+            "exposed_url": f"/api/svg/{quote(job_id)}/{quote(pdb)}/{quote(chain)}/{quote(ligand)}" + (f"?resid={quote(resid)}" if resid else ""),
+            "plain_ok": bool(plain_asset.get("ok")),
+            "exposed_ok": bool(exposed_asset.get("ok")),
+        }
+
+    hard_renderable = bool(protein.get("ok") and sdf.get("ok") and pdb and chain and ligand)
+    if not hard_renderable and "insufficient_row_data" not in warnings and not (pdb and chain and ligand):
+        warnings.append("insufficient_row_data")
+
+    return {
+        "index": row_index,
+        "pdb": pdb,
+        "chain": chain,
+        "ligand": ligand,
+        "warhead": ligand,
+        "smiles": smiles,
+        "resid": resid,
+        "exposed": str(row.get("%Exposed", "") or ""),
+        "hard_renderable": hard_renderable,
+        "sdf": sdf,
+        "protein": protein,
+        "svg": svg,
+        "warnings": warnings,
+    }
+
+
+def _build_artifact_index_payload(job_id: str, *, refresh: bool = False) -> Dict[str, Any]:
+    cache_key = str(job_id).strip()
+    now = time.time()
+    cached = _ARTIFACT_INDEX_CACHE.get(cache_key)
+    if cached and not refresh and (now - float(cached.get("stored_at", 0))) < ARTIFACT_INDEX_CACHE_TTL_SECONDS:
+        payload = dict(cached.get("payload", {}))
+        payload["cache"] = {"hit": True, "ttl_seconds": ARTIFACT_INDEX_CACHE_TTL_SECONDS}
+        return payload
+
+    started = time.perf_counter()
+    df = load_results_display(job_id)
+    if df is None or df.empty:
+        return {
+            "ok": False,
+            "job_id": job_id,
+            "error": "Results table unavailable",
+            "cache": {"hit": False, "ttl_seconds": ARTIFACT_INDEX_CACHE_TTL_SECONDS},
+            "generated_ms": round((time.perf_counter() - started) * 1000, 1),
+            "row_count": 0,
+            "first_renderable_index": None,
+            "summary": {
+                "sdf_available": 0,
+                "protein_available": 0,
+                "hard_renderable": 0,
+                "svg_available": 0,
+                "sasa_atoms_available": 0,
+                "optional_degraded": 0,
+            },
+            "rows": [],
+        }
+
+    records = df.fillna("").to_dict(orient="records")
+    rows = [_artifact_index_row_payload(job_id, idx, row) for idx, row in enumerate(records)]
+    first_renderable_index = next((item["index"] for item in rows if item.get("hard_renderable")), None)
+
+    payload = {
+        "ok": True,
+        "job_id": job_id,
+        "row_count": len(rows),
+        "generated_ms": round((time.perf_counter() - started) * 1000, 1),
+        "cache": {"hit": False, "ttl_seconds": ARTIFACT_INDEX_CACHE_TTL_SECONDS},
+        "first_renderable_index": first_renderable_index,
+        "summary": {
+            "sdf_available": sum(1 for item in rows if item["sdf"].get("ok")),
+            "protein_available": sum(1 for item in rows if item["protein"].get("ok")),
+            "hard_renderable": sum(1 for item in rows if item.get("hard_renderable")),
+            "svg_available": sum(1 for item in rows if item["svg"].get("ok")),
+            "sasa_atoms_available": 0,
+            "optional_degraded": sum(1 for item in rows if item.get("hard_renderable") and not item["svg"].get("ok")),
+        },
+        "rows": rows,
+    }
+    _ARTIFACT_INDEX_CACHE[cache_key] = {
+        "stored_at": now,
+        "payload": payload,
+    }
+    return payload
+
+
+@app.get("/api/results/<job_id>/artifact-index")
+@app.get("/api/jobs/<job_id>/artifact-index")
+def api_results_artifact_index(job_id: str):
+    refresh = str(request.args.get("refresh", "")).strip().lower() in {"1", "true", "yes", "on"}
+    payload = _build_artifact_index_payload(job_id, refresh=refresh)
+    return jsonify(payload)
 
 
 @app.get("/api/debug/artifact-resolution/<job_id>/<pdb>/<chain>")

@@ -54,9 +54,10 @@
   // 3) Visual tuning
   // ============================================================================
   // Protein
-  const PROTEIN_COLOR = "#57D7FF";
+  const PROTEIN_COLOR = "#8A8F98";
+  const PROTEIN_SURFACE_COLOR = "#60656F";
   const LYS_SURFACE_COLOR = "#1C5BFF";
-  const LYS_CARTOON_COLOR = "#7EE7FF";
+  const LYS_CARTOON_COLOR = "#3D7BFF";
   const PROTEIN_SURFACE_OPACITY = 0.14;
   const PROTEIN_CARTOON_OPACITY = 0.72;
 
@@ -298,7 +299,7 @@
 
     State.proteinScheme = window.NGL.ColormakerRegistry.addScheme(function ProteinLysColormaker() {
       const baseHex = new window.NGL.Color(PROTEIN_COLOR).getHex();
-      const lysHex  = new window.NGL.Color(LYS_SURFACE_COLOR).getHex();
+      const lysHex  = new window.NGL.Color(LYS_CARTOON_COLOR).getHex();
     
       this.atomColor = function (atom) {
         const res = String(atom.resname || "").toUpperCase();
@@ -415,6 +416,7 @@
     if (resid) qs.set("resid", resid);
     const suffix = qs.toString() ? `?${qs.toString()}` : "";
     const url = `/api/protein/${JOB_ID}/${pdb}/${chain}${suffix}`;
+    const proteinFetchStartedAt = performance.now();
     const check = await fetch(url, { method: "GET", cache: "no-store" });
     if (!check.ok) {
       throw new Error(`Protein PDB missing for ${pdb}/${chain}/${warhead || "protein"} (${check.status})`);
@@ -429,6 +431,9 @@
       atomCount,
       hetatmCount,
     });
+    if (window.WHResultsStartupMetrics && !window.WHResultsStartupMetrics.firstProteinFetchMs) {
+      window.WHResultsStartupMetrics.firstProteinFetchMs = Math.round(proteinFetchStartedAt - (window.WHResultsStartupMetrics.bootStartedAt || proteinFetchStartedAt));
+    }
     if (!atomCount) {
       throw new Error(`Protein response has no ATOM records for ${pdb}/${chain}`);
     }
@@ -438,7 +443,7 @@
 
     comp.addRepresentation("surface", {
       sele: proteinSele(chain),
-      color: State.proteinScheme,
+      colorValue: PROTEIN_SURFACE_COLOR,
       opacity: PROTEIN_SURFACE_OPACITY,
       depthWrite: false,
       depthTest: true,
@@ -457,9 +462,9 @@
     });
 
     comp.addRepresentation("line", {
-      sele: proteinSele(chain),
+      sele: "LYS and polymer and not hetero",
       colorValue: LYS_CARTOON_COLOR,
-      opacity: 0.22,
+      opacity: 0.9,
       depthWrite: false,
       depthTest: true,
       linewidth: 2
@@ -484,6 +489,7 @@
     if (resid) qs.set("resid", resid);
     const suffix = qs.toString() ? `?${qs.toString()}` : "";
     const url = `/api/sdf/${JOB_ID}/${pdb}/${chain}/${warhead}${suffix}`;
+    const ligandFetchStartedAt = performance.now();
     const check = await fetch(url, { method: "GET", cache: "no-store" });
     if (!check.ok) {
       const msg = `Ligand SDF missing for ${pdb}/${chain}/${warhead}.`;
@@ -496,6 +502,9 @@
       status: check.status,
       bytes: sdfText.length,
     });
+    if (window.WHResultsStartupMetrics && !window.WHResultsStartupMetrics.firstSdfFetchMs) {
+      window.WHResultsStartupMetrics.firstSdfFetchMs = Math.round(ligandFetchStartedAt - (window.WHResultsStartupMetrics.bootStartedAt || ligandFetchStartedAt));
+    }
     const blob = new Blob([sdfText], { type: "chemical/x-mdl-sdfile" });
     const comp = await State.stage.loadFile(blob, { ext: "sdf", defaultRepresentation: false });
 

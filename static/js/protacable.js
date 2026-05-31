@@ -691,12 +691,19 @@
     card.classList.remove("pending");
     card.classList.add("sdf-missing");
     card.dataset.renderable = "false";
-    if (!card.querySelector(".artifact-warning")) {
-      const warning = document.createElement("div");
+    let warning = card.querySelector(".artifact-warning");
+    if (!warning) {
+      warning = document.createElement("div");
       warning.className = "artifact-warning";
-      warning.textContent = message;
       card.appendChild(warning);
     }
+    warning.textContent = message;
+  }
+
+  function clearCardArtifactWarning(card) {
+    card.classList.remove("sdf-missing");
+    const warning = card.querySelector(".artifact-warning");
+    if (warning) warning.remove();
   }
 
   function artifactFailureSummary(debugPayload, row) {
@@ -718,134 +725,141 @@
     return lines.join("\n");
   }
 
-  async function filterRenderableCards() {
-    const cards = Array.from(document.querySelectorAll(".result-card"));
-    const renderable = [];
-    const total = cards.length || 1;
+  const StartupMetrics = {
+    bootStartedAt: 0,
+    artifactIndexMs: 0,
+    artifactIndexCacheHit: false,
+    startupRequestCount: 0,
+    backgroundValidationRequestCount: 0,
+    rowCount: 0,
+    firstRenderableIndex: null,
+    firstRenderableSelectionMs: 0,
+    firstProteinFetchMs: 0,
+    firstSdfFetchMs: 0,
+    firstViewportRenderMs: 0
+  };
+  window.WHResultsStartupMetrics = StartupMetrics;
 
-    ResultsLoader.markStep("artifacts", "loading", `Checking ${cards.length} ligand result${cards.length === 1 ? "" : "s"}`);
-    ResultsLoader.show(
-      "Loading warhead results",
-      `Checking ${cards.length} ligand result${cards.length === 1 ? "" : "s"}`,
-      "Validating SDF, PDB, and SASA assets"
-    );
-    ResultsLoader.update("Loading warhead results", "Starting artifact validation", {
-      progress: 6,
-      current: "Preparing result cards"
+  function resultsDebugLog(label, payload = {}) {
+    if (!ARTIFACT_DEBUG) return;
+    try {
+      console.info(`[results-startup] ${label}`, payload);
+    } catch {}
+  }
+
+  async function fetchArtifactIndex(refresh = false) {
+    const startedAt = performance.now();
+    const params = new URLSearchParams();
+    if (ARTIFACT_DEBUG) params.set("debug", "1");
+    if (refresh) params.set("refresh", "1");
+    const qs = params.toString();
+    const url = `/api/results/${encodeURIComponent(JOB_ID)}/artifact-index${qs ? `?${qs}` : ""}`;
+
+    StartupMetrics.startupRequestCount += 1;
+    const result = await fetchJSON(url);
+    StartupMetrics.artifactIndexMs = Math.round((performance.now() - startedAt) * 10) / 10;
+    StartupMetrics.artifactIndexCacheHit = Boolean(result.ok && result.data && result.data.cache && result.data.cache.hit);
+    StartupMetrics.rowCount = Number(result.data?.row_count || 0);
+    StartupMetrics.firstRenderableIndex = Number.isFinite(Number(result.data?.first_renderable_index))
+      ? Number(result.data.first_renderable_index)
+      : null;
+
+    resultsDebugLog("artifact_index_loaded", {
+      url,
+      duration_ms: StartupMetrics.artifactIndexMs,
+      cache_hit: StartupMetrics.artifactIndexCacheHit,
+      row_count: StartupMetrics.rowCount,
+      first_renderable_index: StartupMetrics.firstRenderableIndex
     });
+    return result;
+  }
 
-    for (let i = 0; i < cards.length; i += 1) {
-      const card = cards[i];
-      const pdb = String(card.dataset.pdb || "").trim().toLowerCase();
-      const chain = String(card.dataset.chain || "").trim().toUpperCase();
-      const warhead = String(card.dataset.warhead || "").trim().toUpperCase();
-      let resid = String(card.dataset.resid || "").trim();
+  function applyArtifactIndex(indexPayload) {
+    const cards = Array.from(document.querySelectorAll(".result-card"));
+    const rows = Array.isArray(indexPayload && indexPayload.rows) ? indexPayload.rows : [];
+    const renderable = [];
+    const hardRenderableCount = Number(indexPayload?.summary?.hard_renderable || 0);
 
-      const cardLabel = `${warhead || "ligand"} / ${pdb || "pdb"} chain ${chain || "?"}`;
-      const baseProgress = 8 + ((i / total) * 74);
-      ResultsLoader.update("Loading warhead results", `Checking result ${i + 1} of ${cards.length}`, {
-        progress: baseProgress,
-        current: cardLabel
-      });
-
-      if (!pdb || !chain || !warhead) {
-        markCardArtifactMissing(card, "SDF missing — pipeline artifact incomplete");
-        continue;
+    cards.forEach((card, index) => {
+      const row = rows[index] || null;
+      if (!row) {
+        markCardArtifactMissing(card, "Artifact index missing for this result");
+        return;
       }
 
-      ResultsLoader.update("Loading warhead results", `Resolving ligand residue ${i + 1} of ${cards.length}`, {
-        progress: baseProgress + 2,
-        current: cardLabel
-      });
-      resid = await resolveResid(pdb, chain, warhead, resid);
-      if (resid) card.dataset.resid = resid;
-
-      const proteinQs = new URLSearchParams();
-      proteinQs.set("ligand", warhead);
-      if (resid) proteinQs.set("resid", resid);
-      const proteinUrl =
-        `/api/protein/${encodeURIComponent(JOB_ID)}/${encodeURIComponent(pdb)}/${encodeURIComponent(chain)}?${proteinQs.toString()}`;
-
-      const sdfQs = new URLSearchParams();
-      if (resid) sdfQs.set("resid", resid);
-      const sdfQuery = sdfQs.toString() ? `?${sdfQs.toString()}` : "";
-      const sdfUrl =
-        `/api/sdf/${encodeURIComponent(JOB_ID)}/${encodeURIComponent(pdb)}/${encodeURIComponent(chain)}/${encodeURIComponent(warhead)}${sdfQuery}`;
-
-      ResultsLoader.update("Loading warhead results", `Checking protein artifact ${i + 1} of ${cards.length}`, {
-        progress: baseProgress + 4,
-        current: cardLabel
-      });
-      const okProtein = await headOrGetOk(proteinUrl);
-
-      ResultsLoader.update("Loading warhead results", `Checking SDF artifact ${i + 1} of ${cards.length}`, {
-        progress: baseProgress + 8,
-        current: cardLabel
-      });
-      const okSdf = await headOrGetOk(sdfUrl);
-
-      if (!okSdf) {
-        console.warn("SDF missing for result card:", { job: JOB_ID, pdb, chain, warhead, resid, url: sdfUrl });
-        markCardArtifactMissing(card, "SDF missing — pipeline artifact incomplete");
-        card.dataset.sdfStatus = "404";
-        continue;
-      }
-      card.dataset.sdfStatus = "200";
-
-      if (!okProtein) {
-        console.warn("Protein artifact missing for result card:", { job: JOB_ID, pdb, chain, warhead, url: proteinUrl });
-        markCardArtifactMissing(card, "Protein artifact missing — pipeline artifact incomplete");
-        card.dataset.proteinStatus = "404";
-        continue;
-      }
-      card.dataset.proteinStatus = "200";
-
-      if (resid) {
-        const sasaUrl =
-          `/api/jobs/${encodeURIComponent(JOB_ID)}/sasa/atoms?` +
-          `pdb_id=${encodeURIComponent(pdb)}` +
-          `&chain=${encodeURIComponent(chain)}` +
-          `&residue_id=${encodeURIComponent(resid)}`;
-
-        ResultsLoader.update("Loading warhead results", `Checking SASA atoms ${i + 1} of ${cards.length}`, {
-          progress: baseProgress + 11,
-          current: cardLabel
-        });
-        const okSasa = await headOrGetOk(sasaUrl);
-
-        if (!okSasa) {
-          console.warn("SASA atoms unavailable for result card; keeping card without deleting it:", {
-            job: JOB_ID, pdb, chain, warhead, resid, url: sasaUrl
-          });
-        }
-      }
-
+      if (row.resid) card.dataset.resid = String(row.resid);
+      if (row.sdf && typeof row.sdf.ok !== "undefined") card.dataset.sdfStatus = row.sdf.ok ? "200" : "404";
+      if (row.protein && typeof row.protein.ok !== "undefined") card.dataset.proteinStatus = row.protein.ok ? "200" : "404";
+      card.dataset.renderable = row.hard_renderable ? "true" : "false";
       card.classList.remove("pending");
-      card.dataset.renderable = "true";
-      renderable.push(card);
 
-      ResultsLoader.update(
-        "Loading warhead results",
-        `${renderable.length} renderable ligand${renderable.length === 1 ? "" : "s"} found`,
-        {
-          progress: Math.min(88, baseProgress + 13),
-          current: cardLabel
-        }
-      );
-    }
+      if (row.hard_renderable) {
+        clearCardArtifactWarning(card);
+        renderable.push(card);
+      } else if (row.protein && !row.protein.ok) {
+        markCardArtifactMissing(card, "Protein artifact missing — pipeline artifact incomplete");
+      } else if (row.sdf && !row.sdf.ok) {
+        markCardArtifactMissing(card, "SDF missing — pipeline artifact incomplete");
+      } else {
+        markCardArtifactMissing(card, "Required artifacts unavailable for this result");
+      }
+    });
 
     if (!renderable.length) {
-      console.warn("No result cards have required SDF/protein artifacts. SDF and protein PDB are required display contracts.");
       ResultsLoader.markStep("artifacts", "error", "No renderable ligands found");
     } else {
-      ResultsLoader.markStep("artifacts", "success", `${renderable.length} renderable ligand${renderable.length === 1 ? "" : "s"} ready`);
+      ResultsLoader.markStep("artifacts", "success", `${hardRenderableCount} renderable ligand${hardRenderableCount === 1 ? "" : "s"} indexed`);
     }
-
-    ResultsLoader.update("Loading warhead results", "Artifact validation complete", {
-      progress: 90,
-      current: `${renderable.length} renderable ligand${renderable.length === 1 ? "" : "s"} ready`
+    ResultsLoader.update("Loading Warhead Results", "Artifact index loaded", {
+      progress: 24,
+      current: `${hardRenderableCount} hard-renderable ligand${hardRenderableCount === 1 ? "" : "s"} available`
     });
-    return renderable;
+    return { cards, rows, renderable };
+  }
+
+  async function validateCardInBackground(card, row) {
+    if (!card || !row || !row.hard_renderable) return;
+    const checks = [];
+    if (row.protein && row.protein.url) checks.push({ kind: "protein", url: row.protein.url });
+    if (row.sdf && row.sdf.url) checks.push({ kind: "sdf", url: row.sdf.url });
+    if (!checks.length) return;
+
+    for (const check of checks) {
+      StartupMetrics.backgroundValidationRequestCount += 1;
+      const ok = await headOrGetOk(check.url);
+      if (!ok) {
+        if (check.kind === "protein") {
+          card.dataset.proteinStatus = "404";
+          card.dataset.renderable = "false";
+          markCardArtifactMissing(card, "Protein artifact missing — pipeline artifact incomplete");
+        } else if (check.kind === "sdf") {
+          card.dataset.sdfStatus = "404";
+          card.dataset.renderable = "false";
+          markCardArtifactMissing(card, "SDF missing — pipeline artifact incomplete");
+        }
+        return;
+      }
+      if (check.kind === "protein") card.dataset.proteinStatus = "200";
+      if (check.kind === "sdf") card.dataset.sdfStatus = "200";
+    }
+  }
+
+  async function runBackgroundValidation(queue, concurrency = 4) {
+    const items = Array.isArray(queue) ? queue.slice() : [];
+    if (!items.length) return;
+
+    const workers = Array.from({ length: Math.min(concurrency, items.length) }, async () => {
+      while (items.length) {
+        const next = items.shift();
+        if (!next) return;
+        await validateCardInBackground(next.card, next.row);
+        await new Promise((resolve) => window.setTimeout(resolve, 0));
+      }
+    });
+    await Promise.all(workers);
+    resultsDebugLog("background_validation_complete", {
+      requests: StartupMetrics.backgroundValidationRequestCount
+    });
   }
 
   function bindCards() {
@@ -1173,6 +1187,7 @@ function openBuilderFallback(smiles, opts = {}) {
 
   async function resolveResid(pdb, chain, warhead, residFromCard) {
     const raw = String(residFromCard || "").trim();
+    if (raw) return raw;
 
     const url =
       `/api/jobs/${encodeURIComponent(JOB_ID)}/sasa/residue_for_ligand?` +
@@ -1312,6 +1327,32 @@ function openBuilderFallback(smiles, opts = {}) {
       if (initialBoot) loader?.markStep("viewport", "error", "3D renderer not loaded.");
     }
 
+    if (initialBoot) {
+      const renderResult = await renderPromise;
+      StartupMetrics.firstViewportRenderMs = Math.round((performance.now() - StartupMetrics.bootStartedAt) * 10) / 10;
+
+      propsPromise.catch(() => {});
+      mapPromise.catch(() => {});
+
+      const issues = [];
+      if (!renderResult.usable) issues.push("3D viewport unavailable");
+
+      if (!issues.length) {
+        setHUD(PDB, chain, WAR, exposedValue, "Loaded");
+      } else {
+        setHUD(PDB, chain, WAR, exposedValue, `Loaded with issues: ${issues.join(", ")}`);
+      }
+
+      return {
+        ok: renderResult.usable,
+        usable: renderResult.usable,
+        props: { ok: true, deferred: true },
+        map: { ok: true, deferred: true },
+        render3d: renderResult,
+        issues
+      };
+    }
+
     const [propsResult, mapResult, renderResult] = await Promise.all([
       propsPromise,
       mapPromise,
@@ -1358,6 +1399,7 @@ function openBuilderFallback(smiles, opts = {}) {
   // 9) BOOT
   // ============================================================================
   async function initializeResultsGallery() {
+    StartupMetrics.bootStartedAt = performance.now();
     ResultsLoader.show(
       "Loading Warhead Results",
       "Preparing controls and molecular viewer",
@@ -1372,9 +1414,26 @@ function openBuilderFallback(smiles, opts = {}) {
     bindCards();
 
     ResultsLoader.markStep("boot", "success", "Interface actions bound");
+    ResultsLoader.markStep("artifacts", "loading", "Fetching cached artifact index");
+    ResultsLoader.update("Loading Warhead Results", "Fetching artifact index", {
+      progress: 10,
+      current: "Reading results artifact summary"
+    });
 
-    const validCards = await filterRenderableCards();
-    const first = validCards[0];
+    const artifactIndexResult = await fetchArtifactIndex();
+    if (!artifactIndexResult.ok || !artifactIndexResult.data || !artifactIndexResult.data.ok) {
+      throw new Error("Artifact index unavailable");
+    }
+
+    const indexed = applyArtifactIndex(artifactIndexResult.data);
+    const candidates = indexed.renderable.slice(0, 8);
+    const first = candidates[0];
+    StartupMetrics.firstRenderableSelectionMs = Math.round((performance.now() - StartupMetrics.bootStartedAt) * 10) / 10;
+    resultsDebugLog("first_renderable_selected", {
+      selected_index: artifactIndexResult.data.first_renderable_index,
+      selection_ms: StartupMetrics.firstRenderableSelectionMs,
+      startup_requests: StartupMetrics.startupRequestCount
+    });
 
     if (!first) {
       setHUD("—", "—", "—", null, "No renderable ligands found for this job.");
@@ -1426,26 +1485,60 @@ function openBuilderFallback(smiles, opts = {}) {
       current: `${warhead || "ligand"} / ${pdb || "pdb"} chain ${chain || "?"}`
     });
 
-    const readiness = await window.syncView(
-      pdb,
-      chain,
-      warhead,
-      resid,
-      smiles,
-      exposedValue,
-      { initialBoot: true }
-    );
+    let readiness = null;
+    let selectedCard = null;
+    for (let attempt = 0; attempt < candidates.length; attempt += 1) {
+      const candidate = candidates[attempt];
+      const candidatePdb = candidate.dataset.pdb;
+      const candidateChain = candidate.dataset.chain;
+      const candidateWarhead = candidate.dataset.warhead;
+      const candidateSmiles = candidate.dataset.smiles || "";
+      const candidateResid = (candidate.dataset.resid || "").trim();
+      const candidateExposed = Number(candidate.dataset.exposed || 0);
 
-    if (readiness.ok) {
+      ResultsLoader.update("Loading Warhead Results", `Preparing candidate ${attempt + 1} of ${candidates.length}`, {
+        progress: 94,
+        current: `${candidateWarhead || "ligand"} / ${candidatePdb || "pdb"} chain ${candidateChain || "?"}`
+      });
+
+      readiness = await window.syncView(
+        candidatePdb,
+        candidateChain,
+        candidateWarhead,
+        candidateResid,
+        candidateSmiles,
+        candidateExposed,
+        { initialBoot: true }
+      );
+
+      if (readiness.usable) {
+        selectedCard = candidate;
+        break;
+      }
+    }
+
+    if (readiness && readiness.ok) {
       ResultsLoader.update("Loading Warhead Results", "Results ready", {
         progress: 100,
         current: "Warhead command center online"
       });
       ResultsLoader.hide(350);
+      const backgroundQueue = indexed.renderable
+        .filter((card) => card !== selectedCard)
+        .map((card) => {
+          const row = artifactIndexResult.data.rows[Array.from(document.querySelectorAll(".result-card")).indexOf(card)];
+          return { card, row };
+        })
+        .filter((item) => item.row && item.row.hard_renderable);
+      window.setTimeout(() => {
+        runBackgroundValidation(backgroundQueue, 4).catch((err) => {
+          resultsDebugLog("background_validation_failed", { message: err && err.message ? err.message : String(err) });
+        });
+      }, 0);
       return;
     }
 
-    if (readiness.usable) {
+    if (readiness && readiness.usable) {
       const summary = readiness.issues.join(", ");
       ResultsLoader.fail(
         "Results loaded with degraded assets",
