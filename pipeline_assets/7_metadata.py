@@ -23,14 +23,18 @@ Fixes in this version:
 """
 
 import os
-import sys
 import math
 import argparse
+import csv
+import gc
+import threading
+from functools import lru_cache
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from collections import defaultdict
+
 import pandas as pd
 import requests
 from tqdm import tqdm
-from multiprocessing import Pool, cpu_count
-from collections import defaultdict
 
 # ---------------- RDKit ----------------
 from rdkit import Chem
@@ -40,6 +44,36 @@ from rdkit.Chem.FilterCatalog import FilterCatalog, FilterCatalogParams
 from rdkit.Chem.MolStandardize import rdMolStandardize
 
 RDLogger.DisableLog("rdApp.*")
+
+IS_HEROKU = bool(os.environ.get("DYNO"))
+
+
+def env_int(name, default):
+    raw = str(os.environ.get(name, "") or "").strip()
+    if not raw:
+        return default
+    try:
+        return int(raw)
+    except Exception:
+        return default
+
+
+def env_flag(name, default):
+    raw = str(os.environ.get(name, "") or "").strip().lower()
+    if not raw:
+        return default
+    return raw in {"1", "true", "yes", "on"}
+
+
+DEFAULT_METADATA_MAX_WORKERS = 1 if IS_HEROKU else min(4, max(1, os.cpu_count() or 1))
+METADATA_MAX_WORKERS = max(1, env_int("WARHEAD_METADATA_MAX_WORKERS", DEFAULT_METADATA_MAX_WORKERS))
+METADATA_USE_THREADS = env_flag("WARHEAD_METADATA_USE_THREADS", True)
+METADATA_STREAM_OUTPUT = env_flag("WARHEAD_METADATA_STREAM_OUTPUT", True)
+METADATA_DEBUG_MEMORY = env_flag("WARHEAD_METADATA_DEBUG_MEMORY", False)
+
+_FILTER_LOCK = threading.Lock()
+_PAINS_CATALOG = None
+_BRENK_CATALOG = None
 
 # SA Score
 try:
@@ -72,6 +106,73 @@ def normalize_chain(val, default="A"):
             return ch.upper()
     return default
 
+
+def _current_rss_mb():
+    try:
+        status_path = "/proc/self/status"
+        if os.path.exists(status_path):
+            with open(status_path, "r", encoding="utf-8", errors="ignore") as handle:
+                for line in handle:
+                    if line.startswith("VmRSS:"):
+                        return round(int(line.split()[1]) / 1024.0, 1)
+    except Exception:
+        pass
+    try:
+        import subprocess
+
+        proc = subprocess.run(
+            ["ps", "-o", "rss=", "-p", str(os.getpid())],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        raw = (proc.stdout or "").strip()
+        if raw:
+            return round(int(raw.splitlines()[-1].strip()) / 1024.0, 1)
+    except Exception:
+        pass
+    return 0.0
+
+
+def debug_mem(message, **fields):
+    if not METADATA_DEBUG_MEMORY:
+        return
+    suffix = " ".join(f"{k}={v}" for k, v in fields.items())
+    if suffix:
+        suffix = f" {suffix}"
+    print(f"[metadata-mem] {message}{suffix} rss={_current_rss_mb():.1f}MB", flush=True)
+
+
+def ligand_metadata_header():
+    return [
+        "Ligand", "Name", "Formula", "Type",
+        "SMILES", "Parent_SMILES", "Salt_Stripped",
+        "Canonical_SMILES", "InChI", "InChIKey",
+        "MW", "LogP", "TPSA", "HBA", "HBD",
+        "Rotatable_Bonds", "Ring_Count", "Aromatic_Rings",
+        "Fraction_CSP3", "Heavy_Atom_Count", "Chiral_Atoms",
+        "Formal_Charge", "QED", "BertzCT", "HallKierAlpha",
+        "Kappa1", "Kappa2", "Kappa3", "NumSpiroAtoms",
+        "NumBridgeheadAtoms", "NumAliphaticRings",
+        "NumAromaticRings", "NumSaturatedRings",
+        "NumHeteroAtoms", "MolMR", "SA_Score",
+        "Lipinski_Pass", "Veber_Pass", "Egan_Pass",
+        "Ghose_Pass", "Muegge_Pass",
+        "PAINS_Hits", "Brenk_Hits",
+    ]
+
+
+def failure_header():
+    return ["Ligand", "SMILES", "Error"]
+
+
+def write_dict_csv(path, rows, header):
+    with open(path, "w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=header)
+        writer.writeheader()
+        for row in rows:
+            safe_row = {key: row.get(key, "") for key in header}
+            writer.writerow(safe_row)
 
 
 from rdkit import Chem
@@ -187,21 +288,39 @@ def druglikeness_rules(d):
 
 
 def check_pains(mol):
-    params = FilterCatalogParams()
-    params.AddCatalog(FilterCatalogParams.FilterCatalogs.PAINS_A)
-    params.AddCatalog(FilterCatalogParams.FilterCatalogs.PAINS_B)
-    params.AddCatalog(FilterCatalogParams.FilterCatalogs.PAINS_C)
-    cat = FilterCatalog(params)
-    matches = cat.GetMatches(mol)
+    matches = get_pains_catalog().GetMatches(mol)
     return "; ".join([m.GetDescription() for m in matches]) if matches else "None"
 
 
 def check_brenk(mol):
-    params = FilterCatalogParams()
-    params.AddCatalog(FilterCatalogParams.FilterCatalogs.BRENK)
-    cat = FilterCatalog(params)
-    matches = cat.GetMatches(mol)
+    matches = get_brenk_catalog().GetMatches(mol)
     return "; ".join([m.GetDescription() for m in matches]) if matches else "None"
+
+
+def get_pains_catalog():
+    global _PAINS_CATALOG
+    if _PAINS_CATALOG is None:
+        with _FILTER_LOCK:
+            if _PAINS_CATALOG is None:
+                params = FilterCatalogParams()
+                params.AddCatalog(FilterCatalogParams.FilterCatalogs.PAINS_A)
+                params.AddCatalog(FilterCatalogParams.FilterCatalogs.PAINS_B)
+                params.AddCatalog(FilterCatalogParams.FilterCatalogs.PAINS_C)
+                _PAINS_CATALOG = FilterCatalog(params)
+                debug_mem("initialized PAINS catalog")
+    return _PAINS_CATALOG
+
+
+def get_brenk_catalog():
+    global _BRENK_CATALOG
+    if _BRENK_CATALOG is None:
+        with _FILTER_LOCK:
+            if _BRENK_CATALOG is None:
+                params = FilterCatalogParams()
+                params.AddCatalog(FilterCatalogParams.FilterCatalogs.BRENK)
+                _BRENK_CATALOG = FilterCatalog(params)
+                debug_mem("initialized BRENK catalog")
+    return _BRENK_CATALOG
 
 
 def compute_descriptors(mol):
@@ -237,6 +356,7 @@ def compute_descriptors(mol):
     return d
 
 
+@lru_cache(maxsize=1024)
 def fetch_rcsb(lig5):
     lig5 = str(lig5).strip().upper()
     url = f"https://data.rcsb.org/rest/v1/core/chemcomp/{lig5}"
@@ -317,8 +437,10 @@ def process_single_ligand(lig_and_smi):
 
         rc = fetch_rcsb(lig)
         rd = compute_descriptors(mol)
+        inchi = Chem.MolToInchi(mol)
+        inchi_key = Chem.InchiToInchiKey(inchi) if inchi else ""
 
-        return {
+        row = {
             "Ligand": lig,
             "Name": rc["Name"],
             "Formula": rc["Formula"],
@@ -327,12 +449,15 @@ def process_single_ligand(lig_and_smi):
             "Parent_SMILES": parent_smi,
             "Salt_Stripped": bool(was_stripped),
             "Canonical_SMILES": parent_smi,
-            "InChI": Chem.MolToInchi(mol),
-            "InChIKey": Chem.InchiToInchiKey(Chem.MolToInchi(mol)),
+            "InChI": inchi,
+            "InChIKey": inchi_key,
             **rd,
             "PAINS_Hits": check_pains(mol),
             "Brenk_Hits": check_brenk(mol),
         }
+        del mol
+        gc.collect()
+        return row
 
     except Exception as e:
         # Write a minimal failure row instead of crashing the pool
@@ -712,10 +837,11 @@ def main():
         print(f"📄 Using SASA file: {sasa_file}")
 
     # 3) Load table
-    df = pd.read_csv(sasa_file)
+    df = pd.read_csv(sasa_file, dtype=str).fillna("")
     print("📥 Loaded SASA table.")
     print(f"📊 Step 7 input row count: {len(df)}")
     print(f"🧾 Step 7 input columns: {list(df.columns)}")
+    debug_mem("loaded input rows", rows=len(df))
 
     if df.empty:
         fail_metadata_step(
@@ -745,6 +871,12 @@ def main():
 
     # 5) Load 5CharMAP (ALWAYS if present)
     map_pdb_x_to_5, map_x_to_5, map_pdb_3_to_5, map_3_to_5 = load_5charmap_maps("5CharMAP.csv")
+    debug_mem(
+        "built ligand/smiles map",
+        smiles_entries=len(smiles_map),
+        map_x=len(map_x_to_5),
+        map_pdb_x=len(map_pdb_x_to_5),
+    )
 
     # 6) Chain assignment
     chain_map_multi = build_chain_map_from_warpdb(args.war_pdb_root)
@@ -852,6 +984,7 @@ def main():
     # 4) Save filtered SASA summary
     df.to_csv("Resolved_SASA_Summary.csv", index=False)
     print("💾 Saved Resolved_SASA_Summary.csv")
+    debug_mem("wrote Resolved_SASA_Summary.csv", rows=len(df))
 
     if df.empty:
         fail_metadata_step(
@@ -895,60 +1028,89 @@ def main():
         .first()
         .to_dict()
     )
+    debug_mem("prepared unique ligand jobs", unique_ligands=len(ligands))
 
     job_list = [(lig, lig_smiles.get(lig, "")) for lig in ligands]
 
-    print(f"\n🚀 Launching parallel engine with {cpu_count()} cores...\n")
+    max_workers = min(METADATA_MAX_WORKERS, max(1, len(job_list) or 1))
+    mode = "threads" if (METADATA_USE_THREADS and max_workers > 1) else "sequential"
+    print(f"\n🚀 Launching metadata engine mode={mode} max_workers={max_workers}\n")
 
-    results = []
-    with Pool(cpu_count()) as pool:
-        for row in tqdm(
-            pool.imap(process_single_ligand, job_list),
-            total=len(job_list),
-            desc="🧪 Computing descriptors"
-        ):
-            if row:
-                results.append(row)
+    success_header = ligand_metadata_header()
+    fail_header = failure_header()
+    success_count = 0
+    failure_count = 0
+    failure_preview = []
 
-    out_df = pd.DataFrame(results)
-    if out_df.empty:
+    if METADATA_STREAM_OUTPUT:
+        success_handle = open("Ligand_Metadata.csv", "w", newline="", encoding="utf-8")
+        fail_handle = open("Ligand_Metadata_Failures.csv", "w", newline="", encoding="utf-8")
+        success_writer = csv.DictWriter(success_handle, fieldnames=success_header)
+        failure_writer = csv.DictWriter(fail_handle, fieldnames=fail_header)
+        success_writer.writeheader()
+        failure_writer.writeheader()
+    else:
+        success_rows = []
+        failure_rows = []
+
+    def handle_row(row):
+        nonlocal success_count, failure_count
+        if not row:
+            return
+        if row.get("Error"):
+            safe_row = {key: row.get(key, "") for key in fail_header}
+            if METADATA_STREAM_OUTPUT:
+                failure_writer.writerow(safe_row)
+            else:
+                failure_rows.append(safe_row)
+            failure_count += 1
+            if len(failure_preview) < 10:
+                failure_preview.append(safe_row)
+            return
+
+        safe_row = {key: row.get(key, "") for key in success_header}
+        if METADATA_STREAM_OUTPUT:
+            success_writer.writerow(safe_row)
+        else:
+            success_rows.append(safe_row)
+        success_count += 1
+
+    try:
+        if METADATA_USE_THREADS and max_workers > 1:
+            with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                futures = [executor.submit(process_single_ligand, item) for item in job_list]
+                for idx, future in enumerate(tqdm(as_completed(futures), total=len(futures), desc="🧪 Computing descriptors"), 1):
+                    handle_row(future.result())
+                    if idx % 25 == 0:
+                        debug_mem("processed ligand batch", count=idx, success=success_count, failures=failure_count)
+        else:
+            for idx, item in enumerate(tqdm(job_list, total=len(job_list), desc="🧪 Computing descriptors"), 1):
+                handle_row(process_single_ligand(item))
+                if idx % 25 == 0:
+                    debug_mem("processed ligand batch", count=idx, success=success_count, failures=failure_count)
+    finally:
+        if METADATA_STREAM_OUTPUT:
+            success_handle.close()
+            fail_handle.close()
+
+    if not METADATA_STREAM_OUTPUT:
+        write_dict_csv("Ligand_Metadata.csv", success_rows, success_header)
+        write_dict_csv("Ligand_Metadata_Failures.csv", failure_rows, fail_header)
+        failure_preview = failure_rows[:10]
+        success_count = len(success_rows)
+        failure_count = len(failure_rows)
+
+    debug_mem("wrote Ligand_Metadata.csv", rows=success_count, failures=failure_count)
+
+    if not success_count and not failure_count:
         print("❌ No ligand metadata rows were generated.")
-        out_df.to_csv("Ligand_Metadata.csv", index=False)
-        out_df.to_csv("Ligand_Metadata_Failures.csv", index=False)
         return
 
-    fails = out_df[out_df.columns.intersection(["Error"])].notna().any(axis=1)
-    out_df[fails].to_csv("Ligand_Metadata_Failures.csv", index=False)
-    out_df[~fails].to_csv("Ligand_Metadata.csv", index=False)
-
-
-    header = [
-        "Ligand", "Name", "Formula", "Type",
-        "SMILES", "Canonical_SMILES", "InChI", "InChIKey",
-        "MW", "LogP", "TPSA", "HBA", "HBD",
-        "Rotatable_Bonds", "Ring_Count", "Aromatic_Rings",
-        "Fraction_CSP3", "Heavy_Atom_Count", "Chiral_Atoms",
-        "Formal_Charge", "QED", "BertzCT", "HallKierAlpha",
-        "Kappa1", "Kappa2", "Kappa3", "NumSpiroAtoms",
-        "NumBridgeheadAtoms", "NumAliphaticRings",
-        "NumAromaticRings", "NumSaturatedRings",
-        "NumHeteroAtoms", "MolMR", "SA_Score",
-        "Lipinski_Pass", "Veber_Pass", "Egan_Pass",
-        "Ghose_Pass", "Muegge_Pass",
-        "PAINS_Hits", "Brenk_Hits"
-    ]
-
-    out_df = out_df[[c for c in header if c in out_df.columns]]
-    out_df.to_csv("Ligand_Metadata.csv", index=False)
-
-    success_count = int((~fails).sum())
-    failure_count = int(fails.sum())
-    print(f"📊 Ligand metadata rows: total={len(out_df)} success={success_count} failures={failure_count}")
+    print(f"📊 Ligand metadata rows: total={success_count + failure_count} success={success_count} failures={failure_count}")
     if failure_count:
-        preview_cols = [c for c in ["Ligand", "SMILES", "Error"] if c in pd.DataFrame(results).columns]
-        if preview_cols:
-            print("⚠️ Metadata failures (first 10):")
-            print(pd.DataFrame(results).loc[fails, preview_cols].head(10).to_string(index=False))
+        print("⚠️ Metadata failures (first 10):")
+        for row in failure_preview:
+            print(f"{row.get('Ligand','')} | {row.get('SMILES','')} | {row.get('Error','')}")
 
     print("\n🎉 COMPLETE → Ligand_Metadata.csv")
     print("===================================================================")

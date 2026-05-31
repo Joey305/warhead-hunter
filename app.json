@@ -55,6 +55,18 @@
     "WARHEAD_SASA_DEBUG_MEMORY": {
       "value": "0"
     },
+    "WARHEAD_METADATA_MAX_WORKERS": {
+      "value": "1"
+    },
+    "WARHEAD_METADATA_USE_THREADS": {
+      "value": "1"
+    },
+    "WARHEAD_METADATA_STREAM_OUTPUT": {
+      "value": "1"
+    },
+    "WARHEAD_METADATA_DEBUG_MEMORY": {
+      "value": "0"
+    },
     "WARHEAD_RUN_CLEANUP_STEP": {
       "value": "0"
     },
