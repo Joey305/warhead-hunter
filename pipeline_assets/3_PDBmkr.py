@@ -5,7 +5,7 @@ import gzip
 import io
 import os
 from pathlib import Path
-from concurrent.futures import ProcessPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import pandas as pd
 from tqdm import tqdm
@@ -14,7 +14,18 @@ from Bio.PDB import MMCIFParser, PDBIO, Select
 # =============================================================================
 # CONFIG
 # =============================================================================
-MAX_WORKERS = 12
+def env_int(name: str, default: int) -> int:
+    raw = str(os.environ.get(name, "") or "").strip()
+    if not raw:
+        return default
+    try:
+        return int(raw)
+    except Exception:
+        return default
+
+
+DEFAULT_MAX_WORKERS = 2 if os.environ.get("DYNO") else min(6, os.cpu_count() or 4)
+MAX_WORKERS = max(1, env_int("WARHEAD_PDBMKR_MAX_WORKERS", DEFAULT_MAX_WORKERS))
 LIGMAP_FILE = "5CharMAP.csv"
 CHAINMAP_FILE = "ChainRenameMAP.csv"
 MANIFEST_FILE = "CIF_Download_Manifest.csv"
@@ -539,6 +550,7 @@ def main():
 
     print(f"\n🚀 BUILDING {len(jobs)} PDB CHAINS...\n")
     print(f"🧾 Step 3 selected build rows={len(final_set)} resolvable_cifs={len(jobs)} missing_cifs={len(missing_cifs)}")
+    print(f"🧵 Worker mode=threadpool max_workers={MAX_WORKERS}")
     if jobs:
         sample_modes = [f"{job['pdb']}:{job['cif_lookup_mode']}:{path_for_log(Path(job['cif_path']), job_root)}" for job in jobs[:10]]
         print(f"🧾 Step 3 sample CIF resolutions: {sample_modes}")
@@ -546,7 +558,7 @@ def main():
     results = {}
     failures = list(missing_cifs)
 
-    with ProcessPoolExecutor(max_workers=MAX_WORKERS) as exe:
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as exe:
         futmap = {exe.submit(build_single_pdb, job): job["job_index"] for job in jobs}
         for fut in tqdm(as_completed(futmap), total=len(jobs)):
             idx = futmap[fut]

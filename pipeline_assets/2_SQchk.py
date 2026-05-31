@@ -30,12 +30,12 @@ import json
 import csv
 import time
 import random
+import threading
 import requests
 import urllib3
 import pandas as pd
 
-from concurrent.futures import ProcessPoolExecutor, as_completed
-from multiprocessing import Lock
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 
 # Biopython (PairwiseAligner replaces deprecated pairwise2)
@@ -56,10 +56,21 @@ from NON_LIGAND_CODES import NON_LIGAND_CODES
 # -------------------------
 # Config
 # -------------------------
-MAX_WORKERS = 12
+def env_int(name: str, default: int) -> int:
+    raw = str(os.environ.get(name, "") or "").strip()
+    if not raw:
+        return default
+    try:
+        return int(raw)
+    except Exception:
+        return default
+
+
+DEFAULT_MAX_WORKERS = 4 if os.environ.get("DYNO") else min(8, os.cpu_count() or 4)
+MAX_WORKERS = max(1, env_int("WARHEAD_SQCHK_MAX_WORKERS", DEFAULT_MAX_WORKERS))
 CSV_FILE = "filtered_data.csv"
 CHAIN_CSV_FILE = "chain_similarity.csv"
-csv_lock = Lock()
+csv_lock = threading.Lock()
 
 EBI_MOLECULES_URL = "https://www.ebi.ac.uk/pdbe/api/pdb/entry/molecules/{pdb_id}"
 
@@ -219,7 +230,7 @@ def get_structure_data(pdb_id: str):
 # Sequence identity using PairwiseAligner (local alignment)
 # =============================================================================
 
-_ALIGNER = None
+_ALIGNER_LOCAL = threading.local()
 
 def get_aligner():
     """
@@ -229,16 +240,17 @@ def get_aligner():
       - match=1, mismatch=0 so score approximates number of matching positions
       - gap penalties 0 so it can slide freely (very lenient)
     """
-    global _ALIGNER
-    if _ALIGNER is None:
+    aligner = getattr(_ALIGNER_LOCAL, "aligner", None)
+    if aligner is None:
         al = PairwiseAligner()
         al.mode = "local"
         al.match_score = 1.0
         al.mismatch_score = 0.0
         al.open_gap_score = 0.0
         al.extend_gap_score = 0.0
-        _ALIGNER = al
-    return _ALIGNER
+        _ALIGNER_LOCAL.aligner = al
+        aligner = al
+    return aligner
 
 
 def seq_identity_percent(query_fasta_whole: str, pdb_frag: str) -> float:
@@ -401,8 +413,10 @@ def main():
     fail = 0
     fail_reasons = {}
 
-    # Using ProcessPoolExecutor, but we submit futures so we can count failures
-    with ProcessPoolExecutor(max_workers=MAX_WORKERS) as exe:
+    print(f"   Worker mode=threadpool max_workers={MAX_WORKERS}")
+
+    # Thread workers keep requests/Biopython state shared instead of forking 12 copies.
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as exe:
         futures = [exe.submit(process_one_pdb, job) for job in jobs]
 
         for fut in tqdm(as_completed(futures), total=len(futures)):

@@ -17,13 +17,34 @@
       "value": "800"
     },
     "WARHEAD_JOB_LOG_API_TAIL": {
-      "value": "400"
+      "value": "250"
     },
     "WARHEAD_MEMORY_WARN_MB": {
       "value": "360"
     },
     "WARHEAD_MEMORY_GUARD_MB": {
       "value": "430"
+    },
+    "WARHEAD_CHILD_MEMORY_WARN_MB": {
+      "value": "360"
+    },
+    "WARHEAD_CHILD_MEMORY_GUARD_MB": {
+      "value": "430"
+    },
+    "WARHEAD_DYNO_MEMORY_WARN_MB": {
+      "value": "430"
+    },
+    "WARHEAD_DYNO_MEMORY_GUARD_MB": {
+      "value": "480"
+    },
+    "WARHEAD_MEMORY_SAMPLE_INTERVAL_SEC": {
+      "value": "0.5"
+    },
+    "WARHEAD_SQCHK_MAX_WORKERS": {
+      "value": "4"
+    },
+    "WARHEAD_PDBMKR_MAX_WORKERS": {
+      "value": "2"
     },
     "WARHEAD_RUN_CLEANUP_STEP": {
       "value": "0"

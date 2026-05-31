@@ -81,9 +81,14 @@ def _env_int(name: str, default: int) -> int:
 
 
 MAX_IN_MEMORY_LOG_LINES = max(100, _env_int("WARHEAD_JOB_LOG_TAIL_LINES", 800))
-DEFAULT_LOG_API_TAIL = max(100, _env_int("WARHEAD_JOB_LOG_API_TAIL", 400))
+DEFAULT_LOG_API_TAIL = max(100, _env_int("WARHEAD_JOB_LOG_API_TAIL", 250 if IS_HEROKU else 400))
 MEMORY_WARN_MB = max(0, _env_int("WARHEAD_MEMORY_WARN_MB", 360 if IS_HEROKU else 0))
 MEMORY_GUARD_MB = max(0, _env_int("WARHEAD_MEMORY_GUARD_MB", 430 if IS_HEROKU else 0))
+CHILD_MEMORY_WARN_MB = max(0, _env_int("WARHEAD_CHILD_MEMORY_WARN_MB", MEMORY_WARN_MB))
+CHILD_MEMORY_GUARD_MB = max(0, _env_int("WARHEAD_CHILD_MEMORY_GUARD_MB", MEMORY_GUARD_MB))
+DYNO_MEMORY_WARN_MB = max(0, _env_int("WARHEAD_DYNO_MEMORY_WARN_MB", MEMORY_GUARD_MB))
+DYNO_MEMORY_GUARD_MB = max(0, _env_int("WARHEAD_DYNO_MEMORY_GUARD_MB", DYNO_MEMORY_WARN_MB))
+MEMORY_SAMPLE_INTERVAL_SEC = max(0.1, float(os.environ.get("WARHEAD_MEMORY_SAMPLE_INTERVAL_SEC", "0.5") or "0.5"))
 RUN_CLEANUP_STEP = os.environ.get("WARHEAD_RUN_CLEANUP_STEP", "0" if IS_HEROKU else "1") == "1"
 CLEANUP_SCRIPT_NAME = "18_CleanJobDirNzip.py"
 CLEANUP_TIMEOUT_SEC = _env_int("WARHEAD_CLEANUP_TIMEOUT_SEC", 8 * 60)
@@ -104,6 +109,7 @@ CLEANUP_NO_OUTPUT_TIMEOUT_SEC = _env_int("WARHEAD_CLEANUP_NO_OUTPUT_TIMEOUT_SEC"
 JOB_STORE: Dict[str, Dict[str, Any]] = {}
 JOB_LOCK = threading.Lock()
 _LAST_LOG_METADATA_TOUCH: Dict[str, float] = {}
+_MEMORY_WARN_ONCE: Dict[str, float] = {}
 
 # Per-step total runtime timeout (seconds). Set None for no hard timeout.
 STEP_TIMEOUTS = {
@@ -206,6 +212,18 @@ def _current_rss_mb(pid: Optional[int] = None) -> float:
                     return round(kb / 1024.0, 1)
         except Exception:
             pass
+    try:
+        proc = subprocess.run(
+            ["ps", "-o", "rss=", "-p", str(target_pid)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        raw = (proc.stdout or "").strip()
+        if raw:
+            return round(int(raw.splitlines()[-1].strip()) / 1024.0, 1)
+    except Exception:
+        pass
     return 0.0
 
 
@@ -249,6 +267,78 @@ def _process_tree_rss_mb(root_pid: int) -> float:
     return round(total, 1)
 
 
+def _read_cgroup_memory_mb() -> Optional[float]:
+    candidates = [
+        Path("/sys/fs/cgroup/memory.current"),
+        Path("/sys/fs/cgroup/memory/memory.usage_in_bytes"),
+    ]
+    for candidate in candidates:
+        if not candidate.exists():
+            continue
+        try:
+            raw = candidate.read_text(encoding="utf-8", errors="ignore").strip()
+            if not raw or raw == "max":
+                continue
+            return round(int(raw) / (1024.0 * 1024.0), 1)
+        except Exception:
+            continue
+    return None
+
+
+def _read_cgroup_limit_mb() -> Optional[float]:
+    candidates = [
+        Path("/sys/fs/cgroup/memory.max"),
+        Path("/sys/fs/cgroup/memory/memory.limit_in_bytes"),
+    ]
+    for candidate in candidates:
+        if not candidate.exists():
+            continue
+        try:
+            raw = candidate.read_text(encoding="utf-8", errors="ignore").strip()
+            if not raw or raw == "max":
+                return None
+            limit_bytes = int(raw)
+            if limit_bytes <= 0 or limit_bytes >= (1 << 60):
+                return None
+            return round(limit_bytes / (1024.0 * 1024.0), 1)
+        except Exception:
+            continue
+    return None
+
+
+def _memory_snapshot(proc_pid: Optional[int] = None) -> Dict[str, Optional[float]]:
+    parent_mb = _current_rss_mb()
+    child_tree_mb = _process_tree_rss_mb(proc_pid) if proc_pid else 0.0
+    combined_mb = round(parent_mb + child_tree_mb, 1)
+    dyno_mb = _read_cgroup_memory_mb()
+    return {
+        "parent_mb": parent_mb,
+        "child_tree_mb": child_tree_mb,
+        "combined_mb": combined_mb,
+        "dyno_mb": dyno_mb,
+        "cgroup_limit_mb": _read_cgroup_limit_mb(),
+    }
+
+
+def _format_snapshot(snapshot: Dict[str, Optional[float]], *, include_delta_from: Optional[float] = None, child_peak_mb: Optional[float] = None, dyno_peak_mb: Optional[float] = None, combined_peak_mb: Optional[float] = None) -> str:
+    parts = [f"parent={snapshot['parent_mb']:.1f}MB"]
+    if include_delta_from is not None:
+        parts.append(f"delta={snapshot['parent_mb'] - include_delta_from:+.1f}MB")
+    if snapshot.get("child_tree_mb"):
+        parts.append(f"child_tree={snapshot['child_tree_mb']:.1f}MB")
+    if combined_peak_mb is not None:
+        parts.append(f"combined_peak={combined_peak_mb:.1f}MB")
+    elif snapshot.get("combined_mb") is not None:
+        parts.append(f"combined={snapshot['combined_mb']:.1f}MB")
+    if child_peak_mb is not None:
+        parts.append(f"child_peak={child_peak_mb:.1f}MB")
+    if snapshot.get("dyno_mb") is not None:
+        parts.append(f"dyno={snapshot['dyno_mb']:.1f}MB")
+    if dyno_peak_mb is not None:
+        parts.append(f"dyno_peak={dyno_peak_mb:.1f}MB")
+    return " ".join(parts)
+
+
 def _append_live_log(job_id: str, line: str, *, persist: bool = True) -> None:
     with JOB_LOCK:
         if job_id in JOB_STORE:
@@ -278,24 +368,71 @@ def _touch_last_log_at(job_id: str, job_dir: str, *, force: bool = False) -> Non
         pass
 
 
-def _memory_status(job_id: str, script_name: str, phase: str, *, before_mb: Optional[float] = None, child_peak_mb: Optional[float] = None) -> float:
-    rss_mb = _current_rss_mb()
-    delta = "" if before_mb is None else f" delta={rss_mb - before_mb:+.1f}MB"
-    child = "" if child_peak_mb is None else f" child_peak={child_peak_mb:.1f}MB"
-    log_message(job_id, f"[mem] {phase} {script_name} rss={rss_mb:.1f}MB{delta}{child}")
-    return rss_mb
+def _memory_status(job_id: str, script_name: str, phase: str, snapshot: Dict[str, Optional[float]], *, before_parent_mb: Optional[float] = None, child_peak_mb: Optional[float] = None, dyno_peak_mb: Optional[float] = None, combined_peak_mb: Optional[float] = None) -> float:
+    log_message(
+        job_id,
+        f"[mem] {phase} {script_name} "
+        + _format_snapshot(
+            snapshot,
+            include_delta_from=before_parent_mb,
+            child_peak_mb=child_peak_mb,
+            dyno_peak_mb=dyno_peak_mb,
+            combined_peak_mb=combined_peak_mb,
+        ),
+    )
+    return snapshot["parent_mb"] or 0.0
 
 
-def _check_memory_guard(job_id: str, script_name: str, job_dir: str, *, phase: str) -> float:
-    rss_mb = _current_rss_mb()
-    if MEMORY_WARN_MB and rss_mb >= MEMORY_WARN_MB:
-        log_message(job_id, f"⚠️ [mem] {phase} {script_name} rss={rss_mb:.1f}MB exceeds warn threshold {MEMORY_WARN_MB}MB")
-        _touch_last_log_at(job_id, job_dir, force=True)
-    if MEMORY_GUARD_MB and rss_mb >= MEMORY_GUARD_MB:
-        raise MemoryGuardError(
-            f"Memory guard tripped {phase} {script_name}: rss={rss_mb:.1f}MB >= guard {MEMORY_GUARD_MB}MB"
-        )
-    return rss_mb
+def _remember_memory_warning(job_id: str, key: str) -> bool:
+    now = time.time()
+    warn_key = f"{job_id}:{key}"
+    last = _MEMORY_WARN_ONCE.get(warn_key, 0.0)
+    if now - last < 10.0:
+        return False
+    _MEMORY_WARN_ONCE[warn_key] = now
+    return True
+
+
+def _record_memory_failure(job_id: str, job_dir: str, script_name: str, phase: str, metric: str, value_mb: float, guard_mb: float, snapshot: Dict[str, Optional[float]]) -> str:
+    message = (
+        f"Job failed safely before dyno crash: {script_name} exceeded {metric} memory guard during {phase}. "
+        + _format_snapshot(snapshot)
+        + f" guard={guard_mb:.1f}MB"
+    )
+    write_job_metadata(job_id, {
+        "memory_failure": {
+            "step": script_name,
+            "phase": phase,
+            "metric": metric,
+            "value_mb": value_mb,
+            "guard_mb": guard_mb,
+            "parent_mb": snapshot.get("parent_mb"),
+            "child_tree_mb": snapshot.get("child_tree_mb"),
+            "combined_mb": snapshot.get("combined_mb"),
+            "dyno_mb": snapshot.get("dyno_mb"),
+            "cgroup_limit_mb": snapshot.get("cgroup_limit_mb"),
+        }
+    }, job_dir=job_dir)
+    return message
+
+
+def _check_memory_guard(job_id: str, script_name: str, job_dir: str, *, phase: str, proc_pid: Optional[int] = None) -> Dict[str, Optional[float]]:
+    snapshot = _memory_snapshot(proc_pid)
+    checks = [
+        ("parent", snapshot["parent_mb"], MEMORY_WARN_MB, MEMORY_GUARD_MB),
+        ("child", snapshot["child_tree_mb"], CHILD_MEMORY_WARN_MB, CHILD_MEMORY_GUARD_MB),
+        ("combined", snapshot["combined_mb"], 0, 0),
+        ("dyno", snapshot["dyno_mb"], DYNO_MEMORY_WARN_MB, DYNO_MEMORY_GUARD_MB),
+    ]
+    for metric, value, warn_mb, guard_mb in checks:
+        if value is None:
+            continue
+        if warn_mb and value >= warn_mb and _remember_memory_warning(job_id, f"{script_name}:{metric}:{warn_mb}"):
+            log_message(job_id, f"⚠️ [mem] {phase} {script_name} {metric}={value:.1f}MB exceeds warn threshold {warn_mb}MB")
+            _touch_last_log_at(job_id, job_dir, force=True)
+        if guard_mb and value >= guard_mb:
+            raise MemoryGuardError(_record_memory_failure(job_id, job_dir, script_name, phase, metric, value, guard_mb, snapshot))
+    return snapshot
 
 
 def _terminate_process_tree(proc: subprocess.Popen, *, grace_sec: float = 5.0) -> None:
@@ -372,8 +509,8 @@ def run_script_logged(
 
     log_message(job_id, f"🚀 Running {script_name}...")
     log_message(job_id, f"🐍 Pipeline Python: {PYTHON_BIN}")
-    before_rss = _check_memory_guard(job_id, script_name, job_dir, phase="before")
-    _memory_status(job_id, script_name, "before")
+    before_snapshot = _check_memory_guard(job_id, script_name, job_dir, phase="before")
+    before_parent_rss = _memory_status(job_id, script_name, "before", before_snapshot)
 
     env = os.environ.copy()
     env["PYTHONUNBUFFERED"] = "1"
@@ -403,9 +540,13 @@ def run_script_logged(
         start_new_session=(os.name != "nt"),
     ) as proc:
         peak_child_rss_mb = 0.0
+        peak_dyno_mb = before_snapshot.get("dyno_mb") or 0.0
+        peak_combined_mb = before_snapshot.get("combined_mb") or before_parent_rss
         selector = selectors.DefaultSelector()
         if proc.stdout is not None:
             selector.register(proc.stdout, selectors.EVENT_READ)
+        last_memory_sample = 0.0
+        last_running_log = 0.0
         try:
             while True:
                 now = time.time()
@@ -417,8 +558,15 @@ def run_script_logged(
                     _terminate_process_tree(proc)
                     raise TimeoutError(f"{script_name} produced no output for >{no_output_timeout_sec}s (killed)")
 
-                if now - last_output >= 1.0:
-                    _check_memory_guard(job_id, script_name, job_dir, phase="during")
+                if proc.poll() is None and (now - last_memory_sample) >= MEMORY_SAMPLE_INTERVAL_SEC:
+                    snapshot = _check_memory_guard(job_id, script_name, job_dir, phase="running", proc_pid=proc.pid)
+                    peak_child_rss_mb = max(peak_child_rss_mb, snapshot.get("child_tree_mb") or 0.0)
+                    peak_combined_mb = max(peak_combined_mb, snapshot.get("combined_mb") or 0.0)
+                    peak_dyno_mb = max(peak_dyno_mb, snapshot.get("dyno_mb") or 0.0)
+                    last_memory_sample = now
+                    if (now - last_running_log) >= 5.0:
+                        _memory_status(job_id, script_name, "running", snapshot)
+                        last_running_log = now
                 if proc.poll() is not None:
                     if proc.stdout is not None:
                         remainder = proc.stdout.read() or ""
@@ -428,7 +576,6 @@ def run_script_logged(
                                 _touch_last_log_at(job_id, job_dir)
                     break
 
-                peak_child_rss_mb = max(peak_child_rss_mb, _process_tree_rss_mb(proc.pid))
                 events = selector.select(timeout=1.0)
                 if not events:
                     continue
@@ -455,8 +602,17 @@ def run_script_logged(
 
     if proc.returncode != 0:
         raise RuntimeError(f"{script_name} failed with code {proc.returncode}")
-    after_rss = _check_memory_guard(job_id, script_name, job_dir, phase="after")
-    _memory_status(job_id, script_name, "after", before_mb=before_rss, child_peak_mb=peak_child_rss_mb)
+    after_snapshot = _check_memory_guard(job_id, script_name, job_dir, phase="after")
+    _memory_status(
+        job_id,
+        script_name,
+        "after",
+        after_snapshot,
+        before_parent_mb=before_parent_rss,
+        child_peak_mb=peak_child_rss_mb,
+        dyno_peak_mb=peak_dyno_mb if peak_dyno_mb > 0 else None,
+        combined_peak_mb=peak_combined_mb,
+    )
 
 
 # =============================================================================
@@ -865,6 +1021,15 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
         log_message(job_id, "Access results in the Browse tab.")
 
     except Exception as e:
+        existing_meta = {}
+        try:
+            meta_path = _job_metadata_path(job_dir)
+            if os.path.exists(meta_path):
+                with open(meta_path, "r", encoding="utf-8") as handle:
+                    existing_meta = json.load(handle) or {}
+        except Exception:
+            existing_meta = {}
+        memory_failure = existing_meta.get("memory_failure") if isinstance(existing_meta, dict) else None
         with JOB_LOCK:
             JOB_STORE[job_id]["status"] = "failed"
             JOB_STORE[job_id]["finished_at"] = _timestamp()
@@ -877,6 +1042,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
                 "message": str(e),
             },
             "results_ready": results_ready_from_disk(job_id),
+            "memory_failure": memory_failure,
         }, job_dir=job_dir)
 
         log_message(job_id, f"❌ CRITICAL ERROR: {str(e)}")
