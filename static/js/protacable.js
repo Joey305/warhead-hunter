@@ -32,6 +32,8 @@
   const State = {
     current: { pdb: null, chain: null, warhead: null, resid: null },
     last2D:  { pdb: null, chain: null, warhead: null, resid: null },
+    lastLoadedPoseKey: "",
+    activeLoadSeq: 0,
     mapMode: "sasa",
     hudInitialized: false,
     handoff: null
@@ -675,10 +677,11 @@
 
   async function headOrGetOk(url) {
     try {
-      let r = await fetch(url, { method: "HEAD", cache: "no-store" });
+      const headers = { "X-WH-Background-Validation": "1" };
+      let r = await fetch(url, { method: "HEAD", cache: "no-store", headers });
 
       if (r.status === 405 || r.status === 501) {
-        r = await fetch(url, { method: "GET", cache: "no-store" });
+        r = await fetch(url, { method: "GET", cache: "no-store", headers });
       }
 
       return r.ok;
@@ -874,9 +877,22 @@
         const smiles  = card.dataset.smiles || "";
         const exposedValue = Number(card.dataset.exposed || 0);
 
-        window.syncView(pdb, chain, warhead, resid, smiles, exposedValue);
+        window.syncView(pdb, chain, warhead, resid, smiles, exposedValue, { userInitiated: true });
       });
     });
+  }
+
+  function viewportHasCanvas() {
+    return Boolean($("viewport")?.querySelector("canvas"));
+  }
+
+  function poseKeyFor(pdb, chain, warhead, resid) {
+    return [
+      String(pdb || "").trim().toLowerCase(),
+      String(chain || "").trim().toUpperCase(),
+      String(warhead || "").trim().toUpperCase(),
+      String(resid || "").trim()
+    ].join("|");
   }
 
   function bindSmilesActions() {
@@ -1229,7 +1245,10 @@ function openBuilderFallback(smiles, opts = {}) {
     const PDB = String(pdb || "").toLowerCase().trim();
     const WAR = String(warhead || "").toUpperCase().trim();
     const initialBoot = Boolean(options && options.initialBoot);
+    const forceReload = Boolean(options && options.forceReload);
     const loader = window.WarheadResultsLoader;
+    const loadSeq = State.activeLoadSeq + 1;
+    State.activeLoadSeq = loadSeq;
 
     const chain = await bestChain(PDB, chainFromResults, WAR);
     if (initialBoot) {
@@ -1246,8 +1265,41 @@ function openBuilderFallback(smiles, opts = {}) {
     State.current = { pdb: PDB, chain, warhead: WAR, resid: RESID };
     State.last2D  = { pdb: PDB, chain, warhead: WAR, resid: RESID };
 
+    const poseKey = poseKeyFor(PDB, chain, WAR, RESID);
+    if (!initialBoot && !forceReload && poseKey === State.lastLoadedPoseKey && viewportHasCanvas()) {
+      renderSmiles(smiles || "");
+      setHUD(PDB, chain, WAR, exposedValue, "Loaded");
+      return {
+        ok: true,
+        usable: true,
+        reused: true,
+        props: { ok: true, skipped: true },
+        map: { ok: true, skipped: true },
+        render3d: { ok: true, usable: true, skipped: true, poseKey },
+        issues: []
+      };
+    }
+
     renderSmiles(smiles || "");
     setHUD(PDB, chain, WAR, exposedValue, "Loading…");
+
+    const viewportLoad = !initialBoot && window.WHViewportLoader && typeof window.WHViewportLoader.beginVisibleLoad === "function"
+      ? window.WHViewportLoader.beginVisibleLoad({ pdb: PDB, chain, warhead: WAR, resid: RESID })
+      : null;
+
+    if (viewportLoad && viewportLoad.alreadyLoaded && !forceReload && viewportHasCanvas()) {
+      State.lastLoadedPoseKey = poseKey;
+      setHUD(PDB, chain, WAR, exposedValue, "Loaded");
+      return {
+        ok: true,
+        usable: true,
+        reused: true,
+        props: { ok: true, skipped: true },
+        map: { ok: true, skipped: true },
+        render3d: { ok: true, usable: true, skipped: true, poseKey },
+        issues: []
+      };
+    }
 
     if (initialBoot) {
       loader?.markStep("selection", "success", `${WAR || "ligand"} selected`);
@@ -1283,7 +1335,7 @@ function openBuilderFallback(smiles, opts = {}) {
       });
 
     const renderPromise = (window.Render3D && typeof window.Render3D.load === "function")
-      ? window.Render3D.load({ pdb: PDB, chain, warhead: WAR, resid: RESID })
+      ? window.Render3D.load({ pdb: PDB, chain, warhead: WAR, resid: RESID, showLoader: false, loadSeq })
           .then(async (result) => {
             const canvasPresent = await waitForInitialViewportPaint();
             const merged = Object.assign({}, result || {}, {
@@ -1329,6 +1381,18 @@ function openBuilderFallback(smiles, opts = {}) {
 
     if (initialBoot) {
       const renderResult = await renderPromise;
+      if (loadSeq !== State.activeLoadSeq) {
+        return {
+          ok: false,
+          usable: false,
+          superseded: true,
+          props: { ok: false, superseded: true },
+          map: { ok: false, superseded: true },
+          render3d: renderResult,
+          issues: ["superseded"]
+        };
+      }
+      if (renderResult.usable) State.lastLoadedPoseKey = poseKey;
       StartupMetrics.firstViewportRenderMs = Math.round((performance.now() - StartupMetrics.bootStartedAt) * 10) / 10;
 
       propsPromise.catch(() => {});
@@ -1359,6 +1423,21 @@ function openBuilderFallback(smiles, opts = {}) {
       renderPromise
     ]);
 
+    if (loadSeq !== State.activeLoadSeq) {
+      if (viewportLoad && !viewportLoad.skipped && window.WHViewportLoader && typeof window.WHViewportLoader.finishVisibleLoad === "function") {
+        window.WHViewportLoader.finishVisibleLoad(viewportLoad, { superseded: true });
+      }
+      return {
+        ok: false,
+        usable: false,
+        superseded: true,
+        props: propsResult,
+        map: mapResult,
+        render3d: renderResult,
+        issues: ["superseded"]
+      };
+    }
+
     const issues = [];
     if (!propsResult.ok) issues.push("properties unavailable");
     if (!mapResult.ok) issues.push("2D map unavailable");
@@ -1366,8 +1445,16 @@ function openBuilderFallback(smiles, opts = {}) {
 
     if (!issues.length) {
       setHUD(PDB, chain, WAR, exposedValue, "Loaded");
+      State.lastLoadedPoseKey = poseKey;
     } else {
       setHUD(PDB, chain, WAR, exposedValue, `Loaded with issues: ${issues.join(", ")}`);
+    }
+
+    if (viewportLoad && !viewportLoad.skipped && window.WHViewportLoader && typeof window.WHViewportLoader.finishVisibleLoad === "function") {
+      window.WHViewportLoader.finishVisibleLoad(viewportLoad, {
+        ok: Boolean(renderResult.usable),
+        detail: renderResult.ligand?.message || renderResult.protein?.message || "Could not load SDF/PDB asset"
+      });
     }
 
     return {

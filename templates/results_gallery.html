@@ -280,9 +280,11 @@
    * SDF/PDB network requests made by the rendering scripts.
    */
   (function () {
-    let activeStructureRequests = 0;
     let fallbackTimer = null;
     let hideTimer = null;
+    let visibleLoadSeq = 0;
+    let activeVisibleToken = null;
+    let loadedPoseKey = "";
 
     function getLoaderParts() {
       return {
@@ -307,13 +309,36 @@
       if (parts.shell) parts.shell.classList.toggle('is-loading', isLoading);
     }
 
+    function normalizePoseKey(meta) {
+      if (!meta) return "";
+      const pdb = String(meta.pdb || "").trim().toLowerCase();
+      const chain = String(meta.chain || "").trim().toUpperCase();
+      const warhead = String(meta.warhead || "").trim().toUpperCase();
+      const resid = String(meta.resid || "").trim();
+      return [pdb, chain, warhead, resid].join("|");
+    }
+
+    function poseDetail(meta) {
+      const pdb = String(meta?.pdb || "").trim().toUpperCase();
+      const chain = String(meta?.chain || "").trim().toUpperCase() || "?";
+      const warhead = String(meta?.warhead || "").trim().toUpperCase() || "Ligand";
+      return `${warhead} - ${pdb} chain ${chain}`;
+    }
+
+    function clearActiveVisibleToken(token) {
+      if (token && activeVisibleToken && token.seq === activeVisibleToken.seq) {
+        activeVisibleToken = null;
+      }
+    }
+
     window.showViewportLoading = function (title, detail) {
       window.clearTimeout(fallbackTimer);
       setLoadingState(true, title || 'Loading SDF into viewport', detail || 'Preparing molecular render', false);
 
       // Safety valve so the UI never gets stuck if a request fails silently.
       fallbackTimer = window.setTimeout(function () {
-        if (activeStructureRequests <= 0) window.hideViewportLoading(0);
+        if (activeVisibleToken) return;
+        window.hideViewportLoading(0);
       }, 18000);
     };
 
@@ -327,10 +352,68 @@
     };
 
     window.failViewportLoading = function (title, detail) {
-      activeStructureRequests = 0;
       window.clearTimeout(fallbackTimer);
       setLoadingState(true, title || 'SDF load failed', detail || 'Check the browser console or file path', true);
       window.hideViewportLoading(2600);
+    };
+
+    window.WHViewportLoader = {
+      beginVisibleLoad(meta) {
+        const poseKey = normalizePoseKey(meta);
+        if (poseKey && poseKey === loadedPoseKey) {
+          return {
+            seq: visibleLoadSeq,
+            poseKey,
+            skipped: true,
+            alreadyLoaded: true
+          };
+        }
+
+        visibleLoadSeq += 1;
+        activeVisibleToken = {
+          seq: visibleLoadSeq,
+          poseKey
+        };
+        window.showViewportLoading('Loading Molecular File', poseDetail(meta));
+        return {
+          seq: visibleLoadSeq,
+          poseKey,
+          skipped: false,
+          alreadyLoaded: false
+        };
+      },
+
+      finishVisibleLoad(token, result) {
+        if (!token || token.skipped) return { skipped: true };
+        if (!activeVisibleToken || token.seq !== activeVisibleToken.seq) {
+          return { stale: true };
+        }
+
+        clearActiveVisibleToken(token);
+        if (result && result.ok) {
+          loadedPoseKey = token.poseKey || loadedPoseKey;
+          window.hideViewportLoading(250);
+          return { stale: false, ok: true };
+        }
+
+        if (result && result.superseded) {
+          return { stale: false, superseded: true };
+        }
+
+        window.failViewportLoading(
+          'Molecular file failed',
+          (result && result.detail) || 'Could not load SDF/PDB asset'
+        );
+        return { stale: false, ok: false };
+      },
+
+      hasActiveVisibleLoad() {
+        return Boolean(activeVisibleToken);
+      },
+
+      isCurrentToken(token) {
+        return Boolean(token && activeVisibleToken && token.seq === activeVisibleToken.seq);
+      }
     };
 
     function isStructureUrl(value) {
@@ -338,46 +421,27 @@
       return /(\.sdf(?:\?|$)|\.pdb(?:\?|$)|\/sdf(?:\/|\?|$)|\/pdb(?:\/|\?|$)|sdf_path=|pdb_path=|sdf=|pdb=)/i.test(url);
     }
 
-    function beginTrackedLoad(url) {
-      activeStructureRequests += 1;
-      window.showViewportLoading('Loading molecular file', 'Fetching SDF/PDB asset');
+    function shouldSuppressTrackedRequest(init) {
+      const headers = new Headers((init && init.headers) || {});
+      const method = String((init && init.method) || 'GET').toUpperCase();
+      return method === 'HEAD' || headers.get('X-WH-Background-Validation') === '1';
     }
 
-    function endTrackedLoad(ok, err) {
-      activeStructureRequests = Math.max(0, activeStructureRequests - 1);
-      if (!ok) {
-        window.failViewportLoading('Molecular file failed', err || 'Could not load SDF/PDB asset');
-        return;
-      }
-      if (activeStructureRequests === 0) window.hideViewportLoading(450);
+    function beginTrackedLoad(init) {
+      if (!window.WHViewportLoader?.hasActiveVisibleLoad()) return false;
+      if (shouldSuppressTrackedRequest(init)) return false;
+      window.showViewportLoading('Loading Molecular File', 'Fetching SDF/PDB Asset');
+      return true;
     }
-
-    // Show the loader immediately on card click/keyboard activation, before fetch starts.
-    document.addEventListener('click', function (event) {
-      const card = event.target.closest && event.target.closest('.result-card');
-      if (!card) return;
-      const pdb = (card.dataset.pdb || '').toUpperCase();
-      const chain = card.dataset.chain || 'A';
-      const warhead = card.dataset.warhead || 'Ligand';
-      window.showViewportLoading('Loading SDF into viewport', `${warhead} - ${pdb} chain ${chain}`);
-    }, true);
-
-    document.addEventListener('keydown', function (event) {
-      if (event.key !== 'Enter' && event.key !== ' ') return;
-      const card = event.target.closest && event.target.closest('.result-card');
-      if (!card) return;
-      const pdb = (card.dataset.pdb || '').toUpperCase();
-      const chain = card.dataset.chain || 'A';
-      const warhead = card.dataset.warhead || 'Ligand';
-      window.showViewportLoading('Loading SDF into viewport', `${warhead} - ${pdb} chain ${chain}`);
-    }, true);
 
     // Hide once NGL creates/updates the viewport canvas.
     document.addEventListener('DOMContentLoaded', function () {
       const viewport = document.getElementById('viewport');
       if (!viewport || !window.MutationObserver) return;
       const observer = new MutationObserver(function () {
-        if (viewport.querySelector('canvas')) window.hideViewportLoading(650);
+        if (viewport.querySelector('canvas') && !window.WHViewportLoader?.hasActiveVisibleLoad()) {
+          window.hideViewportLoading(650);
+        }
       });
       observer.observe(viewport, { childList: true, subtree: true });
     });
@@ -388,14 +452,12 @@
       window.fetch = function (input, init) {
         const url = typeof input === 'string' ? input : (input && input.url);
         const track = isStructureUrl(url);
-        if (track) beginTrackedLoad(url);
+        if (track) beginTrackedLoad(init);
         return originalFetch(input, init)
           .then(function (response) {
-            if (track) endTrackedLoad(response.ok, response.status + ' ' + response.statusText);
             return response;
           })
           .catch(function (error) {
-            if (track) endTrackedLoad(false, error && error.message);
             throw error;
           });
       };
@@ -408,16 +470,13 @@
 
       XMLHttpRequest.prototype.open = function (method, url) {
         this.__whTrackStructureLoad = isStructureUrl(url);
+        this.__whTrackStructureMethod = String(method || 'GET').toUpperCase();
         return originalOpen.apply(this, arguments);
       };
 
       XMLHttpRequest.prototype.send = function () {
-        if (this.__whTrackStructureLoad) {
-          beginTrackedLoad();
-          this.addEventListener('loadend', function () {
-            const ok = this.status >= 200 && this.status < 400;
-            endTrackedLoad(ok, this.status ? (this.status + ' ' + this.statusText) : 'Network error');
-          });
+        if (this.__whTrackStructureLoad && this.__whTrackStructureMethod !== 'HEAD' && window.WHViewportLoader?.hasActiveVisibleLoad()) {
+          window.showViewportLoading('Loading Molecular File', 'Fetching SDF/PDB Asset');
         }
         return originalSend.apply(this, arguments);
       };

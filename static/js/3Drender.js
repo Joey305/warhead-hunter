@@ -56,12 +56,9 @@
   // Protein
   const PROTEIN_COLOR = "#8A8F98";
   const PROTEIN_SURFACE_COLOR = "#60656F";
-  // LYS gets its own dark-blue layer. Everything else stays gray.
-  const LYS_SURFACE_COLOR = "#001A70";
   const LYS_CARTOON_COLOR = "#0030A8";
   const PROTEIN_SURFACE_OPACITY = 0.14;
   const PROTEIN_CARTOON_OPACITY = 0.72;
-  const LYS_SURFACE_OPACITY = 0.38;
   const LYS_CARTOON_OPACITY = 0.95;
 
   // Ligand
@@ -413,18 +410,8 @@
     return "polymer and not hetero";
   }
 
-  // Split protein into two non-overlapping NGL selections:
-  //   1) non-LYS protein = gray
-  //   2) LYS residues     = dark blue
-  //
-  // Keeping them separate is more reliable for NGL surfaces than trying to
-  // color a single surface representation with a residue-level colormaker.
   function lysProteinSele(_chain) {
-    return "polymer and resname LYS and not hetero";
-  }
-
-  function nonLysProteinSele(_chain) {
-    return "polymer and not (resname LYS) and not hetero";
+    return "protein and resname LYS and not hetero";
   }
 
   async function loadProtein(pdb, chain, warhead, resid) {
@@ -459,10 +446,10 @@
     const comp = await State.stage.loadFile(blob, { ext: "pdb", defaultRepresentation: false });
 
     // ------------------------------------------------------------------------
-    // Protein body: gray for every polymer residue EXCEPT lysine.
+    // Protein body: neutral gray for the full protein.
     // ------------------------------------------------------------------------
     comp.addRepresentation("surface", {
-      sele: nonLysProteinSele(chain),
+      sele: proteinSele(chain),
       colorValue: PROTEIN_SURFACE_COLOR,
       opacity: PROTEIN_SURFACE_OPACITY,
       depthWrite: false,
@@ -474,7 +461,7 @@
     });
 
     comp.addRepresentation("cartoon", {
-      sele: nonLysProteinSele(chain),
+      sele: proteinSele(chain),
       colorValue: PROTEIN_COLOR,
       opacity: PROTEIN_CARTOON_OPACITY,
       depthWrite: false,
@@ -482,27 +469,24 @@
     });
 
     // ------------------------------------------------------------------------
-    // Lysine highlight: true blue LYS surface/cartoon, not just a line overlay.
-    // This is the key fix: LYS is its own representation, so the LYS surface
-    // becomes blue while the rest of the protein remains gray.
+    // Lysine highlight: add a focused blue overlay only for lysine residues.
+    // Avoid a second surface pass here because NGL can over-expand residue
+    // surface selections and tint the whole protein.
     // ------------------------------------------------------------------------
-    comp.addRepresentation("surface", {
-      sele: lysProteinSele(chain),
-      colorValue: LYS_SURFACE_COLOR,
-      opacity: LYS_SURFACE_OPACITY,
-      depthWrite: false,
-      depthTest: true,
-      side: "double",
-      surfaceType: "av",
-      probeRadius: 1.4,
-      scaleFactor: 0.9
-    });
-
     comp.addRepresentation("cartoon", {
       sele: lysProteinSele(chain),
       colorValue: LYS_CARTOON_COLOR,
       opacity: LYS_CARTOON_OPACITY,
       depthWrite: false,
+      depthTest: true
+    });
+
+    comp.addRepresentation("licorice", {
+      sele: `${lysProteinSele(chain)} and sidechainAttached and not hydrogen`,
+      colorValue: LYS_CARTOON_COLOR,
+      opacity: 0.98,
+      radiusScale: 1.15,
+      depthWrite: true,
       depthTest: true
     });
 
@@ -862,7 +846,7 @@
   // ============================================================================
   // 15) Public load()
   // ============================================================================
-  async function load({ pdb, chain, warhead, resid }) {
+  async function load({ pdb, chain, warhead, resid, showLoader = true }) {
     const result = {
       ok: false,
       usable: false,
@@ -890,7 +874,7 @@
 
     State.current = { pdb: PDB, chain: CH, warhead: WAR, resid: RES };
 
-    setViewportLoading(true, "Loading 3D…");
+    if (showLoader) setViewportLoading(true, "Loading 3D…");
     setHudDebug("Loading 3D…");
 
     clearAllComponents();
@@ -957,7 +941,7 @@
 
       return result;
     } finally {
-      setViewportLoading(false);
+      if (showLoader) setViewportLoading(false);
     }
   }
 

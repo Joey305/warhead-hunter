@@ -482,7 +482,7 @@ def compute_results_ready(job_id: str) -> Dict[str, Any]:
         "has_results": has_rows,
         "results_ready": has_rows,
         "results_row_count": int(len(df.index)) if df is not None else 0,
-        "results_csv": str(results_csv) if results_csv else "",
+        "results_csv": _public_job_relative_path(job_id, results_csv),
         "browser_results_url": f"/results/{job_id}",
         "results_url": f"/api/jobs/{job_id}/results",
         "files_url": f"/api/jobs/{job_id}/files",
@@ -576,6 +576,61 @@ def _read_job_metadata(job_id: str) -> Optional[Dict[str, Any]]:
 
 def _write_job_metadata_local(job_id: str, patch: Dict[str, Any]) -> Dict[str, Any]:
     return disk_jobs.write_job_metadata(job_id, patch or {}, JOBS_DIR)
+
+
+def _local_job_exists(job_id: str) -> bool:
+    base = safe_job_dir(job_id)
+    return bool(base and base.exists())
+
+
+def _public_job_relative_path(job_id: str, fp: Optional[Path]) -> str:
+    if not fp:
+        return ""
+    base = safe_job_dir(job_id)
+    if not base or not base.exists():
+        return ""
+    try:
+        return fp.resolve().relative_to(base.resolve()).as_posix()
+    except Exception:
+        return ""
+
+
+def _randy_job_state(job_id: str) -> Optional[Dict[str, Any]]:
+    data = randy_get_job_index(job_id)
+    if not data:
+        return None
+
+    tables = data.get("tables", {}) if isinstance(data.get("tables"), dict) else {}
+    available_tables = data.get("available_tables", {}) if isinstance(data.get("available_tables"), dict) else {}
+    target_name = str(data.get("target_name") or "").strip()
+    results_ready = bool(
+        tables.get("Results_Display.csv")
+        or tables.get("Resolved_SASA_Summary.csv")
+        or available_tables.get("Results_Display.csv")
+        or available_tables.get("Resolved_SASA_Summary.csv")
+    )
+
+    return {
+        "job_id": job_id,
+        "status": "completed" if results_ready else "archived-incomplete",
+        "target": target_name,
+        "target_name": target_name,
+        "search_query": "",
+        "results_ready": results_ready,
+        "source": data.get("source", "randy_hunter_job_archive"),
+        "current_step": "",
+        "error": None,
+        "archive_layout": data.get("archive_layout") or {},
+        "available_tables": available_tables,
+        "tables": tables,
+    }
+
+
+def resolve_known_job_state(job_id: str) -> Optional[Dict[str, Any]]:
+    local = disk_jobs.hydrate_job_from_disk(job_id, get_jobs_root(), JOB_STORE.get(job_id))
+    if local is not None:
+        return {**local, "source": "local_disk"}
+    return _randy_job_state(job_id)
 
 
 def _fetch_fasta_for_pdb(pdb_id: str) -> Optional[str]:
@@ -1310,15 +1365,16 @@ def api_job_status(job_id):
     if meta is None:
         return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
 
-    _write_job_metadata_local(job_id, {
-        "status": meta.get("status"),
-        "current_step": meta.get("current_step"),
-        "started_at": meta.get("started_at"),
-        "finished_at": meta.get("finished_at"),
-        "request": meta.get("request", {}),
-        "outputs": meta.get("outputs", {}),
-        "error": meta.get("error"),
-    })
+    if _local_job_exists(job_id):
+        _write_job_metadata_local(job_id, {
+            "status": meta.get("status"),
+            "current_step": meta.get("current_step"),
+            "started_at": meta.get("started_at"),
+            "finished_at": meta.get("finished_at"),
+            "request": meta.get("request", {}),
+            "outputs": meta.get("outputs", {}),
+            "error": meta.get("error"),
+        })
     disk_state = compute_results_ready(job_id)
     meta.update(disk_state)
 
@@ -1334,16 +1390,19 @@ def api_job_results(job_id):
     if meta is None:
         return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
 
-    manifest = build_job_results_manifest(job_id)
+    manifest = build_job_results_manifest(job_id) if _local_job_exists(job_id) else build_archive_results_manifest(job_id)
+    if not manifest:
+        return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
     if not manifest["has_results"] and str(meta.get("status") or "").lower() not in {"completed", "failed"}:
         return _api_error("RESULTS_NOT_READY", "Results are not ready yet.", 202, {"job_id": job_id})
 
-    _write_job_metadata_local(job_id, {
-        "outputs": {
-            **(meta.get("outputs") or {}),
-            "results_manifest_available": True,
-        }
-    })
+    if _local_job_exists(job_id):
+        _write_job_metadata_local(job_id, {
+            "outputs": {
+                **(meta.get("outputs") or {}),
+                "results_manifest_available": True,
+            }
+        })
     return _api_json(manifest)
 
 
@@ -2272,10 +2331,114 @@ def build_job_results_manifest(job_id: str) -> Dict[str, Any]:
     }
 
 
+def build_archive_results_manifest(job_id: str) -> Optional[Dict[str, Any]]:
+    archive = _randy_job_state(job_id)
+    if archive is None:
+        return None
+
+    df = load_results_display(job_id)
+    has_rows = bool(df is not None and not df.empty)
+    available_tables = archive.get("available_tables", {}) if isinstance(archive.get("available_tables"), dict) else {}
+    table_names = [name for name, rel in available_tables.items() if rel]
+
+    return {
+        "ok": True,
+        "job_id": job_id,
+        "has_results": has_rows,
+        "target_results_dir": "",
+        "summary_files": [
+            {
+                "name": name,
+                "filename": name,
+                "relative_path": str(available_tables.get(name) or ""),
+                "kind": "table",
+                "source": archive.get("source", "randy_hunter_job_archive"),
+            }
+            for name in table_names
+            if name in {"Results_Display.csv", "Resolved_SASA_Summary.csv", "Resolved_SASA_Summary.tsv"}
+        ],
+        "display_files": [],
+        "counts": {
+            "war_pdb": 0,
+            "pdb": 0,
+            "sdf": 0,
+            "svg": 0,
+            "csv": len([name for name in table_names if name.lower().endswith(".csv")]),
+            "table": len(table_names),
+            "html": 0,
+            "manifest": 0,
+            "tsv": len([name for name in table_names if name.lower().endswith(".tsv")]),
+        },
+        "key_outputs": {
+            "results_display": "Results_Display.csv" if has_rows else "",
+            "resolved_sasa_summary": (
+                "Resolved_SASA_Summary.csv"
+                if available_tables.get("Resolved_SASA_Summary.csv")
+                else ("Resolved_SASA_Summary.tsv" if available_tables.get("Resolved_SASA_Summary.tsv") else "")
+            ),
+            "ligand_metadata": "",
+            "war_pdb_dir": "",
+            "mcs_output_dir": "",
+        },
+        "urls": {
+            "files": "",
+            "bundle": "",
+            "browser_results": f"/results/{job_id}",
+        },
+        "files": [],
+        "source": archive.get("source", "randy_hunter_job_archive"),
+        "archive_layout": archive.get("archive_layout") or {},
+    }
+
+
 def get_job_api_metadata(job_id: str) -> Optional[Dict[str, Any]]:
     base = safe_job_dir(job_id)
     if not base or not base.exists():
-        return None
+        archive = _randy_job_state(job_id)
+        if archive is None:
+            return None
+        return {
+            "job_id": job_id,
+            "status": str(archive.get("status") or "completed").lower(),
+            "target_name": str(archive.get("target_name") or archive.get("target") or "").strip(),
+            "search_query": str(archive.get("search_query") or "").strip(),
+            "created_at": "",
+            "started_at": "",
+            "finished_at": "",
+            "current_step": str(archive.get("current_step") or "").strip(),
+            "source": archive.get("source", "randy_hunter_job_archive"),
+            "request": {
+                "target_name": str(archive.get("target_name") or archive.get("target") or "").strip(),
+                "search_query": str(archive.get("search_query") or "").strip(),
+                "fasta_seq": "",
+            },
+            "outputs": {
+                "job_dir": "",
+                "has_results": bool(archive.get("results_ready")),
+                "results_url": f"/api/jobs/{job_id}/results",
+                "files_url": "",
+                "bundle_url": "",
+                "war_pdbs_url": "",
+                "legacy_download_url": "",
+                "public_bundle_path": "",
+                "archive_layout": archive.get("archive_layout") or {},
+            },
+            "error": archive.get("error"),
+            "monitor_url": f"/monitor/{job_id}",
+            "results_url": f"/api/jobs/{job_id}/results",
+            "files_url": "",
+            "bundle_url": "",
+            "browser_results_url": f"/results/{job_id}",
+            "has_results": bool(archive.get("results_ready")),
+            "results_ready": bool(archive.get("results_ready")),
+            "available_artifacts": {
+                "war_pdb_count": 0,
+                "sdf_count": 0,
+                "svg_count": 0,
+                "csv_count": len([name for name in (archive.get("available_tables") or {}).keys() if name.lower().endswith(".csv")]),
+                "table_count": len((archive.get("available_tables") or {}).keys()),
+            },
+        }
 
     hydrated = disk_jobs.hydrate_job_from_disk(job_id, get_jobs_root(), JOB_STORE.get(job_id)) or {}
     data = _read_job_metadata(job_id) or {}
@@ -2325,7 +2488,7 @@ def get_job_api_metadata(job_id: str) -> Optional[Dict[str, Any]]:
         "table_count": len([f for f in files if f["kind"] == "table"]),
     }
     outputs.update({
-        "job_dir": str(base),
+        "job_dir": f"jobs/{job_id}",
         "has_results": bool(hydrated.get("results_ready")),
         "results_url": f"/api/jobs/{job_id}/results",
         "files_url": f"/api/jobs/{job_id}/files",
@@ -2728,9 +2891,9 @@ def open_job(job_id):
     if not _safe_job_id(job_id):
         abort(400, "Invalid job_id")
 
-    job = disk_jobs.hydrate_job_from_disk(job_id, get_jobs_root(), JOB_STORE.get(job_id))
+    job = resolve_known_job_state(job_id)
     if job is None:
-        abort(404, "Job not found on disk.")
+        abort(404, "Job not found.")
 
     if job.get("results_ready"):
         return redirect(f"/results/{job_id}")
@@ -2813,8 +2976,9 @@ def job_summary(job_id):
 
     # ---- infer target (best effort) ----
     target = None
-    if job_id in JOB_STORE:
-        target = (JOB_STORE[job_id].get("target") or "").strip() or None
+    hydrated = disk_jobs.hydrate_job_from_disk(job_id, get_jobs_root(), JOB_STORE.get(job_id)) or {}
+    if hydrated:
+        target = (hydrated.get("target") or "").strip() or None
     if not target:
         meta = _read_protein_data_csv(jp) or {}
         target = (meta.get("protein") or "").strip() or None
@@ -3122,9 +3286,23 @@ def launch_job():
 def job_monitor(job_id):
     if not _safe_job_id(job_id):
         return "Job not found", 404
-    job = disk_jobs.hydrate_job_from_disk(job_id, get_jobs_root(), JOB_STORE.get(job_id))
+    job = resolve_known_job_state(job_id)
     if job is None:
         return "Job not found", 404
+    if str(job.get("source") or "").startswith("randy") and job.get("results_ready"):
+        return redirect(f"/results/{job_id}")
+    if str(job.get("source") or "").startswith("randy"):
+        return render_template(
+            "job_waiting.html",
+            job_id=job_id,
+            title="Archived job metadata found",
+            message="The job is known from archive fallback, but the final gallery table is not yet resolvable from archived artifacts.",
+            status=str(job.get("status") or "archived-incomplete"),
+            current_step=str(job.get("current_step") or "RANDY archive lookup"),
+            status_url=f"/api/jobs/{job_id}",
+            results_api_url=f"/api/jobs/{job_id}/results",
+            refresh_url=f"/results/{job_id}",
+        ), 202
     return render_template("monitor.html", job=job, job_id=job_id)
 
 
@@ -3133,7 +3311,7 @@ def job_log(job_id):
     if not _safe_job_id(job_id):
         return jsonify({"ok": False, "error": "Job not found", "job_id": job_id}), 404
 
-    job = disk_jobs.hydrate_job_from_disk(job_id, get_jobs_root(), JOB_STORE.get(job_id))
+    job = resolve_known_job_state(job_id)
     if job is None:
         return jsonify({"ok": False, "error": "Job not found", "job_id": job_id}), 404
 
@@ -3146,6 +3324,7 @@ def job_log(job_id):
         "results_ready": bool(job.get("results_ready")),
         "log": job.get("log", []),
         "error": job.get("error"),
+        "source": job.get("source", "local_disk"),
     })
 
 
