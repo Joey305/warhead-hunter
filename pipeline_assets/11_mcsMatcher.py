@@ -24,36 +24,20 @@ NEW (this version):
 ===============================================================================
 """
 
+import ast
+import csv
+import gc
 import os
 import re
-import ast
-from pathlib import Path
-from functools import partial
-from multiprocessing import Pool, cpu_count
-import subprocess
-import time
-from typing import Tuple
-from functools import partial
-from multiprocessing import Pool, cpu_count
-from multiprocessing import get_context
-import signal
-from contextlib import contextmanager
-from multiprocessing import TimeoutError as MPTimeoutError
-
-import socket
 import shutil
-import multiprocessing
-import subprocess
-import os
 import signal
+import subprocess
+import threading
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Tuple
-from rdkit import Chem
-import sys
-import traceback
-from time import perf_counter
-
 
 import pandas as pd
 import numpy as np
@@ -66,13 +50,78 @@ from rdkit.Chem import rdDepictor
 from rdkit.Chem.Draw import rdMolDraw2D
 
 
+IS_HEROKU = bool(os.environ.get("DYNO"))
+
+
+def env_int(name: str, default: int) -> int:
+    raw = str(os.environ.get(name, "") or "").strip()
+    if not raw:
+        return default
+    try:
+        return int(raw)
+    except Exception:
+        return default
+
+
+def env_flag(name: str, default: bool) -> bool:
+    raw = str(os.environ.get(name, "") or "").strip().lower()
+    if not raw:
+        return default
+    return raw in {"1", "true", "yes", "on"}
+
+
+DEFAULT_MCS_MAX_WORKERS = 1 if IS_HEROKU else min(4, max(1, os.cpu_count() or 1))
+MCS_MAX_WORKERS = max(1, env_int("WARHEAD_MCS_MAX_WORKERS", DEFAULT_MCS_MAX_WORKERS))
+MCS_USE_THREADS = env_flag("WARHEAD_MCS_USE_THREADS", True)
+MCS_STREAM_OUTPUT = env_flag("WARHEAD_MCS_STREAM_OUTPUT", True)
+MCS_DEBUG_MEMORY = env_flag("WARHEAD_MCS_DEBUG_MEMORY", False)
+MCS_SKIP_EXISTING = env_flag("WARHEAD_MCS_SKIP_EXISTING", True)
+OBABEL_TIMEOUT = env_int("WARHEAD_MCS_OBABEL_TIMEOUT_SEC", 8)
+OBABEL_MAX_CONCURRENT = max(1, env_int("WARHEAD_MCS_OBABEL_MAX_CONCURRENT", 1 if IS_HEROKU else 2))
+
+
 # =============================================================================
 # Helpers: normalize SMILES / Warhead IDs
 # =============================================================================
 def dbg(msg: str):
-    # PID + timestamp helps when multiple workers interleave output
+    if not MCS_DEBUG_MEMORY:
+        return
     ts = time.strftime("%H:%M:%S")
     print(f"[{ts} pid={os.getpid()}] {msg}", flush=True)
+
+
+def _current_rss_mb() -> float:
+    try:
+        status_path = "/proc/self/status"
+        if os.path.exists(status_path):
+            with open(status_path, "r", encoding="utf-8", errors="ignore") as handle:
+                for line in handle:
+                    if line.startswith("VmRSS:"):
+                        return round(int(line.split()[1]) / 1024.0, 1)
+    except Exception:
+        pass
+    try:
+        proc = subprocess.run(
+            ["ps", "-o", "rss=", "-p", str(os.getpid())],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        raw = (proc.stdout or "").strip()
+        if raw:
+            return round(int(raw.splitlines()[-1].strip()) / 1024.0, 1)
+    except Exception:
+        pass
+    return 0.0
+
+
+def debug_mem(message: str, **fields) -> None:
+    if not MCS_DEBUG_MEMORY:
+        return
+    suffix = " ".join(f"{k}={v}" for k, v in fields.items())
+    if suffix:
+        suffix = f" {suffix}"
+    print(f"[mcs-mem] {message}{suffix} rss={_current_rss_mb():.1f}MB", flush=True)
 
 
 class TimeoutException(Exception):
@@ -335,17 +384,10 @@ WRITE_SDF = True
 SDF_METHOD = "obabel"   # "obabel" or "rdkit"
 SDF_FALLBACK_TO_RDKIT = True
 
-SKIP_IF_EXISTS = True
+SKIP_IF_EXISTS = MCS_SKIP_EXISTING
 
-# Hard per-occurrence timeout for obabel conversion
-OBABEL_TIMEOUT = 8  # seconds
-
-# Critical: limit how many obabel conversions can run at once.
-# Too many concurrent obabel calls can make things "hang".
-OBABEL_MAX_CONCURRENT = 2
-
-# Shared semaphore (works well under Linux fork)
-OBABEL_SEM = multiprocessing.BoundedSemaphore(OBABEL_MAX_CONCURRENT)
+# Shared semaphore for bounded obabel conversions.
+OBABEL_SEM = threading.BoundedSemaphore(OBABEL_MAX_CONCURRENT)
 
 atom3d = pd.read_csv("Ligand_3D_Atoms.csv")
 
@@ -384,6 +426,12 @@ ALIAS_TO_LIG3, ALIAS_TO_LIG5 = load_5char_map_if_needed(
     JOB_DIR,
     warheads_in_job,
     LIG_TO_SMILES
+)
+debug_mem(
+    "loaded input tables",
+    atom_rows=len(atom3d),
+    smiles_rows=len(smiles_raw),
+    warheads=len(warheads_in_job),
 )
 
 # =============================================================================
@@ -528,42 +576,71 @@ def write_sdf_obabel(mol: Chem.Mol, out_sdf: Path, name: str = "") -> Tuple[bool
 
 
 # =============================================================================
-# SASA annotation (keep your existing join strategy)
+# OUTPUT + SASA HELPERS
 # =============================================================================
-def annotate_with_sasa(df_in, sasa_csv="Warhead_SASA_atoms.csv", coord_decimals=3):
-    df = df_in.copy()
+def atom_map_header() -> list[str]:
+    return [
+        "Ligand", "Target", "pdb_id", "Residue_ID", "Chain",
+        "AtomIndex", "AtomSymbol", "atom_id", "atom_name", "x", "y", "z",
+        "SMILES_ID", "SMILES",
+    ]
 
+
+def failure_header() -> list[str]:
+    return ["Ligand", "PDB", "Error"]
+
+
+def _write_row(writer: csv.DictWriter, header: list[str], row: dict) -> None:
+    writer.writerow({key: row.get(key, "") for key in header})
+
+
+def load_sasa_reference(sasa_csv="Warhead_SASA_atoms.csv"):
     sasa_path = Path(sasa_csv)
     if not sasa_path.exists():
-        df["Exposure_A2"] = 0.0
-        return df
+        return None
 
     sasa = pd.read_csv(sasa_path)
-
-    # Normalize naming
     if "Warhead" in sasa.columns and "Ligand" not in sasa.columns:
         sasa = sasa.rename(columns={"Warhead": "Ligand"})
 
-    # Standardize types
     for c in ["Target", "pdb_id", "Ligand", "Chain"]:
         if c in sasa.columns:
             sasa[c] = sasa[c].astype(str).str.strip()
+    if "pdb_id" in sasa.columns:
+        sasa["pdb_id"] = sasa["pdb_id"].astype(str).str.lower()
+    if "Residue_ID" in sasa.columns:
+        sasa["Residue_ID"] = sasa["Residue_ID"].astype(str).str.strip()
+    for c in ["atom_id", "x", "y", "z", "Exposure_A2"]:
+        if c in sasa.columns:
+            sasa[c] = pd.to_numeric(sasa[c], errors="coerce")
+    debug_mem("loaded SASA reference", rows=len(sasa))
+    return sasa
+
+
+# =============================================================================
+# SASA annotation (keep your existing join strategy)
+# =============================================================================
+def annotate_with_sasa(df_in, sasa_df=None, sasa_csv="Warhead_SASA_atoms.csv", coord_decimals=3):
+    df = df_in.copy()
+
+    sasa = sasa_df if sasa_df is not None else load_sasa_reference(sasa_csv)
+    if sasa is None:
+        df["Exposure_A2"] = 0.0
+        return df
+
+    # Standardize types
+    for c in ["Target", "pdb_id", "Ligand", "Chain"]:
         if c in df.columns:
             df[c] = df[c].astype(str).str.strip()
 
-    if "pdb_id" in sasa.columns:
-        sasa["pdb_id"] = sasa["pdb_id"].astype(str).str.lower()
     if "pdb_id" in df.columns:
         df["pdb_id"] = df["pdb_id"].astype(str).str.lower()
 
-    sasa["Residue_ID"] = sasa["Residue_ID"].astype(str).str.strip()
     df["Residue_ID"]   = df["Residue_ID"].astype(str).str.strip()
 
-    # atom_id + xyz numeric
-    for dfx in (sasa, df):
-        for c in ["atom_id", "x", "y", "z"]:
-            if c in dfx.columns:
-                dfx[c] = pd.to_numeric(dfx[c], errors="coerce")
+    for c in ["atom_id", "x", "y", "z"]:
+        if c in df.columns:
+            df[c] = pd.to_numeric(df[c], errors="coerce")
 
     key_cols = ["Target", "pdb_id", "Ligand", "Residue_ID", "Chain", "atom_id"]
     sasa_primary = sasa[key_cols + ["Exposure_A2"]].copy()
@@ -704,6 +781,8 @@ def compute_mcs(key, grouped):
     t_start = time.perf_counter()
 
     def dbg(msg: str):
+        if not MCS_DEBUG_MEMORY:
+            return
         ts = time.strftime("%H:%M:%S")
         print(f"[{ts} pid={os.getpid()}] {msg}", flush=True)
 
@@ -841,6 +920,7 @@ def compute_mcs(key, grouped):
                 dbg(f"{key} ❌ SDF_WRITE failed dt={dt_sdf:.2f}s msg={msg_sdf}")
             else:
                 dbg(f"{key} ✅ SDF_WRITE ok dt={dt_sdf:.2f}s msg={msg_sdf}")
+                debug_mem("wrote SDF", key=base)
 
     # ----------------------------
     # mapping logic
@@ -970,6 +1050,10 @@ def compute_mcs(key, grouped):
         ])
 
     dt_total = time.perf_counter() - t_start
+    debug_mem("processed work item", key=sdf_basename_from_group_key(key), mapped=len(map_3d_to_2d), all_atoms=len(rows_all))
+    del mol2d
+    del mol3d
+    gc.collect()
     dbg(f"END key={key} mode={mode} mapped={len(map_3d_to_2d)} dt={dt_total:.2f}s")
     return rows_mcs, rows_all, (errs if errs else None)
 
@@ -1091,197 +1175,200 @@ def render_plain_and_exposed_svgs(smiles: str, g: pd.DataFrame):
 # MAIN — GROUP BY UNIQUE PDB OCCURRENCE
 # =============================================================================
 if __name__ == "__main__":
-    grouped = atom3d.groupby(["Warhead", "Target", "pdb_id", "Residue_ID", "Chain"])
-    keys = list(grouped.groups.keys())
+    svg_dir = OUTDIR / "MCS_SVG"
+    svg_dir.mkdir(exist_ok=True)
+    groups = atom3d.groupby(["Warhead", "Target", "pdb_id", "Residue_ID", "Chain"], dropna=False).groups
+    keys = list(groups.keys())
+    max_workers = min(MCS_MAX_WORKERS, max(1, len(keys) or 1))
+    mode = "threads" if (MCS_USE_THREADS and max_workers > 1) else "sequential"
+    print(f"🚀 Running MCS on {len(keys)} ligand occurrences mode={mode} max_workers={max_workers}\n")
+    print(f"⚙️ Using hard timeout ({PER_KEY_TIMEOUT}s per ligand) via SIGALRM")
+    debug_mem("built work items", count=len(keys), mode=mode, max_workers=max_workers)
 
-    print(f"🚀 Running MCS on {len(keys)} ligand occurrences using {cpu_count()} cores\n")
+    cols = atom_map_header()
+    fail_cols = failure_header()
+    sasa_ref = load_sasa_reference("Warhead_SASA_atoms.csv")
 
-    results_mcs = []
-    results_all = []
-    failures = []
+    map_path = OUTDIR / "Ligand_MCS_Map.csv"
+    all_path = OUTDIR / "Ligand_AllAtoms_Map.csv"
+    map_sasa_path = OUTDIR / "Ligand_MCS_SASA.csv"
+    all_sasa_path = OUTDIR / "Ligand_MCS_SASA_ALL_ATOMS.csv"
+    fail_path = OUTDIR / "Ligand_MCS_Failures.csv"
+    svg_fail_path = svg_dir / "SVG_failures.csv"
 
-    NPROC = cpu_count()
-    if WRITE_SDF and SDF_METHOD.lower() == "obabel":
-        NPROC = min(NPROC, 4)
+    if MCS_STREAM_OUTPUT:
+        map_handle = open(map_path, "w", newline="", encoding="utf-8")
+        all_handle = open(all_path, "w", newline="", encoding="utf-8")
+        map_sasa_handle = open(map_sasa_path, "w", newline="", encoding="utf-8")
+        all_sasa_handle = open(all_sasa_path, "w", newline="", encoding="utf-8")
+        fail_handle = open(fail_path, "w", newline="", encoding="utf-8")
+        svg_fail_handle = open(svg_fail_path, "w", newline="", encoding="utf-8")
+        map_writer = csv.DictWriter(map_handle, fieldnames=cols)
+        all_writer = csv.DictWriter(all_handle, fieldnames=cols)
+        map_sasa_writer = csv.DictWriter(map_sasa_handle, fieldnames=cols + ["Exposure_A2"])
+        all_sasa_writer = csv.DictWriter(all_sasa_handle, fieldnames=cols + ["Exposure_A2"])
+        fail_writer = csv.DictWriter(fail_handle, fieldnames=fail_cols)
+        svg_fail_writer = csv.DictWriter(svg_fail_handle, fieldnames=["base", "error", "detail"])
+        for writer in (map_writer, all_writer, map_sasa_writer, all_sasa_writer, fail_writer, svg_fail_writer):
+            writer.writeheader()
+    else:
+        buffered_map = []
+        buffered_all = []
+        buffered_map_sasa = []
+        buffered_all_sasa = []
+        buffered_failures = []
+        buffered_svg_failures = []
 
-    print("⚙️ Using hard timeout (5s per ligand) via SIGALRM")
+    def row_dict(values):
+        return dict(zip(cols, values))
 
-    HARD_GIVEUP_SEC = int(os.environ.get("WARHEAD_MCS_HARD_GIVEUP_SEC", "60"))
+    def failure_dict(values):
+        ligand, pdb_id, error = values
+        return {"Ligand": ligand, "PDB": pdb_id, "Error": error}
 
-    with Pool(processes=NPROC, maxtasksperchild=50) as pool:
-        pending = {}
-        submitted_at = {}
+    def process_key(key):
+        group_df = atom3d.loc[groups[key]].copy().reset_index(drop=True)
+        return key, compute_mcs_timed(key, group_df)
 
-        for k in keys:
-            pending[k] = pool.apply_async(compute_mcs_timed, (k, grouped.get_group(k).copy()))
-            submitted_at[k] = time.perf_counter()
+    processed = 0
+    stats = {
+        "map_count": 0,
+        "all_count": 0,
+        "failure_count": 0,
+        "svg_count": 0,
+        "svg_failure_count": 0,
+    }
+    failure_preview = []
+    expected_sdfs = [f"{sdf_basename_from_group_key(k)}.sdf" for k in keys]
 
-        done = 0
-        last_report = time.perf_counter()
-        aborted = False
-        hung_key = None
+    def consume_result(key, result):
+        rows_mcs, rows_all, errs = result
 
-        while pending:
-            # collect finished
-            for k, ar in list(pending.items()):
-                if ar.ready():
-                    try:
-                        rows_mcs, rows_all, errs = ar.get(timeout=0.1)
-                    except Exception as e:
-                        rows_mcs, rows_all, errs = [], [], [[k[0], k[2], f"PARENT_GET_ERROR: {repr(e)}"]]
+        map_rows = [row_dict(row) for row in rows_mcs]
+        all_rows = [row_dict(row) for row in rows_all]
+        map_df = pd.DataFrame(map_rows, columns=cols) if map_rows else pd.DataFrame(columns=cols)
+        all_df = pd.DataFrame(all_rows, columns=cols) if all_rows else pd.DataFrame(columns=cols)
+        map_sasa_df = annotate_with_sasa(map_df, sasa_ref, coord_decimals=3)
+        all_sasa_df = annotate_with_sasa(all_df, sasa_ref, coord_decimals=3)
 
-                    pending.pop(k, None)
-                    submitted_at.pop(k, None)
-
-                    if rows_mcs: results_mcs.extend(rows_mcs)
-                    if rows_all: results_all.extend(rows_all)
-                    if errs: failures.extend(errs)
-
-                    done += 1
-                    if done % 10 == 0 or done == len(keys):
-                        print(f"⏳ progress: {done}/{len(keys)} pending={len(pending)}", flush=True)
-
-            # report + give-up logic
-            now = time.perf_counter()
-
-            # show who's pending every 10s
-            if now - last_report > 2:
-                sample = list(pending.keys())[:10]
-                print(f"🧨 STILL PENDING ({len(pending)}): {sample}", flush=True)
-                last_report = now
-
-            # HARD GIVE UP if any key has been running too long
-            if pending:
-                # find oldest pending
-                oldest_key = min(submitted_at, key=lambda kk: submitted_at[kk])
-                age = now - submitted_at[oldest_key]
-
-                if age > HARD_GIVEUP_SEC:
-                    hung_key = oldest_key
-                    print(f"🛑 GIVE UP: key={hung_key} pending for {age:.1f}s — terminating pool and continuing", flush=True)
-                    failures.append([hung_key[0], hung_key[2], f"HARD_GIVEUP >{HARD_GIVEUP_SEC}s key={hung_key}"])
-                    aborted = True
-                    break
-
-            time.sleep(0.05)
-
-        if aborted:
-            # IMPORTANT: terminate so we don’t hang on pool.join()
-            pool.terminate()
+        if MCS_STREAM_OUTPUT:
+            for row in map_rows:
+                _write_row(map_writer, cols, row)
+            for row in all_rows:
+                _write_row(all_writer, cols, row)
+            for row in map_sasa_df.to_dict(orient="records"):
+                _write_row(map_sasa_writer, cols + ["Exposure_A2"], row)
+            for row in all_sasa_df.to_dict(orient="records"):
+                _write_row(all_sasa_writer, cols + ["Exposure_A2"], row)
         else:
-            pool.close()
+            buffered_map.extend(map_rows)
+            buffered_all.extend(all_rows)
+            buffered_map_sasa.extend(map_sasa_df.to_dict(orient="records"))
+            buffered_all_sasa.extend(all_sasa_df.to_dict(orient="records"))
 
-        pool.join()
+        stats["map_count"] += len(map_rows)
+        stats["all_count"] += len(all_rows)
 
-    print("✅ POOL COMPLETE (or aborted) — proceeding to write CSVs + SVG", flush=True)
+        for err in errs or []:
+            record = failure_dict(err)
+            if MCS_STREAM_OUTPUT:
+                _write_row(fail_writer, fail_cols, record)
+            else:
+                buffered_failures.append(record)
+            stats["failure_count"] += 1
+            if len(failure_preview) < 10:
+                failure_preview.append(record)
 
-    if WRITE_SDF:
-        sdf_count = len(list(SDF_DIR.glob("*.sdf")))
-        expected_sdfs = sorted(f"{sdf_basename_from_group_key(k)}.sdf" for k in keys)
-        actual_sdfs = {p.name for p in SDF_DIR.glob("*.sdf")}
-        missing_sdfs = [name for name in expected_sdfs if name not in actual_sdfs]
-        failed_sdf_groups = len(missing_sdfs)
-        print(f"🧪 SDF expected groups: {len(expected_sdfs)}", flush=True)
-        print(f"🧪 SDF files generated: {sdf_count} → {SDF_DIR}", flush=True)
-        print(f"🧪 SDF failed groups: {failed_sdf_groups}", flush=True)
-        if missing_sdfs:
-            print(f"⚠️ First missing SDFs: {missing_sdfs[:20]}", flush=True)
+        if not all_sasa_df.empty:
+            base = sdf_basename_from_group_key(key)
+            plain_path = svg_dir / f"{base}_plain.svg"
+            exposed_path = svg_dir / f"{base}_exposed.svg"
+            smiles = str(all_sasa_df["SMILES"].iloc[0]).strip() if "SMILES" in all_sasa_df.columns else ""
+            smiles_id = str(all_sasa_df["SMILES_ID"].iloc[0]).strip() if "SMILES_ID" in all_sasa_df.columns else ""
+            if (not plain_path.exists()) or (not exposed_path.exists()):
+                if not smiles or smiles.lower() in {"nan", "none", ""}:
+                    record = {"base": base, "error": "missing_smiles", "detail": f"smiles_id={smiles_id}"}
+                    if MCS_STREAM_OUTPUT:
+                        svg_fail_writer.writerow(record)
+                    else:
+                        buffered_svg_failures.append(record)
+                        stats["svg_failure_count"] += 1
+                else:
+                    plain_svg, exposed_svg, render_msg = render_plain_and_exposed_svgs(smiles, all_sasa_df)
+                    if not plain_svg or not exposed_svg:
+                        record = {"base": base, "error": "render_failed", "detail": render_msg}
+                        if MCS_STREAM_OUTPUT:
+                            svg_fail_writer.writerow(record)
+                        else:
+                            buffered_svg_failures.append(record)
+                        stats["svg_failure_count"] += 1
+                    else:
+                        plain_path.write_text(plain_svg, encoding="utf-8")
+                        exposed_path.write_text(exposed_svg, encoding="utf-8")
+                        stats["svg_count"] += 1
+                        debug_mem("wrote SVG pair", key=base)
 
+        del map_df
+        del all_df
+        del map_sasa_df
+        del all_sasa_df
+        gc.collect()
 
+    try:
+        if MCS_USE_THREADS and max_workers > 1:
+            with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                futures = [executor.submit(process_key, key) for key in keys]
+                for future in as_completed(futures):
+                    key, result = future.result()
+                    processed += 1
+                    consume_result(key, result)
+                    if processed % 10 == 0 or processed == len(keys):
+                        print(f"⏳ progress: {processed}/{len(keys)}", flush=True)
+                    if processed % 25 == 0:
+                        debug_mem("processed batch", count=processed, map_rows=stats["map_count"], all_rows=stats["all_count"])
+        else:
+            for key in keys:
+                processed += 1
+                consume_result(key, compute_mcs_timed(key, atom3d.loc[groups[key]].copy().reset_index(drop=True)))
+                if processed % 10 == 0 or processed == len(keys):
+                    print(f"⏳ progress: {processed}/{len(keys)}", flush=True)
+                if processed % 25 == 0:
+                    debug_mem("processed batch", count=processed, map_rows=stats["map_count"], all_rows=stats["all_count"])
+    finally:
+        if MCS_STREAM_OUTPUT:
+            for handle in (map_handle, all_handle, map_sasa_handle, all_sasa_handle, fail_handle, svg_fail_handle):
+                handle.close()
 
+    if not MCS_STREAM_OUTPUT:
+        pd.DataFrame(buffered_map, columns=cols).to_csv(map_path, index=False)
+        pd.DataFrame(buffered_all, columns=cols).to_csv(all_path, index=False)
+        pd.DataFrame(buffered_map_sasa, columns=cols + ["Exposure_A2"]).to_csv(map_sasa_path, index=False)
+        pd.DataFrame(buffered_all_sasa, columns=cols + ["Exposure_A2"]).to_csv(all_sasa_path, index=False)
+        pd.DataFrame(buffered_failures, columns=fail_cols).to_csv(fail_path, index=False)
+        pd.DataFrame(buffered_svg_failures, columns=["base", "error", "detail"]).to_csv(svg_fail_path, index=False)
 
+    print("✅ MCS processing complete — outputs written", flush=True)
 
-    cols = [
-        "Ligand","Target","pdb_id","Residue_ID","Chain",
-        "AtomIndex","AtomSymbol","atom_id","atom_name","x","y","z",
-        "SMILES_ID","SMILES"
-    ]
-
-
-    df_map = pd.DataFrame(results_mcs, columns=cols)
-    df_all = pd.DataFrame(results_all, columns=cols)
-
-    df_map.to_csv(OUTDIR / "Ligand_MCS_Map.csv", index=False)
-    df_all.to_csv(OUTDIR / "Ligand_AllAtoms_Map.csv", index=False)
-    
-
-    df_map_sasa = annotate_with_sasa(df_map, "Warhead_SASA_atoms.csv", coord_decimals=3)
-    df_all_sasa = annotate_with_sasa(df_all, "Warhead_SASA_atoms.csv", coord_decimals=3)
-
-    df_map_sasa.to_csv(OUTDIR / "Ligand_MCS_SASA.csv", index=False)
-    df_all_sasa.to_csv(OUTDIR / "Ligand_MCS_SASA_ALL_ATOMS.csv", index=False)
-
-    pd.DataFrame(failures, columns=["Ligand", "PDB", "Error"]).to_csv(
-        OUTDIR / "Ligand_MCS_Failures.csv", index=False
-    )
+    actual_sdfs = {p.name for p in SDF_DIR.glob("*.sdf")}
+    missing_sdfs = [name for name in expected_sdfs if name not in actual_sdfs]
+    print(f"🧪 SDF expected groups: {len(expected_sdfs)}", flush=True)
+    print(f"🧪 SDF files generated: {len(actual_sdfs)} → {SDF_DIR}", flush=True)
+    print(f"🧪 SDF failed groups: {len(missing_sdfs)}", flush=True)
+    if missing_sdfs:
+        print(f"⚠️ First missing SDFs: {missing_sdfs[:20]}", flush=True)
 
     print("====================================================")
     print("🎉 COMPLETED MCS MAPPING + SASA ANNOTATION")
-    print(f"📦 Map (MCS only)        → {OUTDIR/'Ligand_MCS_Map.csv'}")
-    print(f"🧪 SASA (MCS only)       → {OUTDIR/'Ligand_MCS_SASA.csv'}")
-    print(f"🧬 All atoms (debug)     → {OUTDIR/'Ligand_AllAtoms_Map.csv'}")
-    print(f"🧪 SASA (ALL atoms)      → {OUTDIR/'Ligand_MCS_SASA_ALL_ATOMS.csv'}")
-    print(f"⚠️ Failures              → {OUTDIR/'Ligand_MCS_Failures.csv'}")
+    print(f"📦 Map (MCS only)        → {map_path}")
+    print(f"🧪 SASA (MCS only)       → {map_sasa_path}")
+    print(f"🧬 All atoms (debug)     → {all_path}")
+    print(f"🧪 SASA (ALL atoms)      → {all_sasa_path}")
+    print(f"⚠️ Failures              → {fail_path}")
     print("====================================================\n")
-
-    # =============================================================================
-    # SVG GENERATION (plain + exposed) from the MCS SASA ALL-ATOMS table
-    # =============================================================================
-    svg_dir = OUTDIR / "MCS_SVG"
-    svg_dir.mkdir(exist_ok=True)
-
-    src_path = OUTDIR / "Ligand_MCS_SASA_ALL_ATOMS.csv"
-    if not src_path.exists():
-        print(f"⚠️  SVG skipped: missing {src_path}")
-        raise SystemExit(0)
-
-    svg_df = pd.read_csv(src_path).fillna("")
-    # ensure types
-    for c in ["Ligand", "Target", "pdb_id", "Residue_ID", "Chain"]:
-        if c in svg_df.columns:
-            svg_df[c] = svg_df[c].astype(str).str.strip()
-    if "pdb_id" in svg_df.columns:
-        svg_df["pdb_id"] = svg_df["pdb_id"].str.lower()
-    if "Chain" in svg_df.columns:
-        svg_df["Chain"] = svg_df["Chain"].str.upper()
-
-    # group per ligand occurrence
-    groups = svg_df.groupby(["pdb_id", "Chain", "Ligand", "Residue_ID", "Target"], dropna=False)
-
-    ok = 0
-    fail = []
-
-    print(f"🎨 Starting SVG generation for {len(groups)} occurrences", flush=True)
-
-
-    for (pdb_id, chain, ligand, resid, target), g in groups:
-        base = f"{pdb_id}_{chain}_{ligand}_{resid}"
-
-        plain_path = svg_dir / f"{base}_plain.svg"
-        exposed_path = svg_dir / f"{base}_exposed.svg"
-
-        # if already made, skip
-        if plain_path.exists() and exposed_path.exists():
-            continue
-
-        smiles = str(g["SMILES"].iloc[0]).strip() if "SMILES" in g.columns else ""
-        smiles_id = str(g["SMILES_ID"].iloc[0]).strip() if "SMILES_ID" in g.columns else ""
-
-        if not smiles or smiles.lower() in {"nan", "none", ""}:
-            fail.append([base, "missing_smiles", f"smiles_id={smiles_id}"])
-            continue
-
-
-        plain_svg, exposed_svg, dbg = render_plain_and_exposed_svgs(smiles, g)
-        if not plain_svg or not exposed_svg:
-            fail.append([base, "render_failed", dbg])
-            continue
-
-        plain_path.write_text(plain_svg, encoding="utf-8")
-        exposed_path.write_text(exposed_svg, encoding="utf-8")
-        ok += 1
-
-    print(f"🖼️  SVGs generated: {ok} → {svg_dir}")
-    if fail:
-        pd.DataFrame(fail, columns=["base", "error", "detail"]).to_csv(svg_dir / "SVG_failures.csv", index=False)
-        print(f"⚠️  SVG failures: {len(fail)} → {svg_dir/'SVG_failures.csv'}")
+    print(f"🖼️  SVGs generated: {stats['svg_count']} → {svg_dir}")
+    if stats["svg_failure_count"]:
+        print(f"⚠️  SVG failures: {stats['svg_failure_count']} → {svg_fail_path}")
+    if stats["failure_count"]:
+        print("⚠️ MCS failures (first 10):")
+        for record in failure_preview:
+            print(f"{record.get('Ligand','')} | {record.get('PDB','')} | {record.get('Error','')}")

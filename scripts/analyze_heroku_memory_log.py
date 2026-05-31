@@ -66,6 +66,7 @@ class JobSummary:
     backup_before_failure: bool = False
     failed: bool = False
     succeeded: bool = False
+    last_running_step: str = ""
 
     def step(self, name: str) -> StepSample:
         if name not in self.steps:
@@ -119,7 +120,9 @@ def parse_log(path: Path) -> tuple[dict[str, JobSummary], dict[str, Any]]:
         run_match = RUN_STEP_RE.search(payload)
         if run_match and current_job:
             step = normalize_step_name(run_match.group(1))
-            jobs.setdefault(current_job, JobSummary(job_id=current_job)).step(step)
+            summary = jobs.setdefault(current_job, JobSummary(job_id=current_job))
+            summary.step(step)
+            summary.last_running_step = step
             current_step_by_job[current_job] = step
             continue
 
@@ -245,6 +248,8 @@ def print_report(jobs: dict[str, JobSummary], aggregate: dict[str, Any]) -> None
                 "backup_before_failure": job.backup_before_failure,
                 "failed": job.failed,
                 "succeeded": job.succeeded,
+                "incomplete": (not job.failed and not job.succeeded),
+                "last_running_step": job.last_running_step or None,
             }
             for job in jobs.values()
         ],

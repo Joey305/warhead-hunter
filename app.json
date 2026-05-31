@@ -67,6 +67,24 @@
     "WARHEAD_METADATA_DEBUG_MEMORY": {
       "value": "0"
     },
+    "WARHEAD_MCS_MAX_WORKERS": {
+      "value": "1"
+    },
+    "WARHEAD_MCS_USE_THREADS": {
+      "value": "1"
+    },
+    "WARHEAD_MCS_OBABEL_MAX_CONCURRENT": {
+      "value": "1"
+    },
+    "WARHEAD_MCS_STREAM_OUTPUT": {
+      "value": "1"
+    },
+    "WARHEAD_MCS_SKIP_EXISTING": {
+      "value": "1"
+    },
+    "WARHEAD_MCS_DEBUG_MEMORY": {
+      "value": "0"
+    },
     "WARHEAD_RUN_CLEANUP_STEP": {
       "value": "0"
     },
