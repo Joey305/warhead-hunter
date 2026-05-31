@@ -473,22 +473,22 @@
     // Avoid a second surface pass here because NGL can over-expand residue
     // surface selections and tint the whole protein.
     // ------------------------------------------------------------------------
-    comp.addRepresentation("cartoon", {
-      sele: lysProteinSele(chain),
-      colorValue: LYS_CARTOON_COLOR,
-      opacity: LYS_CARTOON_OPACITY,
-      depthWrite: false,
-      depthTest: true
-    });
+    // comp.addRepresentation("cartoon", {
+    //   sele: lysProteinSele(chain),
+    //   colorValue: LYS_CARTOON_COLOR,
+    //   opacity: LYS_CARTOON_OPACITY,
+    //   depthWrite: false,
+    //   depthTest: true
+    // });
 
-    comp.addRepresentation("licorice", {
-      sele: `${lysProteinSele(chain)} and sidechainAttached and not hydrogen`,
-      colorValue: LYS_CARTOON_COLOR,
-      opacity: 0.98,
-      radiusScale: 1.15,
-      depthWrite: true,
-      depthTest: true
-    });
+    // comp.addRepresentation("licorice", {
+    //   sele: `${lysProteinSele(chain)} and sidechainAttached and not hydrogen`,
+    //   colorValue: LYS_CARTOON_COLOR,
+    //   opacity: 0.98,
+    //   radiusScale: 1.15,
+    //   depthWrite: true,
+    //   depthTest: true
+    // });
 
     bumpRenderOrder(comp, ORDER_PROTEIN);
     debugLog("protein_component_ready", {
