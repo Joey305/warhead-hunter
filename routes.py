@@ -46,6 +46,15 @@ def _safe_job_id(job_id: str) -> bool:
     return True
 
 
+def _debug_archive_hint() -> str:
+    if archive_enabled():
+        return ""
+    return (
+        " Local job files were not found and RANDY archive access is not configured. "
+        "Set RANDY_ARCHIVE_BASE_URL/RANDY_ARCHIVE_TOKEN or RANDY_BACKUP_BASE_URL/RANDY_BACKUP_TOKEN."
+    )
+
+
 def _first_existing(paths: Iterable[Path]) -> Optional[Path]:
     for p in paths:
         try:
@@ -328,6 +337,7 @@ def view_results(job_id: str):
     """
     if not _safe_job_id(job_id):
         abort(400, description="Invalid job_id")
+    debug_enabled = str(current_app.config.get("DEBUG", False)).lower() in {"1", "true"} or str(os.getenv("FLASK_DEBUG", "")).strip().lower() in {"1", "true"} or str(os.getenv("ARTIFACT_DEBUG", "")).strip().lower() in {"1", "true"} or str(current_app.config.get("ENV", "")).lower() == "development"
 
     df = _read_local_results_display(job_id)
     source = "local_results_display"
@@ -343,6 +353,8 @@ def view_results(job_id: str):
     if df is None or df.empty:
         job = _local_job_state(job_id) or _randy_job_state(job_id)
         if job is None:
+            if debug_enabled:
+                return render_template("error.html", message=f"Page not found.{_debug_archive_hint()}"), 404
             abort(404, description="Job not found.")
 
         status = str(job.get("status") or "unknown").lower()

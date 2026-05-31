@@ -25,10 +25,18 @@ import time
 import sys
 import signal
 import selectors
+from copy import deepcopy
 import pandas as pd
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, List, Tuple, Optional
+from api.randy_backup_client import (
+    archive_required,
+    backup_job_directory,
+    backup_on_complete,
+    backup_on_failure,
+    initial_backup_status,
+)
 from api.sdf_resolver import resolve_sdf_path, row_sdf_key
 from job_state import append_job_log, write_job_metadata as write_job_metadata_disk, results_ready_from_disk
 
@@ -143,6 +151,13 @@ def _job_metadata_path(job_dir: str) -> str:
 def _metadata_timestamp() -> str:
     return datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
 
+
+def _deepcopy_jsonable(value: Any) -> Any:
+    try:
+        return deepcopy(value)
+    except Exception:
+        return value
+
 def _default_outputs(job_id: str) -> Dict[str, Any]:
     return {
         "job_dir": os.path.join(JOBS_DIR, job_id),
@@ -155,6 +170,21 @@ def write_job_metadata(job_id: str, patch: Dict[str, Any], job_dir: Optional[str
     job_dir = job_dir or os.path.join(JOBS_DIR, job_id)
     os.makedirs(job_dir, exist_ok=True)
     payload = dict(patch or {})
+    existing = None
+    metadata_path = _job_metadata_path(job_dir)
+    if os.path.exists(metadata_path):
+        try:
+            with open(metadata_path, "r", encoding="utf-8") as handle:
+                existing = json.load(handle)
+        except Exception:
+            existing = None
+    if isinstance(existing, dict):
+        existing_backup = existing.get("backup")
+        new_backup = payload.get("backup")
+        if isinstance(existing_backup, dict) and isinstance(new_backup, dict):
+            merged_backup = _deepcopy_jsonable(existing_backup)
+            merged_backup.update(_deepcopy_jsonable(new_backup))
+            payload["backup"] = merged_backup
     payload.setdefault("outputs", _default_outputs(job_id))
     payload["job_dir"] = job_dir
     payload["results_ready"] = results_ready_from_disk(job_id)
@@ -676,6 +706,40 @@ def validate_required_display_artifacts(job_id: str, job_dir: str) -> None:
 
     log_message(job_id, f"✅ final SDF validation PASS: rows={len(results)} matched={matched} sdf_files={len(sdf_files)} dir={sdf_dir}")
 
+
+def _attempt_randy_backup(job_id: str, job_dir: str, *, status: str, required_result_tables: bool) -> Dict[str, Any]:
+    backup_state = initial_backup_status(job_id)
+    backup_state.update({
+        "status": "skipped",
+        "reason": backup_state.get("reason") or "",
+        "started_at": _metadata_timestamp(),
+    })
+    write_job_metadata(job_id, {"backup": backup_state}, job_dir=job_dir)
+
+    result = backup_job_directory(job_id, Path(job_dir), status=status, dry_run=False)
+    result["provider"] = "randy"
+    if status == "completed" and required_result_tables and result.get("status") == "uploaded_unverified":
+        result["ok"] = False
+        result["status"] = "failed_verification"
+    write_job_metadata(job_id, {"backup": result}, job_dir=job_dir)
+
+    outcome = str(result.get("status") or "unknown")
+    if result.get("attempted"):
+        summary = (
+            f"configured={bool(result.get('configured'))} "
+            f"ok={bool(result.get('ok'))} "
+            f"status={outcome} "
+            f"files={int(result.get('uploaded_files') or 0)} "
+            f"bytes={int(result.get('uploaded_bytes') or 0)}"
+        )
+        if result.get("error"):
+            summary += f" error={str(result.get('error'))}"
+        log_message(job_id, f"🗄️ RANDY backup result: {summary}")
+    else:
+        reason = str(result.get("reason") or result.get("error") or "not configured")
+        log_message(job_id, f"🗄️ RANDY backup skipped: {reason}")
+    return result
+
 def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_seq: str) -> None:
     job_dir = os.path.join(JOBS_DIR, job_id)
 
@@ -694,6 +758,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
         "error": None,
         "target": target_name,
         "results_ready": False,
+        "backup": initial_backup_status(job_id),
     }, job_dir=job_dir)
 
     try:
@@ -771,6 +836,26 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
         }, job_dir=job_dir)
         _touch_last_log_at(job_id, job_dir, force=True)
 
+        if backup_on_complete():
+            backup_result = _attempt_randy_backup(
+                job_id,
+                job_dir,
+                status="completed",
+                required_result_tables=results_ready_from_disk(job_id),
+            )
+            if archive_required() and not backup_result.get("ok"):
+                raise RuntimeError(
+                    f"RANDY backup required but failed after successful pipeline run: {backup_result.get('error') or backup_result.get('status') or 'unknown backup failure'}"
+                )
+        else:
+            write_job_metadata(job_id, {
+                "backup": {
+                    **initial_backup_status(job_id, reason="WARHEAD_BACKUP_ON_COMPLETE=0"),
+                    "status": "skipped",
+                }
+            }, job_dir=job_dir)
+            log_message(job_id, "🗄️ RANDY backup skipped: WARHEAD_BACKUP_ON_COMPLETE=0")
+
         try:
             _run_cleanup_packaging(job_id, job_dir)
         except Exception as cleanup_error:
@@ -796,6 +881,29 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
 
         log_message(job_id, f"❌ CRITICAL ERROR: {str(e)}")
         _touch_last_log_at(job_id, job_dir, force=True)
+        if backup_on_failure():
+            backup_result = _attempt_randy_backup(
+                job_id,
+                job_dir,
+                status="failed",
+                required_result_tables=False,
+            )
+            if archive_required() and not backup_result.get("ok"):
+                write_job_metadata(job_id, {
+                    "error": {
+                        "message": (
+                            f"{str(e)}; RANDY backup required but failed: "
+                            f"{backup_result.get('error') or backup_result.get('status') or 'unknown backup failure'}"
+                        )
+                    }
+                }, job_dir=job_dir)
+        else:
+            write_job_metadata(job_id, {
+                "backup": {
+                    **initial_backup_status(job_id, reason="WARHEAD_BACKUP_ON_FAILURE=0"),
+                    "status": "skipped",
+                }
+            }, job_dir=job_dir)
 
 
 def start_job(

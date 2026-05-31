@@ -11,6 +11,7 @@ Required Heroku config vars:
   RANDY_ARCHIVE_TOKEN=<same token used by RANDY>
 
 Fallback token env vars:
+  RANDY_BACKUP_TOKEN
   WARHEAD_HANDOFF_TOKEN
   PROTAC_BACKUP_TOKEN
 """
@@ -100,12 +101,27 @@ _LAST_TABLE_DIAGNOSTIC: Dict[str, Any] = {}
 
 
 def _base_url() -> str:
-    return os.environ.get("RANDY_ARCHIVE_BASE_URL", "").strip().rstrip("/")
+    for raw in [
+        os.environ.get("RANDY_ARCHIVE_BASE_URL", ""),
+        os.environ.get("RANDY_BACKUP_BASE_URL", ""),
+    ]:
+        value = str(raw or "").strip().rstrip("/")
+        if not value:
+            continue
+        if value.endswith("/backup"):
+            return value
+        return f"{value}/backup"
+
+    handoff_storage = os.environ.get("WARHEAD_HANDOFF_STORAGE_URL", "").strip().rstrip("/")
+    if handoff_storage.endswith("/backup/hunter-job-files"):
+        return handoff_storage[: -len("/hunter-job-files")]
+    return ""
 
 
 def _token() -> str:
     return (
-        os.environ.get("RANDY_ARCHIVE_TOKEN", "").strip()
+        os.environ.get("RANDY_BACKUP_TOKEN", "").strip()
+        or os.environ.get("RANDY_ARCHIVE_TOKEN", "").strip()
         or os.environ.get("WARHEAD_HANDOFF_TOKEN", "").strip()
         or os.environ.get("PROTAC_BACKUP_TOKEN", "").strip()
     )
@@ -148,6 +164,11 @@ def get_job(job_id: str) -> Optional[Dict[str, Any]]:
         return payload
     except Exception:
         return None
+
+
+def reset_job_cache(job_id: Optional[str] = None) -> None:
+    # lru_cache only exposes full-clear; keep signature for callers.
+    get_job.cache_clear()
 
 
 def job_exists(job_id: str) -> bool:

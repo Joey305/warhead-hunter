@@ -42,3 +42,33 @@ Operational notes:
 - The long-term production fix is still a separate worker dyno or queue-backed job runner.
 
 Future production durability should move metadata and artifacts into durable storage appropriate for the deployment target, such as a database plus object storage, or another persistent volume strategy outside the Heroku demo filesystem.
+
+## RANDY completion backup
+
+Warhead Hunter now supports post-run backup of completed and failed jobs to RANDY so `/results/<job_id>` can survive Heroku restarts when local `jobs/<job_id>/` disappears.
+
+Recommended config:
+
+- `RANDY_BACKUP_BASE_URL=https://.../backup`
+- `RANDY_BACKUP_TOKEN=<secret>`
+- `WARHEAD_BACKUP_ON_COMPLETE=1`
+- `WARHEAD_BACKUP_ON_FAILURE=1`
+- `WARHEAD_BACKUP_REQUIRED=0`
+- `WARHEAD_BACKUP_TIMEOUT_SECONDS=60`
+- `WARHEAD_BACKUP_MAX_BYTES=300000000`
+
+Compatibility fallbacks still work:
+
+- `RANDY_ARCHIVE_BASE_URL`
+- `RANDY_ARCHIVE_TOKEN`
+- `WARHEAD_HANDOFF_STORAGE_URL`
+- `WARHEAD_HANDOFF_TOKEN`
+- `PROTAC_BACKUP_TOKEN`
+
+Operational notes:
+
+- RANDY backup runs after the main pipeline completes and writes backup state into `job_metadata.json`.
+- Backup failures are non-fatal by default. Set `WARHEAD_BACKUP_REQUIRED=1` only when you want a failed archive upload to fail the job.
+- The backup client creates a curated on-disk ZIP and uploads it to RANDY's `/backup/hunter-job-archive` endpoint.
+- RANDY extracts that ZIP into `job_files/` and keeps the uploaded archive under `archives/`.
+- Manual dry-run/upload/verify tooling is available through `python scripts/debug_randy_completion_backup_contract.py <job_id> --dry-run|--upload|--verify`.

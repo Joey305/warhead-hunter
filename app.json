@@ -27,6 +27,21 @@
     },
     "WARHEAD_RUN_CLEANUP_STEP": {
       "value": "0"
+    },
+    "WARHEAD_BACKUP_ON_COMPLETE": {
+      "value": "1"
+    },
+    "WARHEAD_BACKUP_ON_FAILURE": {
+      "value": "1"
+    },
+    "WARHEAD_BACKUP_REQUIRED": {
+      "value": "0"
+    },
+    "WARHEAD_BACKUP_TIMEOUT_SECONDS": {
+      "value": "60"
+    },
+    "WARHEAD_BACKUP_MAX_BYTES": {
+      "value": "300000000"
     }
   }
 }
