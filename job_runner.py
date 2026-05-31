@@ -23,6 +23,8 @@ import threading
 import uuid
 import time
 import sys
+import signal
+import selectors
 import pandas as pd
 from pathlib import Path
 from datetime import datetime
@@ -57,6 +59,27 @@ def _default_python_bin() -> str:
 
 PYTHON_BIN = _default_python_bin()
 os.makedirs(JOBS_DIR, exist_ok=True)
+IS_HEROKU = bool(os.environ.get("DYNO"))
+
+
+def _env_int(name: str, default: int) -> int:
+    raw = str(os.environ.get(name, "") or "").strip()
+    if not raw:
+        return default
+    try:
+        return int(raw)
+    except Exception:
+        return default
+
+
+MAX_IN_MEMORY_LOG_LINES = max(100, _env_int("WARHEAD_JOB_LOG_TAIL_LINES", 800))
+DEFAULT_LOG_API_TAIL = max(100, _env_int("WARHEAD_JOB_LOG_API_TAIL", 400))
+MEMORY_WARN_MB = max(0, _env_int("WARHEAD_MEMORY_WARN_MB", 360 if IS_HEROKU else 0))
+MEMORY_GUARD_MB = max(0, _env_int("WARHEAD_MEMORY_GUARD_MB", 430 if IS_HEROKU else 0))
+RUN_CLEANUP_STEP = os.environ.get("WARHEAD_RUN_CLEANUP_STEP", "0" if IS_HEROKU else "1") == "1"
+CLEANUP_SCRIPT_NAME = "18_CleanJobDirNzip.py"
+CLEANUP_TIMEOUT_SEC = _env_int("WARHEAD_CLEANUP_TIMEOUT_SEC", 8 * 60)
+CLEANUP_NO_OUTPUT_TIMEOUT_SEC = _env_int("WARHEAD_CLEANUP_NO_OUTPUT_TIMEOUT_SEC", 120)
 
 # Global dictionary to track job status in memory
 # Structure:
@@ -72,6 +95,7 @@ os.makedirs(JOBS_DIR, exist_ok=True)
 # }
 JOB_STORE: Dict[str, Dict[str, Any]] = {}
 JOB_LOCK = threading.Lock()
+_LAST_LOG_METADATA_TOUCH: Dict[str, float] = {}
 
 # Per-step total runtime timeout (seconds). Set None for no hard timeout.
 STEP_TIMEOUTS = {
@@ -100,9 +124,6 @@ SOFT_FAIL = {
     # Example: if you decide step 11 should not block pipeline:
     # "11_mcsMatcher.py",
 }
-
-RUN_CLEANUP_STEP = os.environ.get("WARHEAD_RUN_CLEANUP_STEP", "1") == "1"
-CLEANUP_SCRIPT_NAME = "18_CleanJobDirNzip.py"
 
 # =============================================================================
 # LOGGING HELPERS
@@ -135,25 +156,161 @@ def write_job_metadata(job_id: str, patch: Dict[str, Any], job_dir: Optional[str
     os.makedirs(job_dir, exist_ok=True)
     payload = dict(patch or {})
     payload.setdefault("outputs", _default_outputs(job_id))
-    payload.setdefault("error", None)
     payload["job_dir"] = job_dir
     payload["results_ready"] = results_ready_from_disk(job_id)
     with JOB_LOCK:
         write_job_metadata_disk(job_id, payload)
 
+class MemoryGuardError(RuntimeError):
+    pass
+
+
+def _current_rss_mb(pid: Optional[int] = None) -> float:
+    target_pid = int(pid or os.getpid())
+    status_path = Path(f"/proc/{target_pid}/status")
+    if status_path.exists():
+        try:
+            for line in status_path.read_text(encoding="utf-8", errors="ignore").splitlines():
+                if line.startswith("VmRSS:"):
+                    kb = int(line.split()[1])
+                    return round(kb / 1024.0, 1)
+        except Exception:
+            pass
+    return 0.0
+
+
+def _child_pids(pid: int) -> List[int]:
+    proc_root = Path("/proc")
+    if not proc_root.exists():
+        return []
+    children: Dict[int, List[int]] = {}
+    for entry in proc_root.iterdir():
+        if not entry.name.isdigit():
+            continue
+        try:
+            ppid = None
+            for line in (entry / "status").read_text(encoding="utf-8", errors="ignore").splitlines():
+                if line.startswith("PPid:"):
+                    ppid = int(line.split()[1])
+                    break
+            if ppid is not None:
+                children.setdefault(ppid, []).append(int(entry.name))
+        except Exception:
+            continue
+
+    out: List[int] = []
+    stack = list(children.get(pid, []))
+    seen = set()
+    while stack:
+        child = stack.pop()
+        if child in seen:
+            continue
+        seen.add(child)
+        out.append(child)
+        stack.extend(children.get(child, []))
+    return out
+
+
+def _process_tree_rss_mb(root_pid: int) -> float:
+    pids = [root_pid, *_child_pids(root_pid)]
+    total = 0.0
+    for pid in pids:
+        total += _current_rss_mb(pid)
+    return round(total, 1)
+
+
+def _append_live_log(job_id: str, line: str, *, persist: bool = True) -> None:
+    with JOB_LOCK:
+        if job_id in JOB_STORE:
+            state = JOB_STORE[job_id]
+            lines = state.setdefault("log", [])
+            lines.append(line)
+            if len(lines) > MAX_IN_MEMORY_LOG_LINES:
+                del lines[:-MAX_IN_MEMORY_LOG_LINES]
+                state["log_truncated"] = True
+            state["log_line_count"] = int(state.get("log_line_count", 0)) + 1
+
+    if persist:
+        try:
+            append_job_log(job_id, line, touch_metadata=False)
+        except Exception:
+            pass
+
+
+def _touch_last_log_at(job_id: str, job_dir: str, *, force: bool = False) -> None:
+    now = time.time()
+    if not force and (now - _LAST_LOG_METADATA_TOUCH.get(job_id, 0.0)) < 10.0:
+        return
+    _LAST_LOG_METADATA_TOUCH[job_id] = now
+    try:
+        write_job_metadata(job_id, {"last_log_at": _metadata_timestamp()}, job_dir=job_dir)
+    except Exception:
+        pass
+
+
+def _memory_status(job_id: str, script_name: str, phase: str, *, before_mb: Optional[float] = None, child_peak_mb: Optional[float] = None) -> float:
+    rss_mb = _current_rss_mb()
+    delta = "" if before_mb is None else f" delta={rss_mb - before_mb:+.1f}MB"
+    child = "" if child_peak_mb is None else f" child_peak={child_peak_mb:.1f}MB"
+    log_message(job_id, f"[mem] {phase} {script_name} rss={rss_mb:.1f}MB{delta}{child}")
+    return rss_mb
+
+
+def _check_memory_guard(job_id: str, script_name: str, job_dir: str, *, phase: str) -> float:
+    rss_mb = _current_rss_mb()
+    if MEMORY_WARN_MB and rss_mb >= MEMORY_WARN_MB:
+        log_message(job_id, f"⚠️ [mem] {phase} {script_name} rss={rss_mb:.1f}MB exceeds warn threshold {MEMORY_WARN_MB}MB")
+        _touch_last_log_at(job_id, job_dir, force=True)
+    if MEMORY_GUARD_MB and rss_mb >= MEMORY_GUARD_MB:
+        raise MemoryGuardError(
+            f"Memory guard tripped {phase} {script_name}: rss={rss_mb:.1f}MB >= guard {MEMORY_GUARD_MB}MB"
+        )
+    return rss_mb
+
+
+def _terminate_process_tree(proc: subprocess.Popen, *, grace_sec: float = 5.0) -> None:
+    if proc.poll() is not None:
+        return
+
+    try:
+        if os.name != "nt":
+            os.killpg(proc.pid, signal.SIGTERM)
+        else:
+            proc.terminate()
+    except Exception:
+        try:
+            proc.terminate()
+        except Exception:
+            pass
+
+    deadline = time.time() + grace_sec
+    while time.time() < deadline:
+        if proc.poll() is not None:
+            break
+        time.sleep(0.2)
+
+    if proc.poll() is None:
+        try:
+            if os.name != "nt":
+                os.killpg(proc.pid, signal.SIGKILL)
+            else:
+                proc.kill()
+        except Exception:
+            try:
+                proc.kill()
+            except Exception:
+                pass
+
+    try:
+        proc.wait(timeout=2)
+    except Exception:
+        pass
+
+
 def log_message(job_id: str, message: str) -> None:
     entry = f"[{_now()}] {message}"
     print(entry, flush=True)
-
-    with JOB_LOCK:
-        if job_id in JOB_STORE:
-            JOB_STORE[job_id].setdefault("log", []).append(entry)
-
-    # Also persist to disk if possible
-    try:
-        append_job_log(job_id, entry)
-    except Exception:
-        pass
+    _append_live_log(job_id, entry, persist=True)
 
 
 # =============================================================================
@@ -185,6 +342,8 @@ def run_script_logged(
 
     log_message(job_id, f"🚀 Running {script_name}...")
     log_message(job_id, f"🐍 Pipeline Python: {PYTHON_BIN}")
+    before_rss = _check_memory_guard(job_id, script_name, job_dir, phase="before")
+    _memory_status(job_id, script_name, "before")
 
     env = os.environ.copy()
     env["PYTHONUNBUFFERED"] = "1"
@@ -211,45 +370,63 @@ def run_script_logged(
         bufsize=1,
         universal_newlines=True,
         env=env,
+        start_new_session=(os.name != "nt"),
     ) as proc:
-
+        peak_child_rss_mb = 0.0
+        selector = selectors.DefaultSelector()
+        if proc.stdout is not None:
+            selector.register(proc.stdout, selectors.EVENT_READ)
         try:
-            # Stream output line-by-line
-            for line in proc.stdout:
-                last_output = time.time()
-                line = line.rstrip("\n")
-                if line:
-                    # store raw line (already includes step prefixing inside scripts)
-                    with JOB_LOCK:
-                        JOB_STORE[job_id]["log"].append(line)
-                    # also persist
-                    try:
-                        append_job_log(job_id, line)
-                    except Exception:
-                        pass
-
-                # hard timeout
+            while True:
+                now = time.time()
                 if timeout_sec is not None and (time.time() - start) > timeout_sec:
-                    proc.kill()
+                    _terminate_process_tree(proc)
                     raise TimeoutError(f"{script_name} timed out after {timeout_sec}s")
 
-                # no-output watchdog
                 if no_output_timeout_sec is not None and (time.time() - last_output) > no_output_timeout_sec:
-                    proc.kill()
+                    _terminate_process_tree(proc)
                     raise TimeoutError(f"{script_name} produced no output for >{no_output_timeout_sec}s (killed)")
+
+                if now - last_output >= 1.0:
+                    _check_memory_guard(job_id, script_name, job_dir, phase="during")
+                if proc.poll() is not None:
+                    if proc.stdout is not None:
+                        remainder = proc.stdout.read() or ""
+                        for line in remainder.splitlines():
+                            if line:
+                                _append_live_log(job_id, line, persist=True)
+                                _touch_last_log_at(job_id, job_dir)
+                    break
+
+                peak_child_rss_mb = max(peak_child_rss_mb, _process_tree_rss_mb(proc.pid))
+                events = selector.select(timeout=1.0)
+                if not events:
+                    continue
+
+                for _key, _mask in events:
+                    line = proc.stdout.readline() if proc.stdout is not None else ""
+                    if line == "":
+                        continue
+                    last_output = time.time()
+                    line = line.rstrip("\n")
+                    if line:
+                        _append_live_log(job_id, line, persist=True)
+                        _touch_last_log_at(job_id, job_dir)
 
             proc.wait()
 
         finally:
-            # Make sure process is not left running
+            try:
+                selector.close()
+            except Exception:
+                pass
             if proc.poll() is None:
-                try:
-                    proc.kill()
-                except Exception:
-                    pass
+                _terminate_process_tree(proc)
 
     if proc.returncode != 0:
         raise RuntimeError(f"{script_name} failed with code {proc.returncode}")
+    after_rss = _check_memory_guard(job_id, script_name, job_dir, phase="after")
+    _memory_status(job_id, script_name, "after", before_mb=before_rss, child_peak_mb=peak_child_rss_mb)
 
 
 # =============================================================================
@@ -320,37 +497,18 @@ def _run_cleanup_packaging(job_id: str, job_dir: str) -> None:
     if cleanup_force_delete_cif:
         cmd.append("--force-delete-cif")
 
-    env = os.environ.copy()
-    env["PYTHONUNBUFFERED"] = "1"
-    env["JOB_ID"] = job_id
+    if MEMORY_WARN_MB and _current_rss_mb() >= MEMORY_WARN_MB:
+        log_message(job_id, f"🧹 Cleanup packaging skipped because current RSS is already {_current_rss_mb():.1f}MB (warn={MEMORY_WARN_MB}MB)")
+        return
 
-    log_message(job_id, f"🧹 Running cleanup/package step: {' '.join(cmd)}")
-
-    with subprocess.Popen(
-        cmd,
-        cwd=job_dir,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
-        bufsize=1,
-        universal_newlines=True,
-        env=env,
-    ) as proc:
-        try:
-            for line in proc.stdout or []:
-                line = line.rstrip()
-                if line:
-                    log_message(job_id, f"[cleanup] {line}")
-            proc.wait()
-        finally:
-            if proc.poll() is None:
-                try:
-                    proc.kill()
-                except Exception:
-                    pass
-
-    if proc.returncode != 0:
-        raise RuntimeError(f"{CLEANUP_SCRIPT_NAME} failed with code {proc.returncode}")
+    run_script_logged(
+        job_id=job_id,
+        script_name=CLEANUP_SCRIPT_NAME,
+        args=cmd[3:],
+        job_dir=job_dir,
+        timeout_sec=CLEANUP_TIMEOUT_SEC,
+        no_output_timeout_sec=CLEANUP_NO_OUTPUT_TIMEOUT_SEC,
+    )
 
     public_bundle_rel = f"bundles/{job_id}_warhead_hunter_public_results.zip"
     manifest_rel = "job_result_manifest.json"
@@ -393,10 +551,11 @@ def _expected_keys_from_ligand_atoms(job_path: Path) -> List[Tuple[str, str, str
     if ligand_atoms is None:
         raise RuntimeError("Required SDF source artifact missing: Ligand_3D_Atoms.csv")
 
-    df = pd.read_csv(ligand_atoms, dtype=str).fillna("")
     required = {"pdb_id", "Chain", "Warhead", "Residue_ID"}
-    if not required.issubset(df.columns):
-        raise RuntimeError(f"Ligand_3D_Atoms.csv missing required SDF key columns: {sorted(required - set(df.columns))}")
+    try:
+        df = pd.read_csv(ligand_atoms, dtype=str, usecols=list(required)).fillna("")
+    except ValueError as exc:
+        raise RuntimeError(f"Ligand_3D_Atoms.csv missing required SDF key columns: {sorted(required)}") from exc
 
     keys = []
     grouped = df.groupby(["pdb_id", "Chain", "Warhead", "Residue_ID"], dropna=False)
@@ -411,7 +570,10 @@ def _residue_lookup_from_summary(job_path: Path) -> Dict[Tuple[str, str, str], s
         path = _csv_path(job_path, filename)
         if path is None:
             continue
-        df = pd.read_csv(path, dtype=str).fillna("")
+        try:
+            df = pd.read_csv(path, dtype=str, usecols=["pdb_id", "Chain", "Warhead", "Residue_ID"]).fillna("")
+        except ValueError:
+            continue
         for _, row in df.iterrows():
             pdb, chain, ligand, resid = row_sdf_key(row.to_dict())
             if pdb and chain and ligand and resid:
@@ -434,7 +596,7 @@ def validate_mcs_sdf_checkpoint(job_id: str, job_dir: str, *, copied: bool) -> N
     if not sdf_files:
         raise RuntimeError(
             f"Required MCS SDF folder contains zero SDF files: {sdf_dir}. "
-            f"First expected keys: {expected_keys[:20]}"
+            f"First expected keys: {expected_keys[:10]}"
         )
 
     missing = []
@@ -446,8 +608,8 @@ def validate_mcs_sdf_checkpoint(job_id: str, job_dir: str, *, copied: bool) -> N
     if missing:
         raise RuntimeError(
             f"MCS SDF checkpoint failed for {sdf_dir}: expected={len(expected_keys)} "
-            f"sdf_files={len(sdf_files)} first_missing={missing[:20]} "
-            f"sample_files={[p.name for p in sdf_files[:20]]}"
+            f"sdf_files={len(sdf_files)} first_missing={missing[:10]} "
+            f"sample_files={[p.name for p in sdf_files[:10]]}"
         )
 
     label = "TARGET_RESULTS/MCS_Output/MCS_SDF" if copied else "MCS_Output/MCS_SDF"
@@ -461,7 +623,7 @@ def validate_required_display_artifacts(job_id: str, job_dir: str) -> None:
         raise RuntimeError("Required display artifact missing: Results_Display.csv")
 
     try:
-        results = pd.read_csv(results_path, dtype=str).fillna("")
+        results = pd.read_csv(results_path, dtype=str, usecols=["pdb_id", "Chain", "Warhead", "Residue_ID"]).fillna("")
     except Exception as exc:
         raise RuntimeError(f"Could not read Results_Display.csv: {exc}") from exc
 
@@ -477,8 +639,8 @@ def validate_required_display_artifacts(job_id: str, job_dir: str) -> None:
         raise RuntimeError(
             "Required copied MCS SDF folder contains zero SDF files. "
             f"Expected folder: {sdf_dir}. "
-            f"First display keys: {[row_sdf_key(r.to_dict()) for _, r in results.head(20).iterrows()]}. "
-            f"Actual TARGET_RESULTS files: {_list_target_result_files(job_path)}"
+            f"First display keys: {[row_sdf_key(r.to_dict()) for _, r in results.head(10).iterrows()]}. "
+            f"Actual TARGET_RESULTS files: {_list_target_result_files(job_path, limit=30)}"
         )
 
     residue_lookup = _residue_lookup_from_summary(job_path)
@@ -507,9 +669,9 @@ def validate_required_display_artifacts(job_id: str, job_dir: str) -> None:
         raise RuntimeError(
             "SDF contract failed: at least one Results_Display row does not resolve to an SDF. "
             f"Rows={len(results)}, SDF files={len(sdf_files)}, "
-            f"First missing keys={missing[:20]}, "
-            f"Sample SDF files={[str(p.relative_to(job_path)) for p in sdf_files[:20]]}, "
-            f"Actual TARGET_RESULTS files={_list_target_result_files(job_path)}"
+            f"First missing keys={missing[:10]}, "
+            f"Sample SDF files={[str(p.relative_to(job_path)) for p in sdf_files[:10]]}, "
+            f"Actual TARGET_RESULTS files={_list_target_result_files(job_path, limit=30)}"
         )
 
     log_message(job_id, f"✅ final SDF validation PASS: rows={len(results)} matched={matched} sdf_files={len(sdf_files)} dir={sdf_dir}")
@@ -545,6 +707,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
         except Exception:
             pass
         write_job_metadata(job_id, {"last_log_at": _metadata_timestamp()}, job_dir=job_dir)
+        _check_memory_guard(job_id, "pipeline", job_dir, phase="startup")
 
         _copy_assets(job_id, job_dir)
         _write_inputs(job_id, job_dir, target_name, search_query, fasta_seq)
@@ -598,6 +761,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
         with JOB_LOCK:
             JOB_STORE[job_id]["status"] = "completed"
             JOB_STORE[job_id]["finished_at"] = _timestamp()
+            JOB_STORE[job_id]["current_step"] = ""
         write_job_metadata(job_id, {
             "status": "completed",
             "finished_at": _timestamp(),
@@ -605,6 +769,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
             "error": None,
             "results_ready": True,
         }, job_dir=job_dir)
+        _touch_last_log_at(job_id, job_dir, force=True)
 
         try:
             _run_cleanup_packaging(job_id, job_dir)
@@ -618,9 +783,11 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
         with JOB_LOCK:
             JOB_STORE[job_id]["status"] = "failed"
             JOB_STORE[job_id]["finished_at"] = _timestamp()
+            JOB_STORE[job_id]["current_step"] = ""
         write_job_metadata(job_id, {
             "status": "failed",
             "finished_at": _timestamp(),
+            "current_step": "",
             "error": {
                 "message": str(e),
             },
@@ -628,6 +795,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
         }, job_dir=job_dir)
 
         log_message(job_id, f"❌ CRITICAL ERROR: {str(e)}")
+        _touch_last_log_at(job_id, job_dir, force=True)
 
 
 def start_job(
@@ -652,6 +820,8 @@ def start_job(
             "current_step": "",
             "step_started_at": "",
             "log": [],
+            "log_line_count": 0,
+            "log_truncated": False,
         }
     write_job_metadata(job_id, {
         "status": "queued",

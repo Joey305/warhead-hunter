@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+from collections import deque
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -87,23 +88,64 @@ def write_job_metadata(
     return data
 
 
-def load_job_log_lines(job_id: str, jobs_root: Optional[Path | str] = None) -> List[str]:
+def load_job_log_lines(
+    job_id: str,
+    jobs_root: Optional[Path | str] = None,
+    *,
+    tail: Optional[int] = None,
+    offset: int = 0,
+    limit: Optional[int] = None,
+) -> List[str]:
     fp = job_log_path(job_id, jobs_root)
     if not fp.exists():
         return []
     try:
-        return fp.read_text(encoding="utf-8", errors="ignore").splitlines()
+        if tail is not None and tail > 0:
+            with fp.open("r", encoding="utf-8", errors="ignore") as handle:
+                return [line.rstrip("\n") for line in deque(handle, maxlen=tail)]
+
+        lines: List[str] = []
+        start = max(0, int(offset or 0))
+        remaining = None if limit is None else max(0, int(limit))
+        with fp.open("r", encoding="utf-8", errors="ignore") as handle:
+            for idx, raw in enumerate(handle):
+                if idx < start:
+                    continue
+                if remaining is not None and remaining <= 0:
+                    break
+                lines.append(raw.rstrip("\n"))
+                if remaining is not None:
+                    remaining -= 1
+        return lines
     except Exception:
         return []
 
 
-def append_job_log(job_id: str, line: str, jobs_root: Optional[Path | str] = None) -> Path:
+def count_job_log_lines(job_id: str, jobs_root: Optional[Path | str] = None) -> int:
+    fp = job_log_path(job_id, jobs_root)
+    if not fp.exists():
+        return 0
+    try:
+        with fp.open("r", encoding="utf-8", errors="ignore") as handle:
+            return sum(1 for _ in handle)
+    except Exception:
+        return 0
+
+
+def append_job_log(
+    job_id: str,
+    line: str,
+    jobs_root: Optional[Path | str] = None,
+    *,
+    touch_metadata: bool = True,
+) -> Path:
     job_dir = job_dir_for(job_id, jobs_root)
     job_dir.mkdir(parents=True, exist_ok=True)
     fp = job_log_path(job_id, jobs_root)
     with fp.open("a", encoding="utf-8") as handle:
         handle.write(f"{line}\n")
-    write_job_metadata(job_id, {"last_log_at": utc_now_iso()}, jobs_root=jobs_root)
+    if touch_metadata:
+        write_job_metadata(job_id, {"last_log_at": utc_now_iso()}, jobs_root=jobs_root)
     return fp
 
 
@@ -145,7 +187,7 @@ def infer_job_status_from_disk(job_id: str, jobs_root: Optional[Path | str] = No
     if status:
         return status
 
-    log_lines = load_job_log_lines(job_id, jobs_root)
+    log_lines = load_job_log_lines(job_id, jobs_root, tail=400)
     if any("PIPELINE FINISHED SUCCESSFULLY" in line for line in log_lines):
         return "completed"
     if any("CRITICAL ERROR" in line or " failed with code " in line for line in log_lines):
@@ -161,6 +203,8 @@ def hydrate_job_from_disk(
     job_id: str,
     jobs_root: Optional[Path | str] = None,
     live_state: Optional[Dict[str, Any]] = None,
+    *,
+    log_tail: Optional[int] = 500,
 ) -> Optional[Dict[str, Any]]:
     if not job_exists_on_disk(job_id, jobs_root):
         return None
@@ -179,7 +223,7 @@ def hydrate_job_from_disk(
     if not current_step and status in {"queued", "pending", "running"}:
         current_step = str(live.get("current_step") or "").strip()
 
-    log_lines = load_job_log_lines(job_id, jobs_root)
+    log_lines = load_job_log_lines(job_id, jobs_root, tail=log_tail)
     ready = results_ready_from_disk(job_id, jobs_root)
 
     hydrated = {

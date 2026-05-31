@@ -26,7 +26,7 @@ from flask import (
     url_for, send_from_directory, jsonify, abort, send_file, Response
 )
 
-from job_runner import start_job, JOB_STORE
+from job_runner import start_job, JOB_STORE, DEFAULT_LOG_API_TAIL
 import job_state as disk_jobs
 from api.sasa_api import bp as sasa_bp
 from routes import bp as routes_bp
@@ -3315,6 +3315,38 @@ def job_log(job_id):
     if job is None:
         return jsonify({"ok": False, "error": "Job not found", "job_id": job_id}), 404
 
+    tail_raw = str(request.args.get("tail") or "").strip()
+    limit_raw = str(request.args.get("limit") or "").strip()
+    offset_raw = str(request.args.get("offset") or "").strip()
+
+    try:
+        tail = max(1, min(int(tail_raw), 5000)) if tail_raw else DEFAULT_LOG_API_TAIL
+    except Exception:
+        tail = DEFAULT_LOG_API_TAIL
+    try:
+        limit = max(1, min(int(limit_raw), 5000)) if limit_raw else None
+    except Exception:
+        limit = None
+    try:
+        offset = max(0, int(offset_raw)) if offset_raw else 0
+    except Exception:
+        offset = 0
+
+    live_log = job.get("log") if isinstance(job.get("log"), list) else []
+    using_live_tail = bool(job_id in JOB_STORE and live_log and offset == 0 and limit is None)
+    if using_live_tail:
+        log_lines = list(live_log[-tail:])
+        total_lines = int(job.get("log_line_count") or len(live_log))
+    else:
+        log_lines = disk_jobs.load_job_log_lines(
+            job_id,
+            get_jobs_root(),
+            tail=tail if offset == 0 and limit is None else None,
+            offset=offset,
+            limit=limit,
+        )
+        total_lines = disk_jobs.count_job_log_lines(job_id, get_jobs_root())
+
     return jsonify({
         "ok": True,
         "job_id": job_id,
@@ -3322,9 +3354,13 @@ def job_log(job_id):
         "target": job.get("target", ""),
         "current_step": job.get("current_step", ""),
         "results_ready": bool(job.get("results_ready")),
-        "log": job.get("log", []),
+        "log": log_lines,
         "error": job.get("error"),
         "source": job.get("source", "local_disk"),
+        "log_limit": tail if offset == 0 and limit is None else limit,
+        "log_offset": max(0, total_lines - len(log_lines)) if offset == 0 and limit is None else offset,
+        "log_truncated": total_lines > len(log_lines),
+        "total_log_lines": total_lines,
     })
 
 

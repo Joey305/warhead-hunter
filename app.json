@@ -12,6 +12,21 @@
   "env": {
     "PYTHONUNBUFFERED": {
       "value": "1"
+    },
+    "WARHEAD_JOB_LOG_TAIL_LINES": {
+      "value": "800"
+    },
+    "WARHEAD_JOB_LOG_API_TAIL": {
+      "value": "400"
+    },
+    "WARHEAD_MEMORY_WARN_MB": {
+      "value": "360"
+    },
+    "WARHEAD_MEMORY_GUARD_MB": {
+      "value": "430"
+    },
+    "WARHEAD_RUN_CLEANUP_STEP": {
+      "value": "0"
     }
   }
 }
