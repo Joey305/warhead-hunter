@@ -56,10 +56,13 @@
   // Protein
   const PROTEIN_COLOR = "#8A8F98";
   const PROTEIN_SURFACE_COLOR = "#60656F";
-  const LYS_SURFACE_COLOR = "#1C5BFF";
-  const LYS_CARTOON_COLOR = "#3D7BFF";
+  // LYS gets its own dark-blue layer. Everything else stays gray.
+  const LYS_SURFACE_COLOR = "#001A70";
+  const LYS_CARTOON_COLOR = "#0030A8";
   const PROTEIN_SURFACE_OPACITY = 0.14;
   const PROTEIN_CARTOON_OPACITY = 0.72;
+  const LYS_SURFACE_OPACITY = 0.38;
+  const LYS_CARTOON_OPACITY = 0.95;
 
   // Ligand
   const LIGAND_BS_SCALE = 3.9;     // larger ball+stick
@@ -410,6 +413,20 @@
     return "polymer and not hetero";
   }
 
+  // Split protein into two non-overlapping NGL selections:
+  //   1) non-LYS protein = gray
+  //   2) LYS residues     = dark blue
+  //
+  // Keeping them separate is more reliable for NGL surfaces than trying to
+  // color a single surface representation with a residue-level colormaker.
+  function lysProteinSele(_chain) {
+    return "polymer and resname LYS and not hetero";
+  }
+
+  function nonLysProteinSele(_chain) {
+    return "polymer and not (resname LYS) and not hetero";
+  }
+
   async function loadProtein(pdb, chain, warhead, resid) {
     const qs = new URLSearchParams();
     if (warhead) qs.set("ligand", warhead);
@@ -441,8 +458,11 @@
     const blob = new Blob([pdbText], { type: "chemical/x-pdb" });
     const comp = await State.stage.loadFile(blob, { ext: "pdb", defaultRepresentation: false });
 
+    // ------------------------------------------------------------------------
+    // Protein body: gray for every polymer residue EXCEPT lysine.
+    // ------------------------------------------------------------------------
     comp.addRepresentation("surface", {
-      sele: proteinSele(chain),
+      sele: nonLysProteinSele(chain),
       colorValue: PROTEIN_SURFACE_COLOR,
       opacity: PROTEIN_SURFACE_OPACITY,
       depthWrite: false,
@@ -454,20 +474,36 @@
     });
 
     comp.addRepresentation("cartoon", {
-      sele: proteinSele(chain),
-      color: State.proteinScheme,
+      sele: nonLysProteinSele(chain),
+      colorValue: PROTEIN_COLOR,
       opacity: PROTEIN_CARTOON_OPACITY,
       depthWrite: false,
       depthTest: true
     });
 
-    comp.addRepresentation("line", {
-      sele: "LYS and polymer and not hetero",
-      colorValue: LYS_CARTOON_COLOR,
-      opacity: 0.9,
+    // ------------------------------------------------------------------------
+    // Lysine highlight: true blue LYS surface/cartoon, not just a line overlay.
+    // This is the key fix: LYS is its own representation, so the LYS surface
+    // becomes blue while the rest of the protein remains gray.
+    // ------------------------------------------------------------------------
+    comp.addRepresentation("surface", {
+      sele: lysProteinSele(chain),
+      colorValue: LYS_SURFACE_COLOR,
+      opacity: LYS_SURFACE_OPACITY,
       depthWrite: false,
       depthTest: true,
-      linewidth: 2
+      side: "double",
+      surfaceType: "av",
+      probeRadius: 1.4,
+      scaleFactor: 0.9
+    });
+
+    comp.addRepresentation("cartoon", {
+      sele: lysProteinSele(chain),
+      colorValue: LYS_CARTOON_COLOR,
+      opacity: LYS_CARTOON_OPACITY,
+      depthWrite: false,
+      depthTest: true
     });
 
     bumpRenderOrder(comp, ORDER_PROTEIN);
