@@ -5,6 +5,9 @@
   const CFG = window.PROTACABLE_CONFIG || {};
   const JOB_ID = CFG.job_id;
   const DEFAULT_PROTAC_BUILDER_BASE = "https://protacbuilder.com/copy/COPYindex";
+  const ARTIFACT_DEBUG =
+    new URLSearchParams(window.location.search).get("debug") === "1" ||
+    String(window.ARTIFACT_DEBUG || "").trim() === "1";
 
   function getProtacBuilderBase() {
     const raw =
@@ -294,6 +297,15 @@
     } catch {
       return { ok: false, status: 0, data: "" };
     }
+  }
+
+  async function fetchArtifactDebug(row) {
+    if (!ARTIFACT_DEBUG || !row || !row.pdb || !row.chain || !row.warhead) return null;
+    const qs = new URLSearchParams({ ligand: row.warhead, debug: "1" });
+    if (row.resid) qs.set("resid", row.resid);
+    const url = `/api/debug/artifact-resolution/${encodeURIComponent(JOB_ID)}/${encodeURIComponent(row.pdb)}/${encodeURIComponent(row.chain)}?${qs.toString()}`;
+    const result = await fetchJSON(url);
+    return result.ok ? result.data : null;
   }
 
   async function logBuilderClick(smile, job) {
@@ -687,6 +699,25 @@
     }
   }
 
+  function artifactFailureSummary(debugPayload, row) {
+    if (!debugPayload || !debugPayload.checks) return "";
+    const checks = debugPayload.checks;
+    const lines = [
+      "First failed row:",
+      `${row.warhead} / ${row.pdb} chain ${row.chain}${row.resid ? ` / resid ${row.resid}` : ""}`,
+      "",
+      `SDF endpoint: ${checks.sdf_endpoint?.status ?? "?"}`,
+      `Exact PDB endpoint: ${checks.pdb_exact_endpoint?.status ?? "?"}`,
+      `Protein endpoint: ${checks.protein_endpoint?.status ?? "?"}`,
+      `SVG endpoint: ${checks.svg_endpoint?.status ?? "?"}`,
+      `SASA residue: ${row.residueStatus ?? "?"}`,
+    ];
+    if ((checks.pdb_exact_endpoint?.status === 200) && (checks.protein_endpoint?.status !== 200)) {
+      lines.push("", "Likely route mismatch:", "Exact PDB endpoint works, but protein hard gate endpoint failed.");
+    }
+    return lines.join("\n");
+  }
+
   async function filterRenderableCards() {
     const cards = Array.from(document.querySelectorAll(".result-card"));
     const renderable = [];
@@ -756,14 +787,18 @@
       if (!okSdf) {
         console.warn("SDF missing for result card:", { job: JOB_ID, pdb, chain, warhead, resid, url: sdfUrl });
         markCardArtifactMissing(card, "SDF missing — pipeline artifact incomplete");
+        card.dataset.sdfStatus = "404";
         continue;
       }
+      card.dataset.sdfStatus = "200";
 
       if (!okProtein) {
         console.warn("Protein artifact missing for result card:", { job: JOB_ID, pdb, chain, warhead, url: proteinUrl });
         markCardArtifactMissing(card, "Protein artifact missing — pipeline artifact incomplete");
+        card.dataset.proteinStatus = "404";
         continue;
       }
+      card.dataset.proteinStatus = "200";
 
       if (resid) {
         const sasaUrl =
@@ -1344,16 +1379,30 @@ function openBuilderFallback(smiles, opts = {}) {
     if (!first) {
       setHUD("—", "—", "—", null, "No renderable ligands found for this job.");
       const viewport = $("viewport");
+      const failedCard = Array.from(document.querySelectorAll(".result-card")).find((card) => card.dataset.renderable !== "true");
+      let debugMessage = "";
+      if (failedCard) {
+        const row = {
+          pdb: failedCard.dataset.pdb || "",
+          chain: failedCard.dataset.chain || "",
+          warhead: failedCard.dataset.warhead || "",
+          resid: failedCard.dataset.resid || "",
+          residueStatus: failedCard.dataset.resid ? 200 : "unknown"
+        };
+        const debugPayload = await fetchArtifactDebug(row);
+        debugMessage = artifactFailureSummary(debugPayload, row);
+      }
       if (viewport) {
         viewport.innerHTML = `
           <div style="padding:24px;color:#ffd600;font-family:monospace;">
             No complete ligand/protein artifact pair was available for this job.
+            ${ARTIFACT_DEBUG && debugMessage ? `<pre style="margin-top:16px;white-space:pre-wrap;color:#e2e8f0;">${escapeHtml(debugMessage)}</pre>` : ""}
           </div>
         `;
       }
       ResultsLoader.fail(
         "No renderable ligands found",
-        "Required SDF or protein artifacts were not available for this job.",
+        ARTIFACT_DEBUG && debugMessage ? debugMessage : "Required SDF or protein artifacts were not available for this job.",
         {
           current: "Refresh if the job is still writing artifacts, or inspect the missing-card warnings.",
           progress: 100,

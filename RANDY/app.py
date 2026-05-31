@@ -753,7 +753,7 @@ def backup_hunter_job_materialize():
 
 def _job_file_roots(job_dir: Path) -> List[Path]:
     roots = []
-    for candidate in [job_dir / "job_files", job_dir / "archives", job_dir]:
+    for candidate in [job_dir / "job_files", job_dir, job_dir / "archives"]:
         if candidate.exists() and candidate.is_dir():
             roots.append(candidate)
     return roots
@@ -824,35 +824,42 @@ def _candidate_archive_paths(requested_rel: str, suffix: str = "") -> List[str]:
     add(requested_rel)
     if not requested_rel.startswith("job_files/"):
         add(f"job_files/{requested_rel}")
-    if not requested_rel.startswith("archives/"):
-        add(f"archives/{requested_rel}")
 
     table_like = "/" not in requested_rel
     if table_like:
         add(f"TARGET_RESULTS/{requested_rel}")
         add(f"job_files/TARGET_RESULTS/{requested_rel}")
-        add(f"archives/TARGET_RESULTS/{requested_rel}")
     elif not requested_rel.startswith("TARGET_RESULTS/") and not requested_rel.startswith("job_files/TARGET_RESULTS/"):
         add(f"TARGET_RESULTS/{requested_rel}")
         add(f"job_files/TARGET_RESULTS/{requested_rel}")
-        add(f"archives/TARGET_RESULTS/{requested_rel}")
 
     if requested_rel.startswith("TARGET_RESULTS/"):
         tail = requested_rel[len("TARGET_RESULTS/"):]
         add(tail)
         add(f"job_files/{tail}")
         add(f"job_files/TARGET_RESULTS/{tail}")
+    if requested_rel.startswith("job_files/"):
+        tail = requested_rel[len("job_files/"):]
+        add(tail)
+        if tail.startswith("TARGET_RESULTS/"):
+            add(tail[len("TARGET_RESULTS/"):])
+            add(f"TARGET_RESULTS/{tail[len('TARGET_RESULTS/'):]}")
+    if not requested_rel.startswith("archives/"):
+        add(f"archives/{requested_rel}")
+    if table_like:
+        add(f"archives/TARGET_RESULTS/{requested_rel}")
+    elif not requested_rel.startswith("TARGET_RESULTS/") and not requested_rel.startswith("job_files/TARGET_RESULTS/"):
+        add(f"archives/TARGET_RESULTS/{requested_rel}")
+    if requested_rel.startswith("TARGET_RESULTS/"):
+        tail = requested_rel[len("TARGET_RESULTS/"):]
         add(f"archives/{tail}")
         add(f"archives/TARGET_RESULTS/{tail}")
     if requested_rel.startswith("job_files/"):
         tail = requested_rel[len("job_files/"):]
-        add(tail)
         add(f"archives/{tail}")
         if tail.startswith("TARGET_RESULTS/"):
-            add(tail[len("TARGET_RESULTS/"):])
-            add(f"TARGET_RESULTS/{tail[len('TARGET_RESULTS/'):]}")
-            add(f"archives/{tail[len('TARGET_RESULTS/'):]}") 
-            add(f"archives/TARGET_RESULTS/{tail[len('TARGET_RESULTS/'):]}") 
+            add(f"archives/{tail[len('TARGET_RESULTS/'):]}")
+            add(f"archives/TARGET_RESULTS/{tail[len('TARGET_RESULTS/'):]}")
     if requested_rel.startswith("archives/"):
         tail = requested_rel[len("archives/"):]
         add(tail)
@@ -860,8 +867,8 @@ def _candidate_archive_paths(requested_rel: str, suffix: str = "") -> List[str]:
         if tail.startswith("TARGET_RESULTS/"):
             add(tail[len("TARGET_RESULTS/"):])
             add(f"TARGET_RESULTS/{tail[len('TARGET_RESULTS/'):]}")
-            add(f"job_files/{tail[len('TARGET_RESULTS/'):]}") 
-            add(f"job_files/TARGET_RESULTS/{tail[len('TARGET_RESULTS/'):]}") 
+            add(f"job_files/{tail[len('TARGET_RESULTS/'):]}")
+            add(f"job_files/TARGET_RESULTS/{tail[len('TARGET_RESULTS/'):]}")
 
     # Prefer same-extension candidates only when the caller supplied a suffix.
     if suffix:
@@ -1030,7 +1037,7 @@ def _path_from_archive_rel(job_dir: Path, archive_rel: str) -> Optional[Path]:
         if safe_under(job_dir, candidate) and candidate.is_file() and candidate.suffix.lower() in SAFE_RESULT_SUFFIXES:
             return candidate
         return None
-    for root in [job_dir, job_dir / "job_files", job_dir / "archives"]:
+    for root in [job_dir / "job_files", job_dir, job_dir / "archives"]:
         if not root.exists():
             continue
         candidate = (root / rel).resolve()
@@ -1241,21 +1248,21 @@ def _target_name_from_job(job_dir: Path) -> str:
 def _available_artifact_dirs(job_dir: Path) -> Dict[str, List[str]]:
     specs = {
         "sdf_dirs": [
-            "MCS_Output/MCS_SDF",
-            "TARGET_RESULTS/MCS_Output/MCS_SDF",
             "job_files/MCS_Output/MCS_SDF",
             "job_files/TARGET_RESULTS/MCS_Output/MCS_SDF",
+            "MCS_Output/MCS_SDF",
+            "TARGET_RESULTS/MCS_Output/MCS_SDF",
             "archives/MCS_Output/MCS_SDF",
             "archives/TARGET_RESULTS/MCS_Output/MCS_SDF",
-            "TARGET_RESULTS/LIGAND_SDF",
             "job_files/TARGET_RESULTS/LIGAND_SDF",
+            "TARGET_RESULTS/LIGAND_SDF",
             "archives/TARGET_RESULTS/LIGAND_SDF",
         ],
         "svg_dirs": [
-            "MCS_Output/MCS_SVG",
-            "TARGET_RESULTS/MCS_Output/MCS_SVG",
             "job_files/MCS_Output/MCS_SVG",
             "job_files/TARGET_RESULTS/MCS_Output/MCS_SVG",
+            "MCS_Output/MCS_SVG",
+            "TARGET_RESULTS/MCS_Output/MCS_SVG",
             "archives/MCS_Output/MCS_SVG",
             "archives/TARGET_RESULTS/MCS_Output/MCS_SVG",
             "MCS_Output/MCS_SVGS",
@@ -1263,10 +1270,10 @@ def _available_artifact_dirs(job_dir: Path) -> Dict[str, List[str]]:
             "archives/MCS_Output/MCS_SVGS",
         ],
         "pdb_dirs": [
-            "WAR_PDB",
-            "TARGET_RESULTS/WAR_PDB",
             "job_files/WAR_PDB",
             "job_files/TARGET_RESULTS/WAR_PDB",
+            "WAR_PDB",
+            "TARGET_RESULTS/WAR_PDB",
             "archives/WAR_PDB",
             "archives/TARGET_RESULTS/WAR_PDB",
         ],
@@ -1300,13 +1307,58 @@ def _file_url(job_id: str, relative_path: str) -> str:
 def _scan_hunter_job_options(job_id: str, job_dir: Path) -> List[Dict[str, Any]]:
     files = _safe_file_records(job_dir) + _zip_member_records(job_dir, limit=100000)
     pdb_lookup: Dict[Tuple[str, str, str], Dict[str, str]] = {}
+    pdb_scores: Dict[Tuple[str, str, str], Tuple[int, str]] = {}
     options: Dict[Tuple[str, str, str, str], Dict[str, Any]] = {}
+
+    def artifact_score(relative_path: str, kind: str) -> Tuple[int, str]:
+        low = str(relative_path or "").lower().lstrip("/")
+        prefixes = {
+            "pdb": [
+                "job_files/war_pdb/",
+                "job_files/target_results/war_pdb/",
+                "war_pdb/",
+                "target_results/war_pdb/",
+                "archives/war_pdb/",
+                "archives/target_results/war_pdb/",
+            ],
+            "sdf": [
+                "job_files/mcs_output/mcs_sdf/",
+                "job_files/target_results/mcs_output/mcs_sdf/",
+                "mcs_output/mcs_sdf/",
+                "target_results/mcs_output/mcs_sdf/",
+                "job_files/target_results/ligand_sdf/",
+                "target_results/ligand_sdf/",
+                "archives/mcs_output/mcs_sdf/",
+                "archives/target_results/mcs_output/mcs_sdf/",
+            ],
+            "svg": [
+                "job_files/mcs_output/mcs_svg/",
+                "job_files/target_results/mcs_output/mcs_svg/",
+                "mcs_output/mcs_svg/",
+                "target_results/mcs_output/mcs_svg/",
+                "archives/mcs_output/mcs_svg/",
+                "archives/target_results/mcs_output/mcs_svg/",
+            ],
+        }
+        for idx, prefix in enumerate(prefixes.get(kind, [])):
+            if low.startswith(prefix):
+                return (idx, low)
+        if kind == "pdb" and "/war_pdb/" in f"/{low}":
+            return (20, low)
+        if kind == "sdf" and "/mcs_output/mcs_sdf/" in f"/{low}":
+            return (20, low)
+        if kind == "svg" and "/mcs_output/mcs_svg/" in f"/{low}":
+            return (20, low)
+        return (100, low)
 
     for rec in files:
         m = PDB_ASSET_RE.match(rec["name"])
         if m:
             key = (m.group("pdb").lower(), m.group("chain").upper(), m.group("ligand").upper())
-            pdb_lookup[key] = {"pdb_file": rec["name"], "pdb_path": rec["relative_path"], "pdb_url": _file_url(job_id, rec["relative_path"])}
+            score = artifact_score(rec["relative_path"], "pdb")
+            if key not in pdb_lookup or score < pdb_scores.get(key, (999, "")):
+                pdb_lookup[key] = {"pdb_file": rec["name"], "pdb_path": rec["relative_path"], "pdb_url": _file_url(job_id, rec["relative_path"])}
+                pdb_scores[key] = score
 
     for rec in files:
         m = SDF_SVG_ASSET_RE.match(rec["name"])
@@ -1338,23 +1390,34 @@ def _scan_hunter_job_options(job_id: str, job_dir: Path) -> List[Dict[str, Any]]
             "svg_exposed": "",
             "svg_exposed_path": "",
             "svg_exposed_url": "",
+            "_scores": {},
         })
         if ext == "sdf":
-            item["sdf"] = rec["name"]
-            item["sdf_path"] = rec["relative_path"]
-            item["sdf_url"] = _file_url(job_id, rec["relative_path"])
+            score = artifact_score(rec["relative_path"], "sdf")
+            if "_scores" not in item or score < item["_scores"].get("sdf", (999, "")):
+                item["sdf"] = rec["name"]
+                item["sdf_path"] = rec["relative_path"]
+                item["sdf_url"] = _file_url(job_id, rec["relative_path"])
+                item.setdefault("_scores", {})["sdf"] = score
         elif ext == "svg" and tag == "plain":
-            item["svg_plain"] = rec["name"]
-            item["svg_plain_path"] = rec["relative_path"]
-            item["svg_plain_url"] = _file_url(job_id, rec["relative_path"])
+            score = artifact_score(rec["relative_path"], "svg")
+            if "_scores" not in item or score < item["_scores"].get("svg_plain", (999, "")):
+                item["svg_plain"] = rec["name"]
+                item["svg_plain_path"] = rec["relative_path"]
+                item["svg_plain_url"] = _file_url(job_id, rec["relative_path"])
+                item.setdefault("_scores", {})["svg_plain"] = score
         elif ext == "svg" and tag == "exposed":
-            item["svg_exposed"] = rec["name"]
-            item["svg_exposed_path"] = rec["relative_path"]
-            item["svg_exposed_url"] = _file_url(job_id, rec["relative_path"])
+            score = artifact_score(rec["relative_path"], "svg")
+            if "_scores" not in item or score < item["_scores"].get("svg_exposed", (999, "")):
+                item["svg_exposed"] = rec["name"]
+                item["svg_exposed_path"] = rec["relative_path"]
+                item["svg_exposed_url"] = _file_url(job_id, rec["relative_path"])
+                item.setdefault("_scores", {})["svg_exposed"] = score
 
     for key, item in options.items():
         pdb_info = pdb_lookup.get((key[0], key[1], key[2]), {})
         item.update({k: v for k, v in pdb_info.items() if v})
+        item.pop("_scores", None)
 
     return sorted(options.values(), key=lambda x: (x.get("pdb", ""), x.get("chain", ""), x.get("ligand", ""), x.get("resid", "")))
 

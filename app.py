@@ -38,6 +38,7 @@ try:
         archive_enabled as randy_archive_enabled,
         find_asset as randy_find_asset,
         find_protein_pdb_asset as randy_find_protein_pdb_asset,
+        get_job_index as randy_get_job_index,
         get_file_bytes as randy_get_file_bytes,
         get_table_dataframe as randy_get_table_dataframe,
         proxy_file_response as randy_proxy_file_response,
@@ -51,6 +52,9 @@ except Exception:
         return None
 
     def randy_find_protein_pdb_asset(*args, **kwargs):
+        return None
+
+    def randy_get_job_index(*args, **kwargs):
         return None
 
     def randy_get_file_bytes(*args, **kwargs):
@@ -886,58 +890,287 @@ def ligand_mcs_map_path(job_id: str) -> Optional[Path]:
 # PDB lookup for full complex files
 # -----------------------------
 def lookup_pdb_file(job_id: str, pdb: str, chain: str, warhead: str) -> Optional[Path]:
-    """
-    Preferred: use Results_Display.csv 'pdb_path' (fast/correct).
-    Accepts pdb_path under either:
-      - jobs/<job>/...
-      - jobs/<job>/TARGET_RESULTS/...
-    Fallback: search WAR_PDB under both locations.
-    """
-    pdb = str(pdb).lower().strip()
-    chain = str(chain).upper().strip()
-    warhead = str(warhead).upper().strip()
+    resolved = _resolve_complex_pdb_artifact(job_id, pdb, chain, warhead, "")
+    local_path = resolved.get("local_path")
+    return local_path if isinstance(local_path, Path) and local_path.exists() else None
+
+
+def _artifact_debug_enabled() -> bool:
+    env_value = str(os.getenv("ARTIFACT_DEBUG", "")).strip().lower()
+    query_value = str(request.args.get("debug", "")).strip().lower()
+    truthy = {"1", "true", "yes", "on"}
+    return env_value in truthy or query_value in truthy
+
+
+def _norm_str(value: Any, *, lower: bool = False, upper: bool = False) -> str:
+    text = str(value or "").strip()
+    if lower:
+        return text.lower()
+    if upper:
+        return text.upper()
+    return text
+
+
+def _job_relative_path(job_id: str, fp: Path) -> str:
+    try:
+        return fp.resolve().relative_to(job_root(job_id).resolve()).as_posix()
+    except Exception:
+        return fp.name
+
+
+def _candidate_ligands_for_pdb_chain(job_id: str, pdb: str, chain: str, ligand_hint: str = "") -> List[str]:
+    wanted_pdb = _norm_str(pdb, lower=True)
+    wanted_chain = _norm_str(chain, upper=True)
+    candidates: List[str] = []
+
+    def add(value: Any) -> None:
+        ligand = _norm_str(value, upper=True)
+        if ligand and ligand not in candidates:
+            candidates.append(ligand)
+
+    add(ligand_hint)
 
     df = load_results_display(job_id)
     if df is not None and not df.empty:
-        needed = {"pdb_id", "Chain", "Warhead"}
-        if needed.issubset(df.columns):
+        pdb_col = _find_col_case_insensitive(df, ["pdb_id", "pdb"])
+        chain_col = _find_col_case_insensitive(df, ["Chain", "chain"])
+        warhead_col = _find_col_case_insensitive(df, ["Warhead", "Ligand_Resolved", "Ligand", "ligand"])
+        if pdb_col and chain_col and warhead_col:
             sub = df[
-                (df["pdb_id"].astype(str).str.lower() == pdb) &
-                (df["Chain"].astype(str).str.upper() == chain) &
-                (df["Warhead"].astype(str).str.upper() == warhead)
+                (df[pdb_col].astype(str).str.lower() == wanted_pdb) &
+                (df[chain_col].astype(str).str.upper() == wanted_chain)
             ]
-            if not sub.empty:
-                p = str(sub.iloc[0].get("pdb_path", "")).strip()
-                if p:
-                    path = Path(p)
-                    if not path.is_absolute():
-                        tr = (target_results_dir(job_id) / p).resolve()
-                        jr = (job_root(job_id) / p).resolve()
-                        if tr.exists() and _is_under(job_root(job_id), tr):
-                            return tr
-                        if jr.exists() and _is_under(job_root(job_id), jr):
-                            return jr
-                    else:
-                        path = path.resolve()
-                        if path.exists() and _is_under(job_root(job_id), path):
-                            return path
+            for ligand in sub[warhead_col].astype(str).tolist():
+                add(ligand)
 
-    # Fallback search
-    fname = f"{pdb}_{chain}_{warhead}.pdb"
-    fallback_roots = [
+    job_index = randy_get_job_index(job_id) or {}
+    options = job_index.get("options") if isinstance(job_index.get("options"), list) else []
+    for option in options:
+        if not isinstance(option, dict):
+            continue
+        if _norm_str(option.get("pdb"), lower=True) != wanted_pdb:
+            continue
+        if _norm_str(option.get("chain"), upper=True) != wanted_chain:
+            continue
+        add(option.get("ligand") or option.get("warhead"))
+
+    return candidates
+
+
+def _local_war_pdb_roots(job_id: str) -> List[Path]:
+    roots = [
         target_results_dir(job_id) / "WAR_PDB",
         job_root(job_id) / "WAR_PDB",
     ]
-    for base in fallback_roots:
-        if not base.exists():
-            continue
+    return [root for root in roots if root.exists() and root.is_dir()]
 
-        # WAR_PDB may contain either files directly or per-target subdirs
-        for fp in base.rglob(fname):
-            if fp.exists():
-                return fp.resolve()
 
-    return None
+def _resolve_local_complex_pdb(job_id: str, pdb: str, chain: str, ligand: str = "") -> Dict[str, Any]:
+    wanted_pdb = _norm_str(pdb, lower=True)
+    wanted_chain = _norm_str(chain, upper=True)
+    candidate_ligands = _candidate_ligands_for_pdb_chain(job_id, wanted_pdb, wanted_chain, ligand)
+    roots = _local_war_pdb_roots(job_id)
+    checked: List[str] = []
+
+    for ligand_name in candidate_ligands:
+        expected = f"{wanted_pdb}_{wanted_chain}_{ligand_name}.pdb"
+        for root in roots:
+            pattern = f"**/{expected}"
+            checked.append(f"{_job_relative_path(job_id, root)}/{pattern}")
+            matches = sorted(
+                fp.resolve()
+                for fp in root.rglob(expected)
+                if fp.exists() and fp.is_file() and _is_under(job_root(job_id), fp)
+            )
+            if matches:
+                chosen = matches[0]
+                return {
+                    "ok": True,
+                    "source": "local_job",
+                    "local_path": chosen,
+                    "relative_path": _job_relative_path(job_id, chosen),
+                    "filename": chosen.name,
+                    "checked": checked,
+                }
+
+    prefix_matches: List[Path] = []
+    prefix = f"{wanted_pdb}_{wanted_chain}_"
+    for root in roots:
+        checked.append(f"{_job_relative_path(job_id, root)}/**/{prefix}*.pdb")
+        for fp in root.rglob(f"{prefix}*.pdb"):
+            if fp.exists() and fp.is_file() and _is_under(job_root(job_id), fp):
+                prefix_matches.append(fp.resolve())
+    prefix_matches = sorted(set(prefix_matches), key=lambda path: str(path))
+    if prefix_matches:
+        chosen = prefix_matches[0]
+        return {
+            "ok": True,
+            "source": "local_job_prefix_match",
+            "local_path": chosen,
+            "relative_path": _job_relative_path(job_id, chosen),
+            "filename": chosen.name,
+            "checked": checked,
+        }
+
+    return {"ok": False, "checked": checked, "candidate_ligands": candidate_ligands}
+
+
+def _resolve_complex_pdb_artifact(job_id: str, pdb: str, chain: str, ligand: str = "", resid: str = "") -> Dict[str, Any]:
+    wanted_pdb = _norm_str(pdb, lower=True)
+    wanted_chain = _norm_str(chain, upper=True)
+    wanted_ligand = _norm_str(ligand, upper=True)
+
+    local = _resolve_local_complex_pdb(job_id, wanted_pdb, wanted_chain, wanted_ligand)
+    if local.get("ok"):
+        return local
+
+    remote_checked: List[str] = []
+    candidate_ligands = local.get("candidate_ligands") or _candidate_ligands_for_pdb_chain(job_id, wanted_pdb, wanted_chain, wanted_ligand)
+    if not candidate_ligands and wanted_ligand:
+        candidate_ligands = [wanted_ligand]
+
+    for ligand_name in candidate_ligands:
+        asset = randy_find_protein_pdb_asset(
+            job_id,
+            pdb=wanted_pdb,
+            chain=wanted_chain,
+            ligand=ligand_name,
+        )
+        if asset and asset.get("relative_path"):
+            remote_checked.append(str(asset.get("relative_path")))
+            return {
+                "ok": True,
+                "source": str(asset.get("source") or "randy_archive"),
+                "remote_asset": asset,
+                "relative_path": str(asset.get("relative_path") or ""),
+                "filename": str(asset.get("filename") or Path(str(asset.get("relative_path") or "")).name),
+                "checked": [*local.get("checked", []), *remote_checked],
+            }
+
+    asset = randy_find_protein_pdb_asset(
+        job_id,
+        pdb=wanted_pdb,
+        chain=wanted_chain,
+        ligand="",
+    )
+    if asset and asset.get("relative_path"):
+        remote_checked.append(str(asset.get("relative_path")))
+        return {
+            "ok": True,
+            "source": str(asset.get("source") or "randy_archive"),
+            "remote_asset": asset,
+            "relative_path": str(asset.get("relative_path") or ""),
+            "filename": str(asset.get("filename") or Path(str(asset.get("relative_path") or "")).name),
+            "checked": [*local.get("checked", []), *remote_checked],
+        }
+
+    return {
+        "ok": False,
+        "checked": [*local.get("checked", []), *remote_checked],
+        "candidate_ligands": candidate_ligands,
+        "resid": _norm_str(resid),
+    }
+
+
+def _pdb_response_from_bytes(content: bytes, filename: str, source: str, relative_path: str = "") -> Response:
+    headers = {
+        "Content-Disposition": f"inline; filename={filename}",
+        "X-Warhead-Handoff-Source": source,
+        "Cache-Control": "no-store",
+    }
+    if relative_path:
+        headers["X-Warhead-Archive-Path"] = relative_path
+    return Response(content, mimetype="chemical/x-pdb", headers=headers)
+
+
+def _protein_response_from_bytes(
+    *,
+    content: bytes,
+    pdb: str,
+    chain: str,
+    source: str,
+    relative_path: str = "",
+    debug_enabled: bool = False,
+) -> Dict[str, Any]:
+    text = content.decode("utf-8", errors="replace")
+    filtered: List[str] = []
+    atom_count = 0
+    atom_chain_count = 0
+    hetatm_count = 0
+    nonempty_lines = 0
+
+    for raw_line in text.splitlines():
+        line = raw_line.rstrip("\n")
+        if line:
+            nonempty_lines += 1
+        if line.startswith("ATOM"):
+            atom_count += 1
+            if len(line) > 21 and line[21].upper() == chain:
+                atom_chain_count += 1
+                filtered.append(line + "\n")
+        elif line.startswith("HETATM"):
+            hetatm_count += 1
+        elif line.startswith("TER") and atom_chain_count:
+            filtered.append(line + "\n")
+
+    served_full = False
+    body = b""
+    warning = ""
+    if atom_chain_count:
+        filtered.append("END\n")
+        body = "".join(filtered).encode("utf-8")
+    elif atom_count:
+        served_full = True
+        warning = "chain_filter_empty_served_full_pdb"
+        body = content
+    else:
+        return {
+            "ok": False,
+            "reason": "no_protein_atom_records",
+            "source": source,
+            "relative_path": relative_path,
+            "debug": {
+                "pdb_line_count": nonempty_lines,
+                "atom_lines": atom_count,
+                "hetatm_lines": hetatm_count,
+                "atom_lines_after_chain_filter": atom_chain_count,
+            },
+        }
+
+    response = Response(
+        body,
+        mimetype="chemical/x-pdb",
+        headers={
+            "Content-Disposition": f"inline; filename={pdb}_{chain}_protein.pdb",
+            "X-Warhead-Handoff-Source": source,
+            "Cache-Control": "no-store",
+        }
+    )
+    if relative_path:
+        response.headers["X-Warhead-Archive-Path"] = relative_path
+    if debug_enabled:
+        response.headers["X-WH-Artifact-Status"] = "ok"
+        response.headers["X-WH-Resolved-Source"] = source
+        if relative_path:
+            response.headers["X-WH-Resolved-Path"] = relative_path
+        if warning:
+            response.headers["X-WH-Failure-Reason"] = warning
+        response.headers["X-WH-Candidate-Count"] = str(max(atom_count, 1))
+
+    return {
+        "ok": True,
+        "response": response,
+        "warning": warning,
+        "source": source,
+        "relative_path": relative_path,
+        "debug": {
+            "pdb_line_count": nonempty_lines,
+            "atom_lines": atom_count,
+            "hetatm_lines": hetatm_count,
+            "atom_lines_after_chain_filter": atom_chain_count,
+            "served_full_pdb": served_full,
+        },
+    }
 
 
 # -----------------------------
@@ -3105,24 +3338,27 @@ def api_pdb(job_id, pdb_chain_warhead):
     chain = parts[1]
     warhead = "_".join(parts[2:])
 
-    fp = lookup_pdb_file(job_id, pdb, chain, warhead)
-    if fp and fp.exists():
+    resolved = _resolve_complex_pdb_artifact(job_id, pdb, chain, warhead, request.args.get("resid", ""))
+    local_path = resolved.get("local_path")
+    if isinstance(local_path, Path) and local_path.exists():
         return send_file(
-            fp,
+            local_path,
             mimetype="chemical/x-pdb",
             as_attachment=False,
             download_name=f"{pdb}_{chain}_{warhead}.pdb"
         )
 
-    # RANDY fallback for old jobs no longer present on Heroku local disk.
-    asset = randy_find_asset(job_id, pdb=pdb, chain=chain, ligand=warhead, kind="pdb")
-    if asset:
+    asset = resolved.get("remote_asset")
+    if isinstance(asset, dict):
         proxied = randy_proxy_file_response(
             job_id,
-            asset.get("relative_path", ""),
+            str(asset.get("relative_path") or ""),
             mimetype="chemical/x-pdb",
         )
         if proxied:
+            proxied.headers["X-WH-Resolved-Source"] = str(resolved.get("source") or "randy_archive")
+            if resolved.get("relative_path"):
+                proxied.headers["X-WH-Resolved-Path"] = str(resolved.get("relative_path"))
             return proxied
 
     abort(404, description="PDB not found")
@@ -3136,70 +3372,56 @@ def api_protein(job_id, pdb, chain):
     pdb = pdb.lower().strip()
     chain = chain.upper().strip()
     ligand_hint = (request.args.get("ligand") or request.args.get("warhead") or "").upper().strip()
+    resid = str(request.args.get("resid") or "").strip()
+    debug_enabled = _artifact_debug_enabled()
+    resolved = _resolve_complex_pdb_artifact(job_id, pdb, chain, ligand_hint, resid)
 
-    def protein_response_from_text(text: str, source: str):
-        lines = []
-        for ln in str(text or "").splitlines():
-            if ln.startswith("ATOM") and len(ln) > 21 and ln[21].upper() == chain:
-                lines.append(ln.rstrip("\n") + "\n")
-            elif ln.startswith("TER"):
-                lines.append(ln.rstrip("\n") + "\n")
-        if not any(ln.startswith("ATOM") for ln in lines):
-            return None
-        lines.append("END\n")
-        return Response(
-            "".join(lines),
-            mimetype="chemical/x-pdb",
-            headers={
-                "Content-Disposition": f"inline; filename={pdb}_{chain}_protein.pdb",
-                "X-Warhead-Handoff-Source": source,
-            }
+    content = None
+    source = str(resolved.get("source") or "")
+    relative_path = str(resolved.get("relative_path") or "")
+
+    local_path = resolved.get("local_path")
+    if isinstance(local_path, Path) and local_path.exists():
+        content = local_path.read_bytes()
+    else:
+        asset = resolved.get("remote_asset")
+        if isinstance(asset, dict) and asset.get("relative_path"):
+            got = randy_get_file_bytes(job_id, str(asset.get("relative_path") or ""))
+            if got:
+                content, _content_type = got
+
+    if content is not None:
+        rendered = _protein_response_from_bytes(
+            content=content,
+            pdb=pdb,
+            chain=chain,
+            source=source or "LOCAL_JOB",
+            relative_path=relative_path,
+            debug_enabled=debug_enabled,
         )
+        if rendered.get("ok"):
+            if debug_enabled:
+                app.logger.info(
+                    "artifact_debug protein ok job_id=%s pdb=%s chain=%s ligand=%s resid=%s source=%s rel=%s checked=%s atom_lines=%s atom_lines_after=%s warning=%s",
+                    job_id,
+                    pdb,
+                    chain,
+                    ligand_hint or "",
+                    resid or "",
+                    source or "",
+                    relative_path or "",
+                    len(resolved.get("checked", [])),
+                    rendered.get("debug", {}).get("atom_lines", 0),
+                    rendered.get("debug", {}).get("atom_lines_after_chain_filter", 0),
+                    rendered.get("warning", ""),
+                )
+                rendered["response"].headers["X-WH-Candidate-Count"] = str(len(resolved.get("checked", [])))
+            return rendered["response"]
+        failure_reason = str(rendered.get("reason") or "protein_filter_failed")
+    else:
+        failure_reason = "pdb_artifact_not_found"
 
-    # Find ANY ligand PDB for this chain (then filter ATOM lines)
-    base = target_results_dir(job_id)
-    roots = [
-        base / "WAR_PDB",
-        job_root(job_id) / "WAR_PDB",
-    ]
-
-    candidates: List[Path] = []
-    for root in roots:
-        if root.exists():
-            candidates.extend(list(root.rglob(f"{pdb}_{chain}_*.pdb")))
-
-    if candidates:
-        if ligand_hint:
-            preferred = [fp for fp in candidates if fp.name.lower() == f"{pdb}_{chain}_{ligand_hint}.pdb".lower()]
-            if preferred:
-                candidates = preferred
-        src = sorted(candidates, key=lambda p: str(p))[0]
-        try:
-            rendered = protein_response_from_text(src.read_text(encoding="utf-8", errors="replace"), "LOCAL_JOB")
-            if rendered:
-                return rendered
-        except Exception:
-            pass
-
-    asset = randy_find_protein_pdb_asset(
-        job_id,
-        pdb=pdb,
-        chain=chain,
-        ligand=ligand_hint,
-    )
-    if asset:
-        got = randy_get_file_bytes(job_id, asset.get("relative_path", ""))
-        if got:
-            content, _content_type = got
-            rendered = protein_response_from_text(
-                content.decode("utf-8", errors="replace"),
-                str(asset.get("source") or "RANDY_ARCHIVE"),
-            )
-            if rendered:
-                rendered.headers["X-Warhead-Archive-Path"] = str(asset.get("relative_path", ""))
-                return rendered
-
-    return jsonify({
+    response = jsonify({
         "ok": False,
         "error": "Protein PDB not found",
         "job_id": job_id,
@@ -3207,7 +3429,163 @@ def api_protein(job_id, pdb, chain):
         "chain": chain,
         "ligand": ligand_hint or None,
         "source": "local_then_randy_archive",
-    }), 404
+        "failure_reason": failure_reason,
+        "checked": resolved.get("checked", []),
+    })
+    if debug_enabled:
+        app.logger.info(
+            "artifact_debug protein miss job_id=%s pdb=%s chain=%s ligand=%s resid=%s source=%s rel=%s checked=%s reason=%s",
+            job_id,
+            pdb,
+            chain,
+            ligand_hint or "",
+            resid or "",
+            source or "",
+            relative_path or "",
+            len(resolved.get("checked", [])),
+            failure_reason,
+        )
+        response.headers["X-WH-Artifact-Status"] = "missing"
+        response.headers["X-WH-Failure-Reason"] = failure_reason
+        response.headers["X-WH-Candidate-Count"] = str(len(resolved.get("checked", [])))
+        if source:
+            response.headers["X-WH-Resolved-Source"] = source
+        if relative_path:
+            response.headers["X-WH-Resolved-Path"] = relative_path
+    return response, 404
+
+
+@app.get("/api/debug/artifact-resolution/<job_id>/<pdb>/<chain>")
+def api_debug_artifact_resolution(job_id: str, pdb: str, chain: str):
+    ligand = (request.args.get("ligand") or request.args.get("warhead") or "").upper().strip()
+    resid = str(request.args.get("resid") or "").strip()
+
+    resolved_pdb = _resolve_complex_pdb_artifact(job_id, pdb, chain, ligand, resid)
+    pdb_filename = f"{pdb.lower().strip()}_{chain.upper().strip()}_{ligand}.pdb" if ligand else f"{pdb.lower().strip()}_{chain.upper().strip()}_*.pdb"
+    sdf_filename = f"{pdb.lower().strip()}_{chain.upper().strip()}_{ligand}_{resid}.sdf" if ligand and resid else ""
+    svg_plain_filename = f"{pdb.lower().strip()}_{chain.upper().strip()}_{ligand}_{resid}_plain.svg" if ligand and resid else ""
+    svg_exposed_filename = f"{pdb.lower().strip()}_{chain.upper().strip()}_{ligand}_{resid}_exposed.svg" if ligand and resid else ""
+
+    exact_pdb_ok = bool(resolved_pdb.get("ok"))
+    protein_ok = False
+    if resolved_pdb.get("ok"):
+        content = None
+        local_path = resolved_pdb.get("local_path")
+        if isinstance(local_path, Path) and local_path.exists():
+            content = local_path.read_bytes()
+        else:
+            asset = resolved_pdb.get("remote_asset")
+            if isinstance(asset, dict) and asset.get("relative_path"):
+                got = randy_get_file_bytes(job_id, str(asset.get("relative_path") or ""))
+                if got:
+                    content, _content_type = got
+        if content is not None:
+            protein_ok = bool(_protein_response_from_bytes(
+                content=content,
+                pdb=pdb.lower().strip(),
+                chain=chain.upper().strip(),
+                source=str(resolved_pdb.get("source") or ""),
+                relative_path=str(resolved_pdb.get("relative_path") or ""),
+                debug_enabled=False,
+            ).get("ok"))
+
+    sdf_asset: Dict[str, Any] | None = None
+    if ligand:
+        sdf_path, _sdf_diag = resolve_sdf_path(job_root(job_id), pdb, chain, ligand, resid)
+        if sdf_path and sdf_path.exists():
+            sdf_asset = {
+                "relative_path": _job_relative_path(job_id, sdf_path),
+                "source": "local_job",
+            }
+        else:
+            sdf_asset = randy_find_asset(job_id, pdb=pdb, chain=chain, ligand=ligand, resid=resid, kind="sdf")
+
+    svg_asset: Dict[str, Any] | None = None
+    svg_plain_asset: Dict[str, Any] | None = None
+    if ligand and resid:
+        mcs_dir = mcs_svgs_dir(job_id)
+        if mcs_dir:
+            exposed = mcs_dir / f"{pdb.lower().strip()}_{chain.upper().strip()}_{ligand}_{resid}_exposed.svg"
+            plain = mcs_dir / f"{pdb.lower().strip()}_{chain.upper().strip()}_{ligand}_{resid}_plain.svg"
+            if exposed.exists():
+                svg_asset = {"relative_path": _job_relative_path(job_id, exposed), "source": "local_job"}
+            if plain.exists():
+                svg_plain_asset = {"relative_path": _job_relative_path(job_id, plain), "source": "local_job"}
+        if svg_asset is None:
+            svg_asset = randy_find_asset(job_id, pdb=pdb, chain=chain, ligand=ligand, resid=resid, kind="svg", plain=False)
+        if svg_plain_asset is None:
+            svg_plain_asset = randy_find_asset(job_id, pdb=pdb, chain=chain, ligand=ligand, resid=resid, kind="svg", plain=True)
+
+    payload = {
+        "ok": True,
+        "job_id": job_id,
+        "pdb": pdb.lower().strip(),
+        "chain": chain.upper().strip(),
+        "ligand": ligand or "",
+        "resid": resid or "",
+        "expected": {
+            "pdb_filename": pdb_filename,
+            "sdf_filename": sdf_filename,
+            "svg_plain_filename": svg_plain_filename,
+            "svg_exposed_filename": svg_exposed_filename,
+        },
+        "sources": {
+            "canonical_extracted_roots": ["job_files", "job_files/TARGET_RESULTS"],
+            "compatibility_roots": ["", "TARGET_RESULTS", "archives", "archives/TARGET_RESULTS"],
+            "zip_roots": ["archives/*.zip"],
+        },
+        "checks": {
+            "pdb_exact_endpoint": {
+                "url": f"/api/pdb/{job_id}/{pdb_filename}" if ligand else "",
+                "status": 200 if exact_pdb_ok else 404,
+            },
+            "protein_endpoint": {
+                "url": f"/api/protein/{job_id}/{pdb.lower().strip()}/{chain.upper().strip()}?ligand={quote(ligand)}&resid={quote(resid)}" if ligand else f"/api/protein/{job_id}/{pdb.lower().strip()}/{chain.upper().strip()}",
+                "status": 200 if protein_ok else 404,
+            },
+            "sdf_endpoint": {
+                "url": f"/api/sdf/{job_id}/{pdb.lower().strip()}/{chain.upper().strip()}/{ligand}?resid={quote(resid)}" if ligand and resid else "",
+                "status": 200 if sdf_asset else 404,
+            },
+            "svg_endpoint": {
+                "url": f"/api/svg/{job_id}/{pdb.lower().strip()}/{chain.upper().strip()}/{ligand}?resid={quote(resid)}" if ligand and resid else "",
+                "status": 200 if svg_asset else 404,
+            },
+            "svg_plain_endpoint": {
+                "url": f"/api/svg-plain/{job_id}/{pdb.lower().strip()}/{chain.upper().strip()}/{ligand}?resid={quote(resid)}" if ligand and resid else "",
+                "status": 200 if svg_plain_asset else 404,
+            },
+        },
+        "resolved": {
+            "pdb": {
+                "ok": bool(resolved_pdb.get("ok")),
+                "relative_path": str(resolved_pdb.get("relative_path") or ""),
+                "source": str(resolved_pdb.get("source") or ""),
+                "checked": resolved_pdb.get("checked", []),
+            },
+            "sdf": {
+                "ok": bool(sdf_asset),
+                "relative_path": str((sdf_asset or {}).get("relative_path") or ""),
+                "source": str((sdf_asset or {}).get("source") or ""),
+            },
+            "svg_plain": {
+                "ok": bool(svg_plain_asset),
+                "relative_path": str((svg_plain_asset or {}).get("relative_path") or ""),
+                "source": str((svg_plain_asset or {}).get("source") or ""),
+            },
+            "svg_exposed": {
+                "ok": bool(svg_asset),
+                "relative_path": str((svg_asset or {}).get("relative_path") or ""),
+                "source": str((svg_asset or {}).get("source") or ""),
+            },
+        },
+        "hard_gate": {
+            "sdf_ok": bool(sdf_asset),
+            "protein_ok": protein_ok,
+            "renderable": bool(sdf_asset) and protein_ok,
+        },
+    }
+    return jsonify(payload)
 
 
 # ----------------------------

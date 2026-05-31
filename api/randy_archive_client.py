@@ -31,66 +31,66 @@ from flask import Response
 
 TABLE_CANDIDATES = {
     "Results_Display.csv": [
-        "Results_Display.csv",
-        "TARGET_RESULTS/Results_Display.csv",
         "job_files/Results_Display.csv",
         "job_files/TARGET_RESULTS/Results_Display.csv",
+        "Results_Display.csv",
+        "TARGET_RESULTS/Results_Display.csv",
         "archives/Results_Display.csv",
         "archives/TARGET_RESULTS/Results_Display.csv",
     ],
     "Resolved_SASA_Summary.csv": [
-        "Resolved_SASA_Summary.csv",
-        "TARGET_RESULTS/Resolved_SASA_Summary.csv",
         "job_files/Resolved_SASA_Summary.csv",
         "job_files/TARGET_RESULTS/Resolved_SASA_Summary.csv",
+        "Resolved_SASA_Summary.csv",
+        "TARGET_RESULTS/Resolved_SASA_Summary.csv",
         "archives/Resolved_SASA_Summary.csv",
         "archives/TARGET_RESULTS/Resolved_SASA_Summary.csv",
     ],
     "Resolved_SASA_Summary.tsv": [
-        "Resolved_SASA_Summary.tsv",
-        "TARGET_RESULTS/Resolved_SASA_Summary.tsv",
         "job_files/Resolved_SASA_Summary.tsv",
         "job_files/TARGET_RESULTS/Resolved_SASA_Summary.tsv",
+        "Resolved_SASA_Summary.tsv",
+        "TARGET_RESULTS/Resolved_SASA_Summary.tsv",
         "archives/Resolved_SASA_Summary.tsv",
         "archives/TARGET_RESULTS/Resolved_SASA_Summary.tsv",
     ],
     "Warhead_SASA_atoms.csv": [
-        "Warhead_SASA_atoms.csv",
-        "TARGET_RESULTS/Warhead_SASA_atoms.csv",
         "job_files/Warhead_SASA_atoms.csv",
         "job_files/TARGET_RESULTS/Warhead_SASA_atoms.csv",
+        "Warhead_SASA_atoms.csv",
+        "TARGET_RESULTS/Warhead_SASA_atoms.csv",
         "archives/Warhead_SASA_atoms.csv",
         "archives/TARGET_RESULTS/Warhead_SASA_atoms.csv",
     ],
     "Ligand_3D_Atoms.csv": [
-        "Ligand_3D_Atoms.csv",
-        "TARGET_RESULTS/Ligand_3D_Atoms.csv",
         "job_files/Ligand_3D_Atoms.csv",
         "job_files/TARGET_RESULTS/Ligand_3D_Atoms.csv",
+        "Ligand_3D_Atoms.csv",
+        "TARGET_RESULTS/Ligand_3D_Atoms.csv",
         "archives/Ligand_3D_Atoms.csv",
         "archives/TARGET_RESULTS/Ligand_3D_Atoms.csv",
     ],
     "Ligand_3D_Atoms_with_SASA.csv": [
-        "Ligand_3D_Atoms_with_SASA.csv",
-        "TARGET_RESULTS/Ligand_3D_Atoms_with_SASA.csv",
         "job_files/Ligand_3D_Atoms_with_SASA.csv",
         "job_files/TARGET_RESULTS/Ligand_3D_Atoms_with_SASA.csv",
+        "Ligand_3D_Atoms_with_SASA.csv",
+        "TARGET_RESULTS/Ligand_3D_Atoms_with_SASA.csv",
         "archives/Ligand_3D_Atoms_with_SASA.csv",
         "archives/TARGET_RESULTS/Ligand_3D_Atoms_with_SASA.csv",
     ],
     "3DSASAmapped.csv": [
-        "3DSASAmapped.csv",
-        "TARGET_RESULTS/3DSASAmapped.csv",
         "job_files/3DSASAmapped.csv",
         "job_files/TARGET_RESULTS/3DSASAmapped.csv",
+        "3DSASAmapped.csv",
+        "TARGET_RESULTS/3DSASAmapped.csv",
         "archives/3DSASAmapped.csv",
         "archives/TARGET_RESULTS/3DSASAmapped.csv",
     ],
     "Ligand_Metadata.csv": [
-        "Ligand_Metadata.csv",
-        "TARGET_RESULTS/Ligand_Metadata.csv",
         "job_files/Ligand_Metadata.csv",
         "job_files/TARGET_RESULTS/Ligand_Metadata.csv",
+        "Ligand_Metadata.csv",
+        "TARGET_RESULTS/Ligand_Metadata.csv",
         "archives/Ligand_Metadata.csv",
         "archives/TARGET_RESULTS/Ligand_Metadata.csv",
     ],
@@ -185,6 +185,50 @@ def _candidate_options(payload: Dict[str, Any]) -> list[Dict[str, Any]]:
     return []
 
 
+def _artifact_priority(relative_path: Any, kind: str) -> tuple[int, str]:
+    rel = str(relative_path or "").strip().lstrip("/")
+    low = rel.lower()
+
+    prefixes = {
+        "pdb": [
+            "job_files/war_pdb/",
+            "job_files/target_results/war_pdb/",
+            "war_pdb/",
+            "target_results/war_pdb/",
+            "archives/war_pdb/",
+            "archives/target_results/war_pdb/",
+        ],
+        "sdf": [
+            "job_files/mcs_output/mcs_sdf/",
+            "job_files/target_results/mcs_output/mcs_sdf/",
+            "mcs_output/mcs_sdf/",
+            "target_results/mcs_output/mcs_sdf/",
+            "job_files/target_results/ligand_sdf/",
+            "target_results/ligand_sdf/",
+            "archives/mcs_output/mcs_sdf/",
+            "archives/target_results/mcs_output/mcs_sdf/",
+        ],
+        "svg": [
+            "job_files/mcs_output/mcs_svg/",
+            "job_files/target_results/mcs_output/mcs_svg/",
+            "mcs_output/mcs_svg/",
+            "target_results/mcs_output/mcs_svg/",
+            "archives/mcs_output/mcs_svg/",
+            "archives/target_results/mcs_output/mcs_svg/",
+        ],
+    }
+    for idx, prefix in enumerate(prefixes.get(kind, [])):
+        if low.startswith(prefix):
+            return (idx, low)
+    if kind == "pdb" and "/war_pdb/" in f"/{low}":
+        return (20, low)
+    if kind == "sdf" and "/mcs_output/mcs_sdf/" in f"/{low}":
+        return (20, low)
+    if kind == "svg" and "/mcs_output/mcs_svg/" in f"/{low}":
+        return (20, low)
+    return (100, low)
+
+
 def _option_to_asset(option: Dict[str, Any], kind: str, plain: Optional[bool]) -> Optional[Dict[str, Any]]:
     if kind == "pdb":
         name = option.get("pdb_file")
@@ -239,6 +283,7 @@ def find_asset(
     resid_s = _norm(resid)
 
     # Prefer explicit option metadata, when available.
+    option_matches: list[tuple[tuple[int, str], Dict[str, Any]]] = []
     for opt in _candidate_options(payload):
         if pdb_l and _norm(opt.get("pdb"), lower=True) != pdb_l:
             continue
@@ -251,13 +296,16 @@ def find_asset(
 
         asset = _option_to_asset(opt, kind, plain)
         if asset:
-            return asset
+            option_matches.append((_artifact_priority(asset.get("relative_path") or asset.get("filename"), kind), asset))
+    if option_matches:
+        return sorted(option_matches, key=lambda item: item[0])[0][1]
 
     # Fallback to a generic files list if RANDY returns one.
     suffix = {"pdb": ".pdb", "sdf": ".sdf", "svg": ".svg"}.get(kind)
     if not suffix:
         return None
 
+    file_matches: list[tuple[tuple[int, str], Dict[str, Any]]] = []
     for item in _candidate_files(payload):
         rel = str(item.get("relative_path") or item.get("filename") or item.get("name") or "")
         name = Path(rel).name
@@ -278,11 +326,13 @@ def find_asset(
         if kind == "svg" and plain is False and "_exposed.svg" not in low:
             continue
 
-        return {
+        file_matches.append((_artifact_priority(rel, kind), {
             **item,
             "relative_path": rel.lstrip("/"),
             "source": "randy_files",
-        }
+        }))
+    if file_matches:
+        return sorted(file_matches, key=lambda item: item[0])[0][1]
 
     if pdb_l and chain_u and ligand_u:
         stem = f"{pdb_l}_{chain_u}_{ligand_u}"
@@ -342,12 +392,7 @@ def find_protein_pdb_asset(
             continue
         if ligand_u and ligand_u.lower() not in low:
             continue
-        score = 0
-        rel_low = rel.lower()
-        if "/war_pdb/" in f"/{rel_low}":
-            score -= 10
-        if rel_low.startswith("job_files/"):
-            score -= 2
+        score, rel_low = _artifact_priority(rel, "pdb")
         matches.append({
             **item,
             "relative_path": rel.lstrip("/"),
