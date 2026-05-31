@@ -3178,8 +3178,9 @@ def _serve_themed_svg(fp: Path):
     except Exception:
         return send_file(fp)
 
-    # RDKit emits a full-canvas background rect near the top of the SVG. Keep
-    # molecule/highlight colors untouched and theme only that canvas rect.
+    # RDKit often emits a full-canvas white background rect or root-level white
+    # background styling. Keep molecule/highlight colors untouched and only
+    # theme the canvas/background layer.
     bg_rect = re.compile(
         r"(<rect\b(?=[^>]*\bwidth=['\"](?:100%|[0-9.]+)['\"])(?=[^>]*\bheight=['\"](?:100%|[0-9.]+)['\"])[^>]*\b(?:fill\s*:\s*(?:#fff(?:fff)?|white)|fill=['\"](?:#fff(?:fff)?|white)['\"])[^>]*>)",
         re.IGNORECASE,
@@ -3194,11 +3195,45 @@ def _serve_themed_svg(fp: Path):
         return rect
 
     themed, count = bg_rect.subn(replace_rect, svg, count=1)
+
+    themed = re.sub(
+        r"(<svg\b[^>]*\bstyle=['\"])([^'\"]*)(['\"])",
+        lambda m: (
+            f"{m.group(1)}"
+            + re.sub(
+                r"background(?:-color)?\s*:\s*(?:#fff(?:fff)?|white)\s*;?",
+                f"background:{SVG_CANVAS_BG};",
+                m.group(2),
+                flags=re.IGNORECASE,
+            )
+            + ("" if re.search(r"background(?:-color)?\s*:", m.group(2), flags=re.IGNORECASE) else f"background:{SVG_CANVAS_BG};")
+            + f"{m.group(3)}"
+        ),
+        themed,
+        count=1,
+        flags=re.IGNORECASE,
+    )
+
+    themed = re.sub(
+        r"(<svg\b(?![^>]*\bstyle=)([^>]*))>",
+        rf"\1 style='background:{SVG_CANVAS_BG};'>",
+        themed,
+        count=1,
+        flags=re.IGNORECASE,
+    )
+
+    themed = re.sub(
+        r"(<(?:rect|svg)\b[^>]*)(fill=['\"])(?:#fff(?:fff)?|white)(['\"])",
+        rf"\1\2{SVG_CANVAS_BG}\3",
+        themed,
+        flags=re.IGNORECASE,
+    )
+
     if count == 0:
         themed = re.sub(
             r"(<svg\b[^>]*>)",
             rf"\1<rect width='100%' height='100%' x='0' y='0' fill='{SVG_CANVAS_BG}'/>",
-            svg,
+            themed,
             count=1,
             flags=re.IGNORECASE,
         )

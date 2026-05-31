@@ -20,6 +20,9 @@
 
   const CFG = window.PROTACABLE_CONFIG || {};
   const JOB_ID = CFG.job_id;
+  const DEBUG_RENDER =
+    new URLSearchParams(window.location.search).get("debug") === "1" ||
+    String(window.ARTIFACT_DEBUG || "").trim() === "1";
   
   
 
@@ -51,11 +54,11 @@
   // 3) Visual tuning
   // ============================================================================
   // Protein
-  const PROTEIN_COLOR = "#624E6B";
-  const LYS_SURFACE_COLOR = "#0A1E8A";   // deep dark blue
-  const LYS_CARTOON_COLOR = "#102A9E";   // optional, slightly brighter for ribbon
-  const PROTEIN_SURFACE_OPACITY = 0.22;
-  const PROTEIN_CARTOON_OPACITY = 0.35;
+  const PROTEIN_COLOR = "#57D7FF";
+  const LYS_SURFACE_COLOR = "#1C5BFF";
+  const LYS_CARTOON_COLOR = "#7EE7FF";
+  const PROTEIN_SURFACE_OPACITY = 0.14;
+  const PROTEIN_CARTOON_OPACITY = 0.72;
 
   // Ligand
   const LIGAND_BS_SCALE = 3.9;     // larger ball+stick
@@ -155,6 +158,13 @@
   function setHudDebug(msg) {
     const node = $("hud-debug");
     if (node) node.innerText = msg || "";
+  }
+
+  function debugLog(label, payload = {}) {
+    if (!DEBUG_RENDER) return;
+    try {
+      console.info(`[Render3D] ${label}`, payload);
+    } catch {}
   }
 
   function nextAnimationFrame() {
@@ -395,8 +405,8 @@
   /// ============================================================================
   // 11A) Protein loading
   // ============================================================================
-  function proteinSele(chain) {
-    return `polymer and chain ${chain} and not hetero`;
+  function proteinSele(_chain) {
+    return "polymer and not hetero";
   }
 
   async function loadProtein(pdb, chain, warhead, resid) {
@@ -405,9 +415,27 @@
     if (resid) qs.set("resid", resid);
     const suffix = qs.toString() ? `?${qs.toString()}` : "";
     const url = `/api/protein/${JOB_ID}/${pdb}/${chain}${suffix}`;
-    const comp = await State.stage.loadFile(url, { ext: "pdb", defaultRepresentation: false });
+    const check = await fetch(url, { method: "GET", cache: "no-store" });
+    if (!check.ok) {
+      throw new Error(`Protein PDB missing for ${pdb}/${chain}/${warhead || "protein"} (${check.status})`);
+    }
+    const pdbText = await check.text();
+    const atomCount = (pdbText.match(/^ATOM/gm) || []).length;
+    const hetatmCount = (pdbText.match(/^HETATM/gm) || []).length;
+    debugLog("protein_fetch", {
+      url,
+      status: check.status,
+      bytes: pdbText.length,
+      atomCount,
+      hetatmCount,
+    });
+    if (!atomCount) {
+      throw new Error(`Protein response has no ATOM records for ${pdb}/${chain}`);
+    }
 
-    // One continuous protein surface
+    const blob = new Blob([pdbText], { type: "chemical/x-pdb" });
+    const comp = await State.stage.loadFile(blob, { ext: "pdb", defaultRepresentation: false });
+
     comp.addRepresentation("surface", {
       sele: proteinSele(chain),
       color: State.proteinScheme,
@@ -420,7 +448,6 @@
       scaleFactor: 0.9
     });
 
-    // Optional cartoon using the same lys-aware coloring
     comp.addRepresentation("cartoon", {
       sele: proteinSele(chain),
       color: State.proteinScheme,
@@ -429,11 +456,22 @@
       depthTest: true
     });
 
-    // IMPORTANT:
-    // Do NOT add a protein-level spacefill representation here.
-    // That is what was making the whole protein look like spheres.
+    comp.addRepresentation("line", {
+      sele: proteinSele(chain),
+      colorValue: LYS_CARTOON_COLOR,
+      opacity: 0.22,
+      depthWrite: false,
+      depthTest: true,
+      linewidth: 2
+    });
 
     bumpRenderOrder(comp, ORDER_PROTEIN);
+    debugLog("protein_component_ready", {
+      url,
+      atomCount,
+      hetatmCount,
+      representations: comp.reprList ? comp.reprList.length : 0,
+    });
     return comp;
   }
 
@@ -453,6 +491,11 @@
       throw new Error(msg);
     }
     const sdfText = await check.text();
+    debugLog("ligand_fetch", {
+      url,
+      status: check.status,
+      bytes: sdfText.length,
+    });
     const blob = new Blob([sdfText], { type: "chemical/x-mdl-sdfile" });
     const comp = await State.stage.loadFile(blob, { ext: "sdf", defaultRepresentation: false });
 
@@ -478,6 +521,10 @@
 
     bumpRenderOrder(comp, ORDER_LIGAND);
     comp.autoView(800);
+    debugLog("ligand_component_ready", {
+      url,
+      representations: comp.reprList ? comp.reprList.length : 0,
+    });
     return comp;
   }
 
@@ -805,7 +852,7 @@
 
     try {
       try {
-        State.proteinComp = await loadProtein(PDB, CH, WAR, RESID);
+        State.proteinComp = await loadProtein(PDB, CH, WAR, RES);
         result.protein.ok = true;
       } catch (e) {
         const msg = e && e.message ? e.message : String(e || "Unknown protein load error");
@@ -843,6 +890,19 @@
       result.canvasPresent = await waitForViewportCanvas();
       result.usable = Boolean(result.ligand.ok && result.canvasPresent);
       result.ok = Boolean(result.usable && result.protein.ok);
+      debugLog("render_result", {
+        jobId: JOB_ID,
+        pdb: PDB,
+        chain: CH,
+        warhead: WAR,
+        resid: RES,
+        proteinOk: result.protein.ok,
+        ligandOk: result.ligand.ok,
+        sasaOk: result.sasa.ok,
+        canvasPresent: result.canvasPresent,
+        proteinComponent: Boolean(State.proteinComp),
+        ligandComponent: Boolean(State.ligandComp),
+      });
 
       if (!result.usable && !result.protein.ok && !result.ligand.ok) {
         setHudDebug("3D viewport could not render protein or ligand assets.");
