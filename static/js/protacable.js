@@ -36,7 +36,8 @@
     activeLoadSeq: 0,
     mapMode: "sasa",
     hudInitialized: false,
-    handoff: null
+    handoff: null,
+    proteinSticksToggleBound: false
   };
 
   const QED_TOOLTIP =
@@ -384,6 +385,52 @@
       toggle.textContent = collapsed ? "▸" : "▾";
     });
   })();
+
+  function getProteinSticksVisible() {
+    if (window.Render3D && typeof window.Render3D.getProteinSticksVisible === "function") {
+      try {
+        return window.Render3D.getProteinSticksVisible() !== false;
+      } catch {}
+    }
+    return true;
+  }
+
+  function updateProteinSticksToggleButton() {
+    const btn = $("protein-sticks-toggle");
+    if (!btn) return;
+    const visible = getProteinSticksVisible();
+    btn.textContent = visible ? "Protein Sticks: On" : "Protein Sticks: Off";
+    btn.setAttribute("aria-pressed", visible ? "true" : "false");
+    btn.setAttribute(
+      "title",
+      visible
+        ? "Hide protein sidechain sticks without affecting ligand rendering"
+        : "Show protein sidechain sticks without affecting ligand rendering"
+    );
+  }
+
+  function bindProteinSticksToggle() {
+    const btn = $("protein-sticks-toggle");
+    if (!btn || State.proteinSticksToggleBound || btn.dataset.bound === "1") {
+      updateProteinSticksToggleButton();
+      return;
+    }
+
+    btn.dataset.bound = "1";
+    State.proteinSticksToggleBound = true;
+    btn.addEventListener("click", () => {
+      if (window.Render3D && typeof window.Render3D.toggleProteinSticks === "function") {
+        try {
+          window.Render3D.toggleProteinSticks();
+        } catch (err) {
+          console.warn("Protein sticks toggle failed:", err);
+        }
+      }
+      updateProteinSticksToggleButton();
+    });
+
+    updateProteinSticksToggleButton();
+  }
 
   function renderSmiles(smiles) {
     const box = $("smiles-box");
@@ -1337,6 +1384,7 @@ function openBuilderFallback(smiles, opts = {}) {
     const renderPromise = (window.Render3D && typeof window.Render3D.load === "function")
       ? window.Render3D.load({ pdb: PDB, chain, warhead: WAR, resid: RESID, showLoader: false, loadSeq })
           .then(async (result) => {
+            updateProteinSticksToggleButton();
             const canvasPresent = await waitForInitialViewportPaint();
             const merged = Object.assign({}, result || {}, {
               canvasPresent: Boolean(result && result.canvasPresent) || canvasPresent
@@ -1353,6 +1401,7 @@ function openBuilderFallback(smiles, opts = {}) {
             return merged;
           })
           .catch((err) => {
+            updateProteinSticksToggleButton();
             const msg = err && err.message ? err.message : String(err || "Unknown 3D render error");
             if (initialBoot) loader?.markStep("viewport", "error", msg);
             return {
@@ -1495,6 +1544,7 @@ function openBuilderFallback(smiles, opts = {}) {
     ResultsLoader.markStep("boot", "loading", "Binding UI controls");
 
     bindMapToggle();
+    bindProteinSticksToggle();
     bindSmilesActions();
     bindDownloadPDB();
     bindProtacBuilder();

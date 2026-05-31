@@ -102,6 +102,8 @@
     proteinScheme: null,
 
     proteinComp: null,
+    proteinStickVisible: true,
+    proteinStickReprs: [],
     ligandComp: null,
 
     sasaOuterComp: null,
@@ -159,6 +161,56 @@
   function setHudDebug(msg) {
     const node = $("hud-debug");
     if (node) node.innerText = msg || "";
+  }
+
+  function rememberProteinStickRepresentation(repr) {
+    if (!repr) return repr;
+    if (!Array.isArray(State.proteinStickReprs)) State.proteinStickReprs = [];
+    State.proteinStickReprs.push(repr);
+    return repr;
+  }
+
+  function requestStageRender() {
+    try {
+      State.stage?.viewer?.requestRender?.();
+    } catch {}
+  }
+
+  function setRepresentationVisibility(repr, visible) {
+    if (!repr) return;
+    try {
+      if (typeof repr.setVisibility === "function") {
+        repr.setVisibility(visible);
+        return;
+      }
+    } catch {}
+
+    try {
+      if (typeof repr.setParameters === "function") {
+        repr.setParameters({ visible });
+      }
+    } catch {}
+  }
+
+  function applyProteinStickVisibility() {
+    const visible = State.proteinStickVisible !== false;
+    const reprs = Array.isArray(State.proteinStickReprs) ? State.proteinStickReprs : [];
+    reprs.forEach((repr) => setRepresentationVisibility(repr, visible));
+    requestStageRender();
+    return visible;
+  }
+
+  function setProteinSticksVisible(visible) {
+    State.proteinStickVisible = visible !== false;
+    return applyProteinStickVisibility();
+  }
+
+  function toggleProteinSticks() {
+    return setProteinSticksVisible(!(State.proteinStickVisible !== false));
+  }
+
+  function getProteinSticksVisible() {
+    return State.proteinStickVisible !== false;
   }
 
   function debugLog(label, payload = {}) {
@@ -392,6 +444,7 @@
     State.stage.removeAllComponents();
 
     State.proteinComp = null;
+    State.proteinStickReprs = [];
     State.ligandComp = null;
     State.sasaOuterComp = null;
     State.sasaInnerComp = null;
@@ -444,6 +497,7 @@
 
     const blob = new Blob([pdbText], { type: "chemical/x-pdb" });
     const comp = await State.stage.loadFile(blob, { ext: "pdb", defaultRepresentation: false });
+    State.proteinStickReprs = [];
 
     // ------------------------------------------------------------------------
     // Protein body: neutral gray for the full protein.
@@ -481,16 +535,17 @@
       depthTest: true
     });
 
-    comp.addRepresentation("licorice", {
+    rememberProteinStickRepresentation(comp.addRepresentation("licorice", {
       sele: `${lysProteinSele(chain)} and sidechainAttached and not hydrogen`,
       colorValue: LYS_CARTOON_COLOR,
       opacity: 0.98,
       radiusScale: 1.15,
       depthWrite: true,
       depthTest: true
-    });
+    }));
 
     bumpRenderOrder(comp, ORDER_PROTEIN);
+    applyProteinStickVisibility();
     debugLog("protein_component_ready", {
       url,
       atomCount,
@@ -973,6 +1028,9 @@
     init: initNGL,
     load,
     clear: clearAllComponents,
+    setProteinSticksVisible,
+    toggleProteinSticks,
+    getProteinSticksVisible,
     debugLigandElements,
     debugProteinResnames
   };

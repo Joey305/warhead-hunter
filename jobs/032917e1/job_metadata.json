@@ -1,0 +1,15 @@
+{
+  "created_at": "",
+  "current_step": "",
+  "error": null,
+  "finished_at": "",
+  "job_dir": "/Users/jxs794/Documents/warhead-hunter/jobs/032917e1",
+  "job_id": "032917e1",
+  "last_log_at": "",
+  "results_ready": true,
+  "started_at": "",
+  "status": "completed",
+  "step_started_at": "",
+  "target": "EGFR",
+  "updated_at": "2026-05-31T12:50:58Z"
+}

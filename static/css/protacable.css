@@ -81,6 +81,59 @@
   height: 100%;
 }
 
+.viewer-control-topright {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.viewer-control-btn {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(0, 238, 255, 0.46);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(0, 20, 28, 0.92), rgba(0, 8, 14, 0.94));
+  color: var(--tron-yellow, #ffe600);
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow:
+    0 0 14px rgba(0, 238, 255, 0.18),
+    inset 0 0 14px rgba(0, 238, 255, 0.06);
+  text-shadow: 0 0 10px rgba(255, 230, 0, 0.26);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.viewer-control-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 214, 0, 0.52);
+  box-shadow:
+    0 0 16px rgba(0, 238, 255, 0.24),
+    inset 0 0 16px rgba(255, 214, 0, 0.09);
+}
+
+.viewer-control-btn:focus-visible {
+  outline: 2px solid rgba(255, 214, 0, 0.85);
+  outline-offset: 2px;
+}
+
+.viewer-control-btn[aria-pressed="false"] {
+  color: var(--tron-cyan, #00eeff);
+  border-color: rgba(0, 238, 255, 0.34);
+  box-shadow:
+    0 0 10px rgba(0, 238, 255, 0.14),
+    inset 0 0 10px rgba(0, 238, 255, 0.04);
+}
+
 .viewport-loading {
   position: absolute;
   inset: 0;
