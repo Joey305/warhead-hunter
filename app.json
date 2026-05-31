@@ -46,6 +46,15 @@
     "WARHEAD_PDBMKR_MAX_WORKERS": {
       "value": "2"
     },
+    "WARHEAD_SASA_MAX_WORKERS": {
+      "value": "1"
+    },
+    "WARHEAD_SASA_STREAM_OUTPUT": {
+      "value": "1"
+    },
+    "WARHEAD_SASA_DEBUG_MEMORY": {
+      "value": "0"
+    },
     "WARHEAD_RUN_CLEANUP_STEP": {
       "value": "0"
     },

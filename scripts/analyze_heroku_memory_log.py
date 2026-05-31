@@ -24,6 +24,11 @@ R14_RE = re.compile(r"Error R1[45]")
 BACKUP_RE = re.compile(r"RANDY backup")
 FAIL_RE = re.compile(r"CRITICAL ERROR")
 SUCCESS_RE = re.compile(r"PIPELINE FINISHED SUCCESSFULLY")
+SAFE_FAILURE_RE = re.compile(
+    r"Job failed safely before dyno crash:\s+"
+    r"(?P<step>[A-Za-z0-9_./-]+)\s+exceeded\s+(?P<metric>[a-z_]+)\s+memory guard during\s+(?P<phase>[a-z_]+)\.\s+"
+    r"(?P<body>.*)$"
+)
 
 
 def _line_payload(line: str) -> str:
@@ -46,6 +51,7 @@ class StepSample:
     combined_peak_mb: float | None = None
     r14_after: bool = False
     r15_after: bool = False
+    guard_failure: str | None = None
 
 
 @dataclass
@@ -162,7 +168,20 @@ def parse_log(path: Path) -> tuple[dict[str, JobSummary], dict[str, Any]]:
             continue
 
         if FAIL_RE.search(payload) and current_job:
-            jobs.setdefault(current_job, JobSummary(job_id=current_job)).failed = True
+            summary = jobs.setdefault(current_job, JobSummary(job_id=current_job))
+            summary.failed = True
+            safe_failure = SAFE_FAILURE_RE.search(payload)
+            if safe_failure:
+                step_name = normalize_step_name(safe_failure.group("step"))
+                fields = parse_mb_fields(safe_failure.group("body"))
+                step = summary.step(step_name)
+                step.guard_failure = payload
+                step.child_peak_mb = max(step.child_peak_mb or 0.0, fields.get("child_tree", 0.0)) or step.child_peak_mb
+                step.tree_peak_mb = max(step.tree_peak_mb or 0.0, fields.get("child_tree", 0.0)) or step.tree_peak_mb
+                step.combined_peak_mb = max(step.combined_peak_mb or 0.0, fields.get("combined", 0.0)) or step.combined_peak_mb
+                step.dyno_peak_mb = max(step.dyno_peak_mb or 0.0, fields.get("dyno", 0.0)) or step.dyno_peak_mb
+                if fields.get("parent") is not None:
+                    step.after_parent_mb = fields.get("parent")
             continue
 
         if SUCCESS_RE.search(payload) and current_job:
@@ -189,7 +208,7 @@ def fmt_mb(value: float | None) -> str:
 
 
 def print_report(jobs: dict[str, JobSummary], aggregate: dict[str, Any]) -> None:
-    print("job_id\tstep\tparent_before_mb\tparent_after_mb\tdelta_mb\tchild_peak_mb\ttree_peak_mb\tdyno_peak_mb\tcombined_peak_mb\theroku_r14_after\theroku_r15_after")
+    print("job_id\tstep\tparent_before_mb\tparent_after_mb\tdelta_mb\tchild_peak_mb\ttree_peak_mb\tdyno_peak_mb\tcombined_peak_mb\theroku_r14_after\theroku_r15_after\tguard_failure")
     for job_id, summary in jobs.items():
         for step_name in summary.step_order:
             step = summary.steps[step_name]
@@ -207,6 +226,7 @@ def print_report(jobs: dict[str, JobSummary], aggregate: dict[str, Any]) -> None
                         fmt_mb(step.combined_peak_mb),
                         "yes" if step.r14_after else "no",
                         "yes" if step.r15_after else "no",
+                        step.guard_failure or "",
                     ]
                 )
             )

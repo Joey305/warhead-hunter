@@ -780,6 +780,8 @@
   // -----------------------------
   // Poll loop
   // -----------------------------
+  let pollTimer = null;
+
   async function pollOnce(){
     try{
       const r = await fetch(`/api/job_log/${jobId}`, { cache: "no-store" });
@@ -791,6 +793,10 @@
 
       if (!finishedAnnounced && (status === "completed" || status === "failed")){
         finishedAnnounced = true;
+        if (pollTimer){
+          clearInterval(pollTimer);
+          pollTimer = null;
+        }
 
         if (status === "completed"){
           showToast("✅ Job completed", "Your target gallery is ready!");
@@ -836,7 +842,7 @@
   }
 
   // Start polling
-  setInterval(pollOnce, 2000);
+  pollTimer = setInterval(pollOnce, 2000);
   pollOnce();
 </script>
 
