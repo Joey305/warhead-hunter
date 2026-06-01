@@ -338,6 +338,24 @@ def sdf_basename_from_group_key(key) -> str:
     return f"{pid}_{ch}_{lig}_{rid}"
 
 
+def sdf_key_parts(key) -> dict:
+    ligand, target, pdb_id, resid, chain = key
+    return {
+        "Ligand": normalize_warhead_id(ligand).upper().strip(),
+        "Target": str(target).strip(),
+        "pdb_id": str(pdb_id).lower().strip(),
+        "Chain": str(chain).upper().strip(),
+        "Residue_ID": normalize_sdf_residue_id(resid),
+    }
+
+
+def nonempty_file(path: Path) -> bool:
+    try:
+        return path.exists() and path.is_file() and path.stat().st_size > 0
+    except Exception:
+        return False
+
+
 def infer_element_from_atom_name(atom_name: str) -> str:
     if atom_name is None or (isinstance(atom_name, float) and np.isnan(atom_name)):
         return "C"
@@ -590,6 +608,10 @@ def failure_header() -> list[str]:
     return ["Ligand", "PDB", "Error"]
 
 
+def sdf_failure_header() -> list[str]:
+    return ["Ligand", "Target", "pdb_id", "Chain", "Residue_ID", "basename", "Error"]
+
+
 def _write_row(writer: csv.DictWriter, header: list[str], row: dict) -> None:
     writer.writerow({key: row.get(key, "") for key in header})
 
@@ -774,6 +796,13 @@ def compute_mcs(key, grouped):
     """
     ligand, target, pdb_id, resid, chain = key
     errs = []
+    sdf_status = {
+        "attempted": 0,
+        "written": 0,
+        "failed": 0,
+        "skipped_existing": 0,
+        "failure_record": None,
+    }
 
     # ----------------------------
     # debug helpers (local)
@@ -850,7 +879,11 @@ def compute_mcs(key, grouped):
             df = grouped[key].copy().reset_index(drop=True)
     except KeyError:
         dbg(f"END key={key} (no group) dt={time.perf_counter()-t_start:.2f}s")
-        return [], [], [[ligand, pdb_id, "No 3D atom group found"]]
+        return [], [], [[ligand, pdb_id, "No 3D atom group found"]], {
+            **sdf_status,
+            "failed": 1,
+            "failure_record": {**sdf_key_parts(key), "basename": sdf_basename_from_group_key(key), "Error": "No 3D atom group found"},
+        }
 
     # ----------------------------
     # build 3D mol
@@ -871,7 +904,11 @@ def compute_mcs(key, grouped):
     except Exception as e:
         dbg(f"{key} ❌ 3D mol build failed at step={WORKER_STEP}: {repr(e)}")
         dbg(f"END key={key} dt={time.perf_counter()-t_start:.2f}s")
-        return [], [], [[ligand, pdb_id, f"3D mol build failed: {e}"]]
+        return [], [], [[ligand, pdb_id, f"3D mol build failed: {e}"]], {
+            **sdf_status,
+            "failed": 1,
+            "failure_record": {**sdf_key_parts(key), "basename": sdf_basename_from_group_key(key), "Error": f"3D mol build failed: {e}"},
+        }
     finally:
         tmark("BUILD_3D_MOL", t0)
 
@@ -882,6 +919,7 @@ def compute_mcs(key, grouped):
     if WRITE_SDF:
         base = sdf_basename_from_group_key(key)
         out_sdf = SDF_DIR / f"{base}.sdf"
+        sdf_meta = sdf_key_parts(key)
 
         # 🔥 this is the “why didn’t it skip?” truth line
         if SKIP_IF_EXISTS and out_sdf.exists():
@@ -893,9 +931,18 @@ def compute_mcs(key, grouped):
         else:
             dbg(f"{key} SDF skip_exists=0 path={out_sdf} (exists={out_sdf.exists()})")
 
-        if (not SKIP_IF_EXISTS) or (not out_sdf.exists()):
+        if SKIP_IF_EXISTS and nonempty_file(out_sdf):
+            sdf_status["written"] = 1
+            sdf_status["skipped_existing"] = 1
+        else:
+            if out_sdf.exists() and not nonempty_file(out_sdf):
+                try:
+                    out_sdf.unlink()
+                except Exception:
+                    pass
             set_step("SDF_WRITE")
             t_sdf = time.perf_counter()
+            sdf_status["attempted"] += 1
 
             ok_sdf, msg_sdf = False, "not attempted"
 
@@ -916,11 +963,14 @@ def compute_mcs(key, grouped):
             dt_sdf = time.perf_counter() - t_sdf
 
             if not ok_sdf:
-                errs.append([ligand, pdb_id, f"SDF skip ({base}): {msg_sdf}"])
+                errs.append([ligand, pdb_id, f"SDF write failed ({base}): {msg_sdf}"])
                 dbg(f"{key} ❌ SDF_WRITE failed dt={dt_sdf:.2f}s msg={msg_sdf}")
+                sdf_status["failed"] = 1
+                sdf_status["failure_record"] = {**sdf_meta, "basename": base, "Error": msg_sdf}
             else:
                 dbg(f"{key} ✅ SDF_WRITE ok dt={dt_sdf:.2f}s msg={msg_sdf}")
                 debug_mem("wrote SDF", key=base)
+                sdf_status["written"] = 1
 
     # ----------------------------
     # mapping logic
@@ -942,7 +992,7 @@ def compute_mcs(key, grouped):
                 smiles_id_out, smiles_out
             ])
         dbg(f"END key={key} mode=NO2D all_atoms={len(rows_all)} dt={time.perf_counter()-t_start:.2f}s")
-        return [], rows_all, (errs if errs else None)
+        return [], rows_all, (errs if errs else None), sdf_status
 
     set_step("SIZE_CHECKS")
     n2 = mol2d.GetNumAtoms()
@@ -1055,7 +1105,7 @@ def compute_mcs(key, grouped):
     del mol3d
     gc.collect()
     dbg(f"END key={key} mode={mode} mapped={len(map_3d_to_2d)} dt={dt_total:.2f}s")
-    return rows_mcs, rows_all, (errs if errs else None)
+    return rows_mcs, rows_all, (errs if errs else None), sdf_status
 
 PER_KEY_TIMEOUT = int(os.environ.get("WARHEAD_MCS_PER_KEY_TIMEOUT", "60"))
 
@@ -1067,9 +1117,21 @@ def compute_mcs_timed(key, group_df):
             grouped_one = {key: group_df}
             return compute_mcs(key, grouped_one)
     except TimeoutException:
-        return [], [], [[ligand, pdb_id, f"TIMEOUT (>{PER_KEY_TIMEOUT}s)"]]
+        return [], [], [[ligand, pdb_id, f"TIMEOUT (>{PER_KEY_TIMEOUT}s)"]], {
+            "attempted": 0,
+            "written": 0,
+            "failed": 1,
+            "skipped_existing": 0,
+            "failure_record": {**sdf_key_parts(key), "basename": sdf_basename_from_group_key(key), "Error": f"TIMEOUT (>{PER_KEY_TIMEOUT}s)"},
+        }
     except Exception as e:
-        return [], [], [[ligand, pdb_id, f"EXCEPTION: {repr(e)}"]]
+        return [], [], [[ligand, pdb_id, f"EXCEPTION: {repr(e)}"]], {
+            "attempted": 0,
+            "written": 0,
+            "failed": 1,
+            "skipped_existing": 0,
+            "failure_record": {**sdf_key_parts(key), "basename": sdf_basename_from_group_key(key), "Error": f"EXCEPTION: {repr(e)}"},
+        }
 
 
 
@@ -1194,6 +1256,7 @@ if __name__ == "__main__":
     map_sasa_path = OUTDIR / "Ligand_MCS_SASA.csv"
     all_sasa_path = OUTDIR / "Ligand_MCS_SASA_ALL_ATOMS.csv"
     fail_path = OUTDIR / "Ligand_MCS_Failures.csv"
+    sdf_fail_path = OUTDIR / "Ligand_MCS_SDF_Failures.csv"
     svg_fail_path = svg_dir / "SVG_failures.csv"
 
     if MCS_STREAM_OUTPUT:
@@ -1202,14 +1265,16 @@ if __name__ == "__main__":
         map_sasa_handle = open(map_sasa_path, "w", newline="", encoding="utf-8")
         all_sasa_handle = open(all_sasa_path, "w", newline="", encoding="utf-8")
         fail_handle = open(fail_path, "w", newline="", encoding="utf-8")
+        sdf_fail_handle = open(sdf_fail_path, "w", newline="", encoding="utf-8")
         svg_fail_handle = open(svg_fail_path, "w", newline="", encoding="utf-8")
         map_writer = csv.DictWriter(map_handle, fieldnames=cols)
         all_writer = csv.DictWriter(all_handle, fieldnames=cols)
         map_sasa_writer = csv.DictWriter(map_sasa_handle, fieldnames=cols + ["Exposure_A2"])
         all_sasa_writer = csv.DictWriter(all_sasa_handle, fieldnames=cols + ["Exposure_A2"])
         fail_writer = csv.DictWriter(fail_handle, fieldnames=fail_cols)
+        sdf_fail_writer = csv.DictWriter(sdf_fail_handle, fieldnames=sdf_failure_header())
         svg_fail_writer = csv.DictWriter(svg_fail_handle, fieldnames=["base", "error", "detail"])
-        for writer in (map_writer, all_writer, map_sasa_writer, all_sasa_writer, fail_writer, svg_fail_writer):
+        for writer in (map_writer, all_writer, map_sasa_writer, all_sasa_writer, fail_writer, sdf_fail_writer, svg_fail_writer):
             writer.writeheader()
     else:
         buffered_map = []
@@ -1217,6 +1282,7 @@ if __name__ == "__main__":
         buffered_map_sasa = []
         buffered_all_sasa = []
         buffered_failures = []
+        buffered_sdf_failures = []
         buffered_svg_failures = []
 
     def row_dict(values):
@@ -1235,6 +1301,10 @@ if __name__ == "__main__":
         "map_count": 0,
         "all_count": 0,
         "failure_count": 0,
+        "sdf_attempted": 0,
+        "sdf_written": 0,
+        "sdf_failed": 0,
+        "sdf_skipped_existing": 0,
         "svg_count": 0,
         "svg_failure_count": 0,
     }
@@ -1242,7 +1312,7 @@ if __name__ == "__main__":
     expected_sdfs = [f"{sdf_basename_from_group_key(k)}.sdf" for k in keys]
 
     def consume_result(key, result):
-        rows_mcs, rows_all, errs = result
+        rows_mcs, rows_all, errs, sdf_status = result
 
         map_rows = [row_dict(row) for row in rows_mcs]
         all_rows = [row_dict(row) for row in rows_all]
@@ -1278,6 +1348,17 @@ if __name__ == "__main__":
             stats["failure_count"] += 1
             if len(failure_preview) < 10:
                 failure_preview.append(record)
+
+        stats["sdf_attempted"] += int(sdf_status.get("attempted", 0))
+        stats["sdf_written"] += int(sdf_status.get("written", 0))
+        stats["sdf_failed"] += int(sdf_status.get("failed", 0))
+        stats["sdf_skipped_existing"] += int(sdf_status.get("skipped_existing", 0))
+        sdf_failure_record = sdf_status.get("failure_record")
+        if sdf_failure_record:
+            if MCS_STREAM_OUTPUT:
+                _write_row(sdf_fail_writer, sdf_failure_header(), sdf_failure_record)
+            else:
+                buffered_sdf_failures.append(sdf_failure_record)
 
         if not all_sasa_df.empty:
             base = sdf_basename_from_group_key(key)
@@ -1336,7 +1417,7 @@ if __name__ == "__main__":
                     debug_mem("processed batch", count=processed, map_rows=stats["map_count"], all_rows=stats["all_count"])
     finally:
         if MCS_STREAM_OUTPUT:
-            for handle in (map_handle, all_handle, map_sasa_handle, all_sasa_handle, fail_handle, svg_fail_handle):
+            for handle in (map_handle, all_handle, map_sasa_handle, all_sasa_handle, fail_handle, sdf_fail_handle, svg_fail_handle):
                 handle.close()
 
     if not MCS_STREAM_OUTPUT:
@@ -1345,17 +1426,31 @@ if __name__ == "__main__":
         pd.DataFrame(buffered_map_sasa, columns=cols + ["Exposure_A2"]).to_csv(map_sasa_path, index=False)
         pd.DataFrame(buffered_all_sasa, columns=cols + ["Exposure_A2"]).to_csv(all_sasa_path, index=False)
         pd.DataFrame(buffered_failures, columns=fail_cols).to_csv(fail_path, index=False)
+        pd.DataFrame(buffered_sdf_failures, columns=sdf_failure_header()).to_csv(sdf_fail_path, index=False)
         pd.DataFrame(buffered_svg_failures, columns=["base", "error", "detail"]).to_csv(svg_fail_path, index=False)
 
     print("✅ MCS processing complete — outputs written", flush=True)
 
-    actual_sdfs = {p.name for p in SDF_DIR.glob("*.sdf")}
+    actual_sdfs = {p.name for p in SDF_DIR.glob("*.sdf") if nonempty_file(p)}
     missing_sdfs = [name for name in expected_sdfs if name not in actual_sdfs]
+    print(
+        f"🧪 Step 11 summary: work_items={len(keys)} "
+        f"sdf_attempted={stats['sdf_attempted']} sdf_written={stats['sdf_written']} "
+        f"sdf_failed={stats['sdf_failed']} sdf_skipped_existing={stats['sdf_skipped_existing']} "
+        f"svg_written={stats['svg_count']}",
+        flush=True,
+    )
     print(f"🧪 SDF expected groups: {len(expected_sdfs)}", flush=True)
-    print(f"🧪 SDF files generated: {len(actual_sdfs)} → {SDF_DIR}", flush=True)
-    print(f"🧪 SDF failed groups: {len(missing_sdfs)}", flush=True)
+    print(f"🧪 SDF files available: {len(actual_sdfs)} → MCS_Output/MCS_SDF", flush=True)
+    print(f"🧪 SDF failure records: {stats['sdf_failed']} → {sdf_fail_path}", flush=True)
+    print(f"🧪 SVG output path: MCS_Output/MCS_SVG", flush=True)
+    print(f"🧪 CSV output path: MCS_Output", flush=True)
+    print(f"🧪 SDF missing groups: {len(missing_sdfs)}", flush=True)
     if missing_sdfs:
         print(f"⚠️ First missing SDFs: {missing_sdfs[:20]}", flush=True)
+    if expected_sdfs and not actual_sdfs:
+        print("❌ Step 11 produced zero non-empty SDF files for required ligand occurrences.", flush=True)
+        raise SystemExit(1)
 
     print("====================================================")
     print("🎉 COMPLETED MCS MAPPING + SASA ANNOTATION")
@@ -1364,6 +1459,7 @@ if __name__ == "__main__":
     print(f"🧬 All atoms (debug)     → {all_path}")
     print(f"🧪 SASA (ALL atoms)      → {all_sasa_path}")
     print(f"⚠️ Failures              → {fail_path}")
+    print(f"⚠️ SDF failures          → {sdf_fail_path}")
     print("====================================================\n")
     print(f"🖼️  SVGs generated: {stats['svg_count']} → {svg_dir}")
     if stats["svg_failure_count"]:

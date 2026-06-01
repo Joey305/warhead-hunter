@@ -37,7 +37,7 @@ from api.randy_backup_client import (
     backup_on_failure,
     initial_backup_status,
 )
-from api.sdf_resolver import resolve_sdf_path, row_sdf_key
+from api.sdf_resolver import expected_mcs_sdf_filename, resolve_sdf_path, row_sdf_key
 from job_state import append_job_log, write_job_metadata as write_job_metadata_disk, results_ready_from_disk
 
 # =============================================================================
@@ -750,6 +750,42 @@ def _expected_keys_from_ligand_atoms(job_path: Path) -> List[Tuple[str, str, str
     return sorted(set(keys))
 
 
+def _list_nonempty_sdfs(sdf_dir: Path) -> List[Path]:
+    files: List[Path] = []
+    if not sdf_dir.exists():
+        return files
+    for fp in sorted(sdf_dir.glob("*.sdf")):
+        try:
+            if fp.is_file() and fp.stat().st_size > 0:
+                files.append(fp)
+        except Exception:
+            continue
+    return files
+
+
+def _read_step11_sdf_failure_keys(job_path: Path, *, copied: bool) -> Dict[Tuple[str, str, str, str], str]:
+    failure_path = (
+        job_path / "TARGET_RESULTS" / "MCS_Output" / "Ligand_MCS_SDF_Failures.csv"
+        if copied else
+        job_path / "MCS_Output" / "Ligand_MCS_SDF_Failures.csv"
+    )
+    out: Dict[Tuple[str, str, str, str], str] = {}
+    if not failure_path.exists():
+        return out
+    try:
+        df = pd.read_csv(failure_path, dtype=str).fillna("")
+    except Exception:
+        return out
+    required = {"pdb_id", "Chain", "Ligand", "Residue_ID"}
+    if not required.issubset(df.columns):
+        return out
+    for _, row in df.iterrows():
+        key = row_sdf_key(row.to_dict())
+        if all(key):
+            out[key] = str(row.get("Error") or "").strip()
+    return out
+
+
 def _residue_lookup_from_summary(job_path: Path) -> Dict[Tuple[str, str, str], str]:
     lookup: Dict[Tuple[str, str, str], str] = {}
     for filename in ["Ligand_3D_Atoms.csv", "Resolved_SASA_Summary.csv"]:
@@ -777,29 +813,40 @@ def validate_mcs_sdf_checkpoint(job_id: str, job_dir: str, *, copied: bool) -> N
     if not sdf_dir.exists():
         raise RuntimeError(f"Required MCS SDF folder missing: {sdf_dir}")
 
-    sdf_files = sorted(sdf_dir.glob("*.sdf"))
+    sdf_files = _list_nonempty_sdfs(sdf_dir)
     expected_keys = _expected_keys_from_ligand_atoms(job_path)
-    if not sdf_files:
+    failed_keys = _read_step11_sdf_failure_keys(job_path, copied=copied)
+    if expected_keys and not sdf_files:
         raise RuntimeError(
-            f"Required MCS SDF folder contains zero SDF files: {sdf_dir}. "
-            f"First expected keys: {expected_keys[:10]}"
+            f"Required MCS SDF folder contains zero non-empty SDF files: {sdf_dir}. "
+            f"Expected keys={len(expected_keys)} first_expected={expected_keys[:10]} "
+            f"recorded_failures={len(failed_keys)}"
         )
 
-    missing = []
-    for pdb, chain, ligand, resid in expected_keys:
-        expected = sdf_dir / f"{pdb}_{chain}_{ligand}_{resid}.sdf"
-        if not expected.exists():
-            missing.append((pdb, chain, ligand, resid))
+    actual_names = {fp.name for fp in sdf_files}
+    missing_unaccounted = []
+    for key in expected_keys:
+        expected_name = expected_mcs_sdf_filename(*key)
+        if expected_name in actual_names:
+            continue
+        if key in failed_keys:
+            continue
+        missing_unaccounted.append(key)
 
-    if missing:
+    if missing_unaccounted:
         raise RuntimeError(
             f"MCS SDF checkpoint failed for {sdf_dir}: expected={len(expected_keys)} "
-            f"sdf_files={len(sdf_files)} first_missing={missing[:10]} "
+            f"sdf_files={len(sdf_files)} recorded_failures={len(failed_keys)} "
+            f"first_missing={missing_unaccounted[:10]} "
             f"sample_files={[p.name for p in sdf_files[:10]]}"
         )
 
     label = "TARGET_RESULTS/MCS_Output/MCS_SDF" if copied else "MCS_Output/MCS_SDF"
-    log_message(job_id, f"✅ SDF validation PASS after {'12_Results.py' if copied else '11_mcsMatcher.py'}: {label} files={len(sdf_files)} expected={len(expected_keys)}")
+    log_message(
+        job_id,
+        f"✅ SDF validation PASS after {'12_Results.py' if copied else '11_mcsMatcher.py'}: "
+        f"{label} files={len(sdf_files)} expected={len(expected_keys)} recorded_failures={len(failed_keys)}"
+    )
 
 
 def validate_required_display_artifacts(job_id: str, job_dir: str) -> None:
@@ -820,10 +867,10 @@ def validate_required_display_artifacts(job_id: str, job_dir: str) -> None:
     if not sdf_dir.exists():
         raise RuntimeError(f"Required copied MCS SDF folder missing: {sdf_dir}")
 
-    sdf_files = sorted(sdf_dir.glob("*.sdf"))
+    sdf_files = _list_nonempty_sdfs(sdf_dir)
     if not sdf_files:
         raise RuntimeError(
-            "Required copied MCS SDF folder contains zero SDF files. "
+            "Required copied MCS SDF folder contains zero non-empty SDF files. "
             f"Expected folder: {sdf_dir}. "
             f"First display keys: {[row_sdf_key(r.to_dict()) for _, r in results.head(10).iterrows()]}. "
             f"Actual TARGET_RESULTS files: {_list_target_result_files(job_path, limit=30)}"
@@ -973,11 +1020,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
             elif script_name == "12_Results.py":
                 validate_mcs_sdf_checkpoint(job_id, job_dir, copied=True)
 
-        try:
-            validate_required_display_artifacts(job_id, job_dir)
-        except Exception as validation_error:
-            log_message(job_id, f"⚠️ Final display validation warning: {validation_error}")
-            log_message(job_id, "⚠️ Continuing because core SDF checkpoints already passed after 11_mcsMatcher.py and 12_Results.py.")
+        validate_required_display_artifacts(job_id, job_dir)
 
         with JOB_LOCK:
             JOB_STORE[job_id]["status"] = "completed"

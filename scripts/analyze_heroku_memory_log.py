@@ -24,6 +24,12 @@ R14_RE = re.compile(r"Error R1[45]")
 BACKUP_RE = re.compile(r"RANDY backup")
 FAIL_RE = re.compile(r"CRITICAL ERROR")
 SUCCESS_RE = re.compile(r"PIPELINE FINISHED SUCCESSFULLY")
+RESULTS_ROUTE_RE = re.compile(r"(GET|POST)\s+/results/([A-Za-z0-9_-]+)")
+ROUTE_STATUS_RE = re.compile(r"\bstatus=(\d{3})\b")
+SDF_404_RE = re.compile(r"/api/sdf/")
+SVG_404_RE = re.compile(r"/api/svg(?:-plain)?/")
+JOB_SUMMARY_404_RE = re.compile(r"/api/job_summary/")
+RESULTS_424_RE = re.compile(r"/results/([A-Za-z0-9_-]+).*\b424\b")
 SAFE_FAILURE_RE = re.compile(
     r"Job failed safely before dyno crash:\s+"
     r"(?P<step>[A-Za-z0-9_./-]+)\s+exceeded\s+(?P<metric>[a-z_]+)\s+memory guard during\s+(?P<phase>[a-z_]+)\.\s+"
@@ -67,6 +73,11 @@ class JobSummary:
     failed: bool = False
     succeeded: bool = False
     last_running_step: str = ""
+    sdf_404s: list[str] = field(default_factory=list)
+    svg_404s: list[str] = field(default_factory=list)
+    job_summary_404s: list[str] = field(default_factory=list)
+    results_424s: list[str] = field(default_factory=list)
+    results_opened_before_finish: bool = False
 
     def step(self, name: str) -> StepSample:
         if name not in self.steps:
@@ -116,6 +127,32 @@ def parse_log(path: Path) -> tuple[dict[str, JobSummary], dict[str, Any]]:
                 jobs.setdefault(current_job, JobSummary(job_id=current_job))
             except Exception:
                 pass
+
+        results_route = RESULTS_ROUTE_RE.search(raw)
+        if results_route:
+            routed_job = results_route.group(2)
+            summary = jobs.setdefault(routed_job, JobSummary(job_id=routed_job))
+            if not summary.succeeded and not summary.failed:
+                summary.results_opened_before_finish = True
+
+        status_match = ROUTE_STATUS_RE.search(raw)
+        route_status = status_match.group(1) if status_match else ""
+        if route_status == "404":
+            if SDF_404_RE.search(raw):
+                target_job = current_job or (results_route.group(2) if results_route else None)
+                if target_job:
+                    jobs.setdefault(target_job, JobSummary(job_id=target_job)).sdf_404s.append(raw)
+            if SVG_404_RE.search(raw):
+                target_job = current_job or (results_route.group(2) if results_route else None)
+                if target_job:
+                    jobs.setdefault(target_job, JobSummary(job_id=target_job)).svg_404s.append(raw)
+            if JOB_SUMMARY_404_RE.search(raw):
+                target_job = current_job or (results_route.group(2) if results_route else None)
+                if target_job:
+                    jobs.setdefault(target_job, JobSummary(job_id=target_job)).job_summary_404s.append(raw)
+        if RESULTS_424_RE.search(raw):
+            target_job = RESULTS_424_RE.search(raw).group(1)
+            jobs.setdefault(target_job, JobSummary(job_id=target_job)).results_424s.append(raw)
 
         run_match = RUN_STEP_RE.search(payload)
         if run_match and current_job:
@@ -250,6 +287,20 @@ def print_report(jobs: dict[str, JobSummary], aggregate: dict[str, Any]) -> None
                 "succeeded": job.succeeded,
                 "incomplete": (not job.failed and not job.succeeded),
                 "last_running_step": job.last_running_step or None,
+                "sdf_404_count": len(job.sdf_404s),
+                "svg_404_count": len(job.svg_404s),
+                "job_summary_404_count": len(job.job_summary_404s),
+                "results_424_count": len(job.results_424s),
+                "results_opened_before_finish": job.results_opened_before_finish,
+                "classification": (
+                    "missing_artifact" if (job.sdf_404s or job.svg_404s or job.job_summary_404s) else
+                    "incomplete_pipeline" if (job.results_424s or ((not job.failed and not job.succeeded) and job.results_opened_before_finish)) else
+                    "user_opened_results_early" if job.results_opened_before_finish else
+                    "memory_guard_failure" if any(step.guard_failure for step in job.steps.values()) else
+                    "heroku_dyno_crash" if (job.r14_lines or job.r15_lines) and not job.succeeded else
+                    "completed" if job.succeeded else
+                    "failed"
+                ),
             }
             for job in jobs.values()
         ],

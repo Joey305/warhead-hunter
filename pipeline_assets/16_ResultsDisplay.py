@@ -41,7 +41,12 @@ def norm_chain(value):
 
 
 def norm_ligand(value):
-    return str(value).strip().upper()
+    s = str(value).strip()
+    if s.startswith("[") and s.endswith("]"):
+        inner = s[1:-1].strip().strip("'").strip('"').strip()
+        if inner:
+            s = inner
+    return s.upper()
 
 
 def norm_resid(value):
@@ -123,10 +128,12 @@ def load_sdf_index(root: Path):
       sdf_index_exact: set of (pdb, chain, ligand, resid)
       sdf_index_loose: set of (pdb, chain, ligand)
       sdf_path_lookup: dict exact key -> path
+      sdf_loose_lookup: dict loose key -> list[(exact_key, path)]
     """
     sdf_index_exact = set()
     sdf_index_loose = set()
     sdf_path_lookup = {}
+    sdf_loose_lookup = {}
 
     sdf_roots = find_sdf_roots(root)
 
@@ -148,8 +155,9 @@ def load_sdf_index(root: Path):
             sdf_index_exact.add(exact_key)
             sdf_index_loose.add(loose_key)
             sdf_path_lookup[exact_key] = sdf_file
+            sdf_loose_lookup.setdefault(loose_key, []).append((exact_key, sdf_file))
 
-    return sdf_index_exact, sdf_index_loose, sdf_path_lookup, sdf_roots
+    return sdf_index_exact, sdf_index_loose, sdf_path_lookup, sdf_loose_lookup, sdf_roots
 
 
 def load_residue_lookup(root: Path):
@@ -296,7 +304,7 @@ def main():
     root = discover_root()
     war_pdb_root = find_war_pdb_root(root)
 
-    sdf_index_exact, sdf_index_loose, sdf_path_lookup, sdf_roots = load_sdf_index(root)
+    sdf_index_exact, sdf_index_loose, sdf_path_lookup, sdf_loose_lookup, sdf_roots = load_sdf_index(root)
     residue_lookup = load_residue_lookup(root)
     meta_map = load_smiles_lookup(root)
     exp_lookup = load_exposure_lookup(root)
@@ -340,13 +348,11 @@ def main():
                 has_sdf = True
                 sdf_path = str(sdf_path_lookup.get(exact_key, ""))
             elif loose_key in sdf_index_loose:
-                has_sdf = True
-                # Get first matching exact SDF key so we can recover residue if missing.
-                for key, path in sdf_path_lookup.items():
-                    if key[:3] == loose_key:
-                        resid = key[3]
-                        sdf_path = str(path)
-                        break
+                matches = sdf_loose_lookup.get(loose_key, [])
+                if len(matches) == 1:
+                    has_sdf = True
+                    resid = matches[0][0][3]
+                    sdf_path = str(matches[0][1])
 
             if not has_sdf:
                 skipped_no_sdf.append({
@@ -356,7 +362,7 @@ def main():
                     "Warhead": warhead,
                     "Residue_ID": resid,
                     "pdb_path": str(pdb_file.resolve()),
-                    "reason": "No matching SDF in MCS_Output/MCS_SDF",
+                    "reason": "No unique matching SDF in MCS_Output/MCS_SDF",
                 })
                 continue
 

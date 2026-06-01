@@ -5,6 +5,15 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 
+def normalize_ligand(value: Any) -> str:
+    s = str(value or "").strip()
+    if s.startswith("[") and s.endswith("]"):
+        inner = s[1:-1].strip().strip("'").strip('"').strip()
+        if inner:
+            s = inner
+    return s.upper()
+
+
 def normalize_resid(value: Any) -> str:
     s = str(value or "").strip()
     if not s:
@@ -22,7 +31,7 @@ def normalize_sdf_key(pdb: Any, chain: Any, ligand: Any, resid: Any = "") -> Tup
     return (
         str(pdb or "").strip().lower(),
         str(chain or "").strip().upper(),
-        str(ligand or "").strip().upper(),
+        normalize_ligand(ligand),
         normalize_resid(resid),
     )
 
@@ -39,6 +48,14 @@ def row_sdf_key(row: Dict[str, Any]) -> Tuple[str, str, str, str]:
 def expected_mcs_sdf_filename(pdb: Any, chain: Any, ligand: Any, resid: Any) -> str:
     pdb_n, chain_n, ligand_n, resid_n = normalize_sdf_key(pdb, chain, ligand, resid)
     return f"{pdb_n}_{chain_n}_{ligand_n}_{resid_n}.sdf"
+
+
+def parse_mcs_sdf_filename(name: str) -> Optional[Tuple[str, str, str, str]]:
+    stem = Path(name).stem
+    parts = stem.split("_")
+    if len(parts) < 4:
+        return None
+    return normalize_sdf_key(parts[0], parts[1], parts[2], "_".join(parts[3:]))
 
 
 def mcs_sdf_roots(job_dir: Path) -> List[Path]:
@@ -88,22 +105,28 @@ def _iter_sdfs(roots: Iterable[Path], job_dir: Path) -> List[Path]:
         if not root.exists():
             continue
         for fp in sorted(root.rglob("*.sdf")):
-            if _is_under(job_dir, fp):
+            if _is_under(job_dir, fp) and fp.exists() and fp.is_file():
+                try:
+                    if fp.stat().st_size <= 0:
+                        continue
+                except Exception:
+                    continue
                 files.append(fp.resolve())
     return files
 
 
 def _mcs_match_parts(path: Path, pdb: str, chain: str, ligand: str) -> Optional[str]:
-    parts = path.stem.split("_")
-    if len(parts) < 4:
+    parsed = parse_mcs_sdf_filename(path.name)
+    if not parsed:
         return None
-    if parts[0].lower() != pdb.lower():
+    file_pdb, file_chain, file_ligand, file_resid = parsed
+    if file_pdb != pdb.lower():
         return None
-    if parts[1].upper() != chain.upper():
+    if file_chain != chain.upper():
         return None
-    if parts[2].upper() != ligand.upper():
+    if file_ligand != ligand.upper():
         return None
-    return normalize_resid("_".join(parts[3:]))
+    return file_resid
 
 
 def infer_residue_from_results(job_dir: Path, pdb: Any, chain: Any, ligand: Any) -> str:
@@ -176,6 +199,11 @@ def resolve_sdf_path(
             candidate = root / expected_name
             searched_paths.append(str(candidate))
             if candidate.exists() and _is_under(job_dir, candidate):
+                try:
+                    if candidate.stat().st_size <= 0:
+                        continue
+                except Exception:
+                    continue
                 return candidate.resolve(), _diagnostics(
                     job_dir, roots, pdb_n, chain_n, ligand_n, effective_resid, [candidate], searched_paths
                 )
@@ -204,6 +232,11 @@ def resolve_sdf_path(
         candidate = root / legacy_name
         searched_paths.append(str(candidate))
         if candidate.exists() and _is_under(job_dir, candidate):
+            try:
+                if candidate.stat().st_size <= 0:
+                    continue
+            except Exception:
+                continue
             legacy_candidates.append(candidate.resolve())
     if legacy_candidates:
         return sorted(legacy_candidates)[0], _diagnostics(

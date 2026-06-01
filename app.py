@@ -31,7 +31,7 @@ import job_state as disk_jobs
 from api.sasa_api import bp as sasa_bp
 from routes import bp as routes_bp
 from api.handoff_server import hand_bp
-from api.sdf_resolver import resolve_sdf_path
+from api.sdf_resolver import expected_mcs_sdf_filename, normalize_sdf_key, resolve_sdf_path
 
 try:
     from api.randy_archive_client import (
@@ -3967,9 +3967,10 @@ def api_debug_artifact_resolution(job_id: str, pdb: str, chain: str):
 
     resolved_pdb = _resolve_complex_pdb_artifact(job_id, pdb, chain, ligand, resid)
     pdb_filename = f"{pdb.lower().strip()}_{chain.upper().strip()}_{ligand}.pdb" if ligand else f"{pdb.lower().strip()}_{chain.upper().strip()}_*.pdb"
-    sdf_filename = f"{pdb.lower().strip()}_{chain.upper().strip()}_{ligand}_{resid}.sdf" if ligand and resid else ""
-    svg_plain_filename = f"{pdb.lower().strip()}_{chain.upper().strip()}_{ligand}_{resid}_plain.svg" if ligand and resid else ""
-    svg_exposed_filename = f"{pdb.lower().strip()}_{chain.upper().strip()}_{ligand}_{resid}_exposed.svg" if ligand and resid else ""
+    sdf_filename = expected_mcs_sdf_filename(pdb, chain, ligand, resid) if ligand and resid else ""
+    pdb_n, chain_n, ligand_n, resid_n = normalize_sdf_key(pdb, chain, ligand, resid)
+    svg_plain_filename = f"{pdb_n}_{chain_n}_{ligand_n}_{resid_n}_plain.svg" if ligand and resid else ""
+    svg_exposed_filename = f"{pdb_n}_{chain_n}_{ligand_n}_{resid_n}_exposed.svg" if ligand and resid else ""
 
     exact_pdb_ok = bool(resolved_pdb.get("ok"))
     protein_ok = False
