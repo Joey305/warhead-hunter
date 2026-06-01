@@ -27,7 +27,9 @@ NEW (this version):
 import ast
 import csv
 import gc
+import multiprocessing as mp
 import os
+import queue
 import re
 import shutil
 import signal
@@ -81,6 +83,13 @@ MCS_SKIP_EXISTING = env_flag("WARHEAD_MCS_SKIP_EXISTING", True)
 MCS_NO_OUTPUT_SAFE = env_flag("WARHEAD_MCS_NO_OUTPUT_SAFE", True)
 MCS_HEARTBEAT_SEC = max(5, env_int("WARHEAD_MCS_HEARTBEAT_SEC", 20))
 MCS_PROGRESS_EVERY = max(1, env_int("WARHEAD_MCS_PROGRESS_EVERY", 1))
+MCS_SKIP_BAD_ITEMS = env_flag("WARHEAD_MCS_SKIP_BAD_ITEMS", True)
+MCS_SKIP_STUCK_ITEMS = env_flag("WARHEAD_MCS_SKIP_STUCK_ITEMS", True)
+MCS_ITEM_ISOLATION = env_flag("WARHEAD_MCS_ITEM_ISOLATION", True)
+MCS_MAX_ITEM_FAILURES = env_int("WARHEAD_MCS_MAX_ITEM_FAILURES", 0)
+MCS_ENABLE_GRAPH_FULL = env_flag("WARHEAD_MCS_ENABLE_GRAPH_FULL", True)
+MCS_GRAPH_FULL_MAX_ATOMS = max(1, env_int("WARHEAD_MCS_GRAPH_FULL_MAX_ATOMS", 80))
+MCS_GRAPH_FULL_TIMEOUT_SEC = max(1, env_int("WARHEAD_MCS_GRAPH_FULL_TIMEOUT_SEC", 10))
 OBABEL_TIMEOUT = env_int("WARHEAD_MCS_OBABEL_TIMEOUT_SEC", 8)
 OBABEL_MAX_CONCURRENT = max(1, env_int("WARHEAD_MCS_OBABEL_MAX_CONCURRENT", 1 if IS_HEROKU else 2))
 
@@ -96,6 +105,7 @@ HEARTBEAT_STATE = {
     "sdf_written": 0,
     "sdf_failed": 0,
     "svg_written": 0,
+    "item_failures": 0,
 }
 HEARTBEAT_LOCK = threading.Lock()
 
@@ -134,7 +144,7 @@ def emit_step11_heartbeat(force: bool = False) -> None:
         f"current={snap.get('current_key', '-')} stage={snap.get('stage', 'INIT')} "
         f"elapsed={elapsed}s item_elapsed={item_elapsed}s "
         f"sdf_written={snap.get('sdf_written', 0)} sdf_failed={snap.get('sdf_failed', 0)} "
-        f"svg_written={snap.get('svg_written', 0)}"
+        f"svg_written={snap.get('svg_written', 0)} item_failures={snap.get('item_failures', 0)}"
     )
     last_completed = snap.get("last_completed_key")
     if last_completed and last_completed != "-":
@@ -682,6 +692,52 @@ def sdf_failure_header() -> list[str]:
     return ["Ligand", "Target", "pdb_id", "Chain", "Residue_ID", "basename", "Error"]
 
 
+def item_failure_header() -> list[str]:
+    return [
+        "Ligand",
+        "Target",
+        "pdb_id",
+        "Chain",
+        "Residue_ID",
+        "basename",
+        "stage",
+        "timeout_sec",
+        "error_type",
+        "error_message",
+    ]
+
+
+def make_item_failure_record(
+    key,
+    *,
+    stage: str = "",
+    timeout_sec: int | None = None,
+    error_type: str = "",
+    error_message: str = "",
+) -> dict:
+    return {
+        **sdf_key_parts(key),
+        "basename": sdf_basename_from_group_key(key),
+        "stage": stage or "",
+        "timeout_sec": "" if timeout_sec in (None, 0) else int(timeout_sec),
+        "error_type": error_type or "",
+        "error_message": error_message or "",
+    }
+
+
+def make_result(rows_mcs, rows_all, errs, sdf_status, *, stage: str = "", error_type: str = "", timed_out: bool = False, timeout_sec: int | None = None):
+    return {
+        "rows_mcs": rows_mcs,
+        "rows_all": rows_all,
+        "errs": errs if errs else [],
+        "sdf_status": sdf_status,
+        "stage": stage or "",
+        "error_type": error_type or "",
+        "timed_out": bool(timed_out),
+        "timeout_sec": timeout_sec,
+    }
+
+
 def _write_row(writer: csv.DictWriter, header: list[str], row: dict) -> None:
     writer.writerow({key: row.get(key, "") for key in header})
 
@@ -856,7 +912,7 @@ def find_mcs_smarts(molA: Chem.Mol, molB: Chem.Mol, timeout_sec: int = 30):
 # =============================================================================
 # PROCESS ONE LIGAND INSTANCE
 # =============================================================================
-def compute_mcs(key, grouped):
+def compute_mcs(key, grouped, stage_callback=None):
     """
     Instrumented version:
       - Prints BEGIN/END with pid + timing
@@ -890,6 +946,11 @@ def compute_mcs(key, grouped):
         global WORKER_STEP, WORKER_KEY
         WORKER_STEP = step
         WORKER_KEY = key
+        if stage_callback is not None:
+            try:
+                stage_callback(summarize_key(key), step)
+            except Exception:
+                pass
         update_heartbeat_state(current_key=summarize_key(key), stage=step)
         dbg(f"{key} step={step}")
 
@@ -950,11 +1011,18 @@ def compute_mcs(key, grouped):
             df = grouped[key].copy().reset_index(drop=True)
     except KeyError:
         dbg(f"END key={key} (no group) dt={time.perf_counter()-t_start:.2f}s")
-        return [], [], [[ligand, pdb_id, "No 3D atom group found"]], {
-            **sdf_status,
-            "failed": 1,
-            "failure_record": {**sdf_key_parts(key), "basename": sdf_basename_from_group_key(key), "Error": "No 3D atom group found"},
-        }
+        return make_result(
+            [],
+            [],
+            [[ligand, pdb_id, "No 3D atom group found"]],
+            {
+                **sdf_status,
+                "failed": 1,
+                "failure_record": {**sdf_key_parts(key), "basename": sdf_basename_from_group_key(key), "Error": "No 3D atom group found"},
+            },
+            stage="GET_GROUP",
+            error_type="NO_3D_GROUP",
+        )
 
     # ----------------------------
     # build 3D mol
@@ -975,11 +1043,18 @@ def compute_mcs(key, grouped):
     except Exception as e:
         dbg(f"{key} ❌ 3D mol build failed at step={WORKER_STEP}: {repr(e)}")
         dbg(f"END key={key} dt={time.perf_counter()-t_start:.2f}s")
-        return [], [], [[ligand, pdb_id, f"3D mol build failed: {e}"]], {
-            **sdf_status,
-            "failed": 1,
-            "failure_record": {**sdf_key_parts(key), "basename": sdf_basename_from_group_key(key), "Error": f"3D mol build failed: {e}"},
-        }
+        return make_result(
+            [],
+            [],
+            [[ligand, pdb_id, f"3D mol build failed: {e}"]],
+            {
+                **sdf_status,
+                "failed": 1,
+                "failure_record": {**sdf_key_parts(key), "basename": sdf_basename_from_group_key(key), "Error": f"3D mol build failed: {e}"},
+            },
+            stage="BUILD_3D_MOL",
+            error_type="BUILD_3D_MOL_FAILED",
+        )
     finally:
         tmark("BUILD_3D_MOL", t0)
 
@@ -1063,7 +1138,7 @@ def compute_mcs(key, grouped):
                 smiles_id_out, smiles_out
             ])
         dbg(f"END key={key} mode=NO2D all_atoms={len(rows_all)} dt={time.perf_counter()-t_start:.2f}s")
-        return [], rows_all, (errs if errs else None), sdf_status
+        return make_result([], rows_all, errs, sdf_status, stage="NO_2D_OUTPUT_ALL", error_type="MISSING_2D")
 
     set_step("SIZE_CHECKS")
     n2 = mol2d.GetNumAtoms()
@@ -1075,19 +1150,23 @@ def compute_mcs(key, grouped):
         errs.append([ligand, pdb_id, "3D has 0 bonds (bond perception failed)"])
 
     # PASS A0: GRAPH_FULL
-    set_step("GRAPH_FULL")
-    t_g = time.perf_counter()
-    try:
-        q2 = make_bonds_generic(mol2d)
-        q3 = make_bonds_generic(mol3d)
-        m_full = q3.GetSubstructMatch(q2)
-        if m_full and len(m_full) == n2:
-            map_3d_to_2d = {a3: a2 for a2, a3 in enumerate(m_full)}
-            mode = "GRAPH_FULL"
-    except Exception as e:
-        errs.append([ligand, pdb_id, f"GRAPH_FULL error: {e}"])
-    finally:
-        tmark("GRAPH_FULL", t_g)
+    if MCS_ENABLE_GRAPH_FULL and max(n2, n3) <= MCS_GRAPH_FULL_MAX_ATOMS:
+        set_step("GRAPH_FULL")
+        t_g = time.perf_counter()
+        try:
+            q2 = make_bonds_generic(mol2d)
+            q3 = make_bonds_generic(mol3d)
+            m_full = q3.GetSubstructMatch(q2)
+            if m_full and len(m_full) == n2:
+                map_3d_to_2d = {a3: a2 for a2, a3 in enumerate(m_full)}
+                mode = "GRAPH_FULL"
+        except Exception as e:
+            errs.append([ligand, pdb_id, f"GRAPH_FULL error: {e}"])
+        finally:
+            tmark("GRAPH_FULL", t_g)
+    else:
+        reason = "disabled" if not MCS_ENABLE_GRAPH_FULL else f"size>{MCS_GRAPH_FULL_MAX_ATOMS}"
+        errs.append([ligand, pdb_id, f"GRAPH_FULL skipped: {reason}"])
 
     # PASS A: TEMPLATE_FULL
     if not map_3d_to_2d and n2 == n3:
@@ -1176,7 +1255,7 @@ def compute_mcs(key, grouped):
     del mol3d
     gc.collect()
     dbg(f"END key={key} mode={mode} mapped={len(map_3d_to_2d)} dt={dt_total:.2f}s")
-    return rows_mcs, rows_all, (errs if errs else None), sdf_status
+    return make_result(rows_mcs, rows_all, errs, sdf_status, stage=WORKER_STEP, error_type="")
 
 PER_KEY_TIMEOUT = int(os.environ.get("WARHEAD_MCS_PER_KEY_TIMEOUT", "60"))
 
@@ -1188,21 +1267,241 @@ def compute_mcs_timed(key, group_df):
             grouped_one = {key: group_df}
             return compute_mcs(key, grouped_one)
     except TimeoutException:
-        return [], [], [[ligand, pdb_id, f"TIMEOUT (>{PER_KEY_TIMEOUT}s)"]], {
-            "attempted": 0,
-            "written": 0,
-            "failed": 1,
-            "skipped_existing": 0,
-            "failure_record": {**sdf_key_parts(key), "basename": sdf_basename_from_group_key(key), "Error": f"TIMEOUT (>{PER_KEY_TIMEOUT}s)"},
-        }
+        return make_result(
+            [],
+            [],
+            [[ligand, pdb_id, f"TIMEOUT (>{PER_KEY_TIMEOUT}s)"]],
+            {
+                "attempted": 0,
+                "written": 0,
+                "failed": 1,
+                "skipped_existing": 0,
+                "failure_record": {**sdf_key_parts(key), "basename": sdf_basename_from_group_key(key), "Error": f"TIMEOUT (>{PER_KEY_TIMEOUT}s)"},
+            },
+            stage=WORKER_STEP,
+            error_type="ITEM_TIMEOUT",
+            timed_out=True,
+            timeout_sec=PER_KEY_TIMEOUT,
+        )
     except Exception as e:
-        return [], [], [[ligand, pdb_id, f"EXCEPTION: {repr(e)}"]], {
-            "attempted": 0,
-            "written": 0,
-            "failed": 1,
-            "skipped_existing": 0,
-            "failure_record": {**sdf_key_parts(key), "basename": sdf_basename_from_group_key(key), "Error": f"EXCEPTION: {repr(e)}"},
-        }
+        return make_result(
+            [],
+            [],
+            [[ligand, pdb_id, f"EXCEPTION: {repr(e)}"]],
+            {
+                "attempted": 0,
+                "written": 0,
+                "failed": 1,
+                "skipped_existing": 0,
+                "failure_record": {**sdf_key_parts(key), "basename": sdf_basename_from_group_key(key), "Error": f"EXCEPTION: {repr(e)}"},
+            },
+            stage=WORKER_STEP,
+            error_type="ITEM_EXCEPTION",
+        )
+
+
+def _mp_context():
+    try:
+        return mp.get_context("fork")
+    except Exception:
+        return mp.get_context()
+
+
+def _item_worker_main(key, group_df, result_queue, stage_queue):
+    try:
+        try:
+            os.setsid()
+        except Exception:
+            pass
+
+        def child_stage_callback(base: str, stage: str) -> None:
+            try:
+                stage_queue.put((base, stage))
+            except Exception:
+                pass
+
+        result = compute_mcs(key, {key: group_df}, stage_callback=child_stage_callback)
+        result_queue.put(result)
+    except BaseException as exc:
+        ligand, _target, pdb_id, _resid, _chain = key
+        result_queue.put(
+            make_result(
+                [],
+                [],
+                [[ligand, pdb_id, f"EXCEPTION: {repr(exc)}"]],
+                {
+                    "attempted": 0,
+                    "written": 0,
+                    "failed": 1,
+                    "skipped_existing": 0,
+                    "failure_record": {
+                        **sdf_key_parts(key),
+                        "basename": sdf_basename_from_group_key(key),
+                        "Error": f"EXCEPTION: {repr(exc)}",
+                    },
+                },
+                stage=WORKER_STEP,
+                error_type="ITEM_EXCEPTION",
+            )
+        )
+
+
+def run_compute_mcs_item(key, group_df):
+    if not MCS_ITEM_ISOLATION:
+        return compute_mcs_timed(key, group_df)
+
+    ctx = _mp_context()
+    result_queue = ctx.Queue()
+    stage_queue = ctx.Queue()
+    proc = ctx.Process(target=_item_worker_main, args=(key, group_df, result_queue, stage_queue))
+    proc.daemon = False
+    proc.start()
+
+    base = summarize_key(key)
+    last_stage = "ITEM_START"
+    stage_started_at = time.time()
+    deadline = time.time() + PER_KEY_TIMEOUT
+
+    try:
+        while True:
+            drained = False
+            while True:
+                try:
+                    stage_base, stage_name = stage_queue.get_nowait()
+                except queue.Empty:
+                    break
+                except Exception:
+                    break
+                drained = True
+                if stage_name and stage_name != last_stage:
+                    last_stage = stage_name
+                    stage_started_at = time.time()
+                update_heartbeat_state(current_key=stage_base or base, stage=last_stage)
+
+            if not proc.is_alive():
+                try:
+                    result = result_queue.get(timeout=1.0)
+                    if not result.get("stage"):
+                        result["stage"] = last_stage
+                    return result
+                except queue.Empty:
+                    ligand, _target, pdb_id, _resid, _chain = key
+                    return make_result(
+                        [],
+                        [],
+                        [[ligand, pdb_id, f"ITEM_EXCEPTION: child exited without result at {last_stage}"]],
+                        {
+                            "attempted": 0,
+                            "written": 0,
+                            "failed": 1,
+                            "skipped_existing": 0,
+                            "failure_record": {
+                                **sdf_key_parts(key),
+                                "basename": base,
+                                "Error": f"ITEM_EXCEPTION: child exited without result at {last_stage}",
+                            },
+                        },
+                        stage=last_stage,
+                        error_type="ITEM_EXCEPTION",
+                    )
+
+            graph_full_deadline_hit = (
+                MCS_ENABLE_GRAPH_FULL
+                and last_stage == "GRAPH_FULL"
+                and (time.time() - stage_started_at) >= MCS_GRAPH_FULL_TIMEOUT_SEC
+            )
+            if time.time() >= deadline:
+                if MCS_SKIP_STUCK_ITEMS:
+                    try:
+                        os.killpg(proc.pid, signal.SIGKILL)
+                    except Exception:
+                        try:
+                            proc.kill()
+                        except Exception:
+                            proc.terminate()
+                    proc.join(timeout=1.0)
+                    ligand, _target, pdb_id, _resid, _chain = key
+                    return make_result(
+                        [],
+                        [],
+                        [[ligand, pdb_id, f"ITEM_TIMEOUT (>{PER_KEY_TIMEOUT}s) at {last_stage}"]],
+                        {
+                            "attempted": 0,
+                            "written": 0,
+                            "failed": 1,
+                            "skipped_existing": 0,
+                            "failure_record": {
+                                **sdf_key_parts(key),
+                                "basename": base,
+                                "Error": f"ITEM_TIMEOUT (>{PER_KEY_TIMEOUT}s) at {last_stage}",
+                        },
+                    },
+                    stage=last_stage,
+                    error_type="ITEM_TIMEOUT",
+                    timed_out=True,
+                    timeout_sec=PER_KEY_TIMEOUT,
+                )
+                proc.join(timeout=1.0)
+                raise TimeoutException(f"{base} exceeded {PER_KEY_TIMEOUT}s at stage {last_stage}")
+            if graph_full_deadline_hit and MCS_SKIP_STUCK_ITEMS:
+                try:
+                    os.killpg(proc.pid, signal.SIGKILL)
+                except Exception:
+                    try:
+                        proc.kill()
+                    except Exception:
+                        proc.terminate()
+                proc.join(timeout=1.0)
+                ligand, _target, pdb_id, _resid, _chain = key
+                return make_result(
+                    [],
+                    [],
+                    [[ligand, pdb_id, f"ITEM_TIMEOUT (>{MCS_GRAPH_FULL_TIMEOUT_SEC}s) at GRAPH_FULL"]],
+                    {
+                        "attempted": 0,
+                        "written": 0,
+                        "failed": 1,
+                        "skipped_existing": 0,
+                        "failure_record": {
+                            **sdf_key_parts(key),
+                            "basename": base,
+                            "Error": f"ITEM_TIMEOUT (>{MCS_GRAPH_FULL_TIMEOUT_SEC}s) at GRAPH_FULL",
+                        },
+                    },
+                    stage="GRAPH_FULL",
+                    error_type="ITEM_TIMEOUT",
+                    timed_out=True,
+                    timeout_sec=MCS_GRAPH_FULL_TIMEOUT_SEC,
+                )
+
+            try:
+                result = result_queue.get(timeout=0.25)
+                proc.join(timeout=1.0)
+                if not result.get("stage"):
+                    result["stage"] = last_stage
+                return result
+            except queue.Empty:
+                if not drained:
+                    update_heartbeat_state(current_key=base, stage=last_stage)
+                continue
+    finally:
+        if proc.is_alive():
+            try:
+                os.killpg(proc.pid, signal.SIGKILL)
+            except Exception:
+                try:
+                    proc.kill()
+                except Exception:
+                    proc.terminate()
+            proc.join(timeout=1.0)
+        try:
+            result_queue.close()
+        except Exception:
+            pass
+        try:
+            stage_queue.close()
+        except Exception:
+            pass
 
 
 
@@ -1313,7 +1612,11 @@ if __name__ == "__main__":
     groups = atom3d.groupby(["Warhead", "Target", "pdb_id", "Residue_ID", "Chain"], dropna=False).groups
     keys = list(groups.keys())
     max_workers = min(MCS_MAX_WORKERS, max(1, len(keys) or 1))
-    mode = "threads" if (MCS_USE_THREADS and max_workers > 1) else "sequential"
+    if MCS_ITEM_ISOLATION:
+        max_workers = 1
+        mode = "isolated-sequential"
+    else:
+        mode = "threads" if (MCS_USE_THREADS and max_workers > 1) else "sequential"
     update_heartbeat_state(
         start_time=time.time(),
         processed=0,
@@ -1326,12 +1629,20 @@ if __name__ == "__main__":
         sdf_written=0,
         sdf_failed=0,
         svg_written=0,
+        item_failures=0,
     )
     print(f"🚀 Running MCS on {len(keys)} ligand occurrences mode={mode} max_workers={max_workers}\n")
     print(f"⚙️ Using hard timeout ({PER_KEY_TIMEOUT}s per ligand) via SIGALRM")
     print(
         f"⚙️ Step 11 heartbeat enabled={1 if MCS_NO_OUTPUT_SAFE else 0} "
         f"interval={MCS_HEARTBEAT_SEC}s progress_every={MCS_PROGRESS_EVERY}",
+        flush=True,
+    )
+    print(
+        f"⚙️ Step 11 skip policy skip_bad_items={1 if MCS_SKIP_BAD_ITEMS else 0} "
+        f"skip_stuck_items={1 if MCS_SKIP_STUCK_ITEMS else 0} "
+        f"item_isolation={1 if MCS_ITEM_ISOLATION else 0} "
+        f"max_item_failures={MCS_MAX_ITEM_FAILURES}",
         flush=True,
     )
     debug_mem("built work items", count=len(keys), mode=mode, max_workers=max_workers)
@@ -1346,6 +1657,7 @@ if __name__ == "__main__":
     all_sasa_path = OUTDIR / "Ligand_MCS_SASA_ALL_ATOMS.csv"
     fail_path = OUTDIR / "Ligand_MCS_Failures.csv"
     sdf_fail_path = OUTDIR / "Ligand_MCS_SDF_Failures.csv"
+    item_fail_path = OUTDIR / "Ligand_MCS_Item_Failures.csv"
     svg_fail_path = svg_dir / "SVG_failures.csv"
 
     if MCS_STREAM_OUTPUT:
@@ -1355,6 +1667,7 @@ if __name__ == "__main__":
         all_sasa_handle = open(all_sasa_path, "w", newline="", encoding="utf-8")
         fail_handle = open(fail_path, "w", newline="", encoding="utf-8")
         sdf_fail_handle = open(sdf_fail_path, "w", newline="", encoding="utf-8")
+        item_fail_handle = open(item_fail_path, "w", newline="", encoding="utf-8")
         svg_fail_handle = open(svg_fail_path, "w", newline="", encoding="utf-8")
         map_writer = csv.DictWriter(map_handle, fieldnames=cols)
         all_writer = csv.DictWriter(all_handle, fieldnames=cols)
@@ -1362,8 +1675,9 @@ if __name__ == "__main__":
         all_sasa_writer = csv.DictWriter(all_sasa_handle, fieldnames=cols + ["Exposure_A2"])
         fail_writer = csv.DictWriter(fail_handle, fieldnames=fail_cols)
         sdf_fail_writer = csv.DictWriter(sdf_fail_handle, fieldnames=sdf_failure_header())
+        item_fail_writer = csv.DictWriter(item_fail_handle, fieldnames=item_failure_header())
         svg_fail_writer = csv.DictWriter(svg_fail_handle, fieldnames=["base", "error", "detail"])
-        for writer in (map_writer, all_writer, map_sasa_writer, all_sasa_writer, fail_writer, sdf_fail_writer, svg_fail_writer):
+        for writer in (map_writer, all_writer, map_sasa_writer, all_sasa_writer, fail_writer, sdf_fail_writer, item_fail_writer, svg_fail_writer):
             writer.writeheader()
     else:
         buffered_map = []
@@ -1372,6 +1686,7 @@ if __name__ == "__main__":
         buffered_all_sasa = []
         buffered_failures = []
         buffered_sdf_failures = []
+        buffered_item_failures = []
         buffered_svg_failures = []
 
     def row_dict(values):
@@ -1391,7 +1706,7 @@ if __name__ == "__main__":
         if should_log_item(index, total):
             print(f"🔬 Step 11 item {index}/{total} start {base}", flush=True)
         group_df = atom3d.loc[groups[key]].copy().reset_index(drop=True)
-        return key, index, compute_mcs_timed(key, group_df), start_ts
+        return key, index, run_compute_mcs_item(key, group_df), start_ts
 
     processed = 0
     stats = {
@@ -1404,12 +1719,21 @@ if __name__ == "__main__":
         "sdf_skipped_existing": 0,
         "svg_count": 0,
         "svg_failure_count": 0,
+        "item_failures": 0,
+        "successful_items": 0,
     }
     failure_preview = []
     expected_sdfs = [f"{sdf_basename_from_group_key(k)}.sdf" for k in keys]
 
     def consume_result(key, index, result, started_at):
-        rows_mcs, rows_all, errs, sdf_status = result
+        rows_mcs = result.get("rows_mcs", [])
+        rows_all = result.get("rows_all", [])
+        errs = result.get("errs", [])
+        sdf_status = result.get("sdf_status", {})
+        result_stage = result.get("stage", "")
+        error_type = result.get("error_type", "")
+        timed_out = bool(result.get("timed_out", False))
+        timeout_sec = result.get("timeout_sec")
         base = sdf_basename_from_group_key(key)
 
         map_rows = [row_dict(row) for row in rows_mcs]
@@ -1447,6 +1771,37 @@ if __name__ == "__main__":
             stats["failure_count"] += 1
             if len(failure_preview) < 10:
                 failure_preview.append(record)
+
+        if errs or sdf_status.get("failed"):
+            item_error = "; ".join(str(err[-1]) for err in errs[:3]) if errs else str(sdf_status.get("failure_record", {}).get("Error", ""))
+            item_record = make_item_failure_record(
+                key,
+                stage=result_stage,
+                timeout_sec=timeout_sec if timed_out else None,
+                error_type=error_type or ("ITEM_TIMEOUT" if timed_out else "ITEM_FAILED"),
+                error_message=item_error[:500],
+            )
+            if MCS_STREAM_OUTPUT:
+                _write_row(item_fail_writer, item_failure_header(), item_record)
+            else:
+                buffered_item_failures.append(item_record)
+            stats["item_failures"] += 1
+            update_heartbeat_state(item_failures=stats["item_failures"])
+            print(
+                f"⚠️ Step 11 item skipped: {index}/{len(keys)} {base} "
+                f"stage={result_stage or 'UNKNOWN'} reason={item_record['error_type']} "
+                f"{'timeout=' + str(item_record['timeout_sec']) + 's' if timed_out and item_record['timeout_sec'] else ''}".rstrip(),
+                flush=True,
+            )
+            if not MCS_SKIP_BAD_ITEMS:
+                raise RuntimeError(f"Step 11 item failed and skip-bad-items is disabled: {base} {item_record['error_message']}")
+            if MCS_MAX_ITEM_FAILURES > 0 and stats["item_failures"] >= MCS_MAX_ITEM_FAILURES:
+                raise RuntimeError(
+                    f"Step 11 exceeded WARHEAD_MCS_MAX_ITEM_FAILURES={MCS_MAX_ITEM_FAILURES} "
+                    f"after {base}"
+                )
+        else:
+            stats["successful_items"] += 1
 
         stats["sdf_attempted"] += int(sdf_status.get("attempted", 0))
         stats["sdf_written"] += int(sdf_status.get("written", 0))
@@ -1555,7 +1910,7 @@ if __name__ == "__main__":
             heartbeat_thread.join(timeout=1.0)
             emit_step11_heartbeat(force=True)
         if MCS_STREAM_OUTPUT:
-            for handle in (map_handle, all_handle, map_sasa_handle, all_sasa_handle, fail_handle, sdf_fail_handle, svg_fail_handle):
+            for handle in (map_handle, all_handle, map_sasa_handle, all_sasa_handle, fail_handle, sdf_fail_handle, item_fail_handle, svg_fail_handle):
                 handle.close()
 
     if not MCS_STREAM_OUTPUT:
@@ -1565,6 +1920,7 @@ if __name__ == "__main__":
         pd.DataFrame(buffered_all_sasa, columns=cols + ["Exposure_A2"]).to_csv(all_sasa_path, index=False)
         pd.DataFrame(buffered_failures, columns=fail_cols).to_csv(fail_path, index=False)
         pd.DataFrame(buffered_sdf_failures, columns=sdf_failure_header()).to_csv(sdf_fail_path, index=False)
+        pd.DataFrame(buffered_item_failures, columns=item_failure_header()).to_csv(item_fail_path, index=False)
         pd.DataFrame(buffered_svg_failures, columns=["base", "error", "detail"]).to_csv(svg_fail_path, index=False)
 
     print("✅ MCS processing complete — outputs written", flush=True)
@@ -1573,6 +1929,7 @@ if __name__ == "__main__":
     missing_sdfs = [name for name in expected_sdfs if name not in actual_sdfs]
     print(
         f"🧪 Step 11 summary: work_items={len(keys)} "
+        f"successful_items={stats['successful_items']} item_failures={stats['item_failures']} "
         f"sdf_attempted={stats['sdf_attempted']} sdf_written={stats['sdf_written']} "
         f"sdf_failed={stats['sdf_failed']} sdf_skipped_existing={stats['sdf_skipped_existing']} "
         f"svg_written={stats['svg_count']}",
@@ -1581,6 +1938,7 @@ if __name__ == "__main__":
     print(f"🧪 SDF expected groups: {len(expected_sdfs)}", flush=True)
     print(f"🧪 SDF files available: {len(actual_sdfs)} → MCS_Output/MCS_SDF", flush=True)
     print(f"🧪 SDF failure records: {stats['sdf_failed']} → {sdf_fail_path}", flush=True)
+    print(f"🧪 Item failure records: {stats['item_failures']} → {item_fail_path}", flush=True)
     print(f"🧪 SVG output path: MCS_Output/MCS_SVG", flush=True)
     print(f"🧪 CSV output path: MCS_Output", flush=True)
     print(f"🧪 SDF missing groups: {len(missing_sdfs)}", flush=True)
@@ -1598,6 +1956,7 @@ if __name__ == "__main__":
     print(f"🧪 SASA (ALL atoms)      → {all_sasa_path}")
     print(f"⚠️ Failures              → {fail_path}")
     print(f"⚠️ SDF failures          → {sdf_fail_path}")
+    print(f"⚠️ Item failures         → {item_fail_path}")
     print("====================================================\n")
     print(f"🖼️  SVGs generated: {stats['svg_count']} → {svg_dir}")
     if stats["svg_failure_count"]:
@@ -1606,3 +1965,6 @@ if __name__ == "__main__":
         print("⚠️ MCS failures (first 10):")
         for record in failure_preview:
             print(f"{record.get('Ligand','')} | {record.get('PDB','')} | {record.get('Error','')}")
+    if stats["successful_items"] == 0 or not actual_sdfs:
+        print("❌ Step 11 produced no renderable SDF-backed ligand occurrences.", flush=True)
+        raise SystemExit(1)

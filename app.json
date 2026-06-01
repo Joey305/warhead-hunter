@@ -94,6 +94,27 @@
     "WARHEAD_MCS_PROGRESS_EVERY": {
       "value": "1"
     },
+    "WARHEAD_MCS_SKIP_BAD_ITEMS": {
+      "value": "1"
+    },
+    "WARHEAD_MCS_SKIP_STUCK_ITEMS": {
+      "value": "1"
+    },
+    "WARHEAD_MCS_ITEM_ISOLATION": {
+      "value": "1"
+    },
+    "WARHEAD_MCS_PER_KEY_TIMEOUT": {
+      "value": "60"
+    },
+    "WARHEAD_MCS_MAX_ITEM_FAILURES": {
+      "value": "0"
+    },
+    "WARHEAD_MCS_ENABLE_GRAPH_FULL": {
+      "value": "1"
+    },
+    "WARHEAD_MCS_GRAPH_FULL_MAX_ATOMS": {
+      "value": "80"
+    },
     "WARHEAD_STEP11_NO_OUTPUT_TIMEOUT_SEC": {
       "value": "300"
     },

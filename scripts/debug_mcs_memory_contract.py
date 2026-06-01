@@ -38,6 +38,11 @@ def main() -> int:
         "WARHEAD_MCS_NO_OUTPUT_SAFE",
         "WARHEAD_MCS_HEARTBEAT_SEC",
         "WARHEAD_MCS_PROGRESS_EVERY",
+        "WARHEAD_MCS_SKIP_BAD_ITEMS",
+        "WARHEAD_MCS_SKIP_STUCK_ITEMS",
+        "WARHEAD_MCS_ITEM_ISOLATION",
+        "WARHEAD_MCS_PER_KEY_TIMEOUT",
+        "WARHEAD_MCS_MAX_ITEM_FAILURES",
     ]:
         if token not in code:
             failures.append(f"Step 11 missing env control: {token}.")
@@ -58,6 +63,11 @@ def main() -> int:
         failures.append("Step 11 missing always-on heartbeat output.")
     else:
         print("PASS: Step 11 emits bounded non-debug heartbeat output.")
+
+    if "Ligand_MCS_Item_Failures.csv" not in code:
+        failures.append("Step 11 missing rich per-item failure output.")
+    else:
+        print("PASS: Step 11 records rich per-item failure output.")
 
     if "🔬 Step 11 item" not in code or "⏳ Step 11 progress:" not in code:
         failures.append("Step 11 missing non-debug per-item lifecycle/progress logs.")

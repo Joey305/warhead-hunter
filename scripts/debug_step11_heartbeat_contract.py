@@ -35,6 +35,9 @@ def main() -> int:
         "WARHEAD_MCS_NO_OUTPUT_SAFE",
         "WARHEAD_MCS_HEARTBEAT_SEC",
         "WARHEAD_MCS_PROGRESS_EVERY",
+        "WARHEAD_MCS_SKIP_BAD_ITEMS",
+        "WARHEAD_MCS_SKIP_STUCK_ITEMS",
+        "WARHEAD_MCS_ITEM_ISOLATION",
     ]:
         check(token in code, f"Step 11 exposes {token}.", f"Step 11 missing {token}.", failures)
 
@@ -43,6 +46,7 @@ def main() -> int:
     check("flush=True" in code and "print(msg, flush=True)" in code, "Heartbeat output is flushed.", "Heartbeat output is not clearly flushed.", failures)
     check("🔬 Step 11 item" in code and "⏳ Step 11 progress:" in code, "Step 11 contains non-debug lifecycle progress logs.", "Step 11 missing concise lifecycle progress logs.", failures)
     check("if not MCS_DEBUG_MEMORY" in code and "[mcs-mem]" in code, "Detailed memory/debug logs remain gated.", "Detailed memory/debug logs no longer appear gated.", failures)
+    check("run_compute_mcs_item" in code and "_item_worker_main" in code, "Step 11 has parent-enforced item isolation hooks.", "Step 11 missing parent-enforced item isolation hooks.", failures)
     check("ProcessPoolExecutor" not in code and "multiprocessing.Pool" not in code and "with Pool(" not in code, "No unbounded process pool was reintroduced.", "Detected process-pool fanout in Step 11.", failures)
     check("WARHEAD_STEP11_NO_OUTPUT_TIMEOUT_SEC" in runner, "job_runner.py exposes configurable Step 11 no-output timeout.", "job_runner.py missing WARHEAD_STEP11_NO_OUTPUT_TIMEOUT_SEC.", failures)
     check("\"11_mcsMatcher.py\": STEP11_NO_OUTPUT_TIMEOUT_SEC" in runner, "Step 11 watchdog default is env-driven.", "Step 11 watchdog still appears hardcoded.", failures)
