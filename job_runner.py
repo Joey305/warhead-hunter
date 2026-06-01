@@ -129,8 +129,9 @@ STEP_TIMEOUTS = {
 # If a step produces no output for this many seconds, kill it (prevents "silent hang")
 # You can override per-step below if needed.
 NO_OUTPUT_TIMEOUT_DEFAULT = 180  # 3 min
+STEP11_NO_OUTPUT_TIMEOUT_SEC = _env_int("WARHEAD_STEP11_NO_OUTPUT_TIMEOUT_SEC", 300 if IS_HEROKU else 120)
 NO_OUTPUT_TIMEOUT = {
-    "11_mcsMatcher.py": 120,  # step 11 should be chatty; if it goes silent too long, kill it
+    "11_mcsMatcher.py": STEP11_NO_OUTPUT_TIMEOUT_SEC,
 }
 
 # Steps that are allowed to fail without killing the whole job
@@ -526,6 +527,7 @@ def run_script_logged(
         if no_output_timeout_sec is not None
         else NO_OUTPUT_TIMEOUT.get(script_name, NO_OUTPUT_TIMEOUT_DEFAULT)
     )
+    log_message(job_id, f"⏱ No-output watchdog for {script_name}: {no_output_timeout_sec}s")
 
     # Merge stderr -> stdout to avoid deadlock
     with subprocess.Popen(
@@ -1007,7 +1009,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
                     args=args,
                     job_dir=job_dir,
                     timeout_sec=STEP_TIMEOUTS.get(script_name),
-                    no_output_timeout_sec=NO_OUTPUT_TIMEOUT.get(script_name),
+                    no_output_timeout_sec=None,
                 )
             except Exception as e:
                 if script_name in SOFT_FAIL:

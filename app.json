@@ -85,6 +85,18 @@
     "WARHEAD_MCS_DEBUG_MEMORY": {
       "value": "0"
     },
+    "WARHEAD_MCS_NO_OUTPUT_SAFE": {
+      "value": "1"
+    },
+    "WARHEAD_MCS_HEARTBEAT_SEC": {
+      "value": "20"
+    },
+    "WARHEAD_MCS_PROGRESS_EVERY": {
+      "value": "1"
+    },
+    "WARHEAD_STEP11_NO_OUTPUT_TIMEOUT_SEC": {
+      "value": "300"
+    },
     "WARHEAD_RUN_CLEANUP_STEP": {
       "value": "0"
     },

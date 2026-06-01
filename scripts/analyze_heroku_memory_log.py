@@ -24,6 +24,7 @@ R14_RE = re.compile(r"Error R1[45]")
 BACKUP_RE = re.compile(r"RANDY backup")
 FAIL_RE = re.compile(r"CRITICAL ERROR")
 SUCCESS_RE = re.compile(r"PIPELINE FINISHED SUCCESSFULLY")
+NO_OUTPUT_KILL_RE = re.compile(r"(?P<step>[A-Za-z0-9_./-]+)\s+produced no output for >(?P<seconds>\d+)s")
 RESULTS_ROUTE_RE = re.compile(r"(GET|POST)\s+/results/([A-Za-z0-9_-]+)")
 ROUTE_STATUS_RE = re.compile(r"\bstatus=(\d{3})\b")
 SDF_404_RE = re.compile(r"/api/sdf/")
@@ -78,6 +79,7 @@ class JobSummary:
     job_summary_404s: list[str] = field(default_factory=list)
     results_424s: list[str] = field(default_factory=list)
     results_opened_before_finish: bool = False
+    no_output_kills: list[str] = field(default_factory=list)
 
     def step(self, name: str) -> StepSample:
         if name not in self.steps:
@@ -210,6 +212,9 @@ def parse_log(path: Path) -> tuple[dict[str, JobSummary], dict[str, Any]]:
         if FAIL_RE.search(payload) and current_job:
             summary = jobs.setdefault(current_job, JobSummary(job_id=current_job))
             summary.failed = True
+            no_output_match = NO_OUTPUT_KILL_RE.search(payload)
+            if no_output_match:
+                summary.no_output_kills.append(payload)
             safe_failure = SAFE_FAILURE_RE.search(payload)
             if safe_failure:
                 step_name = normalize_step_name(safe_failure.group("step"))
@@ -292,7 +297,9 @@ def print_report(jobs: dict[str, JobSummary], aggregate: dict[str, Any]) -> None
                 "job_summary_404_count": len(job.job_summary_404s),
                 "results_424_count": len(job.results_424s),
                 "results_opened_before_finish": job.results_opened_before_finish,
+                "no_output_kill_count": len(job.no_output_kills),
                 "classification": (
+                    "no_output_watchdog_kill" if job.no_output_kills else
                     "missing_artifact" if (job.sdf_404s or job.svg_404s or job.job_summary_404s) else
                     "incomplete_pipeline" if (job.results_424s or ((not job.failed and not job.succeeded) and job.results_opened_before_finish)) else
                     "user_opened_results_early" if job.results_opened_before_finish else

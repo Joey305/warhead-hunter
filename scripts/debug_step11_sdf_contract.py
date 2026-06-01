@@ -65,6 +65,8 @@ def parse_job_log(job_dir: Path) -> Dict[str, bool]:
         "step11_validation_passed": "SDF validation PASS after 11_mcsMatcher.py" in text,
         "step12_validation_passed": "SDF validation PASS after 12_Results.py" in text,
         "step11_summary_logged": "Step 11 summary:" in text,
+        "step11_no_output_killed": "11_mcsMatcher.py produced no output for >" in text,
+        "step12_started": "Running 12_Results.py" in text,
         "step16_completed": "16_ResultsDisplay.py" in text and "Results_Display.csv" in text,
         "pipeline_finished": "PIPELINE FINISHED SUCCESSFULLY" in text,
         "critical_error": "CRITICAL ERROR" in text,
@@ -137,6 +139,8 @@ def main(argv: List[str]) -> int:
     print_check("Step 11 validation passed", log_state["step11_validation_passed"])
     print_check("Step 12 validation passed", log_state["step12_validation_passed"])
     print_check("Step 11 summary logged", log_state["step11_summary_logged"])
+    print_check("Step 11 not killed by no-output watchdog", not log_state["step11_no_output_killed"])
+    print_check("Step 12 started", log_state["step12_started"])
     print_check("pipeline finished", log_state["pipeline_finished"])
     print_check("no critical error in log", not log_state["critical_error"])
 

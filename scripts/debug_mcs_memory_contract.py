@@ -35,6 +35,9 @@ def main() -> int:
         "WARHEAD_MCS_STREAM_OUTPUT",
         "WARHEAD_MCS_SKIP_EXISTING",
         "WARHEAD_MCS_DEBUG_MEMORY",
+        "WARHEAD_MCS_NO_OUTPUT_SAFE",
+        "WARHEAD_MCS_HEARTBEAT_SEC",
+        "WARHEAD_MCS_PROGRESS_EVERY",
     ]:
         if token not in code:
             failures.append(f"Step 11 missing env control: {token}.")
@@ -45,6 +48,26 @@ def main() -> int:
         failures.append("Step 11 missing gated memory checkpoint logging.")
     else:
         print("PASS: Step 11 has gated memory checkpoints.")
+
+    if "if not MCS_DEBUG_MEMORY" not in code:
+        failures.append("Step 11 no longer appears to gate detailed memory/debug logs.")
+    else:
+        print("PASS: Step 11 keeps detailed debug logs gated behind WARHEAD_MCS_DEBUG_MEMORY.")
+
+    if "⏱ Step 11 heartbeat:" not in code or "heartbeat_worker" not in code:
+        failures.append("Step 11 missing always-on heartbeat output.")
+    else:
+        print("PASS: Step 11 emits bounded non-debug heartbeat output.")
+
+    if "🔬 Step 11 item" not in code or "⏳ Step 11 progress:" not in code:
+        failures.append("Step 11 missing non-debug per-item lifecycle/progress logs.")
+    else:
+        print("PASS: Step 11 emits concise non-debug lifecycle/progress logs.")
+
+    if "print(msg, flush=True)" not in code:
+        failures.append("Step 11 heartbeat output is not clearly flushed.")
+    else:
+        print("PASS: Step 11 heartbeat output uses flush=True.")
 
     if "DictWriter" not in code or "Ligand_MCS_Map.csv" not in code or "Ligand_MCS_SASA_ALL_ATOMS.csv" not in code:
         failures.append("Step 11 does not appear to stream/bound CSV outputs.")
@@ -72,6 +95,12 @@ def main() -> int:
         failures.extend(downstream_failures)
     else:
         print("PASS: downstream consumers still reference expected Step 11 artifacts.")
+
+    job_runner_code = read(ROOT / "job_runner.py")
+    if "WARHEAD_STEP11_NO_OUTPUT_TIMEOUT_SEC" not in job_runner_code or "11_mcsMatcher.py" not in job_runner_code:
+        failures.append("job_runner.py missing configurable Step 11 no-output timeout.")
+    else:
+        print("PASS: job_runner.py exposes configurable Step 11 no-output timeout.")
 
     if os.environ.get("WARHEAD_MCS_MAX_WORKERS") == "1":
         print("INFO: current environment already pins WARHEAD_MCS_MAX_WORKERS=1.")

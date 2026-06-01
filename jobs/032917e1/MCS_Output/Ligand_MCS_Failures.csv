@@ -1,2 +1,2 @@
 Ligand,PDB,Error
-112,2gs6,Template assign failed: No matching found
+112,2gs6,"EXCEPTION: AttributeError(""'NoneType' object has no attribute 'get_group'"")"
