@@ -3,6 +3,7 @@
 {% block page_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/protacable.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/protacable-2d-toggle.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/protacable-mobile.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -40,7 +41,7 @@
   <div class="cc-grid">
 
     <!-- LEFT -->
-    <div id="carousel" class="cc-left">
+    <div id="carousel" class="cc-left" aria-label="Pose selector">
       {% for r in results %}
 
         {# ---------- ID fields ---------- #}
@@ -240,7 +241,7 @@
       </div>
 
       <!-- CHEM PROPERTIES -->
-      <div class="mini-panel">
+      <div class="mini-panel chem-panel">
         <div class="right-head">
           <div class="right-head-row">
             <h4 class="right-title">CHEMICAL PROPERTIES</h4>

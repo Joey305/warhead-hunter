@@ -1021,6 +1021,17 @@
     }
   }
 
+  function resizeViewport() {
+    if (!State.stage) return false;
+    try {
+      State.stage.handleResize();
+      State.stage.viewer?.requestRender?.();
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   // ============================================================================
   // 17) Expose API
   // ============================================================================
@@ -1028,6 +1039,7 @@
     init: initNGL,
     load,
     clear: clearAllComponents,
+    resizeViewport,
     setProteinSticksVisible,
     toggleProteinSticks,
     getProteinSticksVisible,

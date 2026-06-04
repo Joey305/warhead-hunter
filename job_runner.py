@@ -93,6 +93,15 @@ RUN_CLEANUP_STEP = os.environ.get("WARHEAD_RUN_CLEANUP_STEP", "0" if IS_HEROKU e
 CLEANUP_SCRIPT_NAME = "18_CleanJobDirNzip.py"
 CLEANUP_TIMEOUT_SEC = _env_int("WARHEAD_CLEANUP_TIMEOUT_SEC", 8 * 60)
 CLEANUP_NO_OUTPUT_TIMEOUT_SEC = _env_int("WARHEAD_CLEANUP_NO_OUTPUT_TIMEOUT_SEC", 120)
+DEFAULT_PIPELINE_MAX_WORKERS = 1 if IS_HEROKU else 3
+PIPELINE_MAX_WORKERS = max(1, _env_int("WARHEAD_PIPELINE_MAX_WORKERS", DEFAULT_PIPELINE_MAX_WORKERS))
+PIPELINE_WORKER_ENV_VARS = (
+    "WARHEAD_SQCHK_MAX_WORKERS",
+    "WARHEAD_PDBMKR_MAX_WORKERS",
+    "WARHEAD_SASA_MAX_WORKERS",
+    "WARHEAD_METADATA_MAX_WORKERS",
+    "WARHEAD_MCS_MAX_WORKERS",
+)
 
 # Global dictionary to track job status in memory
 # Structure:
@@ -516,6 +525,13 @@ def run_script_logged(
     env = os.environ.copy()
     env["PYTHONUNBUFFERED"] = "1"
     env["JOB_ID"] = job_id  # ✅ critical: Step 11 can rely on this anywhere
+    for worker_env_name in PIPELINE_WORKER_ENV_VARS:
+        env.setdefault(worker_env_name, str(PIPELINE_MAX_WORKERS))
+    log_message(
+        job_id,
+        f"🧵 Worker caps for {script_name}: pipeline_max={PIPELINE_MAX_WORKERS} "
+        + " ".join(f"{name}={env.get(name)}" for name in PIPELINE_WORKER_ENV_VARS),
+    )
 
     # python -u forces unbuffered output (so logs stream)
     cmd = [PYTHON_BIN, "-u", script_name] + args

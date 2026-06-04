@@ -37,7 +37,8 @@
     mapMode: "sasa",
     hudInitialized: false,
     handoff: null,
-    proteinSticksToggleBound: false
+    proteinSticksToggleBound: false,
+    resizeTimer: null
   };
 
   const QED_TOOLTIP =
@@ -914,7 +915,10 @@
 
   function bindCards() {
     document.querySelectorAll(".result-card").forEach(card => {
-      card.addEventListener("click", () => {
+      if (card.dataset.interactionBound === "1") return;
+      card.dataset.interactionBound = "1";
+
+      const activate = () => {
         if (card.dataset.renderable === "false") return;
 
         const pdb     = card.dataset.pdb;
@@ -924,9 +928,60 @@
         const smiles  = card.dataset.smiles || "";
         const exposedValue = Number(card.dataset.exposed || 0);
 
+        setActiveCard(card);
         window.syncView(pdb, chain, warhead, resid, smiles, exposedValue, { userInitiated: true });
+      };
+
+      card.addEventListener("click", activate);
+      card.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        activate();
       });
     });
+  }
+
+  function isCompactViewport() {
+    return window.matchMedia && window.matchMedia("(max-width: 1024px)").matches;
+  }
+
+  function scheduleViewportResize() {
+    const refresh = () => {
+      if (window.Render3D && typeof window.Render3D.resizeViewport === "function") {
+        window.Render3D.resizeViewport();
+      }
+      window.dispatchEvent(new Event("resize"));
+    };
+
+    window.requestAnimationFrame(() => {
+      refresh();
+      window.setTimeout(refresh, 180);
+    });
+  }
+
+  function setActiveCard(activeCard) {
+    const cards = Array.from(document.querySelectorAll(".result-card"));
+    cards.forEach((card) => {
+      const isActive = card === activeCard;
+      card.classList.toggle("is-active", isActive);
+      if (isActive) {
+        card.setAttribute("aria-current", "true");
+      } else {
+        card.removeAttribute("aria-current");
+      }
+    });
+
+    if (!activeCard) return;
+
+    if (isCompactViewport() && typeof activeCard.scrollIntoView === "function") {
+      activeCard.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest"
+      });
+    }
+
+    scheduleViewportResize();
   }
 
   function viewportHasCanvas() {
@@ -1650,6 +1705,7 @@ function openBuilderFallback(smiles, opts = {}) {
 
       if (readiness.usable) {
         selectedCard = candidate;
+        setActiveCard(candidate);
         break;
       }
     }
@@ -1705,6 +1761,15 @@ function openBuilderFallback(smiles, opts = {}) {
   }
 
   document.addEventListener("DOMContentLoaded", async () => {
+    window.addEventListener("resize", () => {
+      window.clearTimeout(State.resizeTimer);
+      State.resizeTimer = window.setTimeout(() => {
+        if (window.Render3D && typeof window.Render3D.resizeViewport === "function") {
+          window.Render3D.resizeViewport();
+        }
+      }, 120);
+    });
+
     try {
       await initializeResultsGallery();
     } catch (err) {
