@@ -138,6 +138,15 @@ def _compute_ligand3(df: pd.DataFrame) -> pd.Series:
     return ligand3.replace({"NAN": "", "NONE": "", "?": ""})
 
 
+def _series_key_str(series: pd.Series) -> pd.Series:
+    return series.astype(str).fillna("").str.strip().replace({"nan": "", "NaN": "", "NAN": "", "None": "", "NONE": "", "?": ""})
+
+
+def _series_int_key(series: pd.Series) -> pd.Series:
+    nums = pd.to_numeric(series, errors="coerce")
+    return nums.apply(lambda x: "" if pd.isna(x) else str(int(x)))
+
+
 def _normalize_gallery_df(df: pd.DataFrame) -> pd.DataFrame:
     if df is None or df.empty:
         return pd.DataFrame()
@@ -211,7 +220,143 @@ def _normalize_gallery_df(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def _read_local_results_display(job_id: str) -> pd.DataFrame:
+def _prepare_summary_match_frame(df: pd.DataFrame) -> pd.DataFrame:
+    if df is None or df.empty:
+        return pd.DataFrame()
+
+    out = df.copy()
+    out["_match_pdb"] = _series_key_str(out["pdb_id"]).str.lower()
+    out["_match_chain"] = _series_key_str(out["Chain"]).str.upper()
+    out["_match_ligand"] = _compute_ligand3(out).astype(str).str.upper().str.strip()
+    out["_match_residue"] = _series_int_key(out["Residue_ID"]) if "Residue_ID" in out.columns else ""
+    out["_match_variant"] = _series_int_key(out["Variant"]) if "Variant" in out.columns else ""
+    out["_metric_total"] = pd.to_numeric(out.get("Total_atoms", 0), errors="coerce").fillna(0)
+    out["_metric_exposed"] = pd.to_numeric(out.get("Exposed_atoms", 0), errors="coerce").fillna(0)
+    out["_metric_sasa"] = pd.to_numeric(out.get("SASA_in_complex_A2", 0), errors="coerce").fillna(0.0)
+    out["_metric_exposure"] = pd.to_numeric(out.get("%Exposed", 0), errors="coerce").fillna(0.0)
+    out["_metric_rank"] = list(
+        zip(
+            (out["_metric_total"] > 0).astype(int),
+            (out["_metric_sasa"] > 0).astype(int),
+            out["_metric_total"],
+            out["_metric_sasa"],
+            out["_metric_exposure"],
+        )
+    )
+    return out
+
+
+def enrich_gallery_metrics_from_resolved_summary(display_df: pd.DataFrame, summary_df: pd.DataFrame) -> pd.DataFrame:
+    if display_df is None or display_df.empty or summary_df is None or summary_df.empty:
+        return display_df if display_df is not None else pd.DataFrame()
+
+    display = _prepare_summary_match_frame(display_df)
+    summary = _prepare_summary_match_frame(summary_df)
+    if display.empty or summary.empty:
+        return display_df.copy() if display_df is not None else pd.DataFrame()
+
+    metric_cols = ["Total_atoms", "Exposed_atoms", "SASA_in_complex_A2"]
+    for col in metric_cols:
+        display[col] = pd.to_numeric(display.get(col), errors="coerce").astype(float)
+
+    summary_by_pdb = {}
+    for pdb_id, sdf in summary.groupby("_match_pdb", dropna=False):
+        ranked = sdf.sort_values(
+            by=["_metric_total", "_metric_sasa", "_metric_exposure"],
+            ascending=[False, False, False],
+            kind="stable",
+        ).copy()
+        summary_by_pdb[pdb_id] = ranked
+
+    def needs_enrichment(row: pd.Series) -> bool:
+        total = pd.to_numeric(row.get("Total_atoms"), errors="coerce")
+        exposed = pd.to_numeric(row.get("Exposed_atoms"), errors="coerce")
+        sasa = pd.to_numeric(row.get("SASA_in_complex_A2"), errors="coerce")
+        return bool(
+            pd.isna(total) or total <= 0 or
+            pd.isna(exposed) or exposed < 0 or
+            pd.isna(sasa) or sasa <= 0
+        )
+
+    def choose_best_match(row: pd.Series) -> pd.Series | None:
+        pdb_matches = summary_by_pdb.get(row["_match_pdb"])
+        if pdb_matches is None or pdb_matches.empty:
+            return None
+
+        ligand = row["_match_ligand"]
+        chain = row["_match_chain"]
+        residue = row["_match_residue"]
+        variant = row["_match_variant"]
+
+        candidate_frames = []
+        if ligand and residue:
+            candidate_frames.append(
+                pdb_matches[
+                    (pdb_matches["_match_chain"] == chain) &
+                    (pdb_matches["_match_ligand"] == ligand) &
+                    (pdb_matches["_match_residue"] == residue)
+                ]
+            )
+        if ligand and variant:
+            candidate_frames.append(
+                pdb_matches[
+                    (pdb_matches["_match_chain"] == chain) &
+                    (pdb_matches["_match_ligand"] == ligand) &
+                    (pdb_matches["_match_variant"] == variant)
+                ]
+            )
+        if ligand:
+            candidate_frames.append(
+                pdb_matches[
+                    (pdb_matches["_match_chain"] == chain) &
+                    (pdb_matches["_match_ligand"] == ligand)
+                ]
+            )
+        if ligand and residue:
+            candidate_frames.append(
+                pdb_matches[
+                    (pdb_matches["_match_ligand"] == ligand) &
+                    (pdb_matches["_match_residue"] == residue)
+                ]
+            )
+        if ligand and variant:
+            candidate_frames.append(
+                pdb_matches[
+                    (pdb_matches["_match_ligand"] == ligand) &
+                    (pdb_matches["_match_variant"] == variant)
+                ]
+            )
+        if ligand:
+            candidate_frames.append(pdb_matches[pdb_matches["_match_ligand"] == ligand])
+        candidate_frames.append(pdb_matches[pdb_matches["_match_chain"] == chain])
+        candidate_frames.append(pdb_matches)
+
+        for candidates in candidate_frames:
+            if candidates is not None and not candidates.empty:
+                return candidates.iloc[0]
+        return None
+
+    for idx, row in display.iterrows():
+        if not needs_enrichment(row):
+            continue
+        match = choose_best_match(row)
+        if match is None:
+            continue
+        for col in metric_cols:
+            current = pd.to_numeric(display.at[idx, col], errors="coerce")
+            candidate = pd.to_numeric(match.get(col), errors="coerce")
+            if pd.notna(candidate) and candidate > 0 and (pd.isna(current) or current <= 0):
+                display.at[idx, col] = candidate
+        current_residue = _series_key_str(pd.Series([display.at[idx, "Residue_ID"]])).iloc[0]
+        matched_residue = _series_int_key(pd.Series([match.get("Residue_ID", "")])).iloc[0]
+        if not current_residue and matched_residue:
+            display.at[idx, "Residue_ID"] = float(matched_residue)
+
+    drop_cols = [c for c in display.columns if c.startswith("_match_") or c.startswith("_metric_")]
+    return display.drop(columns=drop_cols, errors="ignore")
+
+
+def _read_local_results_display_raw(job_id: str) -> pd.DataFrame:
     jd = _job_dir(job_id)
     fp = _first_existing([
         jd / "TARGET_RESULTS" / "Results_Display.csv",
@@ -223,7 +368,7 @@ def _read_local_results_display(job_id: str) -> pd.DataFrame:
     return _normalize_gallery_df(df) if df is not None else pd.DataFrame()
 
 
-def _read_randy_results_display(job_id: str) -> pd.DataFrame:
+def _read_randy_results_display_raw(job_id: str) -> pd.DataFrame:
     df = randy_get_table_dataframe(job_id, ["Results_Display.csv"])
     return _normalize_gallery_df(df) if df is not None else pd.DataFrame()
 
@@ -256,6 +401,22 @@ def load_resolved_sasa_summary(job_id: str) -> pd.DataFrame:
     if df is not None and not df.empty:
         return df
     return _read_randy_resolved_summary(job_id)
+
+
+def _read_local_results_display(job_id: str) -> pd.DataFrame:
+    display_df = _read_local_results_display_raw(job_id)
+    if display_df is None or display_df.empty:
+        return pd.DataFrame()
+    summary_df = _read_local_resolved_summary(job_id)
+    return enrich_gallery_metrics_from_resolved_summary(display_df, summary_df)
+
+
+def _read_randy_results_display(job_id: str) -> pd.DataFrame:
+    display_df = _read_randy_results_display_raw(job_id)
+    if display_df is None or display_df.empty:
+        return pd.DataFrame()
+    summary_df = _read_randy_resolved_summary(job_id)
+    return enrich_gallery_metrics_from_resolved_summary(display_df, summary_df)
 
 
 def build_pose_rows(job_id: str) -> pd.DataFrame:
