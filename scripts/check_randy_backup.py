@@ -48,6 +48,13 @@ def _env_payload() -> dict[str, Any]:
         "backup_on_failure": bool(cfg.get("backup_on_failure")),
         "archive_required": bool(cfg.get("archive_required")),
         "timeout_seconds": int(cfg.get("timeout_seconds") or 0),
+        "connect_timeout_seconds": float(cfg.get("connect_timeout_seconds") or 0),
+        "read_timeout_seconds": float(cfg.get("read_timeout_seconds") or 0),
+        "upload_timeout_seconds": float(cfg.get("upload_timeout_seconds") or 0),
+        "total_timeout_seconds": float(cfg.get("total_timeout_seconds") or 0),
+        "retries": int(cfg.get("retries") or 0),
+        "max_attempts": int(cfg.get("max_attempts") or 0),
+        "retry_backoff_seconds": float(cfg.get("retry_backoff_seconds") or 0),
         "max_bytes": int(cfg.get("max_bytes") or 0),
     }
 
@@ -131,13 +138,13 @@ def _plan_payload(job_id: str) -> dict[str, Any]:
     }
 
 
-def _dry_run(job_id: str) -> int:
+def _dry_run(job_id: str, status: str) -> int:
     job_dir = _job_dir(job_id)
     if not job_dir.exists():
         _print_json({"ok": False, "error": f"Local job directory not found: {job_dir}", "job_id": job_id})
         return 1
 
-    result = backup_job_directory(job_id, job_dir, status="completed", dry_run=True)
+    result = backup_job_directory(job_id, job_dir, status=status, dry_run=True, log=print)
     _print_json({
         **_env_payload(),
         **_plan_payload(job_id),
@@ -147,13 +154,13 @@ def _dry_run(job_id: str) -> int:
     return 0 if result.get("ok") else 1
 
 
-def _upload_test(job_id: str) -> int:
+def _upload_test(job_id: str, status: str) -> int:
     job_dir = _job_dir(job_id)
     if not job_dir.exists():
         _print_json({"ok": False, "error": f"Local job directory not found: {job_dir}", "job_id": job_id})
         return 1
 
-    result = backup_job_directory(job_id, job_dir, status="completed", dry_run=False)
+    result = backup_job_directory(job_id, job_dir, status=status, dry_run=False, log=print)
     _print_json({
         "mode": "upload_test",
         **_env_payload(),
@@ -189,6 +196,7 @@ def main() -> int:
     parser.add_argument("--env-check", action="store_true", help="Print safe RANDY backup configuration details.")
     parser.add_argument("--health", action="store_true", help="Probe RANDY health and authenticated summary endpoints.")
     parser.add_argument("--job", help="Local or archived job id to inspect.")
+    parser.add_argument("--status", default="completed", choices=["completed", "failed"], help="Backup status label to send with --dry-run or --upload-test.")
     parser.add_argument("--dry-run", action="store_true", help="Build a backup plan for the selected job without uploading.")
     parser.add_argument("--upload-test", action="store_true", help="Explicitly upload the selected local job to RANDY.")
     parser.add_argument("--verify", action="store_true", help="Verify an archived job through the RANDY readback API.")
@@ -207,9 +215,9 @@ def main() -> int:
     if args.health:
         return _health_check()
     if args.dry_run:
-        return _dry_run(str(args.job).strip())
+        return _dry_run(str(args.job).strip(), str(args.status).strip())
     if args.upload_test:
-        return _upload_test(str(args.job).strip())
+        return _upload_test(str(args.job).strip(), str(args.status).strip())
     return _verify(str(args.job).strip())
 
 

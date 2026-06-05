@@ -93,7 +93,7 @@ RUN_CLEANUP_STEP = os.environ.get("WARHEAD_RUN_CLEANUP_STEP", "0" if IS_HEROKU e
 CLEANUP_SCRIPT_NAME = "18_CleanJobDirNzip.py"
 CLEANUP_TIMEOUT_SEC = _env_int("WARHEAD_CLEANUP_TIMEOUT_SEC", 8 * 60)
 CLEANUP_NO_OUTPUT_TIMEOUT_SEC = _env_int("WARHEAD_CLEANUP_NO_OUTPUT_TIMEOUT_SEC", 120)
-DEFAULT_PIPELINE_MAX_WORKERS = 1 if IS_HEROKU else 3
+DEFAULT_PIPELINE_MAX_WORKERS = 2 if IS_HEROKU else 3
 PIPELINE_MAX_WORKERS = max(1, _env_int("WARHEAD_PIPELINE_MAX_WORKERS", DEFAULT_PIPELINE_MAX_WORKERS))
 PIPELINE_WORKER_ENV_VARS = (
     "WARHEAD_SQCHK_MAX_WORKERS",
@@ -102,6 +102,13 @@ PIPELINE_WORKER_ENV_VARS = (
     "WARHEAD_METADATA_MAX_WORKERS",
     "WARHEAD_MCS_MAX_WORKERS",
 )
+DEFAULT_STAGE_WORKER_CAPS = {
+    "WARHEAD_SQCHK_MAX_WORKERS": 2 if IS_HEROKU else PIPELINE_MAX_WORKERS,
+    "WARHEAD_PDBMKR_MAX_WORKERS": 2 if IS_HEROKU else PIPELINE_MAX_WORKERS,
+    "WARHEAD_SASA_MAX_WORKERS": 1 if IS_HEROKU else PIPELINE_MAX_WORKERS,
+    "WARHEAD_METADATA_MAX_WORKERS": 2 if IS_HEROKU else PIPELINE_MAX_WORKERS,
+    "WARHEAD_MCS_MAX_WORKERS": 1 if IS_HEROKU else PIPELINE_MAX_WORKERS,
+}
 
 # Global dictionary to track job status in memory
 # Structure:
@@ -206,6 +213,27 @@ def write_job_metadata(job_id: str, patch: Dict[str, Any], job_dir: Optional[str
     payload["results_ready"] = results_ready_from_disk(job_id)
     with JOB_LOCK:
         write_job_metadata_disk(job_id, payload)
+
+
+def _backup_state_patch(backup_result: Dict[str, Any], *, results_ready: bool) -> Dict[str, Any]:
+    backup_ok = bool(backup_result.get("ok"))
+    attempted = bool(backup_result.get("attempted"))
+    status = str(backup_result.get("status") or "unknown")
+
+    if backup_ok:
+        archive_status = "verified"
+    elif attempted:
+        archive_status = "backup_failed"
+    elif status.startswith("skipped"):
+        archive_status = "backup_skipped"
+    else:
+        archive_status = "backup_pending"
+
+    return {
+        "backup": backup_result,
+        "archive_status": archive_status,
+        "results_available_not_backed_up": bool(results_ready and archive_status != "verified"),
+    }
 
 class MemoryGuardError(RuntimeError):
     pass
@@ -526,7 +554,7 @@ def run_script_logged(
     env["PYTHONUNBUFFERED"] = "1"
     env["JOB_ID"] = job_id  # ✅ critical: Step 11 can rely on this anywhere
     for worker_env_name in PIPELINE_WORKER_ENV_VARS:
-        env.setdefault(worker_env_name, str(PIPELINE_MAX_WORKERS))
+        env.setdefault(worker_env_name, str(DEFAULT_STAGE_WORKER_CAPS.get(worker_env_name, PIPELINE_MAX_WORKERS)))
     log_message(
         job_id,
         f"🧵 Worker caps for {script_name}: pipeline_max={PIPELINE_MAX_WORKERS} "
@@ -937,13 +965,23 @@ def _attempt_randy_backup(job_id: str, job_dir: str, *, status: str, required_re
     })
     write_job_metadata(job_id, {"backup": backup_state}, job_dir=job_dir)
 
-    result = backup_job_directory(job_id, Path(job_dir), status=status, dry_run=False)
+    result = backup_job_directory(
+        job_id,
+        Path(job_dir),
+        status=status,
+        dry_run=False,
+        log=lambda message: log_message(job_id, message),
+    )
     result["provider"] = "randy"
     if status == "completed" and required_result_tables and result.get("status") == "uploaded_unverified":
         result["ok"] = False
         result["status"] = "failed_verification"
         result["reason"] = result.get("reason") or "uploaded_but_verification_incomplete"
-    write_job_metadata(job_id, {"backup": result}, job_dir=job_dir)
+    write_job_metadata(
+        job_id,
+        _backup_state_patch(result, results_ready=results_ready_from_disk(job_id)),
+        job_dir=job_dir,
+    )
 
     outcome = str(result.get("status") or "unknown")
     endpoint = str(result.get("endpoint") or result.get("base_url") or "")
@@ -954,10 +992,11 @@ def _attempt_randy_backup(job_id: str, job_dir: str, *, status: str, required_re
             f"configured={bool(result.get('configured'))} "
             f"ok={bool(result.get('ok'))} "
             f"status={outcome} "
+            f"attempts={int(result.get('attempts') or 0)}/{int(result.get('max_attempts') or 0)} "
             f"verify={verify_status} "
             f"endpoint={endpoint or 'unconfigured'} "
-            f"files={int(result.get('uploaded_files') or 0)} "
-            f"bytes={int(result.get('uploaded_bytes') or 0)}"
+            f"files={int(result.get('files') or result.get('uploaded_files') or 0)} "
+            f"bytes={int(result.get('bytes') or result.get('uploaded_bytes') or 0)}"
         )
         if result.get("error"):
             summary += f" error={str(result.get('error'))}"
@@ -1060,9 +1099,12 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
             "current_step": "",
             "error": None,
             "results_ready": True,
+            "archive_status": "backup_pending" if backup_on_complete() else "backup_skipped",
+            "results_available_not_backed_up": bool(backup_on_complete()),
         }, job_dir=job_dir)
         _touch_last_log_at(job_id, job_dir, force=True)
 
+        backup_result: Optional[Dict[str, Any]] = None
         if backup_on_complete():
             backup_result = _attempt_randy_backup(
                 job_id,
@@ -1076,10 +1118,13 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
                 )
         else:
             write_job_metadata(job_id, {
-                "backup": {
-                    **initial_backup_status(job_id, reason="WARHEAD_BACKUP_ON_COMPLETE=0"),
-                    "status": "skipped",
-                }
+                **_backup_state_patch(
+                    {
+                        **initial_backup_status(job_id, reason="WARHEAD_BACKUP_ON_COMPLETE=0"),
+                        "status": "skipped",
+                    },
+                    results_ready=True,
+                )
             }, job_dir=job_dir)
             log_message(job_id, "🗄️ RANDY backup skipped: WARHEAD_BACKUP_ON_COMPLETE=0")
 
@@ -1088,7 +1133,12 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
         except Exception as cleanup_error:
             log_message(job_id, f"⚠️ Cleanup packaging step failed: {cleanup_error}")
 
-        log_message(job_id, "✅ PIPELINE FINISHED SUCCESSFULLY")
+        if backup_result and backup_result.get("ok"):
+            log_message(job_id, "✅ PIPELINE FINISHED SUCCESSFULLY — RANDY backup verified.")
+        elif backup_on_complete():
+            log_message(job_id, "⚠️ PIPELINE FINISHED; results are available, but RANDY backup failed.")
+        else:
+            log_message(job_id, "✅ PIPELINE FINISHED SUCCESSFULLY")
         log_message(job_id, "Access results in the Browse tab.")
 
     except Exception as e:
@@ -1136,10 +1186,13 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
                 }, job_dir=job_dir)
         else:
             write_job_metadata(job_id, {
-                "backup": {
-                    **initial_backup_status(job_id, reason="WARHEAD_BACKUP_ON_FAILURE=0"),
-                    "status": "skipped",
-                }
+                **_backup_state_patch(
+                    {
+                        **initial_backup_status(job_id, reason="WARHEAD_BACKUP_ON_FAILURE=0"),
+                        "status": "skipped",
+                    },
+                    results_ready=results_ready_from_disk(job_id),
+                )
             }, job_dir=job_dir)
 
 

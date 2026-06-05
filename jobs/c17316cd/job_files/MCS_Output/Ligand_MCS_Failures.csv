@@ -1,0 +1,32 @@
+Ligand,PDB,Error
+03S,5ehx,Size mismatch: SMILES=5 vs 3D=4
+03S,5ei5,Size mismatch: SMILES=5 vs 3D=4
+1PG,6fld,Size mismatch: SMILES=17 vs 3D=16
+8UQ,7aiu,ITEM_TIMEOUT (>10s) at GRAPH_FULL
+BM4,2w6c,Size mismatch: SMILES=41 vs 3D=26
+CFQ,2v97,Size mismatch: SMILES=21 vs 3D=42
+CFQ,2v97,Size mismatch: SMILES=21 vs 3D=42
+CFQ,2v97,Size mismatch: SMILES=21 vs 3D=42
+CFQ,2v97,Size mismatch: SMILES=21 vs 3D=42
+CFQ,2v98,Size mismatch: SMILES=21 vs 3D=42
+CFQ,2v98,Size mismatch: SMILES=21 vs 3D=42
+CFQ,2v98,Size mismatch: SMILES=21 vs 3D=42
+CFQ,2v98,Size mismatch: SMILES=21 vs 3D=42
+E1K,6g1u,Size mismatch: SMILES=17 vs 3D=34
+E1K,6g1u,Size mismatch: SMILES=17 vs 3D=34
+ELT,6g4o,Size mismatch: SMILES=9 vs 3D=8
+ELT,6g4o,Size mismatch: SMILES=9 vs 3D=8
+ELT,6g4p,Size mismatch: SMILES=9 vs 3D=8
+ELT,6g4p,Size mismatch: SMILES=9 vs 3D=8
+EMM,1gqr,Size mismatch: SMILES=7 vs 3D=6
+FBQ,1hbj,Size mismatch: SMILES=29 vs 3D=28
+FW8,6h14,Size mismatch: SMILES=46 vs 3D=92
+FW8,6h14,GRAPH_FULL skipped: size>80
+FW8,6h14,Size mismatch: SMILES=46 vs 3D=92
+FW8,6h14,GRAPH_FULL skipped: size>80
+GB,1cfj,Size mismatch: SMILES=5 vs 3D=4
+GB,2wg0,Size mismatch: SMILES=5 vs 3D=4
+GB,2wg1,Size mismatch: SMILES=5 vs 3D=4
+GSG,2bag,Size mismatch: SMILES=28 vs 3D=11
+NWA,2c5f,Size mismatch: SMILES=11 vs 3D=10
+VX,1vxr,Size mismatch: SMILES=7 vs 3D=6

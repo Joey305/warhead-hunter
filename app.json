@@ -40,8 +40,11 @@
     "WARHEAD_MEMORY_SAMPLE_INTERVAL_SEC": {
       "value": "0.5"
     },
+    "WARHEAD_PIPELINE_MAX_WORKERS": {
+      "value": "2"
+    },
     "WARHEAD_SQCHK_MAX_WORKERS": {
-      "value": "4"
+      "value": "2"
     },
     "WARHEAD_PDBMKR_MAX_WORKERS": {
       "value": "2"
@@ -56,7 +59,7 @@
       "value": "0"
     },
     "WARHEAD_METADATA_MAX_WORKERS": {
-      "value": "1"
+      "value": "2"
     },
     "WARHEAD_METADATA_USE_THREADS": {
       "value": "1"
@@ -131,7 +134,25 @@
       "value": "0"
     },
     "WARHEAD_BACKUP_TIMEOUT_SECONDS": {
-      "value": "60"
+      "value": "1200"
+    },
+    "RANDY_BACKUP_CONNECT_TIMEOUT": {
+      "value": "25"
+    },
+    "RANDY_BACKUP_READ_TIMEOUT": {
+      "value": "1200"
+    },
+    "RANDY_BACKUP_UPLOAD_TIMEOUT": {
+      "value": "1200"
+    },
+    "RANDY_BACKUP_TOTAL_TIMEOUT": {
+      "value": "1800"
+    },
+    "RANDY_BACKUP_RETRIES": {
+      "value": "2"
+    },
+    "RANDY_BACKUP_RETRY_BACKOFF_SECONDS": {
+      "value": "15"
     },
     "WARHEAD_BACKUP_MAX_BYTES": {
       "value": "300000000"

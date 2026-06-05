@@ -444,6 +444,12 @@ CURATED_EXAMPLE_CONFIG = [
         "protein": "PRMT5",
         "use_case": "methyltransferase inhibitor structure example",
     },
+    {
+        "job_id": "c17316cd",
+        "label": "AchE / Acetylcholinesterase",
+        "protein": "AchE",
+        "use_case": "AchE / Acetylcholinesterase inhibitor structure example",
+    }
 
 ]
 

@@ -1,0 +1,59 @@
+{
+  "backup": {
+    "archive_path": "",
+    "archive_required": false,
+    "attempted": false,
+    "backup_on_complete": true,
+    "backup_on_failure": true,
+    "base_url": "https://randy.rove-vernier.ts.net/backup",
+    "configured": true,
+    "endpoint": "https://randy.rove-vernier.ts.net/backup/hunter-job-archive",
+    "error": null,
+    "finished_at": "",
+    "job_id": "c17316cd",
+    "max_bytes": 300000000,
+    "ok": false,
+    "provider": "randy",
+    "reason": "",
+    "remote_job_id": "",
+    "started_at": "2026-06-05T09:59:26Z",
+    "status": "skipped",
+    "timeout_seconds": 60,
+    "token_present": true,
+    "uploaded_bytes": 0,
+    "uploaded_files": 0,
+    "verification": {
+      "artifact_ok": false,
+      "job_exists": false,
+      "ok": false,
+      "status": "not_attempted",
+      "table_ok": false,
+      "table_path": ""
+    }
+  },
+  "created_at": "2026-06-05T09:52:40Z",
+  "current_step": "",
+  "error": null,
+  "finished_at": "2026-06-05 09:59:26",
+  "job_dir": "/app/jobs/c17316cd",
+  "job_id": "c17316cd",
+  "last_log_at": "2026-06-05T09:59:26Z",
+  "outputs": {
+    "bundle_url": "/api/jobs/c17316cd/bundle",
+    "files_url": "/api/jobs/c17316cd/files",
+    "job_dir": "jobs/c17316cd",
+    "results_url": "/api/jobs/c17316cd/results"
+  },
+  "request": {
+    "fasta_seq": ">6FQN_1|Chains A|Acetylcholinesterase|Tetronarce californica (7787)\nSELLVNTKSGKVMGTRVPVLSSHISAFLGIPFAEPPVGNMRFRRPEPKKPWSGVWNASTYPNNCQQYVDEQFPGFSGSEMWNPNREMSEDCLYLNIWVPSPRPKSTTVMVWIYGGGFYSGSSTLDVYNGKYLAYTEEVVLVSLSYRVGAFGFLALHGSQEAPGNVGLLDQRMALQWVHDNIQFFGGDPKTVTIFGESAGGASVGMHILSPGSRDLFRRAILQSGSPNCPWASVSVAEGRRRAVELGRNLNCNLNSDEELIHCLREKKPQELIDVEWNVLPFDSIFRFSFVPVIDGEFFPTSLESMLNSGNFKKTQILLGVNKDEGSFFLLYGAPGFSKDSESKISREDFMSGVKLSVPHANDLGLDAVTLQYTDWMDDNNGIKNRDGLDDIVGDHNVICPLMHFVNKYTKFGNGTYLYFFNHRASNLVWPEWMGVIHGYEIEFVFGLPLVKELNYTAEEEALSRRIMHYWATFAKTGNPNEPHSQESKWPLFTTKEQKFIDLNTEPMKVHQRLRVQMCVFWNQFLPKLLNAT",
+    "search_query": "Acetylcholinesterase 6-[4-[(7-chloranyl-1,2,3,4-tetrahydroacridin-9-yl)amino]butyl]-2-[(oxidanylamino)methyl]pyridin-3-ol E2W 2-acetamido-2-deoxy-beta-D-glucopyranose NAG bound inhibitor Tetronarce californica",
+    "target_name": "Acetylcholinesterase"
+  },
+  "results_ready": true,
+  "source": "web",
+  "started_at": "2026-06-05 09:52:40",
+  "status": "completed",
+  "step_started_at": "09:59:25",
+  "target": "Acetylcholinesterase",
+  "updated_at": "2026-06-05T09:59:26Z"
+}

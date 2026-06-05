@@ -1,0 +1,412 @@
+{
+  "archive_file": "/home/jxs794/PROTAC_BUILDER/warhead_hunter/hunter_jobs/c17316cd/archives/c17316cd_warhead_hunter_full_job.zip",
+  "archive_size_bytes": 74310684,
+  "extract_dir": "/home/jxs794/PROTAC_BUILDER/warhead_hunter/hunter_jobs/c17316cd/job_files",
+  "extracted_file_count": 1528,
+  "extracted_files_sample": [
+    {
+      "relative_path": "Ligand_3D_Atoms.csv",
+      "size_bytes": 264089
+    },
+    {
+      "relative_path": "Ligand_Metadata.csv",
+      "size_bytes": 55572
+    },
+    {
+      "relative_path": "MCS_Output/Ligand_AllAtoms_Map.csv",
+      "size_bytes": 483654
+    },
+    {
+      "relative_path": "MCS_Output/Ligand_MCS_Failures.csv",
+      "size_bytes": 1344
+    },
+    {
+      "relative_path": "MCS_Output/Ligand_MCS_Item_Failures.csv",
+      "size_bytes": 3338
+    },
+    {
+      "relative_path": "MCS_Output/Ligand_MCS_Map.csv",
+      "size_bytes": 444354
+    },
+    {
+      "relative_path": "MCS_Output/Ligand_MCS_SASA.csv",
+      "size_bytes": 461875
+    },
+    {
+      "relative_path": "MCS_Output/Ligand_MCS_SASA_ALL_ATOMS.csv",
+      "size_bytes": 502440
+    },
+    {
+      "relative_path": "MCS_Output/Ligand_MCS_SDF_Failures.csv",
+      "size_bytes": 140
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1acj_A_THA_999.sdf",
+      "size_bytes": 1362
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1acl_A_DME_999.sdf",
+      "size_bytes": 1572
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1amn_A_NAF_594.sdf",
+      "size_bytes": 1502
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1ax9_A_EDR_999.sdf",
+      "size_bytes": 1087
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1cfj_A_GB_999.sdf",
+      "size_bytes": 409
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1dx6_A_GNT_602.sdf",
+      "size_bytes": 1873
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1e3q_A_EBW_601.sdf",
+      "size_bytes": 2594
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1e66_A_HUX_803.sdf",
+      "size_bytes": 1873
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1eve_A_E20_2001.sdf",
+      "size_bytes": 2455
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1gpk_A_HUP_1540.sdf",
+      "size_bytes": 1612
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1gpn_A_HUB_1538.sdf",
+      "size_bytes": 1708
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1gqr_A_EMM_1999.sdf",
+      "size_bytes": 577
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1gqr_A_SAF_1998.sdf",
+      "size_bytes": 1088
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1gqs_A_SAF_603.sdf",
+      "size_bytes": 1087
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1h22_A_E10_1536.sdf",
+      "size_bytes": 2953
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1h23_A_E12_1536.sdf",
+      "size_bytes": 3119
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1hbj_A_FBQ_1539.sdf",
+      "size_bytes": 2442
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1jjb_A_PE7_999.sdf",
+      "size_bytes": 1904
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1oce_A_MF2_700.sdf",
+      "size_bytes": 1668
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1odc_A_A8B_1538.sdf",
+      "size_bytes": 2966
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1qti_A_GNT_600.sdf",
+      "size_bytes": 1873
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1som_A_VXA_1010.sdf",
+      "size_bytes": 411
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1u65_A_CP0_603.sdf",
+      "size_bytes": 3738
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1ut6_A_A8N_1538.sdf",
+      "size_bytes": 2110
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1vot_A_HUP_999.sdf",
+      "size_bytes": 1611
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1vxo_A_VXA_999.sdf",
+      "size_bytes": 410
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1vxr_A_VX_999.sdf",
+      "size_bytes": 575
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1w4l_A_GL8_1540.sdf",
+      "size_bytes": 3394
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1w6r_A_GNT_1536.sdf",
+      "size_bytes": 1874
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1w76_A_GNT_1538.sdf",
+      "size_bytes": 1874
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1w76_B_GNT_1538.sdf",
+      "size_bytes": 1874
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1zgb_A_A1E_1001.sdf",
+      "size_bytes": 3215
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1zgc_A_A2E_1002.sdf",
+      "size_bytes": 3215
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/1zgc_B_A2E_1001.sdf",
+      "size_bytes": 3215
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2ace_A_ACH_998.sdf",
+      "size_bytes": 908
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2ack_A_EDR_999.sdf",
+      "size_bytes": 1087
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2bag_A_GSG_1200.sdf",
+      "size_bytes": 1005
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2c4h_A_AT3_1540.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2c4h_A_AT3_1541.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2c58_A_AT3_1537.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2c58_A_ETM_1536.sdf",
+      "size_bytes": 660
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2c5f_A_CHH_1542.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2c5f_A_NWA_1541.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2c5g_A_ETM_1536.sdf",
+      "size_bytes": 660
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2c5g_A_ETM_1538.sdf",
+      "size_bytes": 660
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2cek_A_N8T_600.sdf",
+      "size_bytes": 3310
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2ckm_A_AA7_1536.sdf",
+      "size_bytes": 3228
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2cmf_A_F11_1536.sdf",
+      "size_bytes": 3062
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2j3q_A_TFL_1538.sdf",
+      "size_bytes": 1778
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2v96_A_CFQ_1536.sdf",
+      "size_bytes": 1835
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2v96_A_CFQ_1537.sdf",
+      "size_bytes": 1835
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2v96_B_CFQ_1536.sdf",
+      "size_bytes": 1835
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2v96_B_CFQ_1537.sdf",
+      "size_bytes": 1835
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2v97_A_CFQ_1537.sdf",
+      "size_bytes": 4176
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2v97_A_CFQ_1538.sdf",
+      "size_bytes": 4189
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2v97_B_CFQ_1536.sdf",
+      "size_bytes": 4280
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2v97_B_CFQ_1537.sdf",
+      "size_bytes": 4332
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2v98_A_CFQ_1537.sdf",
+      "size_bytes": 3955
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2v98_A_CFQ_1538.sdf",
+      "size_bytes": 4267
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2v98_B_CFQ_1536.sdf",
+      "size_bytes": 4189
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2v98_B_CFQ_1537.sdf",
+      "size_bytes": 4228
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vja_A_CCD_1540.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vja_A_CCD_1541.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vja_B_CCD_1539.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vja_B_CCD_1540.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vjb_A_CCD_1539.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vjb_A_CCD_1540.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vjb_B_CCD_1539.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vjb_B_CCD_1540.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vjc_A_CCD_1537.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vjc_A_CHH_1538.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vjc_B_CCD_1539.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vjc_B_CHH_1536.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vjd_A_CCD_1541.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vjd_A_CCD_1542.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vjd_B_CCD_1539.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vjd_B_CCD_1540.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2vq6_A_FP1_1536.sdf",
+      "size_bytes": 922
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2w6c_X_BM4_601.sdf",
+      "size_bytes": 2262
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2wfz_A_GD8_605.sdf",
+      "size_bytes": 908
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2wg0_A_GB_2540.sdf",
+      "size_bytes": 410
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2wg1_A_FP1_605.sdf",
+      "size_bytes": 921
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2wg1_A_GB_604.sdf",
+      "size_bytes": 409
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2wg2_A_GD8_2540.sdf",
+      "size_bytes": 909
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2xi4_A_AFT_1000.sdf",
+      "size_bytes": 2053
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/2xi4_B_AFT_1000.sdf",
+      "size_bytes": 2053
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/3i6m_A_G3X_1.sdf",
+      "size_bytes": 2548
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/3i6z_A_G6X_1.sdf",
+      "size_bytes": 3308
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/3zv7_A_NHG_1541.sdf",
+      "size_bytes": 1280
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/4tvk_A_TJH_605.sdf",
+      "size_bytes": 2799
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/4w63_A_HTB_605.sdf",
+      "size_bytes": 2882
+    }
+  ],
+  "job_id": "c17316cd",
+  "source": "warhead-hunter-job-runner",
+  "stored_at_utc": "2026-06-05T10:00:12.701924Z",
+  "stored_dir": "/home/jxs794/PROTAC_BUILDER/warhead_hunter/hunter_jobs/c17316cd"
+}

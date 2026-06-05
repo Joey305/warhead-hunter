@@ -1,0 +1,30 @@
+Ligand,Target,pdb_id,Chain,Residue_ID,basename,stage,timeout_sec,error_type,error_message
+03S,Acetylcholinesterase,5ehx,A,603,5ehx_A_03S_603,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=5 vs 3D=4
+03S,Acetylcholinesterase,5ei5,A,603,5ei5_A_03S_603,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=5 vs 3D=4
+1PG,Acetylcholinesterase,6fld,A,605,6fld_A_1PG_605,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=17 vs 3D=16
+8UQ,Acetylcholinesterase,7aiu,B,605,7aiu_B_8UQ_605,GRAPH_FULL,10,ITEM_TIMEOUT,ITEM_TIMEOUT (>10s) at GRAPH_FULL
+BM4,Acetylcholinesterase,2w6c,X,601,2w6c_X_BM4_601,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=41 vs 3D=26
+CFQ,Acetylcholinesterase,2v97,B,1536,2v97_B_CFQ_1536,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=21 vs 3D=42
+CFQ,Acetylcholinesterase,2v97,A,1537,2v97_A_CFQ_1537,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=21 vs 3D=42
+CFQ,Acetylcholinesterase,2v97,B,1537,2v97_B_CFQ_1537,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=21 vs 3D=42
+CFQ,Acetylcholinesterase,2v97,A,1538,2v97_A_CFQ_1538,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=21 vs 3D=42
+CFQ,Acetylcholinesterase,2v98,B,1536,2v98_B_CFQ_1536,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=21 vs 3D=42
+CFQ,Acetylcholinesterase,2v98,A,1537,2v98_A_CFQ_1537,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=21 vs 3D=42
+CFQ,Acetylcholinesterase,2v98,B,1537,2v98_B_CFQ_1537,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=21 vs 3D=42
+CFQ,Acetylcholinesterase,2v98,A,1538,2v98_A_CFQ_1538,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=21 vs 3D=42
+E1K,Acetylcholinesterase,6g1u,B,607,6g1u_B_E1K_607,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=17 vs 3D=34
+E1K,Acetylcholinesterase,6g1u,A,609,6g1u_A_E1K_609,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=17 vs 3D=34
+ELT,Acetylcholinesterase,6g4o,A,603,6g4o_A_ELT_603,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=9 vs 3D=8
+ELT,Acetylcholinesterase,6g4o,B,603,6g4o_B_ELT_603,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=9 vs 3D=8
+ELT,Acetylcholinesterase,6g4p,A,603,6g4p_A_ELT_603,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=9 vs 3D=8
+ELT,Acetylcholinesterase,6g4p,B,603,6g4p_B_ELT_603,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=9 vs 3D=8
+EMM,Acetylcholinesterase,1gqr,A,1999,1gqr_A_EMM_1999,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=7 vs 3D=6
+FBQ,Acetylcholinesterase,1hbj,A,1539,1hbj_A_FBQ_1539,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=29 vs 3D=28
+FW8,Acetylcholinesterase,6h14,B,609,6h14_B_FW8_609,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=46 vs 3D=92; GRAPH_FULL skipped: size>80
+FW8,Acetylcholinesterase,6h14,A,610,6h14_A_FW8_610,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=46 vs 3D=92; GRAPH_FULL skipped: size>80
+GB,Acetylcholinesterase,1cfj,A,999,1cfj_A_GB_999,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=5 vs 3D=4
+GB,Acetylcholinesterase,2wg0,A,2540,2wg0_A_GB_2540,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=5 vs 3D=4
+GB,Acetylcholinesterase,2wg1,A,604,2wg1_A_GB_604,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=5 vs 3D=4
+GSG,Acetylcholinesterase,2bag,A,1200,2bag_A_GSG_1200,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=28 vs 3D=11
+NWA,Acetylcholinesterase,2c5f,A,1541,2c5f_A_NWA_1541,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=11 vs 3D=10
+VX,Acetylcholinesterase,1vxr,A,999,1vxr_A_VX_999,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=7 vs 3D=6

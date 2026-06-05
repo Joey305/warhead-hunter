@@ -1,0 +1,831 @@
+protein,pdb,chain,ligand,MW,Name
+Acetylcholinesterase,1acj,A,THA,198.264,TACRINE
+Acetylcholinesterase,1acl,A,DME,258.486,DECAMETHONIUM ION
+Acetylcholinesterase,1amn,A,NAF,250.238,"M-(N,N,N-TRIMETHYLAMMONIO)-2,2,2-TRIFLUORO-1,1-DIHYDROXYETHYLBENZENE"
+Acetylcholinesterase,1aql,A,TCH,515.703,TAUROCHOLIC ACID
+Acetylcholinesterase,1aql,B,TCH,515.703,TAUROCHOLIC ACID
+Acetylcholinesterase,1ax9,A,EDR,166.24,EDROPHONIUM ION
+Acetylcholinesterase,1cfj,A,GB,96.022,METHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,1dx6,A,GNT,287.354,(-)-GALANTHAMINE
+Acetylcholinesterase,1e3q,A,EBW,406.603,"4-(5-{4-[DIMETHYL(PROP-2-ENYL)AMMONIO]PHENYL}-3-OXOPENTYL)-N,N-DIMETHYL-N-PROP-2-ENYLBENZENAMINIUM"
+Acetylcholinesterase,1e66,A,HUX,298.81,"3-CHLORO-9-ETHYL-6,7,8,9,10,11-HEXAHYDRO-7,11-METHANOCYCLOOCTA[B]QUINOLIN-12-AMINE"
+Acetylcholinesterase,1esd,A,VXA,79.015,METHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,1eve,A,E20,379.492,"1-BENZYL-4-[(5,6-DIMETHOXY-1-INDANON-2-YL)METHYL]PIPERIDINE"
+Acetylcholinesterase,1gpk,A,HUP,242.316,Huperzine A
+Acetylcholinesterase,1gpn,A,HUB,256.343,HUPERZINE B
+Acetylcholinesterase,1gqr,A,SAF,165.232,3-[(1S)-1-(DIMETHYLAMINO)ETHYL]PHENOL
+Acetylcholinesterase,1gqr,A,EMM,101.104,[METHYL(VINYL)AMINO]METHANOL
+Acetylcholinesterase,1gqs,A,SAF,165.232,3-[(1S)-1-(DIMETHYLAMINO)ETHYL]PHENOL
+Acetylcholinesterase,1h22,A,E10,466.659,"(S,S)-(-)-N,N'-DI-5'-[5',6',7',8'-TETRAHYDRO- 2'(1'H)-QUINOLYNYL]-1,10-DIAMINODECANE DIHYDROCHLORIDE"
+Acetylcholinesterase,1h23,A,E12,494.712,"(S,S)-(-)-N,N'-DI-5'-[5',6',7',8'-TETRAHYDRO- 2'(1'H)-QUINOLYNYL]-1,12-DIAMINODODECANE DIHYDROCHLORIDE"
+Acetylcholinesterase,1hbj,A,FBQ,426.428,"1-[3-({[(4-AMINO-5-FLUORO-2-METHYLQUINOLIN-3-YL)METHYL]THIO}METHYL)PHENYL]-2,2,2-TRIFLUOROETHANE-1,1-DIOL"
+Acetylcholinesterase,1j06,A,AE3,134.174,2-(2-ETHOXYETHOXY)ETHANOL
+Acetylcholinesterase,1j06,B,AE3,134.174,2-(2-ETHOXYETHOXY)ETHANOL
+Acetylcholinesterase,1j07,A,DCU,484.719,"3,8-DIAMINO-5,10'-(TRIMETHYLAMMONIUM)DECYL-6-PHENYL PHENANTHRIDINIUM"
+Acetylcholinesterase,1j07,B,DCU,484.719,"3,8-DIAMINO-5,10'-(TRIMETHYLAMMONIUM)DECYL-6-PHENYL PHENANTHRIDINIUM"
+Acetylcholinesterase,1jjb,A,PE7,342.449,1-DEOXY-1-THIO-HEPTAETHYLENE GLYCOL
+Acetylcholinesterase,1k4y,A,4PN,168.279,4-PIPERIDINO-PIPERIDINE
+Acetylcholinesterase,1maa,A,DME,258.486,DECAMETHONIUM ION
+Acetylcholinesterase,1maa,B,DME,258.486,DECAMETHONIUM ION
+Acetylcholinesterase,1maa,C,DME,258.486,DECAMETHONIUM ION
+Acetylcholinesterase,1maa,D,DME,258.486,DECAMETHONIUM ION
+Acetylcholinesterase,1mx1,A,THA,198.264,TACRINE
+Acetylcholinesterase,1mx1,B,THA,198.264,TACRINE
+Acetylcholinesterase,1mx1,C,THA,198.264,TACRINE
+Acetylcholinesterase,1mx1,D,THA,198.264,TACRINE
+Acetylcholinesterase,1mx1,E,THA,198.264,TACRINE
+Acetylcholinesterase,1mx1,F,THA,198.264,TACRINE
+Acetylcholinesterase,1mx5,A,HTQ,275.343,HOMOTROPINE
+Acetylcholinesterase,1mx5,B,HTQ,275.343,HOMOTROPINE
+Acetylcholinesterase,1mx5,C,HTQ,275.343,HOMOTROPINE
+Acetylcholinesterase,1mx5,D,HTQ,275.343,HOMOTROPINE
+Acetylcholinesterase,1mx5,E,HTQ,275.343,HOMOTROPINE
+Acetylcholinesterase,1mx5,F,HTQ,275.343,HOMOTROPINE
+Acetylcholinesterase,1mx9,A,NLX,342.409,"(5A,17R)-4,5-EPOXY-3,14-DIHYDROXY-17-METHYL-6-OXO-17-(2-PROPENYL)-MORPHINANIUM"
+Acetylcholinesterase,1mx9,B,NLX,342.409,"(5A,17R)-4,5-EPOXY-3,14-DIHYDROXY-17-METHYL-6-OXO-17-(2-PROPENYL)-MORPHINANIUM"
+Acetylcholinesterase,1mx9,C,NLX,342.409,"(5A,17R)-4,5-EPOXY-3,14-DIHYDROXY-17-METHYL-6-OXO-17-(2-PROPENYL)-MORPHINANIUM"
+Acetylcholinesterase,1mx9,D,NLX,342.409,"(5A,17R)-4,5-EPOXY-3,14-DIHYDROXY-17-METHYL-6-OXO-17-(2-PROPENYL)-MORPHINANIUM"
+Acetylcholinesterase,1mx9,E,NLX,342.409,"(5A,17R)-4,5-EPOXY-3,14-DIHYDROXY-17-METHYL-6-OXO-17-(2-PROPENYL)-MORPHINANIUM"
+Acetylcholinesterase,1mx9,F,NLX,342.409,"(5A,17R)-4,5-EPOXY-3,14-DIHYDROXY-17-METHYL-6-OXO-17-(2-PROPENYL)-MORPHINANIUM"
+Acetylcholinesterase,1mx9,G,NLX,342.409,"(5A,17R)-4,5-EPOXY-3,14-DIHYDROXY-17-METHYL-6-OXO-17-(2-PROPENYL)-MORPHINANIUM"
+Acetylcholinesterase,1mx9,H,NLX,342.409,"(5A,17R)-4,5-EPOXY-3,14-DIHYDROXY-17-METHYL-6-OXO-17-(2-PROPENYL)-MORPHINANIUM"
+Acetylcholinesterase,1mx9,I,NLX,342.409,"(5A,17R)-4,5-EPOXY-3,14-DIHYDROXY-17-METHYL-6-OXO-17-(2-PROPENYL)-MORPHINANIUM"
+Acetylcholinesterase,1mx9,J,NLX,342.409,"(5A,17R)-4,5-EPOXY-3,14-DIHYDROXY-17-METHYL-6-OXO-17-(2-PROPENYL)-MORPHINANIUM"
+Acetylcholinesterase,1mx9,K,NLX,342.409,"(5A,17R)-4,5-EPOXY-3,14-DIHYDROXY-17-METHYL-6-OXO-17-(2-PROPENYL)-MORPHINANIUM"
+Acetylcholinesterase,1mx9,L,NLX,342.409,"(5A,17R)-4,5-EPOXY-3,14-DIHYDROXY-17-METHYL-6-OXO-17-(2-PROPENYL)-MORPHINANIUM"
+Acetylcholinesterase,1n5m,A,GMN,510.816,"2,2',2""-[1,2,3-BENZENE-TRIYLTRIS(OXY)]TRIS[N,N,N-TRIETHYLETHANAMINIUM]"
+Acetylcholinesterase,1n5r,A,PRM,414.586,"3,8-DIAMINO-5[3-(DIETHYLMETHYLAMMONIO)PROPYL]-6-PHENYLPHENANTHRIDINIUM"
+Acetylcholinesterase,1oce,A,MF2,270.411,"CIS-2,6-DIMETHYLMORPHOLINOOCTYLCARBAMYLESEROLINE"
+Acetylcholinesterase,1odc,A,A8B,452.634,"N-QUINOLIN-4-YL-N'-(1,2,3,4-TETRAHYDROACRIDIN-9-YL)OCTANE-1,8-DIAMINE"
+Acetylcholinesterase,1p0i,A,BUA,88.105,butanoic acid
+Acetylcholinesterase,1p0m,A,CHT,104.171,CHOLINE ION
+Acetylcholinesterase,1p0p,A,VXA,79.015,METHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,1p0p,A,BCH,190.326,"2-(BUTYRYLSULFANYL)-N,N,N-TRIMETHYLETHANAMINIUM"
+Acetylcholinesterase,1p0q,A,VXA,79.015,METHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,1q83,A,TZ5,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-5-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,1q83,B,TZ5,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-5-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,1q84,A,TZ4,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-4-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,1q84,B,TZ4,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-4-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,1qti,A,GNT,287.354,(-)-GALANTHAMINE
+Acetylcholinesterase,1som,A,VXA,79.015,METHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,1thg,A,NDG,221.208,2-acetamido-2-deoxy-alpha-D-glucopyranose
+Acetylcholinesterase,1u65,A,CP0,586.678,"(4S)-4,11-DIETHYL-4-HYDROXY-3,14-DIOXO-3,4,12,14-TETRAHYDRO-1H-PYRANO[3',4':6,7]INDOLIZINO[1,2-B]QUINOLIN-9-YL 1,4'-BIPIPERIDINE-1'-CARBOXYLATE"
+Acetylcholinesterase,1ut6,A,A8N,327.507,"N-9-(1',2',3',4'-TETRAHYDROACRIDINYL)-1,8-DIAMINOOCTANE"
+Acetylcholinesterase,1vot,A,HUP,242.316,Huperzine A
+Acetylcholinesterase,1vxo,A,VXA,79.015,METHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,1vxr,A,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,1w4l,A,GL8,529.647,GALANTHAMINE DERIVATIVE
+Acetylcholinesterase,1w6r,A,GNT,287.354,(-)-GALANTHAMINE
+Acetylcholinesterase,1w76,A,GNT,287.354,(-)-GALANTHAMINE
+Acetylcholinesterase,1w76,B,GNT,287.354,(-)-GALANTHAMINE
+Acetylcholinesterase,1xlu,A,ISP,140.075,PHOSPHORYLISOPROPANE
+Acetylcholinesterase,1xlv,A,EFS,126.048,ETHYL DIHYDROGEN PHOSPHATE
+Acetylcholinesterase,1xlw,A,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,1yaj,A,BEZ,122.121,BENZOIC ACID
+Acetylcholinesterase,1yaj,B,BEZ,122.121,BENZOIC ACID
+Acetylcholinesterase,1yaj,C,BEZ,122.121,BENZOIC ACID
+Acetylcholinesterase,1yaj,D,BEZ,122.121,BENZOIC ACID
+Acetylcholinesterase,1yaj,E,BEZ,122.121,BENZOIC ACID
+Acetylcholinesterase,1yaj,F,BEZ,122.121,BENZOIC ACID
+Acetylcholinesterase,1yaj,G,BEZ,122.121,BENZOIC ACID
+Acetylcholinesterase,1yaj,H,BEZ,122.121,BENZOIC ACID
+Acetylcholinesterase,1yaj,I,BEZ,122.121,BENZOIC ACID
+Acetylcholinesterase,1yaj,J,BEZ,122.121,BENZOIC ACID
+Acetylcholinesterase,1yaj,K,BEZ,122.121,BENZOIC ACID
+Acetylcholinesterase,1yaj,L,BEZ,122.121,BENZOIC ACID
+Acetylcholinesterase,1zgb,A,A1E,500.718,"(5R)-5-{[10-(1,2,3,4-TETRAHYDROACRIDIN-9-YLAMINO)DECYL]AMINO}-5,6,7,8-TETRAHYDROQUINOLIN-2(1H)-ONE"
+Acetylcholinesterase,1zgc,A,A2E,500.718,"(5S)-5-{[10-(1,2,3,4-TETRAHYDROACRIDIN-9-YLAMINO)DECYL]AMINO}-5,6,7,8-TETRAHYDROQUINOLIN-2(1H)-ONE"
+Acetylcholinesterase,1zgc,B,A2E,500.718,"(5S)-5-{[10-(1,2,3,4-TETRAHYDROACRIDIN-9-YLAMINO)DECYL]AMINO}-5,6,7,8-TETRAHYDROQUINOLIN-2(1H)-ONE"
+Acetylcholinesterase,2ace,A,ACH,146.207,ACETYLCHOLINE
+Acetylcholinesterase,2ack,A,EDR,166.24,EDROPHONIUM ION
+Acetylcholinesterase,2aow,A,THA,198.264,TACRINE
+Acetylcholinesterase,2aow,B,THA,198.264,TACRINE
+Acetylcholinesterase,2aox,A,THA,198.264,TACRINE
+Acetylcholinesterase,2aox,B,THA,198.264,TACRINE
+Acetylcholinesterase,2bag,A,GSG,381.468,"1S,3AS,8AS-TRIMETHYL-1-OXIDO-1,2,3,3A,8,8A-HEXAHYDROPYRROLO[2,3-B]INDOL-5-YL 2-ETHYLPHENYLCARBAMATE"
+Acetylcholinesterase,2c0p,A,ATJ,110.049,ETHYL HYDROGEN PHOSPHONATE
+Acetylcholinesterase,2c0p,B,ATJ,110.049,ETHYL HYDROGEN PHOSPHONATE
+Acetylcholinesterase,2c0q,A,NTJ,137.117,"R-ETHYL N,N-DIMETHYLPHOSPHONAMIDATE"
+Acetylcholinesterase,2c0q,B,NTJ,137.117,"R-ETHYL N,N-DIMETHYLPHOSPHONAMIDATE"
+Acetylcholinesterase,2c4h,A,AT3,162.273,ACETYLTHIOCHOLINE
+Acetylcholinesterase,2c58,A,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,2c58,A,AT3,162.273,ACETYLTHIOCHOLINE
+Acetylcholinesterase,2c5f,A,NWA,162.25,"4,4-DIHYDROXY-N,N,N-TRIMETHYLPENTAN-1-AMINIUM"
+Acetylcholinesterase,2c5f,A,CHH,144.235,"N,N,N-TRIMETHYL-4-OXOPENTAN-1-AMINIUM"
+Acetylcholinesterase,2c5g,A,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,2cek,A,N8T,523.774,"N-[8-(1,2,3,4-TETRAHYDROACRIDIN-9-YLTHIO)OCTYL]-1,2,3,4-TETRAHYDROACRIDIN-9-AMINE"
+Acetylcholinesterase,2ckm,A,AA7,492.698,"N,N'-DI-1,2,3,4-TETRAHYDROACRIDIN-9-YLHEPTANE-1,7-DIAMINE"
+Acetylcholinesterase,2cmf,A,F11,464.644,"N,N'-DI-1,2,3,4-TETRAHYDROACRIDIN-9-YLPENTANE-1,5-DIAMINE"
+Acetylcholinesterase,2gyu,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,2gyu,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,2gyu,A,P4G,162.227,1-ETHOXY-2-(2-ETHOXYETHOXY)ETHANE
+Acetylcholinesterase,2gyv,A,HBP,342.435,"1,7-HEPTYLENE-BIS-N,N'-SYN-2-PYRIDINIUMALDOXIME"
+Acetylcholinesterase,2gyv,B,HBP,342.435,"1,7-HEPTYLENE-BIS-N,N'-SYN-2-PYRIDINIUMALDOXIME"
+Acetylcholinesterase,2gyv,B,P3G,250.332,"3,6,9,12,15-PENTAOXAHEPTADECANE"
+Acetylcholinesterase,2gyw,A,OBI,288.302,"1,1'-(OXYDIMETHYLENE)BIS(4-FORMYLPYRIDINIUM)DIOXIME"
+Acetylcholinesterase,2gyw,B,OBI,288.302,"1,1'-(OXYDIMETHYLENE)BIS(4-FORMYLPYRIDINIUM)DIOXIME"
+Acetylcholinesterase,2h7c,A,COA,767.534,COENZYME A
+Acetylcholinesterase,2h7c,B,COA,767.534,COENZYME A
+Acetylcholinesterase,2h7c,C,COA,767.534,COENZYME A
+Acetylcholinesterase,2h7c,D,COA,767.534,COENZYME A
+Acetylcholinesterase,2h7c,E,COA,767.534,COENZYME A
+Acetylcholinesterase,2h7c,F,COA,767.534,COENZYME A
+Acetylcholinesterase,2h9y,A,NAF,250.238,"M-(N,N,N-TRIMETHYLAMMONIO)-2,2,2-TRIFLUORO-1,1-DIHYDROXYETHYLBENZENE"
+Acetylcholinesterase,2h9y,B,NAF,250.238,"M-(N,N,N-TRIMETHYLAMMONIO)-2,2,2-TRIFLUORO-1,1-DIHYDROXYETHYLBENZENE"
+Acetylcholinesterase,2ha0,A,NWA,162.25,"4,4-DIHYDROXY-N,N,N-TRIMETHYLPENTAN-1-AMINIUM"
+Acetylcholinesterase,2ha0,B,NWA,162.25,"4,4-DIHYDROXY-N,N,N-TRIMETHYLPENTAN-1-AMINIUM"
+Acetylcholinesterase,2ha0,A,CHH,144.235,"N,N,N-TRIMETHYL-4-OXOPENTAN-1-AMINIUM"
+Acetylcholinesterase,2ha0,B,CHH,144.235,"N,N,N-TRIMETHYL-4-OXOPENTAN-1-AMINIUM"
+Acetylcholinesterase,2ha2,A,SCK,290.399,"2,2'-[(1,4-DIOXOBUTANE-1,4-DIYL)BIS(OXY)]BIS(N,N,N-TRIMETHYLETHANAMINIUM)"
+Acetylcholinesterase,2ha2,B,SCK,290.399,"2,2'-[(1,4-DIOXOBUTANE-1,4-DIYL)BIS(OXY)]BIS(N,N,N-TRIMETHYLETHANAMINIUM)"
+Acetylcholinesterase,2ha2,A,SCU,188.244,"N,N,N-TRIMETHYL-2-[(4-OXOBUTANOYL)OXY]ETHANAMINIUM"
+Acetylcholinesterase,2ha2,B,SCU,188.244,"N,N,N-TRIMETHYL-2-[(4-OXOBUTANOYL)OXY]ETHANAMINIUM"
+Acetylcholinesterase,2ha3,A,CHT,104.171,CHOLINE ION
+Acetylcholinesterase,2ha3,B,CHT,104.171,CHOLINE ION
+Acetylcholinesterase,2ha4,A,ACH,146.207,ACETYLCHOLINE
+Acetylcholinesterase,2ha4,B,ACH,146.207,ACETYLCHOLINE
+Acetylcholinesterase,2ha5,A,AT3,162.273,ACETYLTHIOCHOLINE
+Acetylcholinesterase,2ha5,B,AT3,162.273,ACETYLTHIOCHOLINE
+Acetylcholinesterase,2ha5,A,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,2ha5,B,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,2ha6,A,SCK,290.399,"2,2'-[(1,4-DIOXOBUTANE-1,4-DIYL)BIS(OXY)]BIS(N,N,N-TRIMETHYLETHANAMINIUM)"
+Acetylcholinesterase,2ha6,B,SCK,290.399,"2,2'-[(1,4-DIOXOBUTANE-1,4-DIYL)BIS(OXY)]BIS(N,N,N-TRIMETHYLETHANAMINIUM)"
+Acetylcholinesterase,2ha7,A,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,2ha7,B,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,2ha7,A,BUA,88.105,butanoic acid
+Acetylcholinesterase,2ha7,B,BUA,88.105,butanoic acid
+Acetylcholinesterase,2ha7,A,BCH,190.326,"2-(BUTYRYLSULFANYL)-N,N,N-TRIMETHYLETHANAMINIUM"
+Acetylcholinesterase,2hrq,A,GD7,164.182,"(1R)-1,2,2-TRIMETHYLPROPYL (R)-METHYLPHOSPHINATE"
+Acetylcholinesterase,2hrq,B,GD7,164.182,"(1R)-1,2,2-TRIMETHYLPROPYL (R)-METHYLPHOSPHINATE"
+Acetylcholinesterase,2hrq,C,GD7,164.182,"(1R)-1,2,2-TRIMETHYLPROPYL (R)-METHYLPHOSPHINATE"
+Acetylcholinesterase,2hrq,D,GD7,164.182,"(1R)-1,2,2-TRIMETHYLPROPYL (R)-METHYLPHOSPHINATE"
+Acetylcholinesterase,2hrq,E,GD7,164.182,"(1R)-1,2,2-TRIMETHYLPROPYL (R)-METHYLPHOSPHINATE"
+Acetylcholinesterase,2hrq,F,GD7,164.182,"(1R)-1,2,2-TRIMETHYLPROPYL (R)-METHYLPHOSPHINATE"
+Acetylcholinesterase,2j3q,A,TFL,285.384,"2-[4-(DIMETHYLAMINO)PHENYL]-6-HYDROXY-3-METHYL-1,3-BENZOTHIAZOL-3-IUM"
+Acetylcholinesterase,2j4c,A,BUA,88.105,butanoic acid
+Acetylcholinesterase,2jey,A,HLO,331.327,"1-[({2,4-BIS[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]-4-CARBAMOYLPYRIDINIUM"
+Acetylcholinesterase,2jey,B,HLO,331.327,"1-[({2,4-BIS[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]-4-CARBAMOYLPYRIDINIUM"
+Acetylcholinesterase,2jez,A,HLO,331.327,"1-[({2,4-BIS[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]-4-CARBAMOYLPYRIDINIUM"
+Acetylcholinesterase,2jez,B,HLO,331.327,"1-[({2,4-BIS[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]-4-CARBAMOYLPYRIDINIUM"
+Acetylcholinesterase,2jf0,A,HBP,342.435,"1,7-HEPTYLENE-BIS-N,N'-SYN-2-PYRIDINIUMALDOXIME"
+Acetylcholinesterase,2jf0,B,HBP,342.435,"1,7-HEPTYLENE-BIS-N,N'-SYN-2-PYRIDINIUMALDOXIME"
+Acetylcholinesterase,2jgi,B,AE3,134.174,2-(2-ETHOXYETHOXY)ETHANOL
+Acetylcholinesterase,2jgj,A,AE3,134.174,2-(2-ETHOXYETHOXY)ETHANOL
+Acetylcholinesterase,2jgl,B,P4G,162.227,1-ETHOXY-2-(2-ETHOXYETHOXY)ETHANE
+Acetylcholinesterase,2v96,A,CFQ,368.204,"1-(2-nitrophenyl)-2,2,2-trifluoroethyl]-arsenocholine"
+Acetylcholinesterase,2v96,B,CFQ,368.204,"1-(2-nitrophenyl)-2,2,2-trifluoroethyl]-arsenocholine"
+Acetylcholinesterase,2v97,A,CFQ,368.204,"1-(2-nitrophenyl)-2,2,2-trifluoroethyl]-arsenocholine"
+Acetylcholinesterase,2v97,B,CFQ,368.204,"1-(2-nitrophenyl)-2,2,2-trifluoroethyl]-arsenocholine"
+Acetylcholinesterase,2v98,A,CFQ,368.204,"1-(2-nitrophenyl)-2,2,2-trifluoroethyl]-arsenocholine"
+Acetylcholinesterase,2v98,B,CFQ,368.204,"1-(2-nitrophenyl)-2,2,2-trifluoroethyl]-arsenocholine"
+Acetylcholinesterase,2vja,A,CCD,146.25,"(4R)-4-HYDROXY-N,N,N-TRIMETHYLPENTAN-1-AMINIUM"
+Acetylcholinesterase,2vja,B,CCD,146.25,"(4R)-4-HYDROXY-N,N,N-TRIMETHYLPENTAN-1-AMINIUM"
+Acetylcholinesterase,2vjb,A,CCD,146.25,"(4R)-4-HYDROXY-N,N,N-TRIMETHYLPENTAN-1-AMINIUM"
+Acetylcholinesterase,2vjb,B,CCD,146.25,"(4R)-4-HYDROXY-N,N,N-TRIMETHYLPENTAN-1-AMINIUM"
+Acetylcholinesterase,2vjc,A,CCD,146.25,"(4R)-4-HYDROXY-N,N,N-TRIMETHYLPENTAN-1-AMINIUM"
+Acetylcholinesterase,2vjc,B,CCD,146.25,"(4R)-4-HYDROXY-N,N,N-TRIMETHYLPENTAN-1-AMINIUM"
+Acetylcholinesterase,2vjc,A,CHH,144.235,"N,N,N-TRIMETHYL-4-OXOPENTAN-1-AMINIUM"
+Acetylcholinesterase,2vjc,B,CHH,144.235,"N,N,N-TRIMETHYL-4-OXOPENTAN-1-AMINIUM"
+Acetylcholinesterase,2vjd,A,CCD,146.25,"(4R)-4-HYDROXY-N,N,N-TRIMETHYLPENTAN-1-AMINIUM"
+Acetylcholinesterase,2vjd,B,CCD,146.25,"(4R)-4-HYDROXY-N,N,N-TRIMETHYLPENTAN-1-AMINIUM"
+Acetylcholinesterase,2vq6,A,FP1,138.167,N-hydroxy-1-(1-methylpyridin-2(1H)-ylidene)methanamine
+Acetylcholinesterase,2w6c,X,BM4,562.869,3-[(3R)-3-ethyl-1-{9-[(3S)-3-ethyl-3-(3-hydroxyphenyl)azepan-1-yl]nonyl}azepan-3-yl]phenol
+Acetylcholinesterase,2wfz,A,GD8,164.182,"(1R)-1,2,2-TRIMETHYLPROPYL (S)-METHYLPHOSPHINATE"
+Acetylcholinesterase,2wg0,A,GB,96.022,METHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,2wg1,A,GB,96.022,METHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,2wg1,A,FP1,138.167,N-hydroxy-1-(1-methylpyridin-2(1H)-ylidene)methanamine
+Acetylcholinesterase,2wg2,A,GD8,164.182,"(1R)-1,2,2-TRIMETHYLPROPYL (S)-METHYLPHOSPHINATE"
+Acetylcholinesterase,2whp,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,2whp,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,2whq,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,2whq,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,2whr,A,K27,286.329,4-carbamoyl-1-(3-{4-[(E)-(hydroxyimino)methyl]pyridinium-1-yl}propyl)pyridinium
+Acetylcholinesterase,2whr,B,K27,286.329,4-carbamoyl-1-(3-{4-[(E)-(hydroxyimino)methyl]pyridinium-1-yl}propyl)pyridinium
+Acetylcholinesterase,2whr,A,P4G,162.227,1-ETHOXY-2-(2-ETHOXYETHOXY)ETHANE
+Acetylcholinesterase,2whr,B,P4G,162.227,1-ETHOXY-2-(2-ETHOXYETHOXY)ETHANE
+Acetylcholinesterase,2whr,B,PE4,354.436,2-{2-[2-(2-{2-[2-(2-ETHOXY-ETHOXY)-ETHOXY]-ETHOXY}-ETHOXY)-ETHOXY]-ETHOXY}-ETHANOL
+Acetylcholinesterase,2wid,A,TUN,181.17,ETHYL HYDROGEN DIETHYLAMIDOPHOSPHATE
+Acetylcholinesterase,2wif,A,TN6,153.117,diethylphosphoramidic acid
+Acetylcholinesterase,2wig,A,TC3,139.09,ETHYL HYDROGEN METHYLAMIDOPHOSPHATE
+Acetylcholinesterase,2wij,A,TN7,153.117,ethyl hydrogen ethylamidophosphate
+Acetylcholinesterase,2wik,A,TC5,167.143,ETHYL HYDROGEN PROPYLAMIDOPHOSPHATE
+Acetylcholinesterase,2wil,A,TCX,125.064,ethylphosphoramidic acid
+Acetylcholinesterase,2wil,B,TCX,125.064,ethylphosphoramidic acid
+Acetylcholinesterase,2wls,A,X13,352.619,"N,N,N-trimethyl-13-[(methylsulfonyl)sulfanyl]tridecan-1-aminium"
+Acetylcholinesterase,2wls,B,X13,352.619,"N,N,N-trimethyl-13-[(methylsulfonyl)sulfanyl]tridecan-1-aminium"
+Acetylcholinesterase,2wsl,A,EFS,126.048,ETHYL DIHYDROGEN PHOSPHATE
+Acetylcholinesterase,2wu3,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,2wu3,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,2wu4,A,HBP,342.435,"1,7-HEPTYLENE-BIS-N,N'-SYN-2-PYRIDINIUMALDOXIME"
+Acetylcholinesterase,2wu4,B,HBP,342.435,"1,7-HEPTYLENE-BIS-N,N'-SYN-2-PYRIDINIUMALDOXIME"
+Acetylcholinesterase,2xi4,A,AFT,312.274,AFLATOXIN B1
+Acetylcholinesterase,2xi4,B,AFT,312.274,AFLATOXIN B1
+Acetylcholinesterase,2xmd,A,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,2xmg,A,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,2xqf,A,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,2xqg,A,VR,152.129,2-METHYLPROPYL HYDROGEN (R)-METHYLPHOSPHONATE
+Acetylcholinesterase,2xqi,A,CVX,152.129,O-BUTLYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,2xqj,A,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,2xqk,A,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,2xud,A,DME,258.486,DECAMETHONIUM ION
+Acetylcholinesterase,2xuf,A,TZ4,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-4-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xuf,B,TZ4,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-4-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xug,A,TZ4,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-4-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xug,B,TZ4,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-4-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xuh,A,TZ4,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-4-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xuh,B,TZ4,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-4-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xui,A,TZ5,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-5-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xui,B,TZ5,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-5-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xuj,A,TZ5,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-5-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xuj,B,TZ5,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-5-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xuk,A,TZ5,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-5-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xuk,B,TZ5,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-5-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xuo,A,TZ4,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-4-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xuo,B,TZ4,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-4-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xup,A,TZ5,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-5-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xup,B,TZ5,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-5-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xuq,A,TZ4,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-4-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2xuq,B,TZ4,661.86,"3,8-DIAMINO-6-PHENYL-5-[6-[1-[2-[(1,2,3,4-TETRAHYDRO-9-ACRIDINYL)AMINO]ETHYL]-1H-1,2,3-TRIAZOL-4-YL]HEXYL]-PHENANTHRIDINIUM"
+Acetylcholinesterase,2y2u,B,P33,326.383,"3,6,9,12,15,18-HEXAOXAICOSANE-1,20-DIOL"
+Acetylcholinesterase,2y2v,A,ME2,148.2,1-ETHOXY-2-(2-METHOXYETHOXY)ETHANE
+Acetylcholinesterase,2y2v,B,ME2,148.2,1-ETHOXY-2-(2-METHOXYETHOXY)ETHANE
+Acetylcholinesterase,2y2v,A,P15,296.357,"2,5,8,11,14,17-HEXAOXANONADECAN-19-OL"
+Acetylcholinesterase,2y2v,B,ETX,90.121,2-ETHOXYETHANOL
+Acetylcholinesterase,3i6m,A,G3X,398.538,"(4aS,6R,8aS)-3-methoxy-11-(3-piperidin-1-ylpropyl)-5,6,9,10,11,12-hexahydro-4aH-[1]benzofuro[3a,3,2-ef][2]benzazepin-6-ol"
+Acetylcholinesterase,3i6z,A,G6X,538.655,"2-{6-[(4aS,6R,8aS)-6-hydroxy-3-methoxy-5,6,9,10-tetrahydro-4aH-[1]benzofuro[3a,3,2-ef][2]benzazepin-11(12H)-yl]hexyl}-1 ,2-benzisothiazol-3(2H)-one 1,1-dioxide"
+Acetylcholinesterase,3k9b,A,WW2,180.157,cyclohexyl (S)-methylphosphonofluoridoate
+Acetylcholinesterase,3k9b,B,WW2,180.157,cyclohexyl (S)-methylphosphonofluoridoate
+Acetylcholinesterase,3k9b,C,WW2,180.157,cyclohexyl (S)-methylphosphonofluoridoate
+Acetylcholinesterase,3m3d,A,XE,131.293,XENON
+Acetylcholinesterase,3o9m,A,BEZ,122.121,BENZOIC ACID
+Acetylcholinesterase,3o9m,B,BEZ,122.121,BENZOIC ACID
+Acetylcholinesterase,3zlt,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,3zlt,B,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,3zlt,A,PE4,354.436,2-{2-[2-(2-{2-[2-(2-ETHOXY-ETHOXY)-ETHOXY]-ETHOXY}-ETHOXY)-ETHOXY]-ETHOXY}-ETHANOL
+Acetylcholinesterase,3zlu,A,1KA,104.105,(2-hydroxyethoxy)acetaldehyde
+Acetylcholinesterase,3zlu,B,1KA,104.105,(2-hydroxyethoxy)acetaldehyde
+Acetylcholinesterase,3zlu,A,P15,296.357,"2,5,8,11,14,17-HEXAOXANONADECAN-19-OL"
+Acetylcholinesterase,3zlv,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,3zlv,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,3zlv,A,1KA,104.105,(2-hydroxyethoxy)acetaldehyde
+Acetylcholinesterase,3zlv,B,1KA,104.105,(2-hydroxyethoxy)acetaldehyde
+Acetylcholinesterase,3zlv,B,PE4,354.436,2-{2-[2-(2-{2-[2-(2-ETHOXY-ETHOXY)-ETHOXY]-ETHOXY}-ETHOXY)-ETHOXY]-ETHOXY}-ETHANOL
+Acetylcholinesterase,3zv7,A,NHG,190.242,BIS-NORESEROLINE
+Acetylcholinesterase,4a16,A,H34,423.938,"(1-{4-[(7S,11S)-12-AMINO-3-CHLORO-6,7,10,11-TETRAHYDRO-7,11-METHANOCYCLOOCTA[B]QUINOLIN-9-YL]BUTYL}-1H-1,2,3-TRIAZOL-4-YL)METHANOL"
+Acetylcholinesterase,4a16,B,H34,423.938,"(1-{4-[(7S,11S)-12-AMINO-3-CHLORO-6,7,10,11-TETRAHYDRO-7,11-METHANOCYCLOOCTA[B]QUINOLIN-9-YL]BUTYL}-1H-1,2,3-TRIAZOL-4-YL)METHANOL"
+Acetylcholinesterase,4a16,C,H34,423.938,"(1-{4-[(7S,11S)-12-AMINO-3-CHLORO-6,7,10,11-TETRAHYDRO-7,11-METHANOCYCLOOCTA[B]QUINOLIN-9-YL]BUTYL}-1H-1,2,3-TRIAZOL-4-YL)METHANOL"
+Acetylcholinesterase,4a16,D,H34,423.938,"(1-{4-[(7S,11S)-12-AMINO-3-CHLORO-6,7,10,11-TETRAHYDRO-7,11-METHANOCYCLOOCTA[B]QUINOLIN-9-YL]BUTYL}-1H-1,2,3-TRIAZOL-4-YL)METHANOL"
+Acetylcholinesterase,4a23,A,C56,350.413,4-(DIMETHYLAMINO)-N-{[(2R)-1-ETHYLPYRROLIDIN-2-YL]METHYL}-2-METHOXY-5-NITROBENZAMIDE
+Acetylcholinesterase,4a23,B,C56,350.413,4-(DIMETHYLAMINO)-N-{[(2R)-1-ETHYLPYRROLIDIN-2-YL]METHYL}-2-METHOXY-5-NITROBENZAMIDE
+Acetylcholinesterase,4a23,A,C57,350.413,4-(DIMETHYLAMINO)-N-{[(2S)-1-ETHYLPYRROLIDIN-2-YL]METHYL}-2-METHOXY-5-NITROBENZAMIDE
+Acetylcholinesterase,4a23,B,C57,350.413,4-(DIMETHYLAMINO)-N-{[(2S)-1-ETHYLPYRROLIDIN-2-YL]METHYL}-2-METHOXY-5-NITROBENZAMIDE
+Acetylcholinesterase,4a23,B,PE4,354.436,2-{2-[2-(2-{2-[2-(2-ETHOXY-ETHOXY)-ETHOXY]-ETHOXY}-ETHOXY)-ETHOXY]-ETHOXY}-ETHANOL
+Acetylcholinesterase,4aqd,A,BAL,89.093,BETA-ALANINE
+Acetylcholinesterase,4aqd,B,BAL,89.093,BETA-ALANINE
+Acetylcholinesterase,4ara,A,C56,350.413,4-(DIMETHYLAMINO)-N-{[(2R)-1-ETHYLPYRROLIDIN-2-YL]METHYL}-2-METHOXY-5-NITROBENZAMIDE
+Acetylcholinesterase,4ara,B,C56,350.413,4-(DIMETHYLAMINO)-N-{[(2R)-1-ETHYLPYRROLIDIN-2-YL]METHYL}-2-METHOXY-5-NITROBENZAMIDE
+Acetylcholinesterase,4arb,A,C57,350.413,4-(DIMETHYLAMINO)-N-{[(2S)-1-ETHYLPYRROLIDIN-2-YL]METHYL}-2-METHOXY-5-NITROBENZAMIDE
+Acetylcholinesterase,4arb,B,C57,350.413,4-(DIMETHYLAMINO)-N-{[(2S)-1-ETHYLPYRROLIDIN-2-YL]METHYL}-2-METHOXY-5-NITROBENZAMIDE
+Acetylcholinesterase,4axb,A,FP1,138.167,N-hydroxy-1-(1-methylpyridin-2(1H)-ylidene)methanamine
+Acetylcholinesterase,4b0o,A,15F,344.643,"1-BENZYL-4-({[(1E)-2,2,2-TRICHLOROETHANIMIDOYL]OXY}METHYL)PYRIDINIUM"
+Acetylcholinesterase,4b0p,A,MF5,317.234,"1-(1-methylpyridin-1-ium-2-yl)-N-[[2,3,4,5,6-pentakis(fluoranyl)phenyl]methoxy]methanimine"
+Acetylcholinesterase,4b7z,A,Q4Q,284.418,N-[2-(diethylamino)ethyl]-1-(4-methylphenyl)methanesulfonamide
+Acetylcholinesterase,4b7z,B,Q4Q,284.418,N-[2-(diethylamino)ethyl]-1-(4-methylphenyl)methanesulfonamide
+Acetylcholinesterase,4b80,A,A36,288.381,N-[2-(diethylamino)ethyl]-1-(4-fluorophenyl)methanesulfonamide
+Acetylcholinesterase,4b80,B,A36,288.381,N-[2-(diethylamino)ethyl]-1-(4-fluorophenyl)methanesulfonamide
+Acetylcholinesterase,4b80,B,P4C,324.367,O-ACETALDEHYDYL-HEXAETHYLENE GLYCOL
+Acetylcholinesterase,4b81,A,ZN4,304.836,1-(4-chlorophenyl)-N-[2-(diethylamino)ethyl]methanesulfonamide
+Acetylcholinesterase,4b81,B,ZN4,304.836,1-(4-chlorophenyl)-N-[2-(diethylamino)ethyl]methanesulfonamide
+Acetylcholinesterase,4b82,A,B3Z,274.355,N-[2-(diethylamino)ethyl]-2-fluoranyl-benzenesulfonamide
+Acetylcholinesterase,4b82,B,B3Z,274.355,N-[2-(diethylamino)ethyl]-2-fluoranyl-benzenesulfonamide
+Acetylcholinesterase,4b83,A,B3V,286.39,N-[2-(diethylamino)ethyl]-3-methoxy-benzenesulfonamide
+Acetylcholinesterase,4b83,B,B3V,286.39,N-[2-(diethylamino)ethyl]-3-methoxy-benzenesulfonamide
+Acetylcholinesterase,4b83,A,PE8,370.436,"3,6,9,12,15,18,21-HEPTAOXATRICOSANE-1,23-DIOL"
+Acetylcholinesterase,4b84,A,P3G,250.332,"3,6,9,12,15-PENTAOXAHEPTADECANE"
+Acetylcholinesterase,4b84,B,P3G,250.332,"3,6,9,12,15-PENTAOXAHEPTADECANE"
+Acetylcholinesterase,4b84,A,Z5K,324.362,N-[2-(diethylamino)ethyl]-3-(trifluoromethyl)benzenesulfonamide
+Acetylcholinesterase,4b84,B,Z5K,324.362,N-[2-(diethylamino)ethyl]-3-(trifluoromethyl)benzenesulfonamide
+Acetylcholinesterase,4b85,A,B3W,290.809,4-chloranyl-N-[2-(diethylamino)ethyl]benzenesulfonamide
+Acetylcholinesterase,4b85,B,B3W,290.809,4-chloranyl-N-[2-(diethylamino)ethyl]benzenesulfonamide
+Acetylcholinesterase,4bbz,A,4OJ,188.118,(2-methylphenyl) dihydrogen phosphate
+Acetylcholinesterase,4bc0,A,4OJ,188.118,(2-methylphenyl) dihydrogen phosphate
+Acetylcholinesterase,4bc0,B,4OJ,188.118,(2-methylphenyl) dihydrogen phosphate
+Acetylcholinesterase,4bc0,C,4OJ,188.118,(2-methylphenyl) dihydrogen phosphate
+Acetylcholinesterase,4bc0,D,4OJ,188.118,(2-methylphenyl) dihydrogen phosphate
+Acetylcholinesterase,4bc1,A,TQV,294.24,O-CRESYL-SALIGENIN PHOSPHATE
+Acetylcholinesterase,4bc1,B,TQV,294.24,O-CRESYL-SALIGENIN PHOSPHATE
+Acetylcholinesterase,4bc1,C,TQV,294.24,O-CRESYL-SALIGENIN PHOSPHATE
+Acetylcholinesterase,4bc1,D,TQV,294.24,O-CRESYL-SALIGENIN PHOSPHATE
+Acetylcholinesterase,4bds,A,THA,198.264,TACRINE
+Acetylcholinesterase,4bds,A,FPK,143.141,1-formyl-L-proline
+Acetylcholinesterase,4bdt,A,HUW,314.809,HUPRINE W
+Acetylcholinesterase,4be4,A,DIO,88.105,"1,4-DIETHYLENE DIOXIDE"
+Acetylcholinesterase,4btl,A,5GZ,427.902,4-(2-chloro-6-nitrophenoxy)-N-[2-(diethylamino)ethyl]benzenesulfonamide
+Acetylcholinesterase,4btl,B,5GZ,427.902,4-(2-chloro-6-nitrophenoxy)-N-[2-(diethylamino)ethyl]benzenesulfonamide
+Acetylcholinesterase,4btl,A,PE3,634.751,"3,6,9,12,15,18,21,24,27,30,33,36,39-TRIDECAOXAHENTETRACONTANE-1,41-DIOL"
+Acetylcholinesterase,4btl,B,PE3,634.751,"3,6,9,12,15,18,21,24,27,30,33,36,39-TRIDECAOXAHENTETRACONTANE-1,41-DIOL"
+Acetylcholinesterase,4ey4,B,PE8,370.436,"3,6,9,12,15,18,21-HEPTAOXATRICOSANE-1,23-DIOL"
+Acetylcholinesterase,4ey5,A,HUP,242.316,Huperzine A
+Acetylcholinesterase,4ey5,B,HUP,242.316,Huperzine A
+Acetylcholinesterase,4ey6,A,GNT,287.354,(-)-GALANTHAMINE
+Acetylcholinesterase,4ey6,B,GNT,287.354,(-)-GALANTHAMINE
+Acetylcholinesterase,4ey6,B,PE8,370.436,"3,6,9,12,15,18,21-HEPTAOXATRICOSANE-1,23-DIOL"
+Acetylcholinesterase,4ey7,A,E20,379.492,"1-BENZYL-4-[(5,6-DIMETHOXY-1-INDANON-2-YL)METHYL]PIPERIDINE"
+Acetylcholinesterase,4ey7,B,E20,379.492,"1-BENZYL-4-[(5,6-DIMETHOXY-1-INDANON-2-YL)METHYL]PIPERIDINE"
+Acetylcholinesterase,4m0e,A,1YL,278.302,Dihydrotanshinone I
+Acetylcholinesterase,4m0e,B,1YL,278.302,Dihydrotanshinone I
+Acetylcholinesterase,4m0f,A,1YK,526.575,territrem B
+Acetylcholinesterase,4m0f,B,1YK,526.575,territrem B
+Acetylcholinesterase,4tpk,A,3F9,442.592,"N-{[(3R)-1-(2,3-dihydro-1H-inden-2-yl)piperidin-3-yl]methyl}-N-(2-methoxyethyl)naphthalene-2-carboxamide"
+Acetylcholinesterase,4tpk,B,3F9,442.592,"N-{[(3R)-1-(2,3-dihydro-1H-inden-2-yl)piperidin-3-yl]methyl}-N-(2-methoxyethyl)naphthalene-2-carboxamide"
+Acetylcholinesterase,4tvk,A,TJH,447.913,"2-({2-[(6-chloro-1,2,3,4-tetrahydroacridin-9-yl)amino]ethyl}amino)-5-hydroxynaphthalene-1,4-dione"
+Acetylcholinesterase,4w63,A,HTB,441.608,"N-(1-benzofuran-2-ylmethyl)-N'-(1,2,3,4-tetrahydroacridin-9-yl)heptane-1,7-diamine"
+Acetylcholinesterase,4x3c,A,TNH,402.532,"N-[6-(1,2,3,4-tetrahydroacridin-9-ylamino)hexyl]pyridine-3-carboxamide"
+Acetylcholinesterase,4xii,A,40V,504.577,"N-{[(3R)-1-(2,3-dihydro-1H-inden-2-yl)piperidin-3-yl]methyl}-8-hydroxy-N-(2-methoxyethyl)-5-nitroquinoline-7-carboxamide"
+Acetylcholinesterase,4xii,B,40V,504.577,"N-{[(3R)-1-(2,3-dihydro-1H-inden-2-yl)piperidin-3-yl]methyl}-8-hydroxy-N-(2-methoxyethyl)-5-nitroquinoline-7-carboxamide"
+Acetylcholinesterase,4xii,A,FUL,164.156,beta-L-fucopyranose
+Acetylcholinesterase,4xii,B,FUL,164.156,beta-L-fucopyranose
+Acetylcholinesterase,4xyp,A,MBT,284.399,"3,7-BIS(DIMETHYLAMINO)PHENOTHIAZIN-5-IUM"
+Acetylcholinesterase,5bwb,A,4VV,322.406,"(Z,Z)-[heptane-1,7-diylbis(1H-imidazol-1-yl-2-ylidene)]bis(N-hydroxymethanamine)"
+Acetylcholinesterase,5bwc,A,HBP,342.435,"1,7-HEPTYLENE-BIS-N,N'-SYN-2-PYRIDINIUMALDOXIME"
+Acetylcholinesterase,5dlp,A,MBT,284.399,"3,7-BIS(DIMETHYLAMINO)PHENOTHIAZIN-5-IUM"
+Acetylcholinesterase,5dtj,A,5G8,299.196,"1-[5-(2,4-dichlorophenoxy)pentyl]-1H-imidazole"
+Acetylcholinesterase,5dtj,B,5G8,299.196,"1-[5-(2,4-dichlorophenoxy)pentyl]-1H-imidazole"
+Acetylcholinesterase,5dyt,A,5HB,408.556,N-{[(3R)-1-benzylpiperidin-3-yl]methyl}-N-methylnaphthalene-2-sulfonamide
+Acetylcholinesterase,5dyt,B,5HB,408.556,N-{[(3R)-1-benzylpiperidin-3-yl]methyl}-N-methylnaphthalene-2-sulfonamide
+Acetylcholinesterase,5dyt,B,FUL,164.156,beta-L-fucopyranose
+Acetylcholinesterase,5dyw,A,5HF,452.609,N-{[(3S)-1-benzylpiperidin-3-yl]methyl}-N-(2-methoxyethyl)naphthalene-2-sulfonamide
+Acetylcholinesterase,5dyw,B,5HF,452.609,N-{[(3S)-1-benzylpiperidin-3-yl]methyl}-N-(2-methoxyethyl)naphthalene-2-sulfonamide
+Acetylcholinesterase,5dyy,A,5HH,394.53,N-{[(3R)-1-benzylpiperidin-3-yl]methyl}naphthalene-2-sulfonamide
+Acetylcholinesterase,5dyy,B,5HH,394.53,N-{[(3R)-1-benzylpiperidin-3-yl]methyl}naphthalene-2-sulfonamide
+Acetylcholinesterase,5e2i,A,DME,258.486,DECAMETHONIUM ION
+Acetylcholinesterase,5e4j,A,DME,258.486,DECAMETHONIUM ION
+Acetylcholinesterase,5e4t,A,MBT,284.399,"3,7-BIS(DIMETHYLAMINO)PHENOTHIAZIN-5-IUM"
+Acetylcholinesterase,5ehn,A,5NZ,647.834,"6-phenyl-5-[5-[3-[2-(1,2,3,4-tetrahydroacridin-9-ylamino)ethyl]-1,2,3-triazol-4-yl]pentyl]phenanthridin-5-ium-3,8-diamine"
+Acetylcholinesterase,5ehn,B,5NZ,647.834,"6-phenyl-5-[5-[3-[2-(1,2,3,4-tetrahydroacridin-9-ylamino)ethyl]-1,2,3-triazol-4-yl]pentyl]phenanthridin-5-ium-3,8-diamine"
+Acetylcholinesterase,5ehq,A,5O2,647.834,"6-phenyl-5-[5-[1-[2-(1,2,3,4-tetrahydroacridin-9-ylamino)ethyl]-1,2,3-triazol-4-yl]pentyl]phenanthridin-5-ium-3,8-diamine"
+Acetylcholinesterase,5ehq,B,5O2,647.834,"6-phenyl-5-[5-[1-[2-(1,2,3,4-tetrahydroacridin-9-ylamino)ethyl]-1,2,3-triazol-4-yl]pentyl]phenanthridin-5-ium-3,8-diamine"
+Acetylcholinesterase,5ehx,A,03S,96.106,methanesulfonic acid
+Acetylcholinesterase,5ehx,A,AE4,266.331,"3,6,9,12,15-PENTAOXAHEPTADECAN-1-OL"
+Acetylcholinesterase,5ehz,A,5NZ,647.834,"6-phenyl-5-[5-[3-[2-(1,2,3,4-tetrahydroacridin-9-ylamino)ethyl]-1,2,3-triazol-4-yl]pentyl]phenanthridin-5-ium-3,8-diamine"
+Acetylcholinesterase,5ehz,B,5NZ,647.834,"6-phenyl-5-[5-[3-[2-(1,2,3,4-tetrahydroacridin-9-ylamino)ethyl]-1,2,3-triazol-4-yl]pentyl]phenanthridin-5-ium-3,8-diamine"
+Acetylcholinesterase,5ei5,A,03S,96.106,methanesulfonic acid
+Acetylcholinesterase,5ei5,A,AA7,492.698,"N,N'-DI-1,2,3,4-TETRAHYDROACRIDIN-9-YLHEPTANE-1,7-DIAMINE"
+Acetylcholinesterase,5eia,A,5O2,647.834,"6-phenyl-5-[5-[1-[2-(1,2,3,4-tetrahydroacridin-9-ylamino)ethyl]-1,2,3-triazol-4-yl]pentyl]phenanthridin-5-ium-3,8-diamine"
+Acetylcholinesterase,5eia,B,5O2,647.834,"6-phenyl-5-[5-[1-[2-(1,2,3,4-tetrahydroacridin-9-ylamino)ethyl]-1,2,3-triazol-4-yl]pentyl]phenanthridin-5-ium-3,8-diamine"
+Acetylcholinesterase,5eie,A,TZ2,267.329,"~{N}-(2-azidoethyl)-1,2,3,4-tetrahydroacridin-9-amine"
+Acetylcholinesterase,5eie,B,TZ2,267.329,"~{N}-(2-azidoethyl)-1,2,3,4-tetrahydroacridin-9-amine"
+Acetylcholinesterase,5eie,B,7PG,384.462,"2,5,8,11,14,17,20,23-OCTAOXAPENTACOSAN-25-OL"
+Acetylcholinesterase,5eih,A,TZ2,267.329,"~{N}-(2-azidoethyl)-1,2,3,4-tetrahydroacridin-9-amine"
+Acetylcholinesterase,5eih,B,TZ2,267.329,"~{N}-(2-azidoethyl)-1,2,3,4-tetrahydroacridin-9-amine"
+Acetylcholinesterase,5eih,A,PZ5,380.505,"5-hept-6-ynyl-6-phenyl-phenanthridin-5-ium-3,8-diamine"
+Acetylcholinesterase,5fkj,A,G0W,680.877,"1,3-BIS[5(DIETHYL-O-NITROBENZYLAMMONIUM)PENTYL]-6-METHYLURACIL"
+Acetylcholinesterase,5fkj,B,G0W,680.877,"1,3-BIS[5(DIETHYL-O-NITROBENZYLAMMONIUM)PENTYL]-6-METHYLURACIL"
+Acetylcholinesterase,5fkj,C,G0W,680.877,"1,3-BIS[5(DIETHYL-O-NITROBENZYLAMMONIUM)PENTYL]-6-METHYLURACIL"
+Acetylcholinesterase,5fkj,D,G0W,680.877,"1,3-BIS[5(DIETHYL-O-NITROBENZYLAMMONIUM)PENTYL]-6-METHYLURACIL"
+Acetylcholinesterase,5foq,A,GC8,393.307,"2-(2,4-dichlorophenoxy)-N-[4-(1-piperidinylmethyl)phenyl]acetamide"
+Acetylcholinesterase,5foq,B,GC8,393.307,"2-(2,4-dichlorophenoxy)-N-[4-(1-piperidinylmethyl)phenyl]acetamide"
+Acetylcholinesterase,5foq,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,5foq,B,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,5foq,B,P15,296.357,"2,5,8,11,14,17-HEXAOXANONADECAN-19-OL"
+Acetylcholinesterase,5fpp,A,AE3,134.174,2-(2-ETHOXYETHOXY)ETHANOL
+Acetylcholinesterase,5fpp,B,AE3,134.174,2-(2-ETHOXYETHOXY)ETHANOL
+Acetylcholinesterase,5fpp,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,5fpp,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,5fum,A,SOF,407.548,2-(biphenyl-4-yloxy)-1-[4-(4-ethylpiperazin-1-yl)piperidin-1-yl]ethanone
+Acetylcholinesterase,5fum,B,SOF,407.548,2-(biphenyl-4-yloxy)-1-[4-(4-ethylpiperazin-1-yl)piperidin-1-yl]ethanone
+Acetylcholinesterase,5fum,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,5fum,B,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,5fum,B,PE4,354.436,2-{2-[2-(2-{2-[2-(2-ETHOXY-ETHOXY)-ETHOXY]-ETHOXY}-ETHOXY)-ETHOXY]-ETHOXY}-ETHANOL
+Acetylcholinesterase,5hf5,A,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,5hf5,B,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,5hf5,B,PE8,370.436,"3,6,9,12,15,18,21-HEPTAOXATRICOSANE-1,23-DIOL"
+Acetylcholinesterase,5hf6,A,EFS,126.048,ETHYL DIHYDROGEN PHOSPHATE
+Acetylcholinesterase,5hf6,B,EFS,126.048,ETHYL DIHYDROGEN PHOSPHATE
+Acetylcholinesterase,5hf8,A,EFS,126.048,ETHYL DIHYDROGEN PHOSPHATE
+Acetylcholinesterase,5hf8,B,EFS,126.048,ETHYL DIHYDROGEN PHOSPHATE
+Acetylcholinesterase,5hf8,A,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,5hf8,B,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,5hf9,A,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,5hf9,B,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,5hf9,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,5hf9,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,5hf9,B,PE8,370.436,"3,6,9,12,15,18,21-HEPTAOXATRICOSANE-1,23-DIOL"
+Acetylcholinesterase,5hfa,A,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,5hfa,B,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,5hfa,A,FP1,138.167,N-hydroxy-1-(1-methylpyridin-2(1H)-ylidene)methanamine
+Acetylcholinesterase,5hfa,B,FP1,138.167,N-hydroxy-1-(1-methylpyridin-2(1H)-ylidene)methanamine
+Acetylcholinesterase,5hq3,A,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,5hq3,B,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,5ih7,A,OMI,147.174,"1-methyl-1,2-dihydro-3H-indol-3-one"
+Acetylcholinesterase,5ivi,A,DPF,154.102,DIETHYL HYDROGEN PHOSPHATE
+Acetylcholinesterase,5ivk,A,DPF,154.102,DIETHYL HYDROGEN PHOSPHATE
+Acetylcholinesterase,5k5e,A,6QS,484.586,"[(2~{R})-oxolan-2-yl]methyl 4-(9-ethylcarbazol-3-yl)-2-methyl-5-oxidanylidene-4,6,7,8-tetrahydro-1~{H}-quinoline-3-carboxylate"
+Acetylcholinesterase,5k5e,B,6QS,484.586,"[(2~{R})-oxolan-2-yl]methyl 4-(9-ethylcarbazol-3-yl)-2-methyl-5-oxidanylidene-4,6,7,8-tetrahydro-1~{H}-quinoline-3-carboxylate"
+Acetylcholinesterase,5lkr,A,FUL,164.156,beta-L-fucopyranose
+Acetylcholinesterase,5lkr,A,6YC,364.481,~{N}-(2-methoxyethyl)-~{N}-[[(3~{S})-1-prop-2-ynylpiperidin-3-yl]methyl]naphthalene-2-carboxamide
+Acetylcholinesterase,5lkr,B,6YC,364.481,~{N}-(2-methoxyethyl)-~{N}-[[(3~{S})-1-prop-2-ynylpiperidin-3-yl]methyl]naphthalene-2-carboxamide
+Acetylcholinesterase,5nap,A,DZ7,377.476,"(2~{E})-5,6-dimethoxy-2-[[1-(phenylmethyl)piperidin-4-yl]methylidene]-3~{H}-inden-1-one"
+Acetylcholinesterase,5nau,A,DZ0,347.45,(2~{E})-5-methoxy-2-[[1-(phenylmethyl)piperidin-4-yl]methylidene]-3~{H}-inden-1-one
+Acetylcholinesterase,5nn0,A,92H,455.634,"~{N}-[[(3~{R})-1-(2,3-dihydro-1~{H}-inden-2-yl)piperidin-3-yl]methyl]-~{N}-[2-(dimethylamino)ethyl]naphthalene-2-carboxamide"
+Acetylcholinesterase,5nn0,A,1PG,252.305,2-(2-{2-[2-(2-METHOXY-ETHOXY)-ETHOXY]-ETHOXY}-ETHOXY)-ETHANOL
+Acetylcholinesterase,5nuu,A,9A5,518.093,"(2~{S})-2-azanyl-~{N}-[6-[(6-chloranyl-1,2,3,4-tetrahydroacridin-9-yl)amino]hexyl]-3-(1~{H}-indol-3-yl)propanamide"
+Acetylcholinesterase,5ov9,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,5ov9,A,ETX,90.121,2-ETHOXYETHANOL
+Acetylcholinesterase,5ov9,B,ETX,90.121,2-ETHOXYETHANOL
+Acetylcholinesterase,5ov9,A,CVI,372.526,CRYSTAL VIOLET
+Acetylcholinesterase,5ov9,B,CVI,372.526,CRYSTAL VIOLET
+Acetylcholinesterase,5ov9,B,AE3,134.174,2-(2-ETHOXYETHOXY)ETHANOL
+Acetylcholinesterase,5ov9,B,PE4,354.436,2-{2-[2-(2-{2-[2-(2-ETHOXY-ETHOXY)-ETHOXY]-ETHOXY}-ETHOXY)-ETHOXY]-ETHOXY}-ETHANOL
+Acetylcholinesterase,6ary,A,BT7,218.244,"(1S)-2,2-difluoro-1-[1-(pentan-3-yl)-1H-pyrazol-4-yl]ethan-1-ol"
+Acetylcholinesterase,6ary,B,BT7,218.244,"(1S)-2,2-difluoro-1-[1-(pentan-3-yl)-1H-pyrazol-4-yl]ethan-1-ol"
+Acetylcholinesterase,6cqt,A,7PE,310.384,2-(2-(2-(2-(2-(2-ETHOXYETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHANOL
+Acetylcholinesterase,6cqt,B,7PE,310.384,2-(2-(2-(2-(2-(2-ETHOXYETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHANOL
+Acetylcholinesterase,6cqt,A,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,6cqt,B,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,6cqu,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6cqu,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6cqu,A,7PE,310.384,2-(2-(2-(2-(2-(2-ETHOXYETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHANOL
+Acetylcholinesterase,6cqv,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6cqv,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6cqv,A,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,6cqv,B,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,6cqw,A,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,6cqw,B,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,6cqw,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6cqw,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6cqx,A,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,6cqx,B,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,6cqx,A,7PE,310.384,2-(2-(2-(2-(2-(2-ETHOXYETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHANOL
+Acetylcholinesterase,6cqy,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6cqy,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6cqy,A,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,6cqy,B,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,6cqz,A,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,6cqz,B,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,6e1t,A,HLV,227.259,"2-[(dibenzo[b,d]furan-2-yl)oxy]ethan-1-amine"
+Acetylcholinesterase,6ep4,A,DME,258.486,DECAMETHONIUM ION
+Acetylcholinesterase,6eqp,A,BUW,312.472,R-ethopropazine
+Acetylcholinesterase,6eqq,A,H19,314.832,huprine 19
+Acetylcholinesterase,6esj,A,PRM,414.586,"3,8-DIAMINO-5[3-(DIETHYLMETHYLAMMONIO)PROPYL]-6-PHENYLPHENANTHRIDINIUM"
+Acetylcholinesterase,6esj,B,PRM,414.586,"3,8-DIAMINO-5[3-(DIETHYLMETHYLAMMONIO)PROPYL]-6-PHENYLPHENANTHRIDINIUM"
+Acetylcholinesterase,6esy,A,TFX,283.411,"2-[4-(dimethylamino)phenyl]-3,6-dimethyl-1,3-benzothiazol-3-ium"
+Acetylcholinesterase,6esy,B,TFX,283.411,"2-[4-(dimethylamino)phenyl]-3,6-dimethyl-1,3-benzothiazol-3-ium"
+Acetylcholinesterase,6euc,A,RM0,293.361,2-[(~{E})-hydroxyiminomethyl]-6-(5-morpholin-4-ylpentyl)pyridin-3-ol
+Acetylcholinesterase,6ewk,A,RM0,293.361,2-[(~{E})-hydroxyiminomethyl]-6-(5-morpholin-4-ylpentyl)pyridin-3-ol
+Acetylcholinesterase,6eyf,A,BY2,266.336,[3-[(1~{R})-1-(dimethylamino)ethyl]-4-oxidanyl-phenyl] ~{N}-ethyl-~{N}-methyl-carbamate
+Acetylcholinesterase,6ezg,A,C6K,410.936,1-(7-chloranyl-4-methoxy-1~{H}-indol-5-yl)-3-[1-(phenylmethyl)piperidin-4-yl]propan-1-one
+Acetylcholinesterase,6ezg,B,C6K,410.936,1-(7-chloranyl-4-methoxy-1~{H}-indol-5-yl)-3-[1-(phenylmethyl)piperidin-4-yl]propan-1-one
+Acetylcholinesterase,6ezh,A,C6H,416.984,1-(7-chloranyl-4-methoxy-1~{H}-indol-5-yl)-3-[1-(cyclohexylmethyl)piperidin-4-yl]propan-1-one
+Acetylcholinesterase,6ezh,B,C6H,416.984,1-(7-chloranyl-4-methoxy-1~{H}-indol-5-yl)-3-[1-(cyclohexylmethyl)piperidin-4-yl]propan-1-one
+Acetylcholinesterase,6f25,A,CVZ,620.739,"3-[(~{E})-5-[ethyl-[(2-nitrophenyl)methyl]amino]pent-1-enyl]-1-[5-[ethyl-[(2-nitrophenyl)methyl]amino]pentyl]-6-methyl-pyrimidine-2,4-dione"
+Acetylcholinesterase,6f25,B,CVZ,620.739,"3-[(~{E})-5-[ethyl-[(2-nitrophenyl)methyl]amino]pent-1-enyl]-1-[5-[ethyl-[(2-nitrophenyl)methyl]amino]pentyl]-6-methyl-pyrimidine-2,4-dione"
+Acetylcholinesterase,6f7q,A,CWQ,473.63,"2-[[(3~{R})-1-(2,3-dihydro-1~{H}-inden-2-yl)piperidin-3-yl]methyl-(8-oxidanylquinolin-2-yl)carbonyl-amino]ethyl-dimethyl-azanium"
+Acetylcholinesterase,6f7q,B,CWQ,473.63,"2-[[(3~{R})-1-(2,3-dihydro-1~{H}-inden-2-yl)piperidin-3-yl]methyl-(8-oxidanylquinolin-2-yl)carbonyl-amino]ethyl-dimethyl-azanium"
+Acetylcholinesterase,6fld,A,DQ5,390.478,"2-[(~{E})-hydroxyiminomethyl]-6-[4-(1,2,3,4-tetrahydroacridin-9-ylamino)butyl]pyridin-3-ol"
+Acetylcholinesterase,6fld,A,1PG,252.305,2-(2-{2-[2-(2-METHOXY-ETHOXY)-ETHOXY]-ETHOXY}-ETHOXY)-ETHANOL
+Acetylcholinesterase,6fqn,A,E2W,426.939,"6-[4-[(7-chloranyl-1,2,3,4-tetrahydroacridin-9-yl)amino]butyl]-2-[(oxidanylamino)methyl]pyridin-3-ol"
+Acetylcholinesterase,6fsd,A,E5H,352.47,2-(4-phenylphenoxy)-~{N}-(3-piperidin-1-ylpropyl)ethanamide
+Acetylcholinesterase,6fsd,B,E5H,352.47,2-(4-phenylphenoxy)-~{N}-(3-piperidin-1-ylpropyl)ethanamide
+Acetylcholinesterase,6fsd,A,TOE,164.2,2-[2-(2-METHOXY-ETHOXY)-ETHOXY]-ETHOXYL
+Acetylcholinesterase,6fsd,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,6fsd,B,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,6fsd,B,1PG,252.305,2-(2-{2-[2-(2-METHOXY-ETHOXY)-ETHOXY]-ETHOXY}-ETHOXY)-ETHANOL
+Acetylcholinesterase,6fse,A,E5K,437.574,1-[4-(4-ethylpiperazin-1-yl)piperidin-1-yl]-2-[4-(4-methoxyphenyl)phenoxy]ethanone
+Acetylcholinesterase,6fse,B,E5K,437.574,1-[4-(4-ethylpiperazin-1-yl)piperidin-1-yl]-2-[4-(4-methoxyphenyl)phenoxy]ethanone
+Acetylcholinesterase,6fse,A,1PG,252.305,2-(2-{2-[2-(2-METHOXY-ETHOXY)-ETHOXY]-ETHOXY}-ETHOXY)-ETHANOL
+Acetylcholinesterase,6fse,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,6fse,B,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,6g17,A,NTJ,137.117,"R-ETHYL N,N-DIMETHYLPHOSPHONAMIDATE"
+Acetylcholinesterase,6g1u,A,E1K,247.743,"6-chloranyl-10-methyl-1,2,3,4-tetrahydroacridin-10-ium-9-amine"
+Acetylcholinesterase,6g1u,B,E1K,247.743,"6-chloranyl-10-methyl-1,2,3,4-tetrahydroacridin-10-ium-9-amine"
+Acetylcholinesterase,6g1v,A,E1N,313.844,"12-Amino-3-chloro-6,7,10,11-tetrahydro-5,9-dimethyl-7,11-methanocycloocta[b]quinolin-5-ium"
+Acetylcholinesterase,6g1v,B,E1N,313.844,"12-Amino-3-chloro-6,7,10,11-tetrahydro-5,9-dimethyl-7,11-methanocycloocta[b]quinolin-5-ium"
+Acetylcholinesterase,6g1w,A,E0Z,516.979,"2-[1-[2-[(3-chloranylacridin-9-yl)amino]ethyl]-1,2,3-triazol-4-yl]-~{N}-[(3-methoxy-4-oxidanyl-phenyl)methyl]ethanamide"
+Acetylcholinesterase,6g1w,B,E0Z,516.979,"2-[1-[2-[(3-chloranylacridin-9-yl)amino]ethyl]-1,2,3-triazol-4-yl]-~{N}-[(3-methoxy-4-oxidanyl-phenyl)methyl]ethanamide"
+Acetylcholinesterase,6g4m,A,DQ5,390.478,"2-[(~{E})-hydroxyiminomethyl]-6-[4-(1,2,3,4-tetrahydroacridin-9-ylamino)butyl]pyridin-3-ol"
+Acetylcholinesterase,6g4m,B,DQ5,390.478,"2-[(~{E})-hydroxyiminomethyl]-6-[4-(1,2,3,4-tetrahydroacridin-9-ylamino)butyl]pyridin-3-ol"
+Acetylcholinesterase,6g4n,A,E2W,426.939,"6-[4-[(7-chloranyl-1,2,3,4-tetrahydroacridin-9-yl)amino]butyl]-2-[(oxidanylamino)methyl]pyridin-3-ol"
+Acetylcholinesterase,6g4n,B,E2W,426.939,"6-[4-[(7-chloranyl-1,2,3,4-tetrahydroacridin-9-yl)amino]butyl]-2-[(oxidanylamino)methyl]pyridin-3-ol"
+Acetylcholinesterase,6g4o,A,ELT,153.117,"ethoxy-~{N},~{N}-dimethyl-phosphonamidic acid"
+Acetylcholinesterase,6g4o,B,ELT,153.117,"ethoxy-~{N},~{N}-dimethyl-phosphonamidic acid"
+Acetylcholinesterase,6g4o,A,DQ5,390.478,"2-[(~{E})-hydroxyiminomethyl]-6-[4-(1,2,3,4-tetrahydroacridin-9-ylamino)butyl]pyridin-3-ol"
+Acetylcholinesterase,6g4p,A,ELT,153.117,"ethoxy-~{N},~{N}-dimethyl-phosphonamidic acid"
+Acetylcholinesterase,6g4p,B,ELT,153.117,"ethoxy-~{N},~{N}-dimethyl-phosphonamidic acid"
+Acetylcholinesterase,6g4p,A,JDS,424.923,"6-[4-[(7-chloranyl-1,2,3,4-tetrahydroacridin-9-yl)amino]butyl]-2-[(~{Z})-hydroxyiminomethyl]pyridin-3-ol"
+Acetylcholinesterase,6g4p,B,JDS,424.923,"6-[4-[(7-chloranyl-1,2,3,4-tetrahydroacridin-9-yl)amino]butyl]-2-[(~{Z})-hydroxyiminomethyl]pyridin-3-ol"
+Acetylcholinesterase,6h12,A,FJK,659.78,"1-[4-[[1-[2-(1,2,3,4,4~{a},9~{a}-hexahydroacridin-9-ylamino)ethyl]-1,2,3-triazol-4-yl]methoxymethyl]pyridin-2-yl]-3-[(10~{b}~{R})-6-oxidanylidene-2,3,4,10~{b}-tetrahydro-1~{H}-pyrido[2,1-a]isoindol-10-yl]urea"
+Acetylcholinesterase,6h12,B,FJK,659.78,"1-[4-[[1-[2-(1,2,3,4,4~{a},9~{a}-hexahydroacridin-9-ylamino)ethyl]-1,2,3-triazol-4-yl]methoxymethyl]pyridin-2-yl]-3-[(10~{b}~{R})-6-oxidanylidene-2,3,4,10~{b}-tetrahydro-1~{H}-pyrido[2,1-a]isoindol-10-yl]urea"
+Acetylcholinesterase,6h13,A,FJN,673.83,"[1-[2-(1,2,3,4,4~{a},9~{a}-hexahydroacridin-9-ylamino)ethyl]-1,2,3-triazol-4-yl]methyl-[[2-[[(10~{b}~{S})-6-oxidanylidene-2,3,4,10~{b}-tetrahydro-1~{H}-pyrido[2,1-a]isoindol-10-yl]carbamoylamino]pyridin-4-yl]methyl]-methyl-azanium"
+Acetylcholinesterase,6h13,B,FJN,673.83,"[1-[2-(1,2,3,4,4~{a},9~{a}-hexahydroacridin-9-ylamino)ethyl]-1,2,3-triazol-4-yl]methyl-[[2-[[(10~{b}~{S})-6-oxidanylidene-2,3,4,10~{b}-tetrahydro-1~{H}-pyrido[2,1-a]isoindol-10-yl]carbamoylamino]pyridin-4-yl]methyl]-methyl-azanium"
+Acetylcholinesterase,6h14,A,FW8,613.711,"1-[(10~{b}~{S})-6-oxidanylidene-2,3,4,10~{b}-tetrahydro-1~{H}-pyrido[2,1-a]isoindol-10-yl]-3-[4-[1-[2-(1,2,3,4-tetrahydroacridin-9-ylamino)ethyl]-1,2,3-triazol-4-yl]pyridin-2-yl]urea"
+Acetylcholinesterase,6h14,B,FW8,613.711,"1-[(10~{b}~{S})-6-oxidanylidene-2,3,4,10~{b}-tetrahydro-1~{H}-pyrido[2,1-a]isoindol-10-yl]-3-[4-[1-[2-(1,2,3,4-tetrahydroacridin-9-ylamino)ethyl]-1,2,3-triazol-4-yl]pyridin-2-yl]urea"
+Acetylcholinesterase,6i0b,A,9A5,518.093,"(2~{S})-2-azanyl-~{N}-[6-[(6-chloranyl-1,2,3,4-tetrahydroacridin-9-yl)amino]hexyl]-3-(1~{H}-indol-3-yl)propanamide"
+Acetylcholinesterase,6i0c,A,GZ5,518.093,"(2~{R})-2-azanyl-~{N}-[6-[(6-chloranyl-1,2,3,4-tetrahydroacridin-9-yl)amino]hexyl]-3-(1~{H}-indol-3-yl)propanamide"
+Acetylcholinesterase,6nea,A,HLO,331.327,"1-[({2,4-BIS[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]-4-CARBAMOYLPYRIDINIUM"
+Acetylcholinesterase,6nea,B,HLO,331.327,"1-[({2,4-BIS[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]-4-CARBAMOYLPYRIDINIUM"
+Acetylcholinesterase,6ntg,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6ntg,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6ntg,A,L1M,206.222,ethyl (R)-N-[(1E)-1-(diethylamino)ethylidene]phosphonamidate
+Acetylcholinesterase,6ntg,B,L1M,206.222,ethyl (R)-N-[(1E)-1-(diethylamino)ethylidene]phosphonamidate
+Acetylcholinesterase,6nth,A,L0S,206.222,methyl (R)-N-[(1E)-1-(diethylamino)ethylidene]-P-methylphosphonamidate
+Acetylcholinesterase,6nth,B,L0S,206.222,methyl (R)-N-[(1E)-1-(diethylamino)ethylidene]-P-methylphosphonamidate
+Acetylcholinesterase,6ntk,A,7PE,310.384,2-(2-(2-(2-(2-(2-ETHOXYETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHANOL
+Acetylcholinesterase,6ntk,B,7PE,310.384,2-(2-(2-(2-(2-(2-ETHOXYETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHANOL
+Acetylcholinesterase,6ntk,A,L0S,206.222,methyl (R)-N-[(1E)-1-(diethylamino)ethylidene]-P-methylphosphonamidate
+Acetylcholinesterase,6ntk,B,L0S,206.222,methyl (R)-N-[(1E)-1-(diethylamino)ethylidene]-P-methylphosphonamidate
+Acetylcholinesterase,6ntl,A,7PE,310.384,2-(2-(2-(2-(2-(2-ETHOXYETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHANOL
+Acetylcholinesterase,6ntl,A,L1M,206.222,ethyl (R)-N-[(1E)-1-(diethylamino)ethylidene]phosphonamidate
+Acetylcholinesterase,6ntl,B,L1M,206.222,ethyl (R)-N-[(1E)-1-(diethylamino)ethylidene]phosphonamidate
+Acetylcholinesterase,6ntm,A,L0S,206.222,methyl (R)-N-[(1E)-1-(diethylamino)ethylidene]-P-methylphosphonamidate
+Acetylcholinesterase,6ntm,B,L0S,206.222,methyl (R)-N-[(1E)-1-(diethylamino)ethylidene]-P-methylphosphonamidate
+Acetylcholinesterase,6ntm,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6ntm,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6ntn,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6ntn,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6ntn,A,L2Y,194.187,(S)-N-[(1E)-1-(diethylamino)ethylidene]-P-methylphosphonamidic fluoride
+Acetylcholinesterase,6ntn,B,L2Y,194.187,(S)-N-[(1E)-1-(diethylamino)ethylidene]-P-methylphosphonamidic fluoride
+Acetylcholinesterase,6nto,A,L2Y,194.187,(S)-N-[(1E)-1-(diethylamino)ethylidene]-P-methylphosphonamidic fluoride
+Acetylcholinesterase,6nto,B,L2Y,194.187,(S)-N-[(1E)-1-(diethylamino)ethylidene]-P-methylphosphonamidic fluoride
+Acetylcholinesterase,6nto,B,7PE,310.384,2-(2-(2-(2-(2-(2-ETHOXYETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHANOL
+Acetylcholinesterase,6o4w,A,E20,379.492,"1-BENZYL-4-[(5,6-DIMETHOXY-1-INDANON-2-YL)METHYL]PIPERIDINE"
+Acetylcholinesterase,6o4w,B,E20,379.492,"1-BENZYL-4-[(5,6-DIMETHOXY-1-INDANON-2-YL)METHYL]PIPERIDINE"
+Acetylcholinesterase,6o4x,A,AA,195.24,9-AMINOACRIDINE
+Acetylcholinesterase,6o4x,B,AA,195.24,9-AMINOACRIDINE
+Acetylcholinesterase,6o50,A,EBW,406.603,"4-(5-{4-[DIMETHYL(PROP-2-ENYL)AMMONIO]PHENYL}-3-OXOPENTYL)-N,N-DIMETHYL-N-PROP-2-ENYLBENZENAMINIUM"
+Acetylcholinesterase,6o50,B,EBW,406.603,"4-(5-{4-[DIMETHYL(PROP-2-ENYL)AMMONIO]PHENYL}-3-OXOPENTYL)-N,N-DIMETHYL-N-PROP-2-ENYLBENZENAMINIUM"
+Acetylcholinesterase,6o52,A,EBW,406.603,"4-(5-{4-[DIMETHYL(PROP-2-ENYL)AMMONIO]PHENYL}-3-OXOPENTYL)-N,N-DIMETHYL-N-PROP-2-ENYLBENZENAMINIUM"
+Acetylcholinesterase,6o52,B,EBW,406.603,"4-(5-{4-[DIMETHYL(PROP-2-ENYL)AMMONIO]PHENYL}-3-OXOPENTYL)-N,N-DIMETHYL-N-PROP-2-ENYLBENZENAMINIUM"
+Acetylcholinesterase,6o5r,A,LND,274.298,4-carbamoyl-1-(3-{2-[(E)-(hydroxyimino)methyl]-1H-imidazol-1-yl}propyl)pyridin-1-ium
+Acetylcholinesterase,6o5r,B,LND,274.298,4-carbamoyl-1-(3-{2-[(E)-(hydroxyimino)methyl]-1H-imidazol-1-yl}propyl)pyridin-1-ium
+Acetylcholinesterase,6o5s,A,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,6o5s,B,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,6o5s,A,LND,274.298,4-carbamoyl-1-(3-{2-[(E)-(hydroxyimino)methyl]-1H-imidazol-1-yl}propyl)pyridin-1-ium
+Acetylcholinesterase,6o5s,B,LND,274.298,4-carbamoyl-1-(3-{2-[(E)-(hydroxyimino)methyl]-1H-imidazol-1-yl}propyl)pyridin-1-ium
+Acetylcholinesterase,6o5v,A,LND,274.298,4-carbamoyl-1-(3-{2-[(E)-(hydroxyimino)methyl]-1H-imidazol-1-yl}propyl)pyridin-1-ium
+Acetylcholinesterase,6o5v,B,LND,274.298,4-carbamoyl-1-(3-{2-[(E)-(hydroxyimino)methyl]-1H-imidazol-1-yl}propyl)pyridin-1-ium
+Acetylcholinesterase,6o66,A,LND,274.298,4-carbamoyl-1-(3-{2-[(E)-(hydroxyimino)methyl]-1H-imidazol-1-yl}propyl)pyridin-1-ium
+Acetylcholinesterase,6o66,B,LND,274.298,4-carbamoyl-1-(3-{2-[(E)-(hydroxyimino)methyl]-1H-imidazol-1-yl}propyl)pyridin-1-ium
+Acetylcholinesterase,6qaa,A,HUN,384.578,butyl-[(2~{S})-1-(2-cycloheptylethylamino)-3-(1~{H}-indol-3-yl)-1-oxidanylidene-propan-2-yl]azanium
+Acetylcholinesterase,6qab,A,HUQ,412.631,butyl-[(2~{S})-1-(2-cycloheptylethylamino)-3-(1~{H}-indol-3-yl)-1-oxidanylidene-propan-2-yl]-dimethyl-azanium
+Acetylcholinesterase,6qac,A,HUT,397.597,(2~{S})-2-(butylamino)-~{N}-(3-cycloheptylpropyl)-3-(1~{H}-indol-3-yl)propanamide
+Acetylcholinesterase,6qad,A,HUZ,412.611,(2~{S})-2-(butylamino)-~{N}-[2-[4-(dimethylamino)cyclohexyl]ethyl]-3-(1~{H}-indol-3-yl)propanamide
+Acetylcholinesterase,6qae,A,HUK,399.656,butyl-[(2~{S})-1-[2-cycloheptylethyl(methyl)azaniumyl]-3-(1~{H}-indol-3-yl)propan-2-yl]-methyl-azanium
+Acetylcholinesterase,6r6v,A,JU5,651.861,"~{N}-[[(3~{S})-1-[[2-[7-(diethylamino)-2-oxidanylidene-chromen-3-yl]-1,3-thiazol-4-yl]methyl]piperidin-3-yl]methyl]-~{N}-[2-(dimethylamino)ethyl]naphthalene-2-carboxamide"
+Acetylcholinesterase,6r6w,A,JUB,671.809,"1-{2-[{[(1R,3S)-1-benzylpiperidin-1-ium-3-yl]methyl}(naphthalene-2-sulfonyl)amino]ethyl}-4-(7-nitro-2,1,3-benzoxadiazol-4-yl)piperazin-1-ium"
+Acetylcholinesterase,6rua,B,KJT,776.059,"diethyl-[6-[[2-[2-[2-[naphthalen-2-ylsulfonyl-[[(3~{R})-1-(phenylmethyl)piperidin-3-yl]methyl]amino]ethoxy]ethoxy]ethylamino]-oxidanyl-methyl]-7-oxidanylidene-1,3,4,4~{a},5,6,8,8~{a}-octahydronaphthalen-2-ylidene]azanium"
+Acetylcholinesterase,6sam,A,L3H,337.435,"[(3~{S})-1-(2,3-dihydro-1~{H}-inden-2-yl)piperidin-1-ium-3-yl] ~{N}-phenylcarbamate"
+Acetylcholinesterase,6t9p,A,MXB,367.405,"(R,E)-2-(hydroxyimino)-N-(3-(4-((2-methyl-1H-imidazol-1-yl)methyl)-1H-1,2,3-triazol-1-yl)-1-phenylpropyl)acetamide"
+Acetylcholinesterase,6t9s,A,MXK,367.405,"(2~{E})-2-hydroxyimino-~{N}-[(1~{S})-3-[4-[(2-methylimidazol-1-yl)methyl]-1,2,3-triazol-1-yl]-1-phenyl-propyl]ethanamid e"
+Acetylcholinesterase,6td2,A,N2K,338.389,~{N}-[2-(diethylamino)ethyl]-1-[4-(trifluoromethyl)phenyl]methanesulfonamide
+Acetylcholinesterase,6td2,B,N2K,338.389,~{N}-[2-(diethylamino)ethyl]-1-[4-(trifluoromethyl)phenyl]methanesulfonamide
+Acetylcholinesterase,6td2,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,6td2,B,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,6td2,A,PE4,354.436,2-{2-[2-(2-{2-[2-(2-ETHOXY-ETHOXY)-ETHOXY]-ETHOXY}-ETHOXY)-ETHOXY]-ETHOXY}-ETHANOL
+Acetylcholinesterase,6td2,B,ETE,208.252,2-{2-[2-2-(METHOXY-ETHOXY)-ETHOXY]-ETHOXY}-ETHANOL
+Acetylcholinesterase,6tt0,A,N9T,436.5,"(1~{R},3~{S})-~{N}-(6,7-dimethoxy-2-oxidanylidene-chromen-3-yl)-3-[(phenylmethyl)amino]cyclohexane-1-carboxamide"
+Acetylcholinesterase,6u34,A,PQV,213.277,(2E)-N-[2-(azepan-1-yl)ethyl]-2-(hydroxyimino)acetamide
+Acetylcholinesterase,6u34,B,PQV,213.277,(2E)-N-[2-(azepan-1-yl)ethyl]-2-(hydroxyimino)acetamide
+Acetylcholinesterase,6u37,A,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,6u37,B,VX,124.076,O-ETHYLMETHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,6u37,A,PQV,213.277,(2E)-N-[2-(azepan-1-yl)ethyl]-2-(hydroxyimino)acetamide
+Acetylcholinesterase,6u37,B,PQV,213.277,(2E)-N-[2-(azepan-1-yl)ethyl]-2-(hydroxyimino)acetamide
+Acetylcholinesterase,6u3p,A,PQY,328.367,"(2E,2'E)-N,N'-[1,4-diazepane-1,4-diyldi(ethane-2,1-diyl)]bis[2-(hydroxyimino)acetamide]"
+Acetylcholinesterase,6uqv,A,BUA,88.105,butanoic acid
+Acetylcholinesterase,6uqw,A,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,6uqw,B,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,6uqx,A,QFJ,176.3,propionylthiocholine
+Acetylcholinesterase,6uqx,B,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,6uqy,A,AT3,162.273,ACETYLTHIOCHOLINE
+Acetylcholinesterase,6uqy,B,AT3,162.273,ACETYLTHIOCHOLINE
+Acetylcholinesterase,6uqz,A,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,6uqz,B,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,6ur0,A,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,6ur0,B,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,6ur1,A,AT3,162.273,ACETYLTHIOCHOLINE
+Acetylcholinesterase,6ur1,B,AT3,162.273,ACETYLTHIOCHOLINE
+Acetylcholinesterase,6wuv,A,ELT,153.117,"ethoxy-~{N},~{N}-dimethyl-phosphonamidic acid"
+Acetylcholinesterase,6wuv,B,ELT,153.117,"ethoxy-~{N},~{N}-dimethyl-phosphonamidic acid"
+Acetylcholinesterase,6wuy,A,ELT,153.117,"ethoxy-~{N},~{N}-dimethyl-phosphonamidic acid"
+Acetylcholinesterase,6wuy,B,ELT,153.117,"ethoxy-~{N},~{N}-dimethyl-phosphonamidic acid"
+Acetylcholinesterase,6wuy,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6wuy,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6wuz,A,UCJ,138.102,propan-2-yl hydrogen (S)-methylphosphonate
+Acetylcholinesterase,6wuz,B,UCJ,138.102,propan-2-yl hydrogen (S)-methylphosphonate
+Acetylcholinesterase,6wuz,B,7PE,310.384,2-(2-(2-(2-(2-(2-ETHOXYETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHANOL
+Acetylcholinesterase,6wv1,A,7PE,310.384,2-(2-(2-(2-(2-(2-ETHOXYETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHANOL
+Acetylcholinesterase,6wv1,A,UCJ,138.102,propan-2-yl hydrogen (S)-methylphosphonate
+Acetylcholinesterase,6wv1,B,UCJ,138.102,propan-2-yl hydrogen (S)-methylphosphonate
+Acetylcholinesterase,6wv1,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6wv1,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6wvc,A,UCY,176.193,"(1S)-2,2-dimethylcyclopentyl (R)-methylphosphinate"
+Acetylcholinesterase,6wvc,B,UCY,176.193,"(1S)-2,2-dimethylcyclopentyl (R)-methylphosphinate"
+Acetylcholinesterase,6wvc,A,7PE,310.384,2-(2-(2-(2-(2-(2-ETHOXYETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHANOL
+Acetylcholinesterase,6wvo,A,GD8,164.182,"(1R)-1,2,2-TRIMETHYLPROPYL (S)-METHYLPHOSPHINATE"
+Acetylcholinesterase,6wvo,B,GD8,164.182,"(1R)-1,2,2-TRIMETHYLPROPYL (S)-METHYLPHOSPHINATE"
+Acetylcholinesterase,6wvo,A,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6wvo,B,HI6,288.302,4-(AMINOCARBONYL)-1-[({2-[(E)-(HYDROXYIMINO)METHYL]PYRIDINIUM-1-YL}METHOXY)METHYL]PYRIDINIUM
+Acetylcholinesterase,6wvo,B,PE8,370.436,"3,6,9,12,15,18,21-HEPTAOXATRICOSANE-1,23-DIOL"
+Acetylcholinesterase,6wvp,A,WW2,180.157,cyclohexyl (S)-methylphosphonofluoridoate
+Acetylcholinesterase,6wvp,B,WW2,180.157,cyclohexyl (S)-methylphosphonofluoridoate
+Acetylcholinesterase,6wvp,B,7PE,310.384,2-(2-(2-(2-(2-(2-ETHOXYETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHANOL
+Acetylcholinesterase,6wvq,A,7PE,310.384,2-(2-(2-(2-(2-(2-ETHOXYETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHANOL
+Acetylcholinesterase,6wvq,B,7PE,310.384,2-(2-(2-(2-(2-(2-ETHOXYETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHOXY)ETHANOL
+Acetylcholinesterase,6wvq,A,UCY,176.193,"(1S)-2,2-dimethylcyclopentyl (R)-methylphosphinate"
+Acetylcholinesterase,6wvq,B,UCY,176.193,"(1S)-2,2-dimethylcyclopentyl (R)-methylphosphinate"
+Acetylcholinesterase,6xta,A,O0Z,474.681,(2~{S})-2-(butylamino)-3-(1~{H}-indol-3-yl)-~{N}-[2-[(4~{R})-1-(phenylmethyl)azepan-4-yl]ethyl]propanamide
+Acetylcholinesterase,6xyu,A,I40,414.283,"9-(3-IODOBENZYLAMINO)-1,2,3,4-TETRAHYDROACRIDINE"
+Acetylcholinesterase,6xyy,A,760,288.386,"9-(3-PHENYLMETHYLAMINO)-1,2,3,4-TETRAHYDROACRIDINE"
+Acetylcholinesterase,6zwe,A,QRH,563.666,"(2~{E},4~{E})-5-(1,3-benzodioxol-5-yl)-~{N}-[6-(triphenyl-$l^{5}-phosphanyl)hexyl]penta-2,4-dienamide"
+Acetylcholinesterase,6zwi,A,QRH,563.666,"(2~{E},4~{E})-5-(1,3-benzodioxol-5-yl)-~{N}-[6-(triphenyl-$l^{5}-phosphanyl)hexyl]penta-2,4-dienamide"
+Acetylcholinesterase,6zwi,A,LEA,102.132,PENTANOIC ACID
+Acetylcholinesterase,7ais,A,8UH,534.089,"6-[(3-Chloro-6,7,10,11-tetrahydro-9-methyl-7,11-methanocycloocta[b]quinolin-12-yl)amino]-N-(4-hydroxy-3-methoxybenzyl)hexanamide"
+Acetylcholinesterase,7ais,B,8UH,534.089,"6-[(3-Chloro-6,7,10,11-tetrahydro-9-methyl-7,11-methanocycloocta[b]quinolin-12-yl)amino]-N-(4-hydroxy-3-methoxybenzyl)hexanamide"
+Acetylcholinesterase,7ait,A,8UK,548.115,"7-[(3-Chloro-6,7,10,11-tetrahydro-9-methyl-7,11-methanocycloocta[b]quinolin-12-yl)amino]-N-(4-hydroxy-3-methoxybenzyl)heptanamide"
+Acetylcholinesterase,7ait,B,8UK,548.115,"7-[(3-Chloro-6,7,10,11-tetrahydro-9-methyl-7,11-methanocycloocta[b]quinolin-12-yl)amino]-N-(4-hydroxy-3-methoxybenzyl)heptanamide"
+Acetylcholinesterase,7aiu,A,8UQ,564.158,"8-[(3-Chloro-6,7,10,11-tetrahydro-9-methyl-7,11-methanocycloocta[b]quinolin-12-yl)amino]-N-(4-hydroxy-3-methoxybenzyl)octanamide"
+Acetylcholinesterase,7aiu,B,8UQ,564.158,"8-[(3-Chloro-6,7,10,11-tetrahydro-9-methyl-7,11-methanocycloocta[b]quinolin-12-yl)amino]-N-(4-hydroxy-3-methoxybenzyl)octanamide"
+Acetylcholinesterase,7aiv,B,8UE,568.105,"4-{[(3-Chloro-6,7,10,11-tetrahydro-9-methyl-7,11-methanocycloocta[b]quinolin-12-yl)amino]methyl}-N-(4-hydroxy-3-methoxybenzyl)benzamide"
+Acetylcholinesterase,7aiw,A,8U5,592.211,"E)-10-[(3-Chloro-6,7,10,11-tetrahydro-9-methyl-7,11-methanocycloocta[b]quinolin-12-yl)amino]-N-(4-hydroxy-3-methoxybenzyl)-6-decenamide"
+Acetylcholinesterase,7aiw,B,8U5,592.211,"E)-10-[(3-Chloro-6,7,10,11-tetrahydro-9-methyl-7,11-methanocycloocta[b]quinolin-12-yl)amino]-N-(4-hydroxy-3-methoxybenzyl)-6-decenamide"
+Acetylcholinesterase,7aix,A,8U2,589.128,"2-{1-[4-(12-Amino-3-chloro-6,7,10,11-tetrahydro-7,11-methanocycloocta[b]quinolin-9-yl)butyl]-1H-1,2,3-triazol-4-yl}-N-[4-hydroxy-3-methoxybenzyl]acetamide"
+Acetylcholinesterase,7aiy,A,8U2,589.128,"2-{1-[4-(12-Amino-3-chloro-6,7,10,11-tetrahydro-7,11-methanocycloocta[b]quinolin-9-yl)butyl]-1H-1,2,3-triazol-4-yl}-N-[4-hydroxy-3-methoxybenzyl]acetamide"
+Acetylcholinesterase,7amz,A,RNZ,445.616,"2,2-dimethylpropyl-[(2~{R},3~{S})-3-(2,2-diphenylethanoylamino)-2-oxidanyl-4-phenyl-butyl]azanium"
+Acetylcholinesterase,7awg,A,S6Q,406.497,~{N}-(phenylmethyl)-2-[1-(phenylsulfonyl)indol-4-yl]oxy-ethanamine
+Acetylcholinesterase,7awh,A,S8K,513.649,~{tert}-butyl (3~{S})-3-[[2-[1-(phenylsulfonyl)indol-4-yl]oxyethylamino]methyl]piperidine-1-carboxylate
+Acetylcholinesterase,7awi,A,S78,464.62,2-((1-benzyl-1H-indol-4-yl)oxy)-N-((1-(tert-butoxycarbonyl)piperidin-3-yl)methyl)ethan-1-aminium
+Acetylcholinesterase,7b2w,A,IUM,270.028,URANYL (VI) ION
+Acetylcholinesterase,7b8e,A,FWN,178.226,2-[2-(2-ethoxyethoxy)ethoxy]ethanol
+Acetylcholinesterase,7bgc,A,TKN,472.618,"methyl 2-methoxy-6-[(~{E})-8-(1,2,3,4-tetrahydroacridin-9-ylamino)oct-6-enyl]benzoate"
+Acetylcholinesterase,7bo3,A,IA4,298.466,~{N}-(2-cycloheptylethyl)-2-(1~{H}-indol-3-yl)-~{N}-methyl-ethanamine
+Acetylcholinesterase,7bo4,A,A87,356.545,3-[2-[butyl(2-cycloheptylethyl)amino]ethyl]-1~{H}-indol-6-ol
+Acetylcholinesterase,7d9o,A,H0L,415.473,"(2R)-2-[[4-fluoranyl-1-[(4-fluorophenyl)methyl]piperidin-4-yl]methyl]-5,6-dimethoxy-2,3-dihydroinden-1-one"
+Acetylcholinesterase,7d9o,B,H0L,415.473,"(2R)-2-[[4-fluoranyl-1-[(4-fluorophenyl)methyl]piperidin-4-yl]methyl]-5,6-dimethoxy-2,3-dihydroinden-1-one"
+Acetylcholinesterase,7d9p,A,H0R,415.473,"(2S)-2-[[4-fluoranyl-1-[(2-fluorophenyl)methyl]piperidin-4-yl]methyl]-5,6-dimethoxy-2,3-dihydroinden-1-one"
+Acetylcholinesterase,7d9p,B,H0R,415.473,"(2S)-2-[[4-fluoranyl-1-[(2-fluorophenyl)methyl]piperidin-4-yl]methyl]-5,6-dimethoxy-2,3-dihydroinden-1-one"
+Acetylcholinesterase,7d9q,A,H1R,415.473,"(2S)-2-[[4-fluoranyl-1-[(3-fluorophenyl)methyl]piperidin-4-yl]methyl]-5,6-dimethoxy-2,3-dihydroinden-1-one"
+Acetylcholinesterase,7d9q,B,H1R,415.473,"(2S)-2-[[4-fluoranyl-1-[(3-fluorophenyl)methyl]piperidin-4-yl]methyl]-5,6-dimethoxy-2,3-dihydroinden-1-one"
+Acetylcholinesterase,7e3d,B,PE8,370.436,"3,6,9,12,15,18,21-HEPTAOXATRICOSANE-1,23-DIOL"
+Acetylcholinesterase,7e3h,A,E20,379.492,"1-BENZYL-4-[(5,6-DIMETHOXY-1-INDANON-2-YL)METHYL]PIPERIDINE"
+Acetylcholinesterase,7e3h,B,E20,379.492,"1-BENZYL-4-[(5,6-DIMETHOXY-1-INDANON-2-YL)METHYL]PIPERIDINE"
+Acetylcholinesterase,7p1n,aa,4J1,495.526,"(2R,3R,4S,5S,6R)-2-[4-[1-[4-[6-[(Z)-hydroxyiminomethyl]-5-oxidanyl-pyridin-2-yl]butyl]-1,2,3-triazol-4-yl]butoxy]-6-(hydroxymethyl)oxane-3,4,5-triol"
+Acetylcholinesterase,7p1p,aa,4IX,481.5,"(2R,3R,4S,5S,6R)-2-[4-[1-[3-[6-[(Z)-hydroxyiminomethyl]-5-oxidanyl-pyridin-2-yl]propyl]-1,2,3-triazol-4-yl]butoxy]-6-(hydroxymethyl)oxane-3,4,5-triol"
+Acetylcholinesterase,7q1m,A,8IS,380.523,"N-[(2S)-3-(cyclohexylmethylamino)-2-oxidanyl-propyl]-2,2-diphenyl-ethanamide"
+Acetylcholinesterase,7q1n,A,8IV,380.523,"N-[(2R)-3-(cyclohexylmethylamino)-2-oxidanyl-propyl]-2,2-diphenyl-ethanamide"
+Acetylcholinesterase,7q1o,A,9CI,394.55,"N-[(2S)-3-(cyclohexylmethylamino)-2-oxidanyl-propyl]-3,3-diphenyl-propanamide"
+Acetylcholinesterase,7q1p,A,8UW,394.55,"N-[(2R)-3-(cyclohexylmethylamino)-2-oxidanyl-propyl]-3,3-diphenyl-propanamide"
+Acetylcholinesterase,7qak,A,5IK,415.481,4-(hydroxymethyl)-7-[[4-[[methyl-(phenylmethyl)amino]methyl]phenyl]methoxy]chromen-2-one
+Acetylcholinesterase,7qak,B,5IK,415.481,4-(hydroxymethyl)-7-[[4-[[methyl-(phenylmethyl)amino]methyl]phenyl]methoxy]chromen-2-one
+Acetylcholinesterase,7qak,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,7qak,B,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,7qak,B,TOE,164.2,2-[2-(2-METHOXY-ETHOXY)-ETHOXY]-ETHOXYL
+Acetylcholinesterase,7qak,B,P15,296.357,"2,5,8,11,14,17-HEXAOXANONADECAN-19-OL"
+Acetylcholinesterase,7qb4,A,AJ9,377.476,"3,4-dimethyl-7-[[1-(phenylmethyl)piperidin-4-yl]methoxy]chromen-2-one"
+Acetylcholinesterase,7qb4,B,AJ9,377.476,"3,4-dimethyl-7-[[1-(phenylmethyl)piperidin-4-yl]methoxy]chromen-2-one"
+Acetylcholinesterase,7qb4,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,7qb4,B,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,7qb4,B,TOE,164.2,2-[2-(2-METHOXY-ETHOXY)-ETHOXY]-ETHOXYL
+Acetylcholinesterase,7qb4,B,9YU,340.41,2-[2-[2-[2-[2-[2-(2-methoxyethoxy)ethoxy]ethoxy]ethoxy]ethoxy]ethoxy]ethanol
+Acetylcholinesterase,7qbq,A,AI0,278.305,1-(8-oxidanylquinolin-2-yl)-N-(phenylmethyl)methanimine oxide
+Acetylcholinesterase,7qbr,A,AI6,408.536,N-tert-butyl-1-[8-[3-(4-prop-2-ynylpiperazin-1-yl)propoxy]quinolin-2-yl]methanimine oxide
+Acetylcholinesterase,7qhd,A,C0I,642.832,"(3~{S})-1-[[4-[2-(1~{H}-indol-3-yl)ethylcarbamoyl]phenyl]methyl]-~{N}-[3-(1,2,3,4-tetrahydroacridin-9-ylamino)propyl]piperidine-3-carboxamide"
+Acetylcholinesterase,7qhe,A,C4I,625.802,"(3~{S})-1-[[4-(naphthalen-1-ylcarbamoyl)phenyl]methyl]-~{N}-[3-(1,2,3,4-tetrahydroacridin-9-ylamino)propyl]piperidine-3-carboxamide"
+Acetylcholinesterase,7qyn,A,I1X,371.41,"4-methyl-3-nitro-~{N}-[(2~{E},4~{E})-5-[2-[(oxidanylamino)methyl]pyridin-1-yl]penta-2,4-dienyl]benzamide"
+Acetylcholinesterase,7qyn,B,I1X,371.41,"4-methyl-3-nitro-~{N}-[(2~{E},4~{E})-5-[2-[(oxidanylamino)methyl]pyridin-1-yl]penta-2,4-dienyl]benzamide"
+Acetylcholinesterase,7qyn,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,7qyn,B,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,7qyn,B,TOE,164.2,2-[2-(2-METHOXY-ETHOXY)-ETHOXY]-ETHOXYL
+Acetylcholinesterase,7qyn,B,P15,296.357,"2,5,8,11,14,17-HEXAOXANONADECAN-19-OL"
+Acetylcholinesterase,7r02,A,I62,291.346,N-[(2E)-3-(diethylamino)prop-2-en-1-yl]-4-methyl-3-nitrobenzamide
+Acetylcholinesterase,7r02,B,I62,291.346,N-[(2E)-3-(diethylamino)prop-2-en-1-yl]-4-methyl-3-nitrobenzamide
+Acetylcholinesterase,7r02,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,7r02,B,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,7r02,B,9YU,340.41,2-[2-[2-[2-[2-[2-(2-methoxyethoxy)ethoxy]ethoxy]ethoxy]ethoxy]ethoxy]ethanol
+Acetylcholinesterase,7r0a,A,I4H,208.214,~{N}-ethyl-4-methyl-3-nitro-benzamide
+Acetylcholinesterase,7r0a,B,I4H,208.214,~{N}-ethyl-4-methyl-3-nitro-benzamide
+Acetylcholinesterase,7r0a,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,7r0a,B,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,7r0a,A,P15,296.357,"2,5,8,11,14,17-HEXAOXANONADECAN-19-OL"
+Acetylcholinesterase,7r0a,A,TOE,164.2,2-[2-(2-METHOXY-ETHOXY)-ETHOXY]-ETHOXYL
+Acetylcholinesterase,7r0a,B,TOE,164.2,2-[2-(2-METHOXY-ETHOXY)-ETHOXY]-ETHOXYL
+Acetylcholinesterase,7r2f,A,I1X,371.41,"4-methyl-3-nitro-~{N}-[(2~{E},4~{E})-5-[2-[(oxidanylamino)methyl]pyridin-1-yl]penta-2,4-dienyl]benzamide"
+Acetylcholinesterase,7r2f,B,I1X,371.41,"4-methyl-3-nitro-~{N}-[(2~{E},4~{E})-5-[2-[(oxidanylamino)methyl]pyridin-1-yl]penta-2,4-dienyl]benzamide"
+Acetylcholinesterase,7r2f,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,7r2f,B,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,7r2f,B,7PG,384.462,"2,5,8,11,14,17,20,23-OCTAOXAPENTACOSAN-25-OL"
+Acetylcholinesterase,7r3c,A,I1X,371.41,"4-methyl-3-nitro-~{N}-[(2~{E},4~{E})-5-[2-[(oxidanylamino)methyl]pyridin-1-yl]penta-2,4-dienyl]benzamide"
+Acetylcholinesterase,7r3c,B,I1X,371.41,"4-methyl-3-nitro-~{N}-[(2~{E},4~{E})-5-[2-[(oxidanylamino)methyl]pyridin-1-yl]penta-2,4-dienyl]benzamide"
+Acetylcholinesterase,7r3c,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,7r3c,B,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,7r3c,A,TOE,164.2,2-[2-(2-METHOXY-ETHOXY)-ETHOXY]-ETHOXYL
+Acetylcholinesterase,7r3c,B,TOE,164.2,2-[2-(2-METHOXY-ETHOXY)-ETHOXY]-ETHOXYL
+Acetylcholinesterase,7r3c,A,P15,296.357,"2,5,8,11,14,17-HEXAOXANONADECAN-19-OL"
+Acetylcholinesterase,7r4e,A,I1X,371.41,"4-methyl-3-nitro-~{N}-[(2~{E},4~{E})-5-[2-[(oxidanylamino)methyl]pyridin-1-yl]penta-2,4-dienyl]benzamide"
+Acetylcholinesterase,7r4e,B,I1X,371.41,"4-methyl-3-nitro-~{N}-[(2~{E},4~{E})-5-[2-[(oxidanylamino)methyl]pyridin-1-yl]penta-2,4-dienyl]benzamide"
+Acetylcholinesterase,7r4e,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,7r4e,B,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,7r4e,A,TOE,164.2,2-[2-(2-METHOXY-ETHOXY)-ETHOXY]-ETHOXYL
+Acetylcholinesterase,7r4e,B,TOE,164.2,2-[2-(2-METHOXY-ETHOXY)-ETHOXY]-ETHOXYL
+Acetylcholinesterase,7r4e,A,P15,296.357,"2,5,8,11,14,17-HEXAOXANONADECAN-19-OL"
+Acetylcholinesterase,7rb5,A,NWA,162.25,"4,4-DIHYDROXY-N,N,N-TRIMETHYLPENTAN-1-AMINIUM"
+Acetylcholinesterase,7rb6,A,NWA,162.25,"4,4-DIHYDROXY-N,N,N-TRIMETHYLPENTAN-1-AMINIUM"
+Acetylcholinesterase,7rb6,B,NWA,162.25,"4,4-DIHYDROXY-N,N,N-TRIMETHYLPENTAN-1-AMINIUM"
+Acetylcholinesterase,7rb7,A,NWA,162.25,"4,4-DIHYDROXY-N,N,N-TRIMETHYLPENTAN-1-AMINIUM"
+Acetylcholinesterase,7rb7,B,NWA,162.25,"4,4-DIHYDROXY-N,N,N-TRIMETHYLPENTAN-1-AMINIUM"
+Acetylcholinesterase,7rb7,A,3VI,258.276,"1,1'-methylenebis{4-[(E)-(hydroxyimino)methyl]pyridin-1-ium}"
+Acetylcholinesterase,7rb7,B,3VI,258.276,"1,1'-methylenebis{4-[(E)-(hydroxyimino)methyl]pyridin-1-ium}"
+Acetylcholinesterase,7v4o,A,P3G,250.332,"3,6,9,12,15-PENTAOXAHEPTADECANE"
+Acetylcholinesterase,7v4o,B,P3G,250.332,"3,6,9,12,15-PENTAOXAHEPTADECANE"
+Acetylcholinesterase,7xn1,A,THA,198.264,TACRINE
+Acetylcholinesterase,7xn1,B,THA,198.264,TACRINE
+Acetylcholinesterase,7xn1,A,PE8,370.436,"3,6,9,12,15,18,21-HEPTAOXATRICOSANE-1,23-DIOL"
+Acetylcholinesterase,7zpb,A,JS0,339.431,[8-[3-(4-prop-2-ynylpiperazin-1-yl)propoxy]quinolin-2-yl]methanol
+Acetylcholinesterase,8aen,A,LWL,221.279,"N,N,N-trimethyl-2-oxo-2-(2-(pyridin-2-ylmethylene)hydrazineyl)ethan-1-aminium"
+Acetylcholinesterase,8aen,B,LWL,221.279,"N,N,N-trimethyl-2-oxo-2-(2-(pyridin-2-ylmethylene)hydrazineyl)ethan-1-aminium"
+Acetylcholinesterase,8aev,A,LWU,366.394,1-(2-(2-((6-(dihydroxymethyl)-2-phenylpyrimidin-4-yl)methylene)hydrazineyl)-2-oxoethyl)pyridin-1-ium
+Acetylcholinesterase,8ai7,F,M8X,300.438,3-[[2-cycloheptylethyl(methyl)amino]methyl]-1~{H}-indol-7-ol
+Acetylcholinesterase,8am1,A,LWL,221.279,"N,N,N-trimethyl-2-oxo-2-(2-(pyridin-2-ylmethylene)hydrazineyl)ethan-1-aminium"
+Acetylcholinesterase,8am2,A,N0C,442.558,~{N}-[(~{E})-[2-phenyl-6-[[2-[2-(trimethyl-$l^{4}-azanyl)ethanoyl]hydrazinyl]methyl]pyrimidin-4-yl]methylideneamino]-2-(trimethyl-$l^{4}-azanyl)ethanamide
+Acetylcholinesterase,8amy,A,P4G,162.227,1-ETHOXY-2-(2-ETHOXYETHOXY)ETHANE
+Acetylcholinesterase,8amy,A,BCT,61.017,BICARBONATE ION
+Acetylcholinesterase,8cgo,A,XB8,433.558,~{N}-[3-(2-fluorophenyl)propyl]-~{N}-[(3-methoxy-2-phenylmethoxy-phenyl)methyl]cyclobutanamine
+Acetylcholinesterase,8d8x,A,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,8d8y,A,AT3,162.273,ACETYLTHIOCHOLINE
+Acetylcholinesterase,8d8y,B,AT3,162.273,ACETYLTHIOCHOLINE
+Acetylcholinesterase,8d8y,A,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,8d8y,B,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,8d8z,A,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,8d8z,B,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,8d91,A,NET,130.251,TETRAETHYLAMMONIUM ION
+Acetylcholinesterase,8d91,B,NET,130.251,TETRAETHYLAMMONIUM ION
+Acetylcholinesterase,8dt2,A,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,8dt2,B,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,8dt4,A,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,8dt4,B,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,8dt4,A,3VI,258.276,"1,1'-methylenebis{4-[(E)-(hydroxyimino)methyl]pyridin-1-ium}"
+Acetylcholinesterase,8dt4,B,3VI,258.276,"1,1'-methylenebis{4-[(E)-(hydroxyimino)methyl]pyridin-1-ium}"
+Acetylcholinesterase,8dt5,A,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,8dt5,B,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,8dt5,A,LND,274.298,4-carbamoyl-1-(3-{2-[(E)-(hydroxyimino)methyl]-1H-imidazol-1-yl}propyl)pyridin-1-ium
+Acetylcholinesterase,8dt5,B,LND,274.298,4-carbamoyl-1-(3-{2-[(E)-(hydroxyimino)methyl]-1H-imidazol-1-yl}propyl)pyridin-1-ium
+Acetylcholinesterase,8dt7,A,3VI,258.276,"1,1'-methylenebis{4-[(E)-(hydroxyimino)methyl]pyridin-1-ium}"
+Acetylcholinesterase,8dt7,B,3VI,258.276,"1,1'-methylenebis{4-[(E)-(hydroxyimino)methyl]pyridin-1-ium}"
+Acetylcholinesterase,8ofo,AAA,P4G,162.227,1-ETHOXY-2-(2-ETHOXYETHOXY)ETHANE
+Acetylcholinesterase,8orc,A,VY8,253.364,1-[2-(dimethylamino)ethyl]-3-(2-methoxyphenyl)thiourea
+Acetylcholinesterase,8orc,B,VY8,253.364,1-[2-(dimethylamino)ethyl]-3-(2-methoxyphenyl)thiourea
+Acetylcholinesterase,8orc,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,8orc,B,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,8orc,A,MXE,76.094,2-METHOXYETHANOL
+Acetylcholinesterase,8orc,B,MXE,76.094,2-METHOXYETHANOL
+Acetylcholinesterase,8orc,A,TOE,164.2,2-[2-(2-METHOXY-ETHOXY)-ETHOXY]-ETHOXYL
+Acetylcholinesterase,8orc,B,7PG,384.462,"2,5,8,11,14,17,20,23-OCTAOXAPENTACOSAN-25-OL"
+Acetylcholinesterase,8qtw,A,WXR,341.49,N-[3-[[2-cycloheptylethyl(methyl)amino]methyl]-1H-indol-7-yl]-N-methyl-methanamide
+Acetylcholinesterase,8qtx,A,WXN,313.48,3-(((2-cycloheptylethyl)(methyl)amino)methyl)-N-methyl-1H-indol-7-amine
+Acetylcholinesterase,9ciy,A,NCO,161.116,COBALT HEXAMMINE(III)
+Acetylcholinesterase,9ewu,A,A1H77,398.54,"(2~{R},3~{S})-1-(cyclopropylmethylamino)-3-(9~{H}-fluoren-9-ylamino)-4-phenyl-butan-2-ol"
+Acetylcholinesterase,9f6r,A,A1IAS,336.388,2-[(~{Z})-hydroxyiminomethyl]-6-[4-(quinolin-4-ylamino)butyl]pyridin-3-ol
+Acetylcholinesterase,9f6r,B,A1AAJ,221.208,N-Acetyl-D-Talosamine
+Acetylcholinesterase,9gcq,A,A1IKC,369.462,"N',N'-dimethyl-N-(6-naphthalen-2-yl-5-pyridin-4-yl-pyridazin-3-yl)ethane-1,2-diamine"
+Acetylcholinesterase,9gcr,A,A1IKD,369.462,"N',N'-dimethyl-N-(6-naphthalen-1-yl-5-pyridin-4-yl-pyridazin-3-yl)ethane-1,2-diamine"
+Acetylcholinesterase,9hh0,A,GB,96.022,METHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,9hh0,B,GB,96.022,METHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,9hh0,C,GB,96.022,METHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,9hh0,D,GB,96.022,METHYLPHOSPHONIC ACID ESTER GROUP
+Acetylcholinesterase,9i02,A,A1IYP,394.53,~{N}-methyl-~{N}-[[(3~{S})-1-(phenylmethyl)pyrrolidin-3-yl]methyl]naphthalene-2-sulfonamide
+Acetylcholinesterase,9i03,A,A1IYQ,394.53,~{N}-methyl-~{N}-[[(3~{R})-1-(phenylmethyl)pyrrolidin-3-yl]methyl]naphthalene-2-sulfonamide
+Acetylcholinesterase,9i4w,A,A1I0D,157.21,ethyl piperidine-1-carboxylate
+Acetylcholinesterase,9i4w,A,A1I0F,459.578,[3-[(1~{S})-1-oxidanyl-2-piperidin-1-yl-ethyl]-5-piperidin-1-ylcarbonyloxy-phenyl] piperidine-1-carboxylate
+Acetylcholinesterase,9i5o,A,A1A2L,454.555,"1-(cyclohexylmethyl)-5-[(2,4-difluorophenyl)methyl]-N-[2-(dimethylamino)ethyl]-1H-indazole-6-carboxamide"
+Acetylcholinesterase,9i5p,A,A1A2O,414.491,"5-[(2,4-difluorophenyl)methyl]-N-[2-(dimethylamino)ethyl]-1-(2-methylpropyl)-1H-indazole-6-carboxamide"
+Acetylcholinesterase,9i5q,A,A1IZ3,540.645,"5-[2,4-bis(fluoranyl)phenoxy]-2-(cyclohexylmethyl)-~{N}-[2-[(3~{R})-3-(methoxymethyl)piperidin-1-yl]ethyl]indazole-6-carboxamide"
+Acetylcholinesterase,9l2h,A,DPF,154.102,DIETHYL HYDROGEN PHOSPHATE
+Acetylcholinesterase,9l34,A,DIO,88.105,"1,4-DIETHYLENE DIOXIDE"
+Acetylcholinesterase,9oms,A,A1CD5,327.379,2-(hydroxyimino)-N-{2-[(3S)-1-(3-{[(2E)-2-(hydroxyimino)acetyl]amino}propyl)piperidin-3-yl]ethyl}acetamide
+Acetylcholinesterase,9oms,B,A1CD5,327.379,2-(hydroxyimino)-N-{2-[(3S)-1-(3-{[(2E)-2-(hydroxyimino)acetyl]amino}propyl)piperidin-3-yl]ethyl}acetamide
+Acetylcholinesterase,9omt,A,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,9omt,B,DEP,138.102,DIETHYL PHOSPHONATE
+Acetylcholinesterase,9omt,A,A1CDA,327.379,(2E)-2-(hydroxyimino)-N-{3-[(3R)-3-(2-{[(2E)-2-(hydroxyimino)acetyl]amino}ethyl)piperidin-1-yl]propyl}acetamide
+Acetylcholinesterase,9omt,B,A1CDA,327.379,(2E)-2-(hydroxyimino)-N-{3-[(3R)-3-(2-{[(2E)-2-(hydroxyimino)acetyl]amino}ethyl)piperidin-1-yl]propyl}acetamide
+Acetylcholinesterase,9qpu,A,A1I9A,317.404,2-[(3-carboxy-4-nitro-phenyl)disulfanyl]ethyl-trimethyl-azanium
+Acetylcholinesterase,9qpu,A,ETM,120.236,2-(TRIMETHYLAMMONIUM)ETHYL THIOL
+Acetylcholinesterase,9r3b,A,A1JC3,452.609,N-(2-methoxyethyl)-N-[[(3R)-1-(phenylmethyl)piperidin-3-yl]methyl]naphthalene-2-sulfonamide
+Acetylcholinesterase,9r3c,A,5HF,452.609,N-{[(3S)-1-benzylpiperidin-3-yl]methyl}-N-(2-methoxyethyl)naphthalene-2-sulfonamide
+Acetylcholinesterase,9r9d,A,A1JDP,350.454,~{N}-(2-methoxyethyl)-~{N}-[[(3~{R})-1-prop-2-ynylpyrrolidin-3-yl]methyl]naphthalene-2-carboxamide
+Acetylcholinesterase,9r9e,A,A1JDO,400.534,~{N}-(3-methoxypropyl)-~{N}-[[(3~{S})-1-prop-2-ynylpyrrolidin-3-yl]methyl]naphthalene-2-sulfonamide
+Acetylcholinesterase,9rg2,A,A1IUA,192.297,alpha-damascone
+Acetylcholinesterase,9rg2,B,A1IUA,192.297,alpha-damascone
+Acetylcholinesterase,9rg2,A,NDG,221.208,2-acetamido-2-deoxy-alpha-D-glucopyranose
+Acetylcholinesterase,9rg2,A,EOH,46.068,ETHANOL
+Acetylcholinesterase,9rg2,B,EOH,46.068,ETHANOL
+Acetylcholinesterase,9rgc,A,A1JF0,475.533,"7-[[4-[[(3,4-dimethoxyphenyl)methyl-methyl-amino]methyl]phenyl]methoxy]-4-(hydroxymethyl)chromen-2-one"
+Acetylcholinesterase,9sl8,A,A1JOH,401.501,"naphthalen-2-yl ~{N}-methyl-~{N}-[(2~{S},3~{R})-2-(pyridin-3-ylmethyl)-1-azabicyclo[2.2.2]octan-3-yl]carbamate"
+Acetylcholinesterase,9sl9,A,A1JOI,337.416,"[(2~{S},3~{R})-2-(pyridin-3-ylmethyl)-1-azabicyclo[2.2.2]octan-3-yl] ~{N}-phenylcarbamate"
+Acetylcholinesterase,9snd,A,A1JOW,280.364,2-(1~{H}-indol-3-yl)-~{N}-[(2-methoxyphenyl)methyl]ethanamine
+Acetylcholinesterase,9snd,B,A1JOW,280.364,2-(1~{H}-indol-3-yl)-~{N}-[(2-methoxyphenyl)methyl]ethanamine
+Acetylcholinesterase,9snd,A,9YU,340.41,2-[2-[2-[2-[2-[2-(2-methoxyethoxy)ethoxy]ethoxy]ethoxy]ethoxy]ethoxy]ethanol
+Acetylcholinesterase,9snd,A,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,9snd,B,PG0,120.147,2-(2-METHOXYETHOXY)ETHANOL
+Acetylcholinesterase,9snd,A,TOE,164.2,2-[2-(2-METHOXY-ETHOXY)-ETHOXY]-ETHOXYL
+Acetylcholinesterase,9snj,A,A1JO2,294.391,~{N}-[(2-methoxyphenyl)methyl]-2-(1-methylindol-3-yl)ethanamine
+Acetylcholinesterase,9snj,B,A1JO2,294.391,~{N}-[(2-methoxyphenyl)methyl]-2-(1-methylindol-3-yl)ethanamine
+Acetylcholinesterase,9spc,A,A1JPK,391.463,ethyl 1-[3-(2-oxidanylidenepyrrolidin-1-yl)propyl]-2-phenyl-benzimidazole-5-carboxylate

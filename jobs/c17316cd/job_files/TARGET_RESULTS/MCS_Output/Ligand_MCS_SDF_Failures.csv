@@ -1,0 +1,2 @@
+Ligand,Target,pdb_id,Chain,Residue_ID,basename,Error
+8UQ,Acetylcholinesterase,7aiu,B,605,7aiu_B_8UQ_605,ITEM_TIMEOUT (>10s) at GRAPH_FULL

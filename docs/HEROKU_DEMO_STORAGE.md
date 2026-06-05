@@ -54,8 +54,20 @@ Recommended config:
 - `WARHEAD_BACKUP_ON_COMPLETE=1`
 - `WARHEAD_BACKUP_ON_FAILURE=1`
 - `WARHEAD_BACKUP_REQUIRED=0`
-- `WARHEAD_BACKUP_TIMEOUT_SECONDS=60`
+- `RANDY_BACKUP_CONNECT_TIMEOUT=25`
+- `RANDY_BACKUP_READ_TIMEOUT=1200`
+- `RANDY_BACKUP_UPLOAD_TIMEOUT=1200`
+- `RANDY_BACKUP_TOTAL_TIMEOUT=1800`
+- `RANDY_BACKUP_RETRIES=2`
+- `RANDY_BACKUP_RETRY_BACKOFF_SECONDS=15`
+- `WARHEAD_BACKUP_TIMEOUT_SECONDS=1200`
 - `WARHEAD_BACKUP_MAX_BYTES=300000000`
+- `WARHEAD_PIPELINE_MAX_WORKERS=2`
+- `WARHEAD_SQCHK_MAX_WORKERS=2`
+- `WARHEAD_PDBMKR_MAX_WORKERS=2`
+- `WARHEAD_SASA_MAX_WORKERS=1`
+- `WARHEAD_METADATA_MAX_WORKERS=2`
+- `WARHEAD_MCS_MAX_WORKERS=1`
 
 Compatibility fallbacks still work:
 
@@ -69,6 +81,11 @@ Operational notes:
 
 - RANDY backup runs after the main pipeline completes and writes backup state into `job_metadata.json`.
 - Backup failures are non-fatal by default. Set `WARHEAD_BACKUP_REQUIRED=1` only when you want a failed archive upload to fail the job.
+- The upload is streamed from a temporary ZIP on disk, not loaded fully into memory.
+- Success now requires RANDY read-back verification. A job can stay `status=completed` while `archive_status=backup_failed` and `results_available_not_backed_up=true`.
+- Backup retries are bounded. Retryable failures include timeouts, connection aborts, resets, DNS/network issues, and HTTP `408/429/500/502/503/504`.
 - The backup client creates a curated on-disk ZIP and uploads it to RANDY's `/backup/hunter-job-archive` endpoint.
 - RANDY extracts that ZIP into `job_files/` and keeps the uploaded archive under `archives/`.
-- Manual dry-run/upload/verify tooling is available through `python scripts/debug_randy_completion_backup_contract.py <job_id> --dry-run|--upload|--verify`.
+- Manual dry-run/upload/verify tooling is available through `python scripts/check_randy_backup.py --job <job_id> --dry-run|--upload-test|--verify`.
+- Retry an existing Heroku job before ephemeral storage disappears with `heroku run -a <app-name> python scripts/check_randy_backup.py --job <job_id> --upload-test`.
+- RANDY should run behind Gunicorn with at least a 900 second timeout for moderate uploads; use 1800 seconds if you expect slow links with archives approaching the 300 MB cap.
