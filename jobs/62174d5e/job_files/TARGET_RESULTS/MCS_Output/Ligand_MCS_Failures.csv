@@ -1,0 +1,10 @@
+Ligand,PDB,Error
+8DD,3aca,Template assign failed: No matching found
+8DD,3aca,Template assign failed: No matching found
+8GD,3ac9,Template assign failed: No matching found
+8GD,3ac9,Size mismatch: SMILES=28 vs 3D=19
+8OG,3l85,Size mismatch: SMILES=24 vs 3D=13
+ADV,3bm4,Template assign failed: No matching found
+ADV,3bm4,Template assign failed: No matching found
+APR,2dsc,Template assign failed: No matching found
+APR,2dsc,Template assign failed: No matching found

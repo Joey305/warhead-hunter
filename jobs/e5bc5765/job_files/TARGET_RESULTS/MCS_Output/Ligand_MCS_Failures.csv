@@ -1,0 +1,6 @@
+Ligand,PDB,Error
+0MZ,4e28,Size mismatch: SMILES=30 vs 3D=44
+9MZ,4e28,Size mismatch: SMILES=30 vs 3D=43
+KI3,5hs3,Size mismatch: SMILES=20 vs 3D=32
+KI3,5hs3,Size mismatch: SMILES=20 vs 3D=32
+KI3,5hs3,Size mismatch: SMILES=20 vs 3D=32

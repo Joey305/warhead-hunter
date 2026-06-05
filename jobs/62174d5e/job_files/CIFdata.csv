@@ -1,0 +1,2 @@
+protein,n_candidates,n_attempted,n_downloaded,n_verified,outdir,protein_dir,manifest_path
+NUDT5,70,70,70,70,WAR,WAR/NUDT5,CIF_Download_Manifest.csv

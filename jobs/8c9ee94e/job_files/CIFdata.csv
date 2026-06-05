@@ -1,0 +1,2 @@
+protein,n_candidates,n_attempted,n_downloaded,n_verified,outdir,protein_dir,manifest_path
+HER2,62,62,62,62,WAR,WAR/HER2,CIF_Download_Manifest.csv

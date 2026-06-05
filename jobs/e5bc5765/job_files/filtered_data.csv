@@ -1,0 +1,75 @@
+protein,pdb,chain,ligand,MW,Name
+TYMS,3ob7,A,GSH,307.323,GLUTATHIONE
+TYMS,3ob7,D,GSH,307.323,GLUTATHIONE
+TYMS,4e28,A,0MZ,436.408,"2-{(2Z,5S)-4-hydroxy-2-[(2E)-(2-hydroxybenzylidene)hydrazinylidene]-2,5-dihydro-1,3-thiazol-5-yl}-N-[3-(trifluoromethyl)phenyl]acetamide"
+TYMS,4e28,A,9MZ,436.408,"2-{(5S)-2-[(2E)-2-(2-hydroxybenzylidene)hydrazinyl]-4-oxo-4,5-dihydro-1,3-thiazol-5-yl}-N-[3-(trifluoromethyl)phenyl]acetamide"
+TYMS,4ez8,A,NOH,323.197,2'-deoxy-N-hydroxycytidine 5'-(dihydrogen phosphate)
+TYMS,4ez8,A,DHF,443.413,DIHYDROFOLIC ACID
+TYMS,4g6w,X,PBX,205.006,"4-bromobenzene-1,2,3-triol"
+TYMS,4g2o,X,TIY,220.178,"2,3,4,6-tetrahydroxy-5H-benzo[7]annulen-5-one"
+TYMS,5hs3,A,KI3,284.333,"3-amino-2-benzoyl-4-methylthieno[2,3-b]pyridin-6-ol"
+TYMS,5hs3,B,KI3,284.333,"3-amino-2-benzoyl-4-methylthieno[2,3-b]pyridin-6-ol"
+TYMS,5hs3,E,KI3,284.333,"3-amino-2-benzoyl-4-methylthieno[2,3-b]pyridin-6-ol"
+TYMS,5wrn,A,DCM,307.197,2'-DEOXYCYTIDINE-5'-MONOPHOSPHATE
+TYMS,5wrn,B,DCM,307.197,2'-DEOXYCYTIDINE-5'-MONOPHOSPHATE
+TYMS,5wrn,C,DCM,307.197,2'-DEOXYCYTIDINE-5'-MONOPHOSPHATE
+TYMS,5wrn,D,DCM,307.197,2'-DEOXYCYTIDINE-5'-MONOPHOSPHATE
+TYMS,5wrn,E,DCM,307.197,2'-DEOXYCYTIDINE-5'-MONOPHOSPHATE
+TYMS,5wrn,F,DCM,307.197,2'-DEOXYCYTIDINE-5'-MONOPHOSPHATE
+TYMS,5x66,A,MTX,454.439,METHOTREXATE
+TYMS,5x66,B,MTX,454.439,METHOTREXATE
+TYMS,5x66,C,MTX,454.439,METHOTREXATE
+TYMS,5x66,D,MTX,454.439,METHOTREXATE
+TYMS,5x66,E,MTX,454.439,METHOTREXATE
+TYMS,5x66,F,MTX,454.439,METHOTREXATE
+TYMS,5x5q,A,D16,458.488,TOMUDEX
+TYMS,5x5q,B,D16,458.488,TOMUDEX
+TYMS,5x5q,C,D16,458.488,TOMUDEX
+TYMS,5x5q,D,D16,458.488,TOMUDEX
+TYMS,5x5q,E,D16,458.488,TOMUDEX
+TYMS,5x5q,F,D16,458.488,TOMUDEX
+TYMS,5x67,A,7Z9,284.336,2-azanyl-6-methyl-5-pyridin-4-ylsulfanyl-3H-quinazolin-4-one
+TYMS,5x67,B,7Z9,284.336,2-azanyl-6-methyl-5-pyridin-4-ylsulfanyl-3H-quinazolin-4-one
+TYMS,5x69,A,7ZC,204.268,"1-(5-methoxy-1H-indol-3-yl)-N,N-dimethyl-methanamine"
+TYMS,5x69,E,7ZC,204.268,"1-(5-methoxy-1H-indol-3-yl)-N,N-dimethyl-methanamine"
+TYMS,6f6z,A,NOH,323.197,2'-deoxy-N-hydroxycytidine 5'-(dihydrogen phosphate)
+TYMS,6f6z,B,NOH,323.197,2'-deoxy-N-hydroxycytidine 5'-(dihydrogen phosphate)
+TYMS,6f6z,A,TGQ,459.456,"(2~{S})-2-[[4-[[(6~{R})-2-azanyl-4-oxidanylidene-5,6,7,8-tetrahydro-1~{H}-pteridin-6-yl]methyl-methyl-amino]phenyl]carbonylamino]pentanedioic acid"
+TYMS,6f6z,B,TGQ,459.456,"(2~{S})-2-[[4-[[(6~{R})-2-azanyl-4-oxidanylidene-5,6,7,8-tetrahydro-1~{H}-pteridin-6-yl]methyl-methyl-amino]phenyl]carbonylamino]pentanedioic acid"
+TYMS,6gko,A,FGT,318.323,"3,3-bis(4-hydroxyphenyl)-2-benzofuran-1-one"
+TYMS,6gko,B,FGT,318.323,"3,3-bis(4-hydroxyphenyl)-2-benzofuran-1-one"
+TYMS,6gyj,A,FGT,318.323,"3,3-bis(4-hydroxyphenyl)-2-benzofuran-1-one"
+TYMS,6oju,A,D96,413.384,"N-{4-[(2-amino-4-oxo-4,7-dihydro-3H-pyrrolo[2,3-d]pyrimidin-5-yl)methyl]benzene-1-carbonyl}-D-glutamic acid"
+TYMS,6oju,B,D96,413.384,"N-{4-[(2-amino-4-oxo-4,7-dihydro-3H-pyrrolo[2,3-d]pyrimidin-5-yl)methyl]benzene-1-carbonyl}-D-glutamic acid"
+TYMS,6oju,C,D96,413.384,"N-{4-[(2-amino-4-oxo-4,7-dihydro-3H-pyrrolo[2,3-d]pyrimidin-5-yl)methyl]benzene-1-carbonyl}-D-glutamic acid"
+TYMS,6oju,D,D96,413.384,"N-{4-[(2-amino-4-oxo-4,7-dihydro-3H-pyrrolo[2,3-d]pyrimidin-5-yl)methyl]benzene-1-carbonyl}-D-glutamic acid"
+TYMS,6ojv,A,2XB,413.384,"N-{4-[(2-amino-4-hydroxy-7H-pyrrolo[2,3-d]pyrimidin-5-yl)methyl]benzoyl}-L-glutamic acid"
+TYMS,6ojv,B,2XB,413.384,"N-{4-[(2-amino-4-hydroxy-7H-pyrrolo[2,3-d]pyrimidin-5-yl)methyl]benzoyl}-L-glutamic acid"
+TYMS,6ojv,C,2XB,413.384,"N-{4-[(2-amino-4-hydroxy-7H-pyrrolo[2,3-d]pyrimidin-5-yl)methyl]benzoyl}-L-glutamic acid"
+TYMS,6ojv,D,2XB,413.384,"N-{4-[(2-amino-4-hydroxy-7H-pyrrolo[2,3-d]pyrimidin-5-yl)methyl]benzoyl}-L-glutamic acid"
+TYMS,6pf3,A,OE7,437.836,"2-({4-[(2-amino-4-oxo-4,7-dihydro-3H-pyrrolo[2,3-d]pyrimidin-5-yl)methyl]benzene-1-carbonyl}amino)-4-chlorobenzoic acid"
+TYMS,6pf3,B,OE7,437.836,"2-({4-[(2-amino-4-oxo-4,7-dihydro-3H-pyrrolo[2,3-d]pyrimidin-5-yl)methyl]benzene-1-carbonyl}amino)-4-chlorobenzoic acid"
+TYMS,6pf3,C,OE7,437.836,"2-({4-[(2-amino-4-oxo-4,7-dihydro-3H-pyrrolo[2,3-d]pyrimidin-5-yl)methyl]benzene-1-carbonyl}amino)-4-chlorobenzoic acid"
+TYMS,6pf3,D,OE7,437.836,"2-({4-[(2-amino-4-oxo-4,7-dihydro-3H-pyrrolo[2,3-d]pyrimidin-5-yl)methyl]benzene-1-carbonyl}amino)-4-chlorobenzoic acid"
+TYMS,6pf6,B,OEJ,447.4,"2-({4-[(2-amino-4-oxo-4,7-dihydro-3H-pyrrolo[2,3-d]pyrimidin-5-yl)methyl]benzene-1-carbonyl}amino)benzene-1,4-dicarboxylic acid"
+TYMS,6pf6,C,OEJ,447.4,"2-({4-[(2-amino-4-oxo-4,7-dihydro-3H-pyrrolo[2,3-d]pyrimidin-5-yl)methyl]benzene-1-carbonyl}amino)benzene-1,4-dicarboxylic acid"
+TYMS,6qyq,B,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+TYMS,6qyq,D,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+TYMS,6r2e,A,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+TYMS,6r2e,B,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+TYMS,6r2e,C,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+TYMS,6r2e,D,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+TYMS,6r2e,E,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+TYMS,6r2e,F,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+TYMS,6r2e,G,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+TYMS,6r2e,H,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+TYMS,6y08,A,08D,253.278,Sulfamethoxazole
+TYMS,6y08,B,08D,253.278,Sulfamethoxazole
+TYMS,6zxo,A,D16,458.488,TOMUDEX
+TYMS,6zxo,B,D16,458.488,TOMUDEX
+TYMS,6zxo,C,D16,458.488,TOMUDEX
+TYMS,6zxo,D,D16,458.488,TOMUDEX
+TYMS,6zxo,E,D16,458.488,TOMUDEX
+TYMS,6zxo,F,D16,458.488,TOMUDEX
+TYMS,7dp4,A,MTX,454.439,METHOTREXATE
+TYMS,7dp5,A,MTX,454.439,METHOTREXATE

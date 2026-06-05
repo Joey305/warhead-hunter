@@ -457,6 +457,24 @@ CURATED_EXAMPLE_CONFIG = [
         "protein": "SHMT",
         "use_case": "methyltransferase inhibitor structure example",
     },
+    {
+        "job_id": "e5bc5765",
+        "label": "TYMS / Thymidylate Synthase",
+        "protein": "TYMS",
+        "use_case": "nucleotide biosynthesis enzyme inhibitor structure example",
+    },
+    {
+        "job_id": "62174d5e",
+        "label": "NUDT5 / NUDIX Hydrolase 5",
+        "protein": "NUDT5",
+        "use_case": "nucleotide biosynthesis enzyme inhibitor structure example",
+    },
+    {
+        "job_id": "8c9ee94e",
+        "label": "HER2 / ERBB2",
+        "protein": "HER2",
+        "use_case": "receptor tyrosine kinase inhibitor structure example",
+    }
 
 ]
 

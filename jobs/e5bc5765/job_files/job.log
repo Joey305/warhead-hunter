@@ -1,0 +1,1373 @@
+[12:11:07] Job e5bc5765 created for target: TYMS
+[12:11:07] Initializing workspace for TYMS...
+[12:11:07] Job e5bc5765 started: 2026-06-05 12:11:07
+[12:11:07] 📦 Copying assets from pipeline_assets → jobs/e5bc5765 ...
+[12:11:07] 🧾 Wrote input.csv and Protein_Data.csv
+[12:11:07] 🚀 Running 1_GRABBER.py...
+[12:11:07] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[12:11:07] [mem] before 1_GRABBER.py parent=131.1MB combined=131.1MB
+[12:11:07] 🧵 Worker caps for 1_GRABBER.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[12:11:07] ⏱ No-output watchdog for 1_GRABBER.py: 180s
+[12:11:07] [mem] running 1_GRABBER.py parent=131.1MB child_tree=1.4MB combined=132.5MB
+🤖 AUTOMATED MODE: Processing input.csv
+=== Processing TYMS ===
+    🔄 Switching to EBI Backup Search for 'Thymidylate_synthase'...
+  → Found 64 candidates
+  → Candidates=64 attempted=64 verified=64 failed=0
+  → CIF output directory: /app/jobs/e5bc5765/WAR/TYMS
+  → Sample verified CIFs: ['WAR/TYMS/3eaw.cif', 'WAR/TYMS/3edw.cif', 'WAR/TYMS/3ehi.cif', 'WAR/TYMS/1ypv.cif', 'WAR/TYMS/3ebu.cif']
+=== DONE ===
+✅ Wrote queries.csv with MW_min=250.0, MW_max=700.0, MinID=90.0
+✅ CIF manifest rows=64 verified=64 failed=0 root=/app/jobs/e5bc5765/WAR
+✅ Sample manifest CIF paths: ['WAR/TYMS/3eaw.cif', 'WAR/TYMS/3edw.cif', 'WAR/TYMS/3ehi.cif', 'WAR/TYMS/1ypv.cif', 'WAR/TYMS/3ebu.cif', 'WAR/TYMS/3egy.cif', 'WAR/TYMS/3ef9.cif', 'WAR/TYMS/3ed7.cif', 'WAR/TYMS/2rd8.cif', 'WAR/TYMS/3gh0.cif']
+[12:11:09] [mem] after 1_GRABBER.py parent=131.2MB delta=+0.1MB combined_peak=213.6MB child_peak=82.5MB
+[12:11:09] 🚀 Running 2_SQchk.py...
+[12:11:09] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[12:11:09] [mem] before 2_SQchk.py parent=131.2MB combined=131.2MB
+[12:11:09] 🧵 Worker caps for 2_SQchk.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[12:11:09] ⏱ No-output watchdog for 2_SQchk.py: 180s
+[12:11:09] [mem] running 2_SQchk.py parent=131.2MB child_tree=1.5MB combined=132.7MB
+🚀 Running Sequence Identity Analysis...
+   Proteins missing fasta/name rows skipped: 0
+   MW_min=250.0  MW_max=700.0  (MW filters currently ignored for ligand debug)
+   Total PDB jobs to process: 64
+   Worker mode=threadpool max_workers=2
+  0%|          | 0/64 [00:00<?, ?it/s]DEBUG: 1ypv Chain(s) ['A'] -> Match: 100.0%
+  2%|▏         | 1/64 [00:00<00:19,  3.21it/s]DEBUG: 2rd8 Chain(s) ['A'] -> Match: 99.7%
+DEBUG: 2rd8 Chain(s) ['B'] -> Match: 99.7%
+DEBUG: 2rda Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 99.7%
+  5%|▍         | 3/64 [00:00<00:12,  5.02it/s]DEBUG: 3eaw Chain(s) ['X'] -> Match: 99.7%
+DEBUG: 3ed7 Chain(s) ['A'] -> Match: 98.6%
+DEBUG: 3ebu Chain(s) ['A'] -> Match: 99.7%
+  8%|▊         | 5/64 [00:00<00:10,  5.60it/s]
+DEBUG: 3ef9 Chain(s) ['A'] -> Match: 99.7%
+DEBUG: 3edw Chain(s) ['X'] -> Match: 99.7%
+ 11%|█         | 7/64 [00:01<00:09,  5.87it/s]
+ 14%|█▍        | 9/64 [00:01<00:09,  6.04it/s]DEBUG: 3egy Chain(s) ['X'] -> Match: 99.7%
+ 17%|█▋        | 11/64 [00:01<00:08,  6.13it/s]DEBUG: 3ejl Chain(s) ['A', 'B', 'C', 'D'] -> Match: 99.7%
+ 20%|██        | 13/64 [00:02<00:08,  6.19it/s]DEBUG: 3hb8 Chain(s) ['A', 'B', 'C', 'D', 'E'] -> Match: 99.7%
+ 23%|██▎       | 15/64 [00:02<00:07,  6.21it/s]DEBUG: 3h9k Chain(s) ['A', 'B', 'C', 'D', 'E'] -> Match: 99.7%
+DEBUG: 3ihi Chain(s) ['A', 'B'] -> Match: 90.9%
+ 27%|██▋       | 17/64 [00:02<00:07,  6.24it/s]DEBUG: 3n5e Chain(s) ['A'] -> Match: 96.3%
+DEBUG: 3n5e Chain(s) ['B'] -> Match: 96.3%
+DEBUG: 3n5e Chain(s) ['D'] -> Match: 100.0%
+DEBUG: 3n5g Chain(s) ['A'] -> Match: 96.3%
+DEBUG: 3ob7 Chain(s) ['A', 'B', 'C', 'D', 'E'] -> Match: 99.7%
+ 30%|██▉       | 19/64 [00:03<00:08,  5.39it/s]DEBUG: 4e28 Chain(s) ['A'] -> Match: 96.3%
+ 33%|███▎      | 21/64 [00:03<00:07,  5.64it/s]
+ 36%|███▌      | 23/64 [00:03<00:07,  5.80it/s]DEBUG: 4fgt Chain(s) ['A'] -> Match: 96.0%
+DEBUG: 4fgt Chain(s) ['D'] -> Match: 100.0%
+ 39%|███▉      | 25/64 [00:04<00:06,  5.94it/s]DEBUG: 4ez8 Chain(s) ['A'] -> Match: 90.9%
+DEBUG: 4g6w Chain(s) ['X'] -> Match: 99.7%
+DEBUG: 4g2o Chain(s) ['X'] -> Match: 99.7%
+ 42%|████▏     | 27/64 [00:04<00:06,  6.05it/s]DEBUG: 4gyh Chain(s) ['A'] -> Match: 98.4%
+[12:11:14] [mem] running 2_SQchk.py parent=131.2MB child_tree=86.8MB combined=218.0MB
+DEBUG: 4h1i Chain(s) ['A', 'B', 'C', 'D'] -> Match: 98.4%
+ 45%|████▌     | 29/64 [00:04<00:05,  6.12it/s]DEBUG: 4kpw Chain(s) ['A'] -> Match: 96.0%
+DEBUG: 4jef Chain(s) ['A'] -> Match: 99.7%
+ 48%|████▊     | 31/64 [00:05<00:05,  6.17it/s]DEBUG: 4o1u Chain(s) ['A', 'B'] -> Match: 96.0%
+ 52%|█████▏    | 33/64 [00:05<00:05,  6.20it/s]
+ 55%|█████▍    | 35/64 [00:05<00:04,  6.25it/s]DEBUG: 5hs3 Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 100.0%
+DEBUG: 5wrn Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 100.0%
+ 58%|█████▊    | 37/64 [00:06<00:04,  6.27it/s]DEBUG: 5x4w Chain(s) ['A'] -> Match: 99.4%
+DEBUG: 5x4x Chain(s) ['A'] -> Match: 99.4%
+ 61%|██████    | 39/64 [00:06<00:03,  6.27it/s]DEBUG: 5x5a Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 99.7%
+DEBUG: 5x5d Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 99.7%
+ 64%|██████▍   | 41/64 [00:06<00:03,  6.27it/s]DEBUG: 5x5q Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 99.7%
+DEBUG: 5x66 Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 99.7%
+ 67%|██████▋   | 43/64 [00:07<00:03,  6.28it/s]DEBUG: 5x67 Chain(s) ['A', 'B'] -> Match: 99.7%
+DEBUG: 5x69 Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 99.7%
+ 70%|███████   | 45/64 [00:07<00:03,  6.29it/s]DEBUG: 6f6z Chain(s) ['A', 'B'] -> Match: 90.9%
+ 73%|███████▎  | 47/64 [00:07<00:02,  6.30it/s]DEBUG: 6gko Chain(s) ['A', 'B'] -> Match: 90.9%
+DEBUG: 6gyj Chain(s) ['A', 'B'] -> Match: 90.9%
+ 77%|███████▋  | 49/64 [00:08<00:02,  6.31it/s]DEBUG: 6oju Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+DEBUG: 6ojv Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+ 80%|███████▉  | 51/64 [00:08<00:02,  6.34it/s]DEBUG: 6pf3 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+ 83%|████████▎ | 53/64 [00:08<00:01,  6.32it/s]DEBUG: 6pf6 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 100.0%
+ 86%|████████▌ | 55/64 [00:09<00:01,  6.30it/s]DEBUG: 6qxh Chain(s) ['A', 'B', 'C'] -> Match: 96.3%
+ 88%|████████▊ | 56/64 [00:09<00:01,  5.34it/s]DEBUG: 6qyq Chain(s) ['A'] -> Match: 96.0%
+DEBUG: 6qyq Chain(s) ['C'] -> Match: 96.0%
+DEBUG: 6qyq Chain(s) ['B'] -> Match: 96.0%
+DEBUG: 6qyq Chain(s) ['D'] -> Match: 96.0%
+ 89%|████████▉ | 57/64 [00:09<00:01,  4.65it/s]DEBUG: 6r2e Chain(s) ['A', 'B', 'C', 'D', 'F', 'H'] -> Match: 96.0%
+[12:11:19] [mem] running 2_SQchk.py parent=131.2MB child_tree=86.9MB combined=218.1MB
+DEBUG: 6r2e Chain(s) ['E', 'G'] -> Match: 96.0%
+ 91%|█████████ | 58/64 [00:10<00:01,  4.20it/s]DEBUG: 6qxg Chain(s) ['A', 'B', 'C'] -> Match: 96.3%
+DEBUG: 6y08 Chain(s) ['A', 'B'] -> Match: 90.9%
+ 94%|█████████▍| 60/64 [00:10<00:00,  4.84it/s]DEBUG: 6zxo Chain(s) ['A', 'B', 'C', 'D', 'E'] -> Match: 96.3%
+DEBUG: 6zxo Chain(s) ['F'] -> Match: 96.3%
+DEBUG: 7dp4 Chain(s) ['A'] -> Match: 64.7%
+ 97%|█████████▋| 62/64 [00:10<00:00,  5.30it/s]DEBUG: 7dp5 Chain(s) ['A'] -> Match: 64.7%
+100%|██████████| 64/64 [00:10<00:00,  5.61it/s]
+100%|██████████| 64/64 [00:10<00:00,  5.84it/s]
+DONE
+✅ PDBs processed OK: 51
+❌ PDBs failed: 13
+📌 Failure reasons:
+   - no_ebi_meta: 13
+[12:11:20] [mem] after 2_SQchk.py parent=131.2MB delta=+0.0MB combined_peak=218.1MB child_peak=86.9MB
+[12:11:20] 🚀 Running 3_PDBmkr.py...
+[12:11:20] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[12:11:20] [mem] before 3_PDBmkr.py parent=131.2MB combined=131.2MB
+[12:11:20] 🧵 Worker caps for 3_PDBmkr.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[12:11:20] ⏱ No-output watchdog for 3_PDBmkr.py: 180s
+[12:11:20] [mem] running 3_PDBmkr.py parent=131.2MB child_tree=0.5MB combined=131.7MB
+📁 Step 3 output root: /app/jobs/e5bc5765/WAR_PDB
+🧾 CIF sources: manifest_rows=64 verified_manifest=64 indexed_cifs=64
+📊 Similarity Stats: Max found = 100.00% (Threshold: 90.0%)
+⚠️ No 5-letter ligands detected. Renaming map not required.
+🛑 Created Skip4.txt — Step 4 will be skipped.
+🚀 BUILDING 72 PDB CHAINS...
+🧾 Step 3 selected build rows=72 resolvable_cifs=72 missing_cifs=0
+🧵 Worker mode=threadpool max_workers=2
+🧾 Step 3 sample CIF resolutions: ['3ob7:manifest_path:WAR/TYMS/3ob7.cif', '3ob7:manifest_path:WAR/TYMS/3ob7.cif', '4e28:manifest_path:WAR/TYMS/4e28.cif', '4e28:manifest_path:WAR/TYMS/4e28.cif', '4ez8:manifest_path:WAR/TYMS/4ez8.cif', '4ez8:manifest_path:WAR/TYMS/4ez8.cif', '4g6w:manifest_path:WAR/TYMS/4g6w.cif', '4g2o:manifest_path:WAR/TYMS/4g2o.cif', '5hs3:manifest_path:WAR/TYMS/5hs3.cif', '5hs3:manifest_path:WAR/TYMS/5hs3.cif']
+  0%|          | 0/72 [00:00<?, ?it/s]
+  7%|▋         | 5/72 [00:00<00:04, 15.06it/s]
+ 10%|▉         | 7/72 [00:00<00:04, 13.91it/s]
+ 12%|█▎        | 9/72 [00:01<00:12,  5.02it/s]
+ 15%|█▌        | 11/72 [00:02<00:17,  3.58it/s]
+ 18%|█▊        | 13/72 [00:03<00:19,  2.97it/s]
+[12:11:26] [mem] running 3_PDBmkr.py parent=131.2MB child_tree=157.8MB combined=289.0MB
+ 21%|██        | 15/72 [00:04<00:20,  2.73it/s]
+ 24%|██▎       | 17/72 [00:04<00:21,  2.50it/s]
+ 26%|██▋       | 19/72 [00:05<00:22,  2.34it/s]
+ 29%|██▉       | 21/72 [00:06<00:22,  2.24it/s]
+ 32%|███▏      | 23/72 [00:07<00:22,  2.19it/s]
+ 35%|███▍      | 25/72 [00:08<00:21,  2.21it/s]
+[12:11:31] [mem] running 3_PDBmkr.py parent=131.2MB child_tree=162.7MB combined=293.9MB
+ 38%|███▊      | 27/72 [00:09<00:20,  2.15it/s]
+ 40%|████      | 29/72 [00:10<00:17,  2.44it/s]
+ 42%|████▏     | 30/72 [00:10<00:16,  2.61it/s]
+ 44%|████▍     | 32/72 [00:11<00:16,  2.46it/s]
+ 46%|████▌     | 33/72 [00:11<00:13,  2.81it/s]
+ 47%|████▋     | 34/72 [00:11<00:12,  3.10it/s]
+ 50%|█████     | 36/72 [00:12<00:09,  3.62it/s]
+ 53%|█████▎    | 38/72 [00:12<00:08,  4.06it/s]
+ 56%|█████▌    | 40/72 [00:13<00:07,  4.05it/s]
+ 58%|█████▊    | 42/72 [00:13<00:07,  3.81it/s]
+ 61%|██████    | 44/72 [00:14<00:07,  3.71it/s]
+ 62%|██████▎   | 45/72 [00:14<00:07,  3.52it/s]
+[12:11:37] [mem] running 3_PDBmkr.py parent=131.2MB child_tree=149.1MB combined=280.3MB
+ 65%|██████▌   | 47/72 [00:15<00:07,  3.22it/s]
+ 67%|██████▋   | 48/72 [00:15<00:06,  3.62it/s]
+ 68%|██████▊   | 49/72 [00:16<00:07,  2.98it/s]
+ 71%|███████   | 51/72 [00:16<00:06,  3.12it/s]
+ 74%|███████▎  | 53/72 [00:17<00:06,  3.08it/s]
+[12:11:42] [mem] running 3_PDBmkr.py parent=131.2MB child_tree=208.6MB combined=339.8MB
+ 76%|███████▋  | 55/72 [00:18<00:06,  2.48it/s]
+ 79%|███████▉  | 57/72 [00:20<00:09,  1.55it/s]
+ 82%|████████▏ | 59/72 [00:23<00:10,  1.23it/s]
+[12:11:48] [mem] running 3_PDBmkr.py parent=131.2MB child_tree=221.7MB combined=352.9MB
+ 85%|████████▍ | 61/72 [00:25<00:10,  1.09it/s]
+ 88%|████████▊ | 63/72 [00:27<00:08,  1.01it/s]
+ 90%|█████████ | 65/72 [00:28<00:05,  1.35it/s]
+ 93%|█████████▎| 67/72 [00:29<00:03,  1.51it/s]
+ 96%|█████████▌| 69/72 [00:29<00:01,  1.64it/s]
+ 99%|█████████▊| 71/72 [00:30<00:00,  1.72it/s]
+100%|██████████| 72/72 [00:30<00:00,  2.32it/s]
+📁 Step 3 output root resolved: /app/jobs/e5bc5765/WAR_PDB
+📊 Step 3 requested=72 built=72 on_disk=72
+🧾 Step 3 sample PDBs: ['TYMS/3ob7_A_GSH.pdb', 'TYMS/3ob7_D_GSH.pdb', 'TYMS/4e28_A_0MZ.pdb', 'TYMS/4e28_A_9MZ.pdb', 'TYMS/4ez8_A_DHF.pdb', 'TYMS/4ez8_A_NOH.pdb', 'TYMS/4g2o_X_TIY.pdb', 'TYMS/4g6w_X_PBX.pdb', 'TYMS/5hs3_A_KI3.pdb', 'TYMS/5hs3_B_KI3.pdb']
+✅ All PDBs built successfully.
+✅ Wrote 5CharMAP.csv as headers-only (no 5-letter ligands detected).
+[12:11:53] [mem] after 3_PDBmkr.py parent=131.2MB delta=+0.0MB combined_peak=366.1MB child_peak=234.9MB
+[12:11:53] 🚀 Running 4_PDBfxr.py...
+[12:11:53] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[12:11:53] [mem] before 4_PDBfxr.py parent=131.2MB combined=131.2MB
+[12:11:53] 🧵 Worker caps for 4_PDBfxr.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[12:11:53] ⏱ No-output watchdog for 4_PDBfxr.py: 180s
+[12:11:53] [mem] running 4_PDBfxr.py parent=131.2MB child_tree=1.5MB combined=132.7MB
+🛑 Skip4.txt detected — no ligand5→ligandX renaming required.
+✅ Step 4 exiting safely.
+[12:11:53] [mem] after 4_PDBfxr.py parent=131.2MB delta=+0.0MB combined_peak=132.7MB child_peak=1.5MB
+[12:11:53] 🚀 Running 5_PDBcln.py...
+[12:11:53] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[12:11:53] [mem] before 5_PDBcln.py parent=131.2MB combined=131.2MB
+[12:11:53] 🧵 Worker caps for 5_PDBcln.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[12:11:53] ⏱ No-output watchdog for 5_PDBcln.py: 180s
+[12:11:53] [mem] running 5_PDBcln.py parent=131.2MB child_tree=0.7MB combined=131.9MB
+📁 ROOT DIRECTORY: WAR_PDB
+📁 Step 5 input root resolved: /app/jobs/e5bc5765/WAR_PDB
+📊 Step 5 input PDB count before cleaning: 72
+=============================
+🔬 Processing Protein: TYMS
+📂 Folder: WAR_PDB/TYMS
+=============================
+🧪 Cleaning 5hs3_B_KI3.pdb  | Keeping ligand: KI3
+✔ Cleaned: 5hs3_B_KI3.pdb
+🧪 Cleaning 4g2o_X_TIY.pdb  | Keeping ligand: TIY
+✔ Cleaned: 4g2o_X_TIY.pdb
+🧪 Cleaning 6gko_B_FGT.pdb  | Keeping ligand: FGT
+✔ Cleaned: 6gko_B_FGT.pdb
+🧪 Cleaning 6ojv_A_2XB.pdb  | Keeping ligand: 2XB
+✔ Cleaned: 6ojv_A_2XB.pdb
+🧪 Cleaning 6y08_A_08D.pdb  | Keeping ligand: 08D
+✔ Cleaned: 6y08_A_08D.pdb
+🧪 Cleaning 6r2e_C_FFO.pdb  | Keeping ligand: FFO
+✔ Cleaned: 6r2e_C_FFO.pdb
+🧪 Cleaning 5x5q_A_D16.pdb  | Keeping ligand: D16
+✔ Cleaned: 5x5q_A_D16.pdb
+🧪 Cleaning 4g6w_X_PBX.pdb  | Keeping ligand: PBX
+✔ Cleaned: 4g6w_X_PBX.pdb
+🧪 Cleaning 3ob7_A_GSH.pdb  | Keeping ligand: GSH
+✔ Cleaned: 3ob7_A_GSH.pdb
+🧪 Cleaning 5x5q_D_D16.pdb  | Keeping ligand: D16
+✔ Cleaned: 5x5q_D_D16.pdb
+🧪 Cleaning 6qyq_D_FFO.pdb  | Keeping ligand: FFO
+✔ Cleaned: 6qyq_D_FFO.pdb
+🧪 Cleaning 4e28_A_9MZ.pdb  | Keeping ligand: 9MZ
+✔ Cleaned: 4e28_A_9MZ.pdb
+🧪 Cleaning 6oju_A_D96.pdb  | Keeping ligand: D96
+✔ Cleaned: 6oju_A_D96.pdb
+🧪 Cleaning 5x67_B_7Z9.pdb  | Keeping ligand: 7Z9
+✔ Cleaned: 5x67_B_7Z9.pdb
+🧪 Cleaning 5wrn_A_DCM.pdb  | Keeping ligand: DCM
+✔ Cleaned: 5wrn_A_DCM.pdb
+🧪 Cleaning 5x66_A_MTX.pdb  | Keeping ligand: MTX
+✔ Cleaned: 5x66_A_MTX.pdb
+🧪 Cleaning 5hs3_A_KI3.pdb  | Keeping ligand: KI3
+✔ Cleaned: 5hs3_A_KI3.pdb
+🧪 Cleaning 6r2e_A_FFO.pdb  | Keeping ligand: FFO
+✔ Cleaned: 6r2e_A_FFO.pdb
+🧪 Cleaning 6pf3_D_OE7.pdb  | Keeping ligand: OE7
+✔ Cleaned: 6pf3_D_OE7.pdb
+🧪 Cleaning 5x5q_B_D16.pdb  | Keeping ligand: D16
+✔ Cleaned: 5x5q_B_D16.pdb
+🧪 Cleaning 6zxo_C_D16.pdb  | Keeping ligand: D16
+✔ Cleaned: 6zxo_C_D16.pdb
+🧪 Cleaning 5x69_A_7ZC.pdb  | Keeping ligand: 7ZC
+✔ Cleaned: 5x69_A_7ZC.pdb
+🧪 Cleaning 5x66_B_MTX.pdb  | Keeping ligand: MTX
+✔ Cleaned: 5x66_B_MTX.pdb
+🧪 Cleaning 6pf6_C_OEJ.pdb  | Keeping ligand: OEJ
+✔ Cleaned: 6pf6_C_OEJ.pdb
+🧪 Cleaning 6zxo_B_D16.pdb  | Keeping ligand: D16
+✔ Cleaned: 6zxo_B_D16.pdb
+🧪 Cleaning 6r2e_D_FFO.pdb  | Keeping ligand: FFO
+✔ Cleaned: 6r2e_D_FFO.pdb
+🧪 Cleaning 6gko_A_FGT.pdb  | Keeping ligand: FGT
+✔ Cleaned: 6gko_A_FGT.pdb
+🧪 Cleaning 6pf3_A_OE7.pdb  | Keeping ligand: OE7
+✔ Cleaned: 6pf3_A_OE7.pdb
+🧪 Cleaning 6f6z_B_TGQ.pdb  | Keeping ligand: TGQ
+✔ Cleaned: 6f6z_B_TGQ.pdb
+🧪 Cleaning 5wrn_E_DCM.pdb  | Keeping ligand: DCM
+✔ Cleaned: 5wrn_E_DCM.pdb
+🧪 Cleaning 6oju_D_D96.pdb  | Keeping ligand: D96
+✔ Cleaned: 6oju_D_D96.pdb
+🧪 Cleaning 5hs3_E_KI3.pdb  | Keeping ligand: KI3
+✔ Cleaned: 5hs3_E_KI3.pdb
+🧪 Cleaning 6gyj_A_FGT.pdb  | Keeping ligand: FGT
+✔ Cleaned: 6gyj_A_FGT.pdb
+🧪 Cleaning 6zxo_F_D16.pdb  | Keeping ligand: D16
+✔ Cleaned: 6zxo_F_D16.pdb
+🧪 Cleaning 6pf3_B_OE7.pdb  | Keeping ligand: OE7
+✔ Cleaned: 6pf3_B_OE7.pdb
+🧪 Cleaning 6r2e_G_FFO.pdb  | Keeping ligand: FFO
+✔ Cleaned: 6r2e_G_FFO.pdb
+🧪 Cleaning 6f6z_A_NOH.pdb  | Keeping ligand: NOH
+✔ Cleaned: 6f6z_A_NOH.pdb
+🧪 Cleaning 6oju_C_D96.pdb  | Keeping ligand: D96
+✔ Cleaned: 6oju_C_D96.pdb
+🧪 Cleaning 6zxo_A_D16.pdb  | Keeping ligand: D16
+✔ Cleaned: 6zxo_A_D16.pdb
+🧪 Cleaning 6f6z_B_NOH.pdb  | Keeping ligand: NOH
+✔ Cleaned: 6f6z_B_NOH.pdb
+🧪 Cleaning 5wrn_B_DCM.pdb  | Keeping ligand: DCM
+✔ Cleaned: 5wrn_B_DCM.pdb
+🧪 Cleaning 5x66_E_MTX.pdb  | Keeping ligand: MTX
+✔ Cleaned: 5x66_E_MTX.pdb
+🧪 Cleaning 4ez8_A_DHF.pdb  | Keeping ligand: DHF
+✔ Cleaned: 4ez8_A_DHF.pdb
+🧪 Cleaning 5x5q_E_D16.pdb  | Keeping ligand: D16
+✔ Cleaned: 5x5q_E_D16.pdb
+🧪 Cleaning 6oju_B_D96.pdb  | Keeping ligand: D96
+✔ Cleaned: 6oju_B_D96.pdb
+🧪 Cleaning 5x66_C_MTX.pdb  | Keeping ligand: MTX
+✔ Cleaned: 5x66_C_MTX.pdb
+🧪 Cleaning 5x69_E_7ZC.pdb  | Keeping ligand: 7ZC
+✔ Cleaned: 5x69_E_7ZC.pdb
+🧪 Cleaning 4e28_A_0MZ.pdb  | Keeping ligand: 0MZ
+✔ Cleaned: 4e28_A_0MZ.pdb
+🧪 Cleaning 6zxo_D_D16.pdb  | Keeping ligand: D16
+✔ Cleaned: 6zxo_D_D16.pdb
+🧪 Cleaning 5x5q_C_D16.pdb  | Keeping ligand: D16
+✔ Cleaned: 5x5q_C_D16.pdb
+🧪 Cleaning 6pf6_B_OEJ.pdb  | Keeping ligand: OEJ
+✔ Cleaned: 6pf6_B_OEJ.pdb
+🧪 Cleaning 6zxo_E_D16.pdb  | Keeping ligand: D16
+✔ Cleaned: 6zxo_E_D16.pdb
+🧪 Cleaning 6r2e_B_FFO.pdb  | Keeping ligand: FFO
+✔ Cleaned: 6r2e_B_FFO.pdb
+🧪 Cleaning 5wrn_F_DCM.pdb  | Keeping ligand: DCM
+✔ Cleaned: 5wrn_F_DCM.pdb
+🧪 Cleaning 6r2e_F_FFO.pdb  | Keeping ligand: FFO
+✔ Cleaned: 6r2e_F_FFO.pdb
+🧪 Cleaning 6ojv_C_2XB.pdb  | Keeping ligand: 2XB
+✔ Cleaned: 6ojv_C_2XB.pdb
+🧪 Cleaning 6y08_B_08D.pdb  | Keeping ligand: 08D
+✔ Cleaned: 6y08_B_08D.pdb
+🧪 Cleaning 6qyq_B_FFO.pdb  | Keeping ligand: FFO
+✔ Cleaned: 6qyq_B_FFO.pdb
+🧪 Cleaning 6f6z_A_TGQ.pdb  | Keeping ligand: TGQ
+✔ Cleaned: 6f6z_A_TGQ.pdb
+🧪 Cleaning 6pf3_C_OE7.pdb  | Keeping ligand: OE7
+✔ Cleaned: 6pf3_C_OE7.pdb
+🧪 Cleaning 6ojv_B_2XB.pdb  | Keeping ligand: 2XB
+✔ Cleaned: 6ojv_B_2XB.pdb
+🧪 Cleaning 5x5q_F_D16.pdb  | Keeping ligand: D16
+✔ Cleaned: 5x5q_F_D16.pdb
+🧪 Cleaning 3ob7_D_GSH.pdb  | Keeping ligand: GSH
+✔ Cleaned: 3ob7_D_GSH.pdb
+🧪 Cleaning 5wrn_D_DCM.pdb  | Keeping ligand: DCM
+✔ Cleaned: 5wrn_D_DCM.pdb
+🧪 Cleaning 6ojv_D_2XB.pdb  | Keeping ligand: 2XB
+✔ Cleaned: 6ojv_D_2XB.pdb
+🧪 Cleaning 5x66_F_MTX.pdb  | Keeping ligand: MTX
+✔ Cleaned: 5x66_F_MTX.pdb
+🧪 Cleaning 6r2e_E_FFO.pdb  | Keeping ligand: FFO
+✔ Cleaned: 6r2e_E_FFO.pdb
+🧪 Cleaning 4ez8_A_NOH.pdb  | Keeping ligand: NOH
+✔ Cleaned: 4ez8_A_NOH.pdb
+🧪 Cleaning 5wrn_C_DCM.pdb  | Keeping ligand: DCM
+✔ Cleaned: 5wrn_C_DCM.pdb
+🧪 Cleaning 5x67_A_7Z9.pdb  | Keeping ligand: 7Z9
+✔ Cleaned: 5x67_A_7Z9.pdb
+🧪 Cleaning 5x66_D_MTX.pdb  | Keeping ligand: MTX
+✔ Cleaned: 5x66_D_MTX.pdb
+🧪 Cleaning 6r2e_H_FFO.pdb  | Keeping ligand: FFO
+✔ Cleaned: 6r2e_H_FFO.pdb
+📊 Step 5 remaining PDB count after cleaning: 72
+🎉 DONE — cleaned=72, dropped=0
+[12:11:54] [mem] after 5_PDBcln.py parent=131.2MB delta=+0.0MB combined_peak=131.9MB child_peak=0.7MB
+[12:11:54] 🚀 Running 6_SASA.py...
+[12:11:54] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[12:11:54] [mem] before 6_SASA.py parent=131.2MB combined=131.2MB
+[12:11:54] 🧵 Worker caps for 6_SASA.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[12:11:54] ⏱ No-output watchdog for 6_SASA.py: 180s
+[12:11:54] [mem] running 6_SASA.py parent=131.2MB child_tree=0.6MB combined=131.8MB
+📁 Scanning WARHEAD PDB ROOT: WAR_PDB
+📁 Step 6 input root resolved: /app/jobs/e5bc5765/WAR_PDB
+🔎 Found 72 PDB files
+🧾 Step 6 sample PDBs: ['TYMS/3ob7_A_GSH.pdb', 'TYMS/3ob7_D_GSH.pdb', 'TYMS/4e28_A_0MZ.pdb', 'TYMS/4e28_A_9MZ.pdb', 'TYMS/4ez8_A_DHF.pdb', 'TYMS/4ez8_A_NOH.pdb', 'TYMS/4g2o_X_TIY.pdb', 'TYMS/4g6w_X_PBX.pdb', 'TYMS/5hs3_A_KI3.pdb', 'TYMS/5hs3_B_KI3.pdb']
+🧠 Using max_workers=3 stream_output=True
+✅ 3ob7_D_GSH.pdb: 19/20 exposed (0.95)
+✅ 4e28_A_9MZ.pdb: 29/43 exposed (0.67)
+✅ 4e28_A_0MZ.pdb: 32/44 exposed (0.73)
+✅ 3ob7_A_GSH.pdb: 17/20 exposed (0.85)
+✅ 4g2o_X_TIY.pdb: 11/16 exposed (0.69)
+✅ 4ez8_A_DHF.pdb: 24/32 exposed (0.75)
+✅ 4ez8_A_NOH.pdb: 14/21 exposed (0.67)
+✅ 4g6w_X_PBX.pdb: 6/10 exposed (0.60)
+✅ 5hs3_A_KI3.pdb: 22/32 exposed (0.69)
+✅ 5hs3_B_KI3.pdb: 18/32 exposed (0.56)
+✅ 5hs3_E_KI3.pdb: 24/32 exposed (0.75)
+[12:11:59] [mem] running 6_SASA.py parent=131.2MB child_tree=92.0MB combined=223.2MB
+✅ 5wrn_A_DCM.pdb: 14/20 exposed (0.70)
+✅ 5wrn_B_DCM.pdb: 16/20 exposed (0.80)
+✅ 5wrn_C_DCM.pdb: 13/20 exposed (0.65)
+✅ 5wrn_F_DCM.pdb: 16/20 exposed (0.80)
+✅ 5wrn_D_DCM.pdb: 13/20 exposed (0.65)
+✅ 5wrn_E_DCM.pdb: 15/20 exposed (0.75)
+✅ 5x5q_B_D16.pdb: 25/32 exposed (0.78)
+✅ 5x5q_C_D16.pdb: 25/32 exposed (0.78)
+✅ 5x5q_A_D16.pdb: 24/32 exposed (0.75)
+✅ 5x5q_D_D16.pdb: 25/32 exposed (0.78)
+✅ 5x5q_E_D16.pdb: 26/32 exposed (0.81)
+[12:12:04] [mem] running 6_SASA.py parent=131.2MB child_tree=92.1MB combined=223.3MB
+✅ 5x5q_F_D16.pdb: 26/32 exposed (0.81)
+✅ 5x66_A_MTX.pdb: 28/33 exposed (0.85)
+✅ 5x66_D_MTX.pdb: 25/33 exposed (0.76)
+📊 Progress: 25/72
+✅ 5x66_B_MTX.pdb: 26/33 exposed (0.79)
+✅ 5x66_C_MTX.pdb: 27/33 exposed (0.82)
+✅ 5x67_A_7Z9.pdb: 16/20 exposed (0.80)
+✅ 5x66_E_MTX.pdb: 26/33 exposed (0.79)
+✅ 5x66_F_MTX.pdb: 25/33 exposed (0.76)
+✅ 5x69_A_7ZC.pdb: 9/15 exposed (0.60)
+✅ 5x67_B_7Z9.pdb: 15/20 exposed (0.75)
+✅ 5x69_E_7ZC.pdb: 10/15 exposed (0.67)
+✅ 6f6z_A_TGQ.pdb: 26/33 exposed (0.79)
+✅ 6f6z_B_NOH.pdb: 15/21 exposed (0.71)
+[12:12:09] [mem] running 6_SASA.py parent=131.2MB child_tree=92.1MB combined=223.3MB
+✅ 6f6z_B_TGQ.pdb: 23/33 exposed (0.70)
+✅ 6f6z_A_NOH.pdb: 14/21 exposed (0.67)
+✅ 6gko_A_FGT.pdb: 15/24 exposed (0.62)
+✅ 6gko_B_FGT.pdb: 16/24 exposed (0.67)
+✅ 6gyj_A_FGT.pdb: 18/24 exposed (0.75)
+✅ 6oju_B_D96.pdb: 18/30 exposed (0.60)
+✅ 6oju_A_D96.pdb: 14/30 exposed (0.47)
+✅ 6oju_C_D96.pdb: 18/30 exposed (0.60)
+✅ 6oju_D_D96.pdb: 15/30 exposed (0.50)
+✅ 6ojv_A_2XB.pdb: 19/30 exposed (0.63)
+✅ 6ojv_C_2XB.pdb: 19/30 exposed (0.63)
+✅ 6ojv_D_2XB.pdb: 18/30 exposed (0.60)
+[12:12:15] [mem] running 6_SASA.py parent=131.2MB child_tree=92.2MB combined=223.4MB
+✅ 6ojv_B_2XB.pdb: 19/30 exposed (0.63)
+✅ 6pf3_A_OE7.pdb: 21/31 exposed (0.68)
+✅ 6pf3_B_OE7.pdb: 21/31 exposed (0.68)
+📊 Progress: 50/72
+✅ 6pf3_C_OE7.pdb: 21/31 exposed (0.68)
+✅ 6pf3_D_OE7.pdb: 22/31 exposed (0.71)
+✅ 6pf6_B_OEJ.pdb: 21/33 exposed (0.64)
+✅ 6pf6_C_OEJ.pdb: 24/33 exposed (0.73)
+✅ 6qyq_D_FFO.pdb: 19/34 exposed (0.56)
+✅ 6qyq_B_FFO.pdb: 20/34 exposed (0.59)
+✅ 6r2e_B_FFO.pdb: 20/34 exposed (0.59)
+✅ 6r2e_A_FFO.pdb: 17/34 exposed (0.50)
+[12:12:20] [mem] running 6_SASA.py parent=131.2MB child_tree=92.2MB combined=223.4MB
+✅ 6r2e_C_FFO.pdb: 17/34 exposed (0.50)
+✅ 6r2e_D_FFO.pdb: 19/34 exposed (0.56)
+✅ 6r2e_E_FFO.pdb: 18/34 exposed (0.53)
+✅ 6r2e_H_FFO.pdb: 19/34 exposed (0.56)
+✅ 6r2e_G_FFO.pdb: 15/34 exposed (0.44)
+✅ 6y08_A_08D.pdb: 12/17 exposed (0.71)
+✅ 6r2e_F_FFO.pdb: 17/34 exposed (0.50)
+✅ 6y08_B_08D.pdb: 13/17 exposed (0.77)
+✅ 6zxo_A_D16.pdb: 23/32 exposed (0.72)
+✅ 6zxo_B_D16.pdb: 22/32 exposed (0.69)
+✅ 6zxo_D_D16.pdb: 22/32 exposed (0.69)
+✅ 6zxo_C_D16.pdb: 21/32 exposed (0.66)
+✅ 6zxo_E_D16.pdb: 22/32 exposed (0.69)
+✅ 6zxo_F_D16.pdb: 23/32 exposed (0.72)
+🎉 WARHEAD SASA COMPLETE
+[12:12:25] [mem] after 6_SASA.py parent=131.2MB delta=+0.0MB combined_peak=223.6MB child_peak=92.4MB
+[12:12:25] 🚀 Running 7_metadata.py...
+[12:12:25] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[12:12:25] [mem] before 7_metadata.py parent=131.2MB combined=131.2MB
+[12:12:25] 🧵 Worker caps for 7_metadata.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[12:12:25] ⏱ No-output watchdog for 7_metadata.py: 180s
+[12:12:25] [mem] running 7_metadata.py parent=131.2MB child_tree=0.6MB combined=131.8MB
+📂 Using SMILES file: components-smiles-stereo-oe.smi
+🧬 Loaded 49558 SMILES entries.
+🔎 Sample SMILES keys: ['000', '001', '002', '003', '004', '005', '006', '007', '008', '009', '00A', '00B', '00C', '00D', '00E']
+🤖 AUTO MODE: Warhead_SASA_summary.csv
+📥 Loaded SASA table.
+📊 Step 7 input row count: 72
+🧾 Step 7 input columns: ['Target', 'pdb_id', 'Warhead', 'Residue_ID', 'Variant', 'Total_atoms', 'Exposed_atoms', 'SASA_in_complex_A2', '%Exposed', '%Buried']
+ℹ️ 5CharMAP.csv has no usable rows → alias mapping disabled.
+🔗 WAR_PDB chain map built: 25 (pdb,ligX) groups
+🔬 BEGIN RESOLUTION TRACE
+--------------------------------------------------
+Row 0
+  PDB: 3ob7
+  Warhead (input): GSH
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: GSH
+  SMILES found? YES
+--------------------------------------------------
+Row 1
+  PDB: 4e28
+  Warhead (input): 9MZ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 9MZ
+  SMILES found? YES
+--------------------------------------------------
+Row 2
+  PDB: 4e28
+  Warhead (input): 0MZ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 0MZ
+  SMILES found? YES
+--------------------------------------------------
+Row 3
+  PDB: 3ob7
+  Warhead (input): GSH
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: GSH
+  SMILES found? YES
+--------------------------------------------------
+Row 4
+  PDB: 4g2o
+  Warhead (input): TIY
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: TIY
+  SMILES found? YES
+--------------------------------------------------
+Row 5
+  PDB: 4ez8
+  Warhead (input): DHF
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DHF
+  SMILES found? YES
+--------------------------------------------------
+Row 6
+  PDB: 4ez8
+  Warhead (input): NOH
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: NOH
+  SMILES found? YES
+--------------------------------------------------
+Row 7
+  PDB: 4g6w
+  Warhead (input): PBX
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: PBX
+  SMILES found? YES
+--------------------------------------------------
+Row 8
+  PDB: 5hs3
+  Warhead (input): KI3
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KI3
+  SMILES found? YES
+--------------------------------------------------
+Row 9
+  PDB: 5hs3
+  Warhead (input): KI3
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KI3
+  SMILES found? YES
+--------------------------------------------------
+Row 10
+  PDB: 5hs3
+  Warhead (input): KI3
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KI3
+  SMILES found? YES
+--------------------------------------------------
+Row 11
+  PDB: 5wrn
+  Warhead (input): DCM
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DCM
+  SMILES found? YES
+--------------------------------------------------
+Row 12
+  PDB: 5wrn
+  Warhead (input): DCM
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DCM
+  SMILES found? YES
+--------------------------------------------------
+Row 13
+  PDB: 5wrn
+  Warhead (input): DCM
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DCM
+  SMILES found? YES
+--------------------------------------------------
+Row 14
+  PDB: 5wrn
+  Warhead (input): DCM
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DCM
+  SMILES found? YES
+--------------------------------------------------
+Row 15
+  PDB: 5wrn
+  Warhead (input): DCM
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DCM
+  SMILES found? YES
+--------------------------------------------------
+Row 16
+  PDB: 5wrn
+  Warhead (input): DCM
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DCM
+  SMILES found? YES
+--------------------------------------------------
+Row 17
+  PDB: 5x5q
+  Warhead (input): D16
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D16
+  SMILES found? YES
+--------------------------------------------------
+Row 18
+  PDB: 5x5q
+  Warhead (input): D16
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D16
+  SMILES found? YES
+--------------------------------------------------
+Row 19
+  PDB: 5x5q
+  Warhead (input): D16
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D16
+  SMILES found? YES
+--------------------------------------------------
+Row 20
+  PDB: 5x5q
+  Warhead (input): D16
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D16
+  SMILES found? YES
+--------------------------------------------------
+Row 21
+  PDB: 5x5q
+  Warhead (input): D16
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D16
+  SMILES found? YES
+--------------------------------------------------
+Row 22
+  PDB: 5x5q
+  Warhead (input): D16
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D16
+  SMILES found? YES
+--------------------------------------------------
+Row 23
+  PDB: 5x66
+  Warhead (input): MTX
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: MTX
+  SMILES found? YES
+--------------------------------------------------
+Row 24
+  PDB: 5x66
+  Warhead (input): MTX
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: MTX
+  SMILES found? YES
+--------------------------------------------------
+Row 25
+  PDB: 5x66
+  Warhead (input): MTX
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: MTX
+  SMILES found? YES
+--------------------------------------------------
+Row 26
+  PDB: 5x66
+  Warhead (input): MTX
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: MTX
+  SMILES found? YES
+--------------------------------------------------
+Row 27
+  PDB: 5x67
+  Warhead (input): 7Z9
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 7Z9
+  SMILES found? YES
+--------------------------------------------------
+Row 28
+  PDB: 5x66
+  Warhead (input): MTX
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: MTX
+  SMILES found? YES
+--------------------------------------------------
+Row 29
+  PDB: 5x66
+  Warhead (input): MTX
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: MTX
+  SMILES found? YES
+--------------------------------------------------
+Row 30
+  PDB: 5x69
+  Warhead (input): 7ZC
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 7ZC
+  SMILES found? YES
+--------------------------------------------------
+Row 31
+  PDB: 5x67
+  Warhead (input): 7Z9
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 7Z9
+  SMILES found? YES
+--------------------------------------------------
+Row 32
+  PDB: 5x69
+  Warhead (input): 7ZC
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 7ZC
+  SMILES found? YES
+--------------------------------------------------
+Row 33
+  PDB: 6f6z
+  Warhead (input): TGQ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: TGQ
+  SMILES found? YES
+--------------------------------------------------
+Row 34
+  PDB: 6f6z
+  Warhead (input): NOH
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: NOH
+  SMILES found? YES
+--------------------------------------------------
+Row 35
+  PDB: 6f6z
+  Warhead (input): TGQ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: TGQ
+  SMILES found? YES
+--------------------------------------------------
+Row 36
+  PDB: 6f6z
+  Warhead (input): NOH
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: NOH
+  SMILES found? YES
+--------------------------------------------------
+Row 37
+  PDB: 6gko
+  Warhead (input): FGT
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: FGT
+  SMILES found? YES
+--------------------------------------------------
+Row 38
+  PDB: 6gko
+  Warhead (input): FGT
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: FGT
+  SMILES found? YES
+--------------------------------------------------
+Row 39
+  PDB: 6gyj
+  Warhead (input): FGT
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: FGT
+  SMILES found? YES
+--------------------------------------------------
+Row 40
+  PDB: 6oju
+  Warhead (input): D96
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D96
+  SMILES found? YES
+--------------------------------------------------
+Row 41
+  PDB: 6oju
+  Warhead (input): D96
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D96
+  SMILES found? YES
+--------------------------------------------------
+Row 42
+  PDB: 6oju
+  Warhead (input): D96
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D96
+  SMILES found? YES
+--------------------------------------------------
+Row 43
+  PDB: 6oju
+  Warhead (input): D96
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D96
+  SMILES found? YES
+--------------------------------------------------
+Row 44
+  PDB: 6ojv
+  Warhead (input): 2XB
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2XB
+  SMILES found? YES
+--------------------------------------------------
+Row 45
+  PDB: 6ojv
+  Warhead (input): 2XB
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2XB
+  SMILES found? YES
+--------------------------------------------------
+Row 46
+  PDB: 6ojv
+  Warhead (input): 2XB
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2XB
+  SMILES found? YES
+--------------------------------------------------
+Row 47
+  PDB: 6ojv
+  Warhead (input): 2XB
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 2XB
+  SMILES found? YES
+--------------------------------------------------
+Row 48
+  PDB: 6pf3
+  Warhead (input): OE7
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: OE7
+  SMILES found? YES
+--------------------------------------------------
+Row 49
+  PDB: 6pf3
+  Warhead (input): OE7
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: OE7
+  SMILES found? YES
+--------------------------------------------------
+Row 50
+  PDB: 6pf3
+  Warhead (input): OE7
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: OE7
+  SMILES found? YES
+--------------------------------------------------
+Row 51
+  PDB: 6pf3
+  Warhead (input): OE7
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: OE7
+  SMILES found? YES
+--------------------------------------------------
+Row 52
+  PDB: 6pf6
+  Warhead (input): OEJ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: OEJ
+  SMILES found? YES
+--------------------------------------------------
+Row 53
+  PDB: 6pf6
+  Warhead (input): OEJ
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: OEJ
+  SMILES found? YES
+--------------------------------------------------
+Row 54
+  PDB: 6qyq
+  Warhead (input): FFO
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: FFO
+  SMILES found? YES
+--------------------------------------------------
+Row 55
+  PDB: 6qyq
+  Warhead (input): FFO
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: FFO
+  SMILES found? YES
+--------------------------------------------------
+Row 56
+  PDB: 6r2e
+  Warhead (input): FFO
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: FFO
+  SMILES found? YES
+--------------------------------------------------
+Row 57
+  PDB: 6r2e
+  Warhead (input): FFO
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: FFO
+  SMILES found? YES
+--------------------------------------------------
+Row 58
+  PDB: 6r2e
+  Warhead (input): FFO
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: FFO
+  SMILES found? YES
+--------------------------------------------------
+Row 59
+  PDB: 6r2e
+  Warhead (input): FFO
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: FFO
+  SMILES found? YES
+--------------------------------------------------
+Row 60
+  PDB: 6r2e
+  Warhead (input): FFO
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: FFO
+  SMILES found? YES
+--------------------------------------------------
+Row 61
+  PDB: 6r2e
+  Warhead (input): FFO
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: FFO
+  SMILES found? YES
+--------------------------------------------------
+Row 62
+  PDB: 6r2e
+  Warhead (input): FFO
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: FFO
+  SMILES found? YES
+--------------------------------------------------
+Row 63
+  PDB: 6y08
+  Warhead (input): 08D
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 08D
+  SMILES found? YES
+--------------------------------------------------
+Row 64
+  PDB: 6r2e
+  Warhead (input): FFO
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: FFO
+  SMILES found? YES
+--------------------------------------------------
+Row 65
+  PDB: 6y08
+  Warhead (input): 08D
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: 08D
+  SMILES found? YES
+--------------------------------------------------
+Row 66
+  PDB: 6zxo
+  Warhead (input): D16
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D16
+  SMILES found? YES
+--------------------------------------------------
+Row 67
+  PDB: 6zxo
+  Warhead (input): D16
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D16
+  SMILES found? YES
+--------------------------------------------------
+Row 68
+  PDB: 6zxo
+  Warhead (input): D16
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D16
+  SMILES found? YES
+--------------------------------------------------
+Row 69
+  PDB: 6zxo
+  Warhead (input): D16
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D16
+  SMILES found? YES
+--------------------------------------------------
+Row 70
+  PDB: 6zxo
+  Warhead (input): D16
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D16
+  SMILES found? YES
+--------------------------------------------------
+Row 71
+  PDB: 6zxo
+  Warhead (input): D16
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: D16
+  SMILES found? YES
+🔬 END RESOLUTION TRACE
+✅ Filtered SASA table: removed 0 ion-only rows; remaining 72 rows
+💾 Saved Resolved_SASA_Summary.csv
+💾 Saved Ligand_PDB_Index.csv
+🚀 Launching metadata engine mode=threads max_workers=3
+🧪 Computing descriptors:   0%|          | 0/21 [00:00<?, ?it/s]
+🧪 Computing descriptors:   5%|▍         | 1/21 [00:00<00:03,  6.15it/s]
+🧪 Computing descriptors:  19%|█▉        | 4/21 [00:00<00:01, 16.77it/s]
+🧪 Computing descriptors:  33%|███▎      | 7/21 [00:00<00:00, 21.38it/s]
+🧪 Computing descriptors:  52%|█████▏    | 11/21 [00:00<00:00, 24.03it/s]
+🧪 Computing descriptors:  67%|██████▋   | 14/21 [00:00<00:00, 24.83it/s]
+🧪 Computing descriptors:  86%|████████▌ | 18/21 [00:00<00:00, 27.80it/s]
+🧪 Computing descriptors: 100%|██████████| 21/21 [00:00<00:00, 24.61it/s]
+📊 Ligand metadata rows: total=21 success=21 failures=0
+🎉 COMPLETE → Ligand_Metadata.csv
+===================================================================
+[12:12:27] [mem] after 7_metadata.py parent=131.2MB delta=+0.0MB combined_peak=284.0MB child_peak=152.8MB
+[12:12:27] 🚀 Running 8_scaffold.py...
+[12:12:27] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[12:12:27] [mem] before 8_scaffold.py parent=131.2MB combined=131.2MB
+[12:12:27] 🧵 Worker caps for 8_scaffold.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[12:12:27] ⏱ No-output watchdog for 8_scaffold.py: 180s
+[12:12:27] [mem] running 8_scaffold.py parent=131.2MB child_tree=0.5MB combined=131.7MB
+📥 Loaded 72 rows from Resolved_SASA_Summary.csv
+🔬 Found 1 protein targets.
+✅ Stage 1 complete — base scaffold mapping and diversity scores saved.
+🎉 Stage 2 complete — advanced scaffold data saved.
+📦 All tables written to Target_Table/
+[12:12:27] [mem] after 8_scaffold.py parent=131.2MB delta=+0.0MB combined_peak=256.9MB child_peak=125.7MB
+[12:12:27] 🚀 Running 9_2Dmapping.py...
+[12:12:27] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[12:12:27] [mem] before 9_2Dmapping.py parent=131.2MB combined=131.2MB
+[12:12:27] 🧵 Worker caps for 9_2Dmapping.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[12:12:27] ⏱ No-output watchdog for 9_2Dmapping.py: 180s
+[12:12:27] [mem] running 9_2Dmapping.py parent=131.2MB child_tree=1.2MB combined=132.4MB
+📥 Loading: Resolved_SASA_Summary.csv
+✅ Using: Target=Target, Ligand=Warhead, SMILES=SMILES
+🧬 Generating atom-level mapping...
+🎉 SUCCESS: All maps saved to Target_Table
+[12:12:28] [mem] after 9_2Dmapping.py parent=131.2MB delta=+0.0MB combined_peak=132.4MB child_peak=1.2MB
+[12:12:28] 🚀 Running 10_2DmappingExtraction.py...
+[12:12:28] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[12:12:28] [mem] before 10_2DmappingExtraction.py parent=131.2MB combined=131.2MB
+[12:12:28] 🧵 Worker caps for 10_2DmappingExtraction.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[12:12:28] ⏱ No-output watchdog for 10_2DmappingExtraction.py: 180s
+[12:12:28] [mem] running 10_2DmappingExtraction.py parent=131.2MB child_tree=0.7MB combined=131.9MB
+✅ Extracted ligand atom coordinates for 2058 atoms
+💾 Saved → Ligand_3D_Atoms.csv
+[12:12:28] [mem] after 10_2DmappingExtraction.py parent=131.2MB delta=+0.0MB combined_peak=131.9MB child_peak=0.7MB
+[12:12:28] 🚀 Running 11_mcsMatcher.py...
+[12:12:28] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[12:12:28] [mem] before 11_mcsMatcher.py parent=131.2MB combined=131.2MB
+[12:12:28] 🧵 Worker caps for 11_mcsMatcher.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[12:12:28] ⏱ No-output watchdog for 11_mcsMatcher.py: 300s
+[12:12:28] [mem] running 11_mcsMatcher.py parent=131.2MB child_tree=1.2MB combined=132.4MB
+ℹ️ No ligand alias resolution required (all ligands resolved in SMILES map).
+🚀 Running MCS on 72 ligand occurrences mode=isolated-sequential max_workers=1
+⚙️ Using hard timeout (60s per ligand) via SIGALRM
+⚙️ Step 11 heartbeat enabled=1 interval=20s progress_every=1
+⚙️ Step 11 skip policy skip_bad_items=1 skip_stuck_items=1 item_isolation=1 max_item_failures=0
+🔬 Step 11 item 1/72 start 6y08_A_08D_502
+🖼️ Step 11 SVG ready 6y08_A_08D_502
+🔬 Step 11 item 1/72 done 6y08_A_08D_502 sdf=written mapped=17 all_atoms=17 dt=0.1s
+⏳ Step 11 progress: 1/72
+🔬 Step 11 item 2/72 start 6y08_B_08D_502
+🖼️ Step 11 SVG ready 6y08_B_08D_502
+🔬 Step 11 item 2/72 done 6y08_B_08D_502 sdf=written mapped=17 all_atoms=17 dt=0.1s
+⏳ Step 11 progress: 2/72
+🔬 Step 11 item 3/72 start 4e28_A_0MZ_403
+⚠️ Step 11 item skipped: 3/72 4e28_A_0MZ_403 stage=BUILD_ROWS reason=ITEM_FAILED
+🖼️ Step 11 SVG ready 4e28_A_0MZ_403
+🔬 Step 11 item 3/72 done 4e28_A_0MZ_403 sdf=written mapped=30 all_atoms=44 dt=0.1s
+⏳ Step 11 progress: 3/72
+🔬 Step 11 item 4/72 start 6ojv_A_2XB_601
+🖼️ Step 11 SVG ready 6ojv_A_2XB_601
+🔬 Step 11 item 4/72 done 6ojv_A_2XB_601 sdf=written mapped=30 all_atoms=30 dt=0.1s
+⏳ Step 11 progress: 4/72
+🔬 Step 11 item 5/72 start 6ojv_B_2XB_601
+🖼️ Step 11 SVG ready 6ojv_B_2XB_601
+🔬 Step 11 item 5/72 done 6ojv_B_2XB_601 sdf=written mapped=30 all_atoms=30 dt=0.1s
+⏳ Step 11 progress: 5/72
+🔬 Step 11 item 6/72 start 6ojv_C_2XB_601
+🖼️ Step 11 SVG ready 6ojv_C_2XB_601
+🔬 Step 11 item 6/72 done 6ojv_C_2XB_601 sdf=written mapped=30 all_atoms=30 dt=0.1s
+⏳ Step 11 progress: 6/72
+🔬 Step 11 item 7/72 start 6ojv_D_2XB_601
+🖼️ Step 11 SVG ready 6ojv_D_2XB_601
+🔬 Step 11 item 7/72 done 6ojv_D_2XB_601 sdf=written mapped=30 all_atoms=30 dt=0.1s
+⏳ Step 11 progress: 7/72
+🔬 Step 11 item 8/72 start 5x67_A_7Z9_402
+🖼️ Step 11 SVG ready 5x67_A_7Z9_402
+🔬 Step 11 item 8/72 done 5x67_A_7Z9_402 sdf=written mapped=20 all_atoms=20 dt=0.1s
+⏳ Step 11 progress: 8/72
+🔬 Step 11 item 9/72 start 5x67_B_7Z9_402
+🖼️ Step 11 SVG ready 5x67_B_7Z9_402
+🔬 Step 11 item 9/72 done 5x67_B_7Z9_402 sdf=written mapped=20 all_atoms=20 dt=0.1s
+⏳ Step 11 progress: 9/72
+🔬 Step 11 item 10/72 start 5x69_A_7ZC_401
+🖼️ Step 11 SVG ready 5x69_A_7ZC_401
+🔬 Step 11 item 10/72 done 5x69_A_7ZC_401 sdf=written mapped=15 all_atoms=15 dt=0.1s
+⏳ Step 11 progress: 10/72
+🔬 Step 11 item 11/72 start 5x69_E_7ZC_401
+🖼️ Step 11 SVG ready 5x69_E_7ZC_401
+🔬 Step 11 item 11/72 done 5x69_E_7ZC_401 sdf=written mapped=15 all_atoms=15 dt=0.1s
+⏳ Step 11 progress: 11/72
+🔬 Step 11 item 12/72 start 4e28_A_9MZ_404
+⚠️ Step 11 item skipped: 12/72 4e28_A_9MZ_404 stage=BUILD_ROWS reason=ITEM_FAILED
+🖼️ Step 11 SVG ready 4e28_A_9MZ_404
+🔬 Step 11 item 12/72 done 4e28_A_9MZ_404 sdf=written mapped=30 all_atoms=43 dt=0.1s
+⏳ Step 11 progress: 12/72
+🔬 Step 11 item 13/72 start 5x5q_A_D16_402
+🖼️ Step 11 SVG ready 5x5q_A_D16_402
+🔬 Step 11 item 13/72 done 5x5q_A_D16_402 sdf=written mapped=32 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 13/72
+🔬 Step 11 item 14/72 start 5x5q_B_D16_402
+🖼️ Step 11 SVG ready 5x5q_B_D16_402
+🔬 Step 11 item 14/72 done 5x5q_B_D16_402 sdf=written mapped=32 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 14/72
+🔬 Step 11 item 15/72 start 5x5q_C_D16_402
+🖼️ Step 11 SVG ready 5x5q_C_D16_402
+🔬 Step 11 item 15/72 done 5x5q_C_D16_402 sdf=written mapped=32 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 15/72
+🔬 Step 11 item 16/72 start 5x5q_D_D16_402
+🖼️ Step 11 SVG ready 5x5q_D_D16_402
+🔬 Step 11 item 16/72 done 5x5q_D_D16_402 sdf=written mapped=32 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 16/72
+🔬 Step 11 item 17/72 start 5x5q_E_D16_402
+🖼️ Step 11 SVG ready 5x5q_E_D16_402
+🔬 Step 11 item 17/72 done 5x5q_E_D16_402 sdf=written mapped=32 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 17/72
+🔬 Step 11 item 18/72 start 5x5q_F_D16_402
+🖼️ Step 11 SVG ready 5x5q_F_D16_402
+🔬 Step 11 item 18/72 done 5x5q_F_D16_402 sdf=written mapped=32 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 18/72
+🔬 Step 11 item 19/72 start 6zxo_A_D16_401
+🖼️ Step 11 SVG ready 6zxo_A_D16_401
+🔬 Step 11 item 19/72 done 6zxo_A_D16_401 sdf=written mapped=32 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 19/72
+🔬 Step 11 item 20/72 start 6zxo_B_D16_401
+🖼️ Step 11 SVG ready 6zxo_B_D16_401
+🔬 Step 11 item 20/72 done 6zxo_B_D16_401 sdf=written mapped=32 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 20/72
+🔬 Step 11 item 21/72 start 6zxo_C_D16_401
+🖼️ Step 11 SVG ready 6zxo_C_D16_401
+🔬 Step 11 item 21/72 done 6zxo_C_D16_401 sdf=written mapped=32 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 21/72
+🔬 Step 11 item 22/72 start 6zxo_D_D16_401
+🖼️ Step 11 SVG ready 6zxo_D_D16_401
+🔬 Step 11 item 22/72 done 6zxo_D_D16_401 sdf=written mapped=32 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 22/72
+🔬 Step 11 item 23/72 start 6zxo_E_D16_401
+🖼️ Step 11 SVG ready 6zxo_E_D16_401
+🔬 Step 11 item 23/72 done 6zxo_E_D16_401 sdf=written mapped=32 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 23/72
+🔬 Step 11 item 24/72 start 6zxo_F_D16_401
+🖼️ Step 11 SVG ready 6zxo_F_D16_401
+🔬 Step 11 item 24/72 done 6zxo_F_D16_401 sdf=written mapped=32 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 24/72
+🔬 Step 11 item 25/72 start 6oju_A_D96_601
+🖼️ Step 11 SVG ready 6oju_A_D96_601
+🔬 Step 11 item 25/72 done 6oju_A_D96_601 sdf=written mapped=30 all_atoms=30 dt=0.1s
+⏳ Step 11 progress: 25/72
+🔬 Step 11 item 26/72 start 6oju_B_D96_601
+🖼️ Step 11 SVG ready 6oju_B_D96_601
+🔬 Step 11 item 26/72 done 6oju_B_D96_601 sdf=written mapped=30 all_atoms=30 dt=0.1s
+⏳ Step 11 progress: 26/72
+🔬 Step 11 item 27/72 start 6oju_C_D96_601
+🖼️ Step 11 SVG ready 6oju_C_D96_601
+🔬 Step 11 item 27/72 done 6oju_C_D96_601 sdf=written mapped=30 all_atoms=30 dt=0.1s
+⏳ Step 11 progress: 27/72
+🔬 Step 11 item 28/72 start 6oju_D_D96_601
+🖼️ Step 11 SVG ready 6oju_D_D96_601
+🔬 Step 11 item 28/72 done 6oju_D_D96_601 sdf=written mapped=30 all_atoms=30 dt=0.1s
+⏳ Step 11 progress: 28/72
+🔬 Step 11 item 29/72 start 5wrn_A_DCM_400
+🖼️ Step 11 SVG ready 5wrn_A_DCM_400
+🔬 Step 11 item 29/72 done 5wrn_A_DCM_400 sdf=written mapped=20 all_atoms=20 dt=0.1s
+⏳ Step 11 progress: 29/72
+🔬 Step 11 item 30/72 start 5wrn_B_DCM_400
+🖼️ Step 11 SVG ready 5wrn_B_DCM_400
+🔬 Step 11 item 30/72 done 5wrn_B_DCM_400 sdf=written mapped=20 all_atoms=20 dt=0.1s
+⏳ Step 11 progress: 30/72
+🔬 Step 11 item 31/72 start 5wrn_C_DCM_400
+🖼️ Step 11 SVG ready 5wrn_C_DCM_400
+🔬 Step 11 item 31/72 done 5wrn_C_DCM_400 sdf=written mapped=20 all_atoms=20 dt=0.1s
+⏳ Step 11 progress: 31/72
+🔬 Step 11 item 32/72 start 5wrn_D_DCM_400
+🖼️ Step 11 SVG ready 5wrn_D_DCM_400
+🔬 Step 11 item 32/72 done 5wrn_D_DCM_400 sdf=written mapped=20 all_atoms=20 dt=0.1s
+⏳ Step 11 progress: 32/72
+🔬 Step 11 item 33/72 start 5wrn_E_DCM_400
+🖼️ Step 11 SVG ready 5wrn_E_DCM_400
+🔬 Step 11 item 33/72 done 5wrn_E_DCM_400 sdf=written mapped=20 all_atoms=20 dt=0.1s
+⏳ Step 11 progress: 33/72
+🔬 Step 11 item 34/72 start 5wrn_F_DCM_400
+🖼️ Step 11 SVG ready 5wrn_F_DCM_400
+🔬 Step 11 item 34/72 done 5wrn_F_DCM_400 sdf=written mapped=20 all_atoms=20 dt=0.1s
+⏳ Step 11 progress: 34/72
+🔬 Step 11 item 35/72 start 4ez8_A_DHF_402
+🖼️ Step 11 SVG ready 4ez8_A_DHF_402
+🔬 Step 11 item 35/72 done 4ez8_A_DHF_402 sdf=written mapped=32 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 35/72
+🔬 Step 11 item 36/72 start 6qyq_B_FFO_402
+🖼️ Step 11 SVG ready 6qyq_B_FFO_402
+🔬 Step 11 item 36/72 done 6qyq_B_FFO_402 sdf=written mapped=34 all_atoms=34 dt=0.1s
+⏳ Step 11 progress: 36/72
+🔬 Step 11 item 37/72 start 6qyq_D_FFO_402
+🖼️ Step 11 SVG ready 6qyq_D_FFO_402
+🔬 Step 11 item 37/72 done 6qyq_D_FFO_402 sdf=written mapped=34 all_atoms=34 dt=0.1s
+⏳ Step 11 progress: 37/72
+🔬 Step 11 item 38/72 start 6r2e_A_FFO_403
+🖼️ Step 11 SVG ready 6r2e_A_FFO_403
+🔬 Step 11 item 38/72 done 6r2e_A_FFO_403 sdf=written mapped=34 all_atoms=34 dt=0.1s
+⏳ Step 11 progress: 38/72
+🔬 Step 11 item 39/72 start 6r2e_B_FFO_403
+🖼️ Step 11 SVG ready 6r2e_B_FFO_403
+🔬 Step 11 item 39/72 done 6r2e_B_FFO_403 sdf=written mapped=34 all_atoms=34 dt=0.1s
+⏳ Step 11 progress: 39/72
+🔬 Step 11 item 40/72 start 6r2e_D_FFO_403
+🖼️ Step 11 SVG ready 6r2e_D_FFO_403
+🔬 Step 11 item 40/72 done 6r2e_D_FFO_403 sdf=written mapped=34 all_atoms=34 dt=0.1s
+⏳ Step 11 progress: 40/72
+🔬 Step 11 item 41/72 start 6r2e_E_FFO_403
+🖼️ Step 11 SVG ready 6r2e_E_FFO_403
+🔬 Step 11 item 41/72 done 6r2e_E_FFO_403 sdf=written mapped=34 all_atoms=34 dt=0.1s
+⏳ Step 11 progress: 41/72
+🔬 Step 11 item 42/72 start 6r2e_F_FFO_403
+🖼️ Step 11 SVG ready 6r2e_F_FFO_403
+🔬 Step 11 item 42/72 done 6r2e_F_FFO_403 sdf=written mapped=34 all_atoms=34 dt=0.1s
+⏳ Step 11 progress: 42/72
+🔬 Step 11 item 43/72 start 6r2e_G_FFO_403
+🖼️ Step 11 SVG ready 6r2e_G_FFO_403
+🔬 Step 11 item 43/72 done 6r2e_G_FFO_403 sdf=written mapped=34 all_atoms=34 dt=0.1s
+⏳ Step 11 progress: 43/72
+🔬 Step 11 item 44/72 start 6r2e_H_FFO_403
+🖼️ Step 11 SVG ready 6r2e_H_FFO_403
+🔬 Step 11 item 44/72 done 6r2e_H_FFO_403 sdf=written mapped=34 all_atoms=34 dt=0.1s
+⏳ Step 11 progress: 44/72
+🔬 Step 11 item 45/72 start 6r2e_C_FFO_404
+🖼️ Step 11 SVG ready 6r2e_C_FFO_404
+🔬 Step 11 item 45/72 done 6r2e_C_FFO_404 sdf=written mapped=34 all_atoms=34 dt=0.1s
+⏳ Step 11 progress: 45/72
+🔬 Step 11 item 46/72 start 6gko_A_FGT_502
+🖼️ Step 11 SVG ready 6gko_A_FGT_502
+🔬 Step 11 item 46/72 done 6gko_A_FGT_502 sdf=written mapped=24 all_atoms=24 dt=0.1s
+⏳ Step 11 progress: 46/72
+🔬 Step 11 item 47/72 start 6gko_B_FGT_502
+🖼️ Step 11 SVG ready 6gko_B_FGT_502
+🔬 Step 11 item 47/72 done 6gko_B_FGT_502 sdf=written mapped=24 all_atoms=24 dt=0.1s
+⏳ Step 11 progress: 47/72
+🔬 Step 11 item 48/72 start 6gyj_A_FGT_502
+🖼️ Step 11 SVG ready 6gyj_A_FGT_502
+🔬 Step 11 item 48/72 done 6gyj_A_FGT_502 sdf=written mapped=24 all_atoms=24 dt=0.1s
+⏳ Step 11 progress: 48/72
+🔬 Step 11 item 49/72 start 3ob7_D_GSH_314
+🖼️ Step 11 SVG ready 3ob7_D_GSH_314
+🔬 Step 11 item 49/72 done 3ob7_D_GSH_314 sdf=written mapped=20 all_atoms=20 dt=0.1s
+⏳ Step 11 progress: 49/72
+🔬 Step 11 item 50/72 start 3ob7_A_GSH_581
+🖼️ Step 11 SVG ready 3ob7_A_GSH_581
+🔬 Step 11 item 50/72 done 3ob7_A_GSH_581 sdf=written mapped=20 all_atoms=20 dt=0.1s
+⏳ Step 11 progress: 50/72
+🔬 Step 11 item 51/72 start 5hs3_A_KI3_401
+⚠️ Step 11 item skipped: 51/72 5hs3_A_KI3_401 stage=BUILD_ROWS reason=ITEM_FAILED
+🖼️ Step 11 SVG ready 5hs3_A_KI3_401
+🔬 Step 11 item 51/72 done 5hs3_A_KI3_401 sdf=written mapped=20 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 51/72
+🔬 Step 11 item 52/72 start 5hs3_B_KI3_401
+⚠️ Step 11 item skipped: 52/72 5hs3_B_KI3_401 stage=BUILD_ROWS reason=ITEM_FAILED
+🖼️ Step 11 SVG ready 5hs3_B_KI3_401
+🔬 Step 11 item 52/72 done 5hs3_B_KI3_401 sdf=written mapped=20 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 52/72
+🔬 Step 11 item 53/72 start 5hs3_E_KI3_401
+⚠️ Step 11 item skipped: 53/72 5hs3_E_KI3_401 stage=BUILD_ROWS reason=ITEM_FAILED
+🖼️ Step 11 SVG ready 5hs3_E_KI3_401
+🔬 Step 11 item 53/72 done 5hs3_E_KI3_401 sdf=written mapped=20 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 53/72
+🔬 Step 11 item 54/72 start 5x66_A_MTX_402
+🖼️ Step 11 SVG ready 5x66_A_MTX_402
+🔬 Step 11 item 54/72 done 5x66_A_MTX_402 sdf=written mapped=33 all_atoms=33 dt=0.1s
+⏳ Step 11 progress: 54/72
+🔬 Step 11 item 55/72 start 5x66_B_MTX_402
+[12:12:33] [mem] running 11_mcsMatcher.py parent=131.3MB child_tree=123.4MB combined=254.7MB
+🖼️ Step 11 SVG ready 5x66_B_MTX_402
+🔬 Step 11 item 55/72 done 5x66_B_MTX_402 sdf=written mapped=33 all_atoms=33 dt=0.1s
+⏳ Step 11 progress: 55/72
+🔬 Step 11 item 56/72 start 5x66_C_MTX_402
+🖼️ Step 11 SVG ready 5x66_C_MTX_402
+🔬 Step 11 item 56/72 done 5x66_C_MTX_402 sdf=written mapped=33 all_atoms=33 dt=0.1s
+⏳ Step 11 progress: 56/72
+🔬 Step 11 item 57/72 start 5x66_D_MTX_402
+🖼️ Step 11 SVG ready 5x66_D_MTX_402
+🔬 Step 11 item 57/72 done 5x66_D_MTX_402 sdf=written mapped=33 all_atoms=33 dt=0.1s
+⏳ Step 11 progress: 57/72
+🔬 Step 11 item 58/72 start 5x66_E_MTX_402
+🖼️ Step 11 SVG ready 5x66_E_MTX_402
+🔬 Step 11 item 58/72 done 5x66_E_MTX_402 sdf=written mapped=33 all_atoms=33 dt=0.1s
+⏳ Step 11 progress: 58/72
+🔬 Step 11 item 59/72 start 5x66_F_MTX_402
+🖼️ Step 11 SVG ready 5x66_F_MTX_402
+🔬 Step 11 item 59/72 done 5x66_F_MTX_402 sdf=written mapped=33 all_atoms=33 dt=0.1s
+⏳ Step 11 progress: 59/72
+🔬 Step 11 item 60/72 start 4ez8_A_NOH_401
+🖼️ Step 11 SVG ready 4ez8_A_NOH_401
+🔬 Step 11 item 60/72 done 4ez8_A_NOH_401 sdf=written mapped=21 all_atoms=21 dt=0.1s
+⏳ Step 11 progress: 60/72
+🔬 Step 11 item 61/72 start 6f6z_A_NOH_501
+🖼️ Step 11 SVG ready 6f6z_A_NOH_501
+🔬 Step 11 item 61/72 done 6f6z_A_NOH_501 sdf=written mapped=21 all_atoms=21 dt=0.1s
+⏳ Step 11 progress: 61/72
+🔬 Step 11 item 62/72 start 6f6z_B_NOH_501
+🖼️ Step 11 SVG ready 6f6z_B_NOH_501
+🔬 Step 11 item 62/72 done 6f6z_B_NOH_501 sdf=written mapped=21 all_atoms=21 dt=0.1s
+⏳ Step 11 progress: 62/72
+🔬 Step 11 item 63/72 start 6pf3_A_OE7_601
+🖼️ Step 11 SVG ready 6pf3_A_OE7_601
+🔬 Step 11 item 63/72 done 6pf3_A_OE7_601 sdf=written mapped=31 all_atoms=31 dt=0.1s
+⏳ Step 11 progress: 63/72
+🔬 Step 11 item 64/72 start 6pf3_B_OE7_601
+🖼️ Step 11 SVG ready 6pf3_B_OE7_601
+🔬 Step 11 item 64/72 done 6pf3_B_OE7_601 sdf=written mapped=31 all_atoms=31 dt=0.1s
+⏳ Step 11 progress: 64/72
+🔬 Step 11 item 65/72 start 6pf3_C_OE7_601
+🖼️ Step 11 SVG ready 6pf3_C_OE7_601
+🔬 Step 11 item 65/72 done 6pf3_C_OE7_601 sdf=written mapped=31 all_atoms=31 dt=0.1s
+⏳ Step 11 progress: 65/72
+🔬 Step 11 item 66/72 start 6pf3_D_OE7_601
+🖼️ Step 11 SVG ready 6pf3_D_OE7_601
+🔬 Step 11 item 66/72 done 6pf3_D_OE7_601 sdf=written mapped=31 all_atoms=31 dt=0.1s
+⏳ Step 11 progress: 66/72
+🔬 Step 11 item 67/72 start 6pf6_B_OEJ_601
+🖼️ Step 11 SVG ready 6pf6_B_OEJ_601
+🔬 Step 11 item 67/72 done 6pf6_B_OEJ_601 sdf=written mapped=33 all_atoms=33 dt=0.1s
+⏳ Step 11 progress: 67/72
+🔬 Step 11 item 68/72 start 6pf6_C_OEJ_601
+🖼️ Step 11 SVG ready 6pf6_C_OEJ_601
+🔬 Step 11 item 68/72 done 6pf6_C_OEJ_601 sdf=written mapped=33 all_atoms=33 dt=0.1s
+⏳ Step 11 progress: 68/72
+🔬 Step 11 item 69/72 start 4g6w_X_PBX_600
+🖼️ Step 11 SVG ready 4g6w_X_PBX_600
+🔬 Step 11 item 69/72 done 4g6w_X_PBX_600 sdf=written mapped=10 all_atoms=10 dt=0.1s
+⏳ Step 11 progress: 69/72
+🔬 Step 11 item 70/72 start 6f6z_A_TGQ_502
+🖼️ Step 11 SVG ready 6f6z_A_TGQ_502
+🔬 Step 11 item 70/72 done 6f6z_A_TGQ_502 sdf=written mapped=33 all_atoms=33 dt=0.1s
+⏳ Step 11 progress: 70/72
+🔬 Step 11 item 71/72 start 6f6z_B_TGQ_502
+🖼️ Step 11 SVG ready 6f6z_B_TGQ_502
+🔬 Step 11 item 71/72 done 6f6z_B_TGQ_502 sdf=written mapped=33 all_atoms=33 dt=0.1s
+⏳ Step 11 progress: 71/72
+🔬 Step 11 item 72/72 start 4g2o_X_TIY_500
+🖼️ Step 11 SVG ready 4g2o_X_TIY_500
+🔬 Step 11 item 72/72 done 4g2o_X_TIY_500 sdf=written mapped=16 all_atoms=16 dt=0.1s
+⏳ Step 11 progress: 72/72
+⏱ Step 11 heartbeat: processed=72/72 current=4g2o_X_TIY_500 stage=ITEM_DONE elapsed=6s item_elapsed=0s sdf_written=72 sdf_failed=0 svg_written=72 item_failures=5 last_done=4g2o_X_TIY_500
+✅ MCS processing complete — outputs written
+🧪 Step 11 summary: work_items=72 successful_items=67 item_failures=5 sdf_attempted=72 sdf_written=72 sdf_failed=0 sdf_skipped_existing=0 svg_written=72
+🧪 SDF expected groups: 72
+🧪 SDF files available: 72 → MCS_Output/MCS_SDF
+🧪 SDF failure records: 0 → MCS_Output/Ligand_MCS_SDF_Failures.csv
+🧪 Item failure records: 5 → MCS_Output/Ligand_MCS_Item_Failures.csv
+🧪 SVG output path: MCS_Output/MCS_SVG
+🧪 CSV output path: MCS_Output
+🧪 SDF missing groups: 0
+====================================================
+🎉 COMPLETED MCS MAPPING + SASA ANNOTATION
+📦 Map (MCS only)        → MCS_Output/Ligand_MCS_Map.csv
+🧪 SASA (MCS only)       → MCS_Output/Ligand_MCS_SASA.csv
+🧬 All atoms (debug)     → MCS_Output/Ligand_AllAtoms_Map.csv
+🧪 SASA (ALL atoms)      → MCS_Output/Ligand_MCS_SASA_ALL_ATOMS.csv
+⚠️ Failures              → MCS_Output/Ligand_MCS_Failures.csv
+⚠️ SDF failures          → MCS_Output/Ligand_MCS_SDF_Failures.csv
+⚠️ Item failures         → MCS_Output/Ligand_MCS_Item_Failures.csv
+====================================================
+🖼️  SVGs generated: 72 → MCS_Output/MCS_SVG
+⚠️ MCS failures (first 10):
+0MZ | 4e28 | Size mismatch: SMILES=30 vs 3D=44
+9MZ | 4e28 | Size mismatch: SMILES=30 vs 3D=43
+KI3 | 5hs3 | Size mismatch: SMILES=20 vs 3D=32
+KI3 | 5hs3 | Size mismatch: SMILES=20 vs 3D=32
+KI3 | 5hs3 | Size mismatch: SMILES=20 vs 3D=32
+[12:12:35] [mem] after 11_mcsMatcher.py parent=131.3MB delta=+0.1MB combined_peak=254.8MB child_peak=123.5MB
+[12:12:35] ✅ SDF validation PASS after 11_mcsMatcher.py: MCS_Output/MCS_SDF files=72 expected=72 recorded_failures=0
+[12:12:35] 🚀 Running 12_Results.py...
+[12:12:35] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[12:12:35] [mem] before 12_Results.py parent=131.5MB combined=131.5MB
+[12:12:35] 🧵 Worker caps for 12_Results.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[12:12:35] ⏱ No-output watchdog for 12_Results.py: 180s
+[12:12:35] [mem] running 12_Results.py parent=131.5MB child_tree=1.4MB combined=132.9MB
+✅ Integrated 3DSASAmapped.csv created with standard headers.
+[12:12:35] [mem] after 12_Results.py parent=131.5MB delta=+0.0MB combined_peak=132.9MB child_peak=1.4MB
+[12:12:35] ✅ SDF validation PASS after 12_Results.py: TARGET_RESULTS/MCS_Output/MCS_SDF files=72 expected=72 recorded_failures=0
+[12:12:35] 🚀 Running 15_ResultsMerged.py...
+[12:12:35] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[12:12:35] [mem] before 15_ResultsMerged.py parent=131.5MB combined=131.5MB
+[12:12:35] 🧵 Worker caps for 15_ResultsMerged.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[12:12:35] ⏱ No-output watchdog for 15_ResultsMerged.py: 180s
+[12:12:35] [mem] running 15_ResultsMerged.py parent=131.5MB child_tree=0.6MB combined=132.1MB
+🧬 Using SASA file: Warhead_SASA_atoms.csv
+✅ Wrote merged atom table: Ligand_3D_Atoms_with_SASA.csv
+📊 Total atoms: 2058
+🎉 RESULTS MERGE COMPLETE
+[12:12:36] [mem] after 15_ResultsMerged.py parent=131.5MB delta=+0.0MB combined_peak=132.1MB child_peak=0.6MB
+[12:12:36] 🚀 Running 16_ResultsDisplay.py...
+[12:12:36] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[12:12:36] [mem] before 16_ResultsDisplay.py parent=131.5MB combined=131.5MB
+[12:12:36] 🧵 Worker caps for 16_ResultsDisplay.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[12:12:36] ⏱ No-output watchdog for 16_ResultsDisplay.py: 180s
+[12:12:36] [mem] running 16_ResultsDisplay.py parent=131.5MB child_tree=0.5MB combined=132.0MB
+📁 ResultsDisplay root: /app/jobs/e5bc5765
+📁 WAR_PDB root: /app/jobs/e5bc5765/WAR_PDB
+📁 SDF roots: ['/app/jobs/e5bc5765/MCS_Output/MCS_SDF', '/app/jobs/e5bc5765/TARGET_RESULTS/MCS_Output/MCS_SDF']
+🧪 Indexed SDF exact keys: 72
+🧪 Indexed SDF loose keys: 72
+🧾 Residue lookup keys: 72
+✅ Wrote /app/jobs/e5bc5765/Results_Display.csv (72 SDF-backed entries)
+📊 Input WAR_PDB rows skipped due to missing SDF: 0
+[12:12:36] [mem] after 16_ResultsDisplay.py parent=131.5MB delta=+0.0MB combined_peak=132.0MB child_peak=0.5MB
+[12:12:36] ✅ final SDF validation PASS: rows=72 matched=72 sdf_files=72 dir=jobs/e5bc5765/TARGET_RESULTS/MCS_Output/MCS_SDF

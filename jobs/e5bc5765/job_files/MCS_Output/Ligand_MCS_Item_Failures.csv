@@ -1,0 +1,6 @@
+Ligand,Target,pdb_id,Chain,Residue_ID,basename,stage,timeout_sec,error_type,error_message
+0MZ,TYMS,4e28,A,403,4e28_A_0MZ_403,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=30 vs 3D=44
+9MZ,TYMS,4e28,A,404,4e28_A_9MZ_404,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=30 vs 3D=43
+KI3,TYMS,5hs3,A,401,5hs3_A_KI3_401,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=20 vs 3D=32
+KI3,TYMS,5hs3,B,401,5hs3_B_KI3_401,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=20 vs 3D=32
+KI3,TYMS,5hs3,E,401,5hs3_E_KI3_401,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=20 vs 3D=32

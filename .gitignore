@@ -135,6 +135,15 @@ secrets*.json
 !jobs/cc5025a3/
 !jobs/cc5025a3/**
 
+!jobs/e5bc5765/
+!jobs/e5bc5765/**
+
+!jobs/62174d5e/
+!jobs/62174d5e/**
+
+!jobs/8c9ee94e/
+!jobs/8c9ee94e/**
+
 # ------------------------------------------------------------
 # Never commit transient junk inside jobs
 # These rules come after the curated-job exceptions on purpose.

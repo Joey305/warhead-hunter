@@ -1,0 +1,199 @@
+protein,pdb,chain,ligand,MW,Name
+HER2,1d5l,A,CYN,26.017,CYANIDE ION
+HER2,1d5l,B,CYN,26.017,CYANIDE ION
+HER2,1d5l,C,CYN,26.017,CYANIDE ION
+HER2,1d5l,D,CYN,26.017,CYANIDE ION
+HER2,1d7w,A,CYN,26.017,CYANIDE ION
+HER2,1d7w,B,CYN,26.017,CYANIDE ION
+HER2,1g4u,R,AF3,83.977,ALUMINUM FLUORIDE
+HER2,2prl,A,FMN,456.344,FLAVIN MONONUCLEOTIDE
+HER2,2prl,A,ORO,156.096,OROTIC ACID
+HER2,2prl,A,R2C,335.353,5-METHOXY-2-[(4-PHENOXYPHENYL)AMINO]BENZOIC ACID
+HER2,2prl,A,DDQ,201.349,"DECYLAMINE-N,N-DIMETHYL-N-OXIDE"
+HER2,3szb,A,I1E,134.175,1-phenylpropan-1-one
+HER2,3szb,B,I1E,134.175,1-phenylpropan-1-one
+HER2,4b95,C,UCK,393.264,"(2S,4R)-1-(2-chlorophenyl)carbonyl-N-[(4-chlorophenyl)methyl]-4-oxidanyl-pyrrolidine-2-carboxamide"
+HER2,4b95,F,UCK,393.264,"(2S,4R)-1-(2-chlorophenyl)carbonyl-N-[(4-chlorophenyl)methyl]-4-oxidanyl-pyrrolidine-2-carboxamide"
+HER2,4b95,I,UCK,393.264,"(2S,4R)-1-(2-chlorophenyl)carbonyl-N-[(4-chlorophenyl)methyl]-4-oxidanyl-pyrrolidine-2-carboxamide"
+HER2,4b95,L,UCK,393.264,"(2S,4R)-1-(2-chlorophenyl)carbonyl-N-[(4-chlorophenyl)methyl]-4-oxidanyl-pyrrolidine-2-carboxamide"
+HER2,4b9k,C,TG0,450.553,"(2S,4R)-1-(3-amino-2-methylbenzoyl)-4-hydroxy-N-(4-(4-methylthiazol-5-yl)benzyl)pyrrolidine-2-carboxamide"
+HER2,4b9k,F,TG0,450.553,"(2S,4R)-1-(3-amino-2-methylbenzoyl)-4-hydroxy-N-(4-(4-methylthiazol-5-yl)benzyl)pyrrolidine-2-carboxamide"
+HER2,4b9k,I,TG0,450.553,"(2S,4R)-1-(3-amino-2-methylbenzoyl)-4-hydroxy-N-(4-(4-methylthiazol-5-yl)benzyl)pyrrolidine-2-carboxamide"
+HER2,4b9k,L,TG0,450.553,"(2S,4R)-1-(3-amino-2-methylbenzoyl)-4-hydroxy-N-(4-(4-methylthiazol-5-yl)benzyl)pyrrolidine-2-carboxamide"
+HER2,4d1o,A,ARG,175.209,ARGININE
+HER2,4d1o,B,ARG,175.209,ARGININE
+HER2,4d1o,A,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,4d1o,B,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,4d1o,A,GD,157.25,GADOLINIUM ATOM
+HER2,4d1o,B,GD,157.25,GADOLINIUM ATOM
+HER2,4g5j,A,0WN,487.954,N-{4-[(3-chloro-4-fluorophenyl)amino]-7-[(3S)-tetrahydrofuran-3-yloxy]quinazolin-6-yl}-4-(dimethylamino)butanamide
+HER2,4g5j,A,0WM,485.938,(2E)-N-{4-[(3-chloro-4-fluorophenyl)amino]-7-[(3S)-tetrahydrofuran-3-yloxy]quinazolin-6-yl}-4-(dimethylamino)but-2-enamide
+HER2,5b8d,A,6T4,156.206,"~{N}-(4-methyl-1,3-thiazol-2-yl)ethanamide"
+HER2,5kh9,A,6T5,244.292,"6-methyl-5-[(4-propan-2-ylphenyl)amino]-2~{H}-1,2,4-triazin-3-one"
+HER2,5v61,I,FRZ,327.343,"5-(2-PHENYLPYRAZOLO[1,5-A]PYRIDIN-3-YL)-1H-PYRAZOLO[3,4-C]PYRIDAZIN-3-AMINE"
+HER2,5li9,A,MRD,118.174,"(4R)-2-METHYLPENTANE-2,4-DIOL"
+HER2,5vrx,P,TTP,482.168,THYMIDINE-5'-TRIPHOSPHATE
+HER2,5vyy,A,9QY,386.829,"methyl 2-[2-(1-benzyl-1H-imidazol-2-yl)ethyl]-3-chloro-4,6-dihydroxybenzoate"
+HER2,5wbn,A,9ZV,360.366,"3-(3-benzyl-2-oxo-2H-[1,2,4]triazino[2,3-c]quinazolin-6-yl)propanoic acid"
+HER2,6ehj,A,MYA,977.89,TETRADECANOYL-COA
+HER2,6ehj,A,SER,105.093,SERINE
+HER2,6ehj,B,SER,105.093,SERINE
+HER2,6ehj,A,PRO,115.13,PROLINE
+HER2,6ehj,B,PRO,115.13,PROLINE
+HER2,6ehj,A,COA,767.534,COENZYME A
+HER2,6ehj,B,COA,767.534,COENZYME A
+HER2,6en6,A,BJ2,428.437,(2~{S})-1-[(2~{S})-2-[[(1~{S})-1-[(2~{S})-1-[(2~{S})-2-azanyl-4-oxidanyl-4-oxidanylidene-butanoyl]pyrrolidin-2-yl]-2-oxidanyl-2-oxidanylidene-ethyl]amino]propanoyl]pyrrolidine-2-carboxylic acid
+HER2,6en6,B,BJ2,428.437,(2~{S})-1-[(2~{S})-2-[[(1~{S})-1-[(2~{S})-1-[(2~{S})-2-azanyl-4-oxidanyl-4-oxidanylidene-butanoyl]pyrrolidin-2-yl]-2-oxidanyl-2-oxidanylidene-ethyl]amino]propanoyl]pyrrolidine-2-carboxylic acid
+HER2,6en6,C,BJ2,428.437,(2~{S})-1-[(2~{S})-2-[[(1~{S})-1-[(2~{S})-1-[(2~{S})-2-azanyl-4-oxidanyl-4-oxidanylidene-butanoyl]pyrrolidin-2-yl]-2-oxidanyl-2-oxidanylidene-ethyl]amino]propanoyl]pyrrolidine-2-carboxylic acid
+HER2,6en6,D,BJ2,428.437,(2~{S})-1-[(2~{S})-2-[[(1~{S})-1-[(2~{S})-1-[(2~{S})-2-azanyl-4-oxidanyl-4-oxidanylidene-butanoyl]pyrrolidin-2-yl]-2-oxidanyl-2-oxidanylidene-ethyl]amino]propanoyl]pyrrolidine-2-carboxylic acid
+HER2,6en6,A,BCN,163.172,BICINE
+HER2,6en6,B,2PE,414.488,NONAETHYLENE GLYCOL
+HER2,6en6,B,XPE,458.541,"3,6,9,12,15,18,21,24,27-NONAOXANONACOSANE-1,29-DIOL"
+HER2,6en6,C,XPE,458.541,"3,6,9,12,15,18,21,24,27-NONAOXANONACOSANE-1,29-DIOL"
+HER2,6o2p,A,POV,760.076,(2S)-3-(hexadecanoyloxy)-2-[(9Z)-octadec-9-enoyloxy]propyl 2-(trimethylammonio)ethyl phosphate
+HER2,6o2p,A,AJP,1229.312,Digitonin
+HER2,6o2p,A,VX7,392.491,"N-(2,4-di-tert-butyl-5-hydroxyphenyl)-4-oxo-1,4-dihydroquinoline-3-carboxamide"
+HER2,6p0i,B,NL7,344.363,4-[(5-methoxypyridin-3-yl)sulfamoyl]benzene-1-sulfonic acid
+HER2,6p0k,B,NLV,348.783,4-[(6-chloropyridin-2-yl)sulfamoyl]benzene-1-sulfonic acid
+HER2,6p0l,B,NLJ,344.363,4-[(2-methoxypyridin-3-yl)sulfamoyl]benzene-1-sulfonic acid
+HER2,6p0m,B,NLM,348.783,4-[(3-chloropyridin-2-yl)sulfamoyl]benzene-1-sulfonic acid
+HER2,6p0n,B,NLS,332.328,4-[(6-fluoropyridin-2-yl)sulfamoyl]benzene-1-sulfonic acid
+HER2,6u65,A,Q0A,529.647,2-[({4-[(4-fluorophenyl)methyl]piperazin-1-yl}sulfonyl)amino]-5-[(2-phenylethyl)sulfanyl]benzoic acid
+HER2,6u65,B,Q0A,529.647,2-[({4-[(4-fluorophenyl)methyl]piperazin-1-yl}sulfonyl)amino]-5-[(2-phenylethyl)sulfanyl]benzoic acid
+HER2,6u65,C,Q0A,529.647,2-[({4-[(4-fluorophenyl)methyl]piperazin-1-yl}sulfonyl)amino]-5-[(2-phenylethyl)sulfanyl]benzoic acid
+HER2,6u65,D,Q0A,529.647,2-[({4-[(4-fluorophenyl)methyl]piperazin-1-yl}sulfonyl)amino]-5-[(2-phenylethyl)sulfanyl]benzoic acid
+HER2,6vcu,A,R27,860.085,"N'-[(3S,4R,5S,8R,9E,12S,14S,15R,16S,18R,19R,26aS)-5,19-dihydroxy-3-{(1E)-1-[(1R,3R,4R)-4-hydroxy-3-methoxycyclohexyl]prop-1-en-2-yl}-14,16-dimethoxy-4,10,12,18-tetramethyl-1,20,21-trioxo-8-(prop-2-en-1-yl)-1,3,4,5,6,8,11,12,13,14,15,16,17,18,19,20,21,23,24,25,26,26a-docosahydro-7H-15,19-epoxypyrido[2,1-c][1,4]oxazacyclotricosin-7-ylidene]acetohydrazide"
+HER2,6vcu,B,R27,860.085,"N'-[(3S,4R,5S,8R,9E,12S,14S,15R,16S,18R,19R,26aS)-5,19-dihydroxy-3-{(1E)-1-[(1R,3R,4R)-4-hydroxy-3-methoxycyclohexyl]prop-1-en-2-yl}-14,16-dimethoxy-4,10,12,18-tetramethyl-1,20,21-trioxo-8-(prop-2-en-1-yl)-1,3,4,5,6,8,11,12,13,14,15,16,17,18,19,20,21,23,24,25,26,26a-docosahydro-7H-15,19-epoxypyrido[2,1-c][1,4]oxazacyclotricosin-7-ylidene]acetohydrazide"
+HER2,6vcu,C,R27,860.085,"N'-[(3S,4R,5S,8R,9E,12S,14S,15R,16S,18R,19R,26aS)-5,19-dihydroxy-3-{(1E)-1-[(1R,3R,4R)-4-hydroxy-3-methoxycyclohexyl]prop-1-en-2-yl}-14,16-dimethoxy-4,10,12,18-tetramethyl-1,20,21-trioxo-8-(prop-2-en-1-yl)-1,3,4,5,6,8,11,12,13,14,15,16,17,18,19,20,21,23,24,25,26,26a-docosahydro-7H-15,19-epoxypyrido[2,1-c][1,4]oxazacyclotricosin-7-ylidene]acetohydrazide"
+HER2,6vcu,D,R27,860.085,"N'-[(3S,4R,5S,8R,9E,12S,14S,15R,16S,18R,19R,26aS)-5,19-dihydroxy-3-{(1E)-1-[(1R,3R,4R)-4-hydroxy-3-methoxycyclohexyl]prop-1-en-2-yl}-14,16-dimethoxy-4,10,12,18-tetramethyl-1,20,21-trioxo-8-(prop-2-en-1-yl)-1,3,4,5,6,8,11,12,13,14,15,16,17,18,19,20,21,23,24,25,26,26a-docosahydro-7H-15,19-epoxypyrido[2,1-c][1,4]oxazacyclotricosin-7-ylidene]acetohydrazide"
+HER2,7bia,A,GSH,307.323,GLUTATHIONE
+HER2,7bia,B,GSH,307.323,GLUTATHIONE
+HER2,7bia,A,TVQ,163.261,1-isothiocyanato-3-methylsulfinyl-propane
+HER2,7nzn,A,VJH,554.621,2-[4-[[4-[1-[2-(dimethylamino)ethyl]pyrazol-4-yl]-6-[(3-methyl-1~{H}-pyrazol-5-yl)amino]pyrimidin-2-yl]amino]phenyl]-~{N}-(3-fluorophenyl)ethanamide
+HER2,8ouu,A,W49,374.368,"5-(3-ethynyl-5-fluoranyl-1H-indazol-7-yl)-1-[(1S)-1-phenylethyl]pyrimidine-2,4-dione"
+HER2,8ouu,B,W49,374.368,"5-(3-ethynyl-5-fluoranyl-1H-indazol-7-yl)-1-[(1S)-1-phenylethyl]pyrimidine-2,4-dione"
+HER2,8ppl,Iw,MET,149.211,METHIONINE
+HER2,8tdu,A,X3N,407.371,"N~2~-{(4S,11aP)-2-[(4S)-4-(difluoromethyl)-2-oxo-1,3-oxazolidin-3-yl]-5,6-dihydroimidazo[1,2-d][1,4]benzoxazepin-9-yl}-L-alaninamide"
+HER2,8tdu,C,X3N,407.371,"N~2~-{(4S,11aP)-2-[(4S)-4-(difluoromethyl)-2-oxo-1,3-oxazolidin-3-yl]-5,6-dihydroimidazo[1,2-d][1,4]benzoxazepin-9-yl}-L-alaninamide"
+HER2,8tdu,A,ZWE,401.291,"N-(2-aminopyrimidin-5-yl)-N'-[(1R)-1-(5,7-difluoro-3-methyl-1-benzofuran-2-yl)-2,2,2-trifluoroethyl]urea"
+HER2,8tdu,C,ZWE,401.291,"N-(2-aminopyrimidin-5-yl)-N'-[(1R)-1-(5,7-difluoro-3-methyl-1-benzofuran-2-yl)-2,2,2-trifluoroethyl]urea"
+HER2,8tgd,A,X3N,407.371,"N~2~-{(4S,11aP)-2-[(4S)-4-(difluoromethyl)-2-oxo-1,3-oxazolidin-3-yl]-5,6-dihydroimidazo[1,2-d][1,4]benzoxazepin-9-yl}-L-alaninamide"
+HER2,8tgd,C,X3N,407.371,"N~2~-{(4S,11aP)-2-[(4S)-4-(difluoromethyl)-2-oxo-1,3-oxazolidin-3-yl]-5,6-dihydroimidazo[1,2-d][1,4]benzoxazepin-9-yl}-L-alaninamide"
+HER2,8tgd,A,ZWE,401.291,"N-(2-aminopyrimidin-5-yl)-N'-[(1R)-1-(5,7-difluoro-3-methyl-1-benzofuran-2-yl)-2,2,2-trifluoroethyl]urea"
+HER2,8tgd,C,ZWE,401.291,"N-(2-aminopyrimidin-5-yl)-N'-[(1R)-1-(5,7-difluoro-3-methyl-1-benzofuran-2-yl)-2,2,2-trifluoroethyl]urea"
+HER2,8ts9,A,UE9,446.398,5-[3-fluoro-5-(trifluoromethyl)benzamido]-N-methyl-6-(2-methylanilino)pyridine-3-carboxamide
+HER2,8tsa,A,UIW,457.296,5-(3-bromo-5-fluorobenzamido)-N-methyl-6-(2-methylanilino)pyridine-3-carboxamide
+HER2,8tsb,A,UIW,457.296,5-(3-bromo-5-fluorobenzamido)-N-methyl-6-(2-methylanilino)pyridine-3-carboxamide
+HER2,8tsc,A,UJC,485.43,"(1S)-7-[3-fluoro-5-(trifluoromethyl)benzamido]-N-methyl-1-(2-methylphenyl)-3-oxo-2,3-dihydro-1H-isoindole-5-carboxamide"
+HER2,8tsd,A,XUZ,608.905,"N-{(3R,6M)-3-(2-chloro-5-fluorophenyl)-6-[(4S)-5-cyano[1,2,4]triazolo[1,5-a]pyridin-6-yl]-1-oxo-2,3-dihydro-1H-isoindol-4-yl}-3-fluoro-5-(trifluoromethyl)benzamide"
+HER2,9cw7,A,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9cw7,B,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9cw7,C,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9cw7,D,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9cw7,A,A1A0E,228.293,"(2M)-4-methyl-5'-[(methylamino)methyl][2,3'-bipyridin]-6-amine"
+HER2,9cw7,B,A1A0E,228.293,"(2M)-4-methyl-5'-[(methylamino)methyl][2,3'-bipyridin]-6-amine"
+HER2,9cw7,C,A1A0E,228.293,"(2M)-4-methyl-5'-[(methylamino)methyl][2,3'-bipyridin]-6-amine"
+HER2,9cw7,D,A1A0E,228.293,"(2M)-4-methyl-5'-[(methylamino)methyl][2,3'-bipyridin]-6-amine"
+HER2,9cw7,A,GD3,157.25,GADOLINIUM ION
+HER2,9cw7,B,GD3,157.25,GADOLINIUM ION
+HER2,9cw7,D,GD3,157.25,GADOLINIUM ION
+HER2,9cwk,A,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9cwk,B,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9cwk,C,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9cwk,D,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9cwk,A,A1A0C,277.312,"(6M)-6-{2,3-difluoro-5-[2-(methylamino)ethyl]phenyl}-4-methylpyridin-2-amine"
+HER2,9cwk,B,A1A0C,277.312,"(6M)-6-{2,3-difluoro-5-[2-(methylamino)ethyl]phenyl}-4-methylpyridin-2-amine"
+HER2,9cwk,C,A1A0C,277.312,"(6M)-6-{2,3-difluoro-5-[2-(methylamino)ethyl]phenyl}-4-methylpyridin-2-amine"
+HER2,9cwk,D,A1A0C,277.312,"(6M)-6-{2,3-difluoro-5-[2-(methylamino)ethyl]phenyl}-4-methylpyridin-2-amine"
+HER2,9cwk,A,GD3,157.25,GADOLINIUM ION
+HER2,9cwk,B,GD3,157.25,GADOLINIUM ION
+HER2,9cwk,C,GD3,157.25,GADOLINIUM ION
+HER2,9cwk,D,GD3,157.25,GADOLINIUM ION
+HER2,9dw9,A,CLR,386.654,CHOLESTEROL
+HER2,9dw9,A,D10,142.282,DECANE
+HER2,9dw9,A,UND,156.308,UNDECANE
+HER2,9i64,A,A1I0H,439.423,"(5~{R},6~{S},8~{R})-3,5,6-tris(fluoranyl)-8-[(1~{S},2~{R})-2-fluoranyl-7-methylsulfonyl-1-oxidanyl-2,3-dihydro-1~{H}-inden-4-yl]-5,6,7,8-tetrahydronaphthalene-1-carbonitrile"
+HER2,9mwn,A,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwn,B,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwn,C,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwn,D,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwn,A,H44,459.63,N-(4-{2-[(3-{[(E)-imino(thiophen-2-yl)methyl]amino}benzyl)amino]ethyl}phenyl)thiophene-2-carboximidamide
+HER2,9mwn,B,H44,459.63,N-(4-{2-[(3-{[(E)-imino(thiophen-2-yl)methyl]amino}benzyl)amino]ethyl}phenyl)thiophene-2-carboximidamide
+HER2,9mwn,C,H44,459.63,N-(4-{2-[(3-{[(E)-imino(thiophen-2-yl)methyl]amino}benzyl)amino]ethyl}phenyl)thiophene-2-carboximidamide
+HER2,9mwn,D,H44,459.63,N-(4-{2-[(3-{[(E)-imino(thiophen-2-yl)methyl]amino}benzyl)amino]ethyl}phenyl)thiophene-2-carboximidamide
+HER2,9mwn,A,GD,157.25,GADOLINIUM ATOM
+HER2,9mwn,B,GD,157.25,GADOLINIUM ATOM
+HER2,9mwn,D,GD,157.25,GADOLINIUM ATOM
+HER2,9mwp,A,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwp,B,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwp,A,A1BT1,427.498,N-[3-({[2-(4-{[(E)-(furan-3-yl)(imino)methyl]amino}phenyl)ethyl]amino}methyl)phenyl]furan-3-carboximidamide
+HER2,9mwp,B,A1BT1,427.498,N-[3-({[2-(4-{[(E)-(furan-3-yl)(imino)methyl]amino}phenyl)ethyl]amino}methyl)phenyl]furan-3-carboximidamide
+HER2,9mwp,A,GD,157.25,GADOLINIUM ATOM
+HER2,9mwp,B,GD,157.25,GADOLINIUM ATOM
+HER2,9mwr,A,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwr,B,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwr,C,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwr,D,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwr,A,A1BTV,461.606,"N-[3-({[2-(4-{[(Z)-imino(1,3-thiazol-2-yl)methyl]amino}phenyl)ethyl]amino}methyl)phenyl]-1,3-thiazole-2-carboximidamide"
+HER2,9mwr,B,A1BTV,461.606,"N-[3-({[2-(4-{[(Z)-imino(1,3-thiazol-2-yl)methyl]amino}phenyl)ethyl]amino}methyl)phenyl]-1,3-thiazole-2-carboximidamide"
+HER2,9mwr,C,A1BTV,461.606,"N-[3-({[2-(4-{[(Z)-imino(1,3-thiazol-2-yl)methyl]amino}phenyl)ethyl]amino}methyl)phenyl]-1,3-thiazole-2-carboximidamide"
+HER2,9mwr,D,A1BTV,461.606,"N-[3-({[2-(4-{[(Z)-imino(1,3-thiazol-2-yl)methyl]amino}phenyl)ethyl]amino}methyl)phenyl]-1,3-thiazole-2-carboximidamide"
+HER2,9mwr,A,GD,157.25,GADOLINIUM ATOM
+HER2,9mwr,B,GD,157.25,GADOLINIUM ATOM
+HER2,9mwr,C,GD,157.25,GADOLINIUM ATOM
+HER2,9mwr,D,GD,157.25,GADOLINIUM ATOM
+HER2,9mwt,A,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwt,B,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwt,C,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwt,D,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwt,A,A1BT6,427.498,N-[3-({[2-(3-{[(Z)-(furan-2-yl)(imino)methyl]amino}phenyl)ethyl]amino}methyl)phenyl]furan-2-carboximidamide
+HER2,9mwt,B,A1BT6,427.498,N-[3-({[2-(3-{[(Z)-(furan-2-yl)(imino)methyl]amino}phenyl)ethyl]amino}methyl)phenyl]furan-2-carboximidamide
+HER2,9mwt,C,A1BT6,427.498,N-[3-({[2-(3-{[(Z)-(furan-2-yl)(imino)methyl]amino}phenyl)ethyl]amino}methyl)phenyl]furan-2-carboximidamide
+HER2,9mwt,D,A1BT6,427.498,N-[3-({[2-(3-{[(Z)-(furan-2-yl)(imino)methyl]amino}phenyl)ethyl]amino}methyl)phenyl]furan-2-carboximidamide
+HER2,9mwt,A,GD,157.25,GADOLINIUM ATOM
+HER2,9mwt,B,GD,157.25,GADOLINIUM ATOM
+HER2,9mwt,C,GD,157.25,GADOLINIUM ATOM
+HER2,9mwt,D,GD,157.25,GADOLINIUM ATOM
+HER2,9mwu,A,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwu,B,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwu,A,A1BT2,424.537,"N-{3-[({2-[3-(aminomethyl)[1,1'-biphenyl]-4-yl]ethyl}amino)methyl]phenyl}furan-2-carboximidamide"
+HER2,9mwu,B,A1BT2,424.537,"N-{3-[({2-[3-(aminomethyl)[1,1'-biphenyl]-4-yl]ethyl}amino)methyl]phenyl}furan-2-carboximidamide"
+HER2,9mwu,A,GD,157.25,GADOLINIUM ATOM
+HER2,9mwu,B,GD,157.25,GADOLINIUM ATOM
+HER2,9mwv,A,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwv,B,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwv,C,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwv,D,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mwv,A,A1BT9,440.603,"N-{3-[({2-[3-(aminomethyl)[1,1'-biphenyl]-4-yl]ethyl}amino)methyl]phenyl}thiophene-2-carboximidamide"
+HER2,9mwv,B,A1BT9,440.603,"N-{3-[({2-[3-(aminomethyl)[1,1'-biphenyl]-4-yl]ethyl}amino)methyl]phenyl}thiophene-2-carboximidamide"
+HER2,9mwv,C,A1BT9,440.603,"N-{3-[({2-[3-(aminomethyl)[1,1'-biphenyl]-4-yl]ethyl}amino)methyl]phenyl}thiophene-2-carboximidamide"
+HER2,9mwv,D,A1BT9,440.603,"N-{3-[({2-[3-(aminomethyl)[1,1'-biphenyl]-4-yl]ethyl}amino)methyl]phenyl}thiophene-2-carboximidamide"
+HER2,9mwv,A,GD,157.25,GADOLINIUM ATOM
+HER2,9mwv,B,GD,157.25,GADOLINIUM ATOM
+HER2,9mwv,D,GD,157.25,GADOLINIUM ATOM
+HER2,9mww,A,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mww,B,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mww,C,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mww,D,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mww,A,A1BTW,441.591,"N-{3-[({2-[3-(aminomethyl)[1,1'-biphenyl]-4-yl]ethyl}amino)methyl]phenyl}-1,3-thiazole-5-carboximidamide"
+HER2,9mww,B,A1BTW,441.591,"N-{3-[({2-[3-(aminomethyl)[1,1'-biphenyl]-4-yl]ethyl}amino)methyl]phenyl}-1,3-thiazole-5-carboximidamide"
+HER2,9mww,C,A1BTW,441.591,"N-{3-[({2-[3-(aminomethyl)[1,1'-biphenyl]-4-yl]ethyl}amino)methyl]phenyl}-1,3-thiazole-5-carboximidamide"
+HER2,9mww,D,A1BTW,441.591,"N-{3-[({2-[3-(aminomethyl)[1,1'-biphenyl]-4-yl]ethyl}amino)methyl]phenyl}-1,3-thiazole-5-carboximidamide"
+HER2,9mww,B,GD,157.25,GADOLINIUM ATOM
+HER2,9mww,C,GD,157.25,GADOLINIUM ATOM
+HER2,9mww,D,GD,157.25,GADOLINIUM ATOM
+HER2,9mz3,A,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mz3,B,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mz3,C,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mz3,D,H4B,241.247,"5,6,7,8-TETRAHYDROBIOPTERIN"
+HER2,9mz3,A,A1BUH,311.353,(2M)-5-(2-aminoethyl)-2-(2-amino-6-fluoro-4-methylquinolin-7-yl)phenol
+HER2,9mz3,B,A1BUH,311.353,(2M)-5-(2-aminoethyl)-2-(2-amino-6-fluoro-4-methylquinolin-7-yl)phenol
+HER2,9mz3,C,A1BUH,311.353,(2M)-5-(2-aminoethyl)-2-(2-amino-6-fluoro-4-methylquinolin-7-yl)phenol
+HER2,9mz3,D,A1BUH,311.353,(2M)-5-(2-aminoethyl)-2-(2-amino-6-fluoro-4-methylquinolin-7-yl)phenol
+HER2,9mz3,A,GD,157.25,GADOLINIUM ATOM
+HER2,9mz3,B,GD,157.25,GADOLINIUM ATOM
+HER2,9mz3,C,GD,157.25,GADOLINIUM ATOM
+HER2,9mz3,D,GD,157.25,GADOLINIUM ATOM
+HER2,9o0r,A,A1B7W,604.117,Adagrasib
+HER2,9o0r,B,A1B7W,604.117,Adagrasib
+HER2,9piz,A,A1CII,538.897,"1-[(4aR,10P,13R)-10-[5-amino-4-fluoro-3-methyl-2-(trifluoromethyl)phenyl]-11-chloro-9-fluoro-1,2,4a,5-tetrahydropyrazino[1',2':4,5][1,4]oxazino[2,3-c]quinolin-3(4H)-yl]prop-2-en-1-one"

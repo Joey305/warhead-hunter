@@ -1,0 +1,142 @@
+protein,pdb,chain,ligand,MW,Name
+NUDT5,2dsc,A,APR,559.316,ADENOSINE-5-DIPHOSPHORIBOSE
+NUDT5,2dsc,B,APR,559.316,ADENOSINE-5-DIPHOSPHORIBOSE
+NUDT5,3ac9,A,8GD,443.201,2'-deoxy-8-oxoguanosine 5'-(trihydrogen diphosphate)
+NUDT5,3ac9,B,8GD,443.201,2'-deoxy-8-oxoguanosine 5'-(trihydrogen diphosphate)
+NUDT5,3bm4,B,ADV,557.343,ALPHA-BETA METHYLENE ADP-RIBOSE
+NUDT5,3aca,A,8DD,427.201,"8-oxo-7,8-dihydro-2'-deoxy-adenosine-5'-diphosphate"
+NUDT5,3aca,B,8DD,427.201,"8-oxo-7,8-dihydro-2'-deoxy-adenosine-5'-diphosphate"
+NUDT5,3l85,A,8OG,363.221,8-OXO-2'-DEOXY-GUANOSINE-5'-MONOPHOSPHATE
+NUDT5,5nqr,A,958,395.415,"8-(dimethylamino)-1,3-dimethyl-7-[[5-(3-methylphenyl)-1,3,4-oxadiazol-2-yl]methyl]purine-2,6-dione"
+NUDT5,5qj4,A,K04,213.257,"(2S,3S)-3-methyl-N-(1,2,3-thiadiazol-5-yl)tetrahydrofuran-2-carboxamide (non-preferred name)"
+NUDT5,5qj4,B,K04,213.257,"(2S,3S)-3-methyl-N-(1,2,3-thiadiazol-5-yl)tetrahydrofuran-2-carboxamide (non-preferred name)"
+NUDT5,5qj4,C,K04,213.257,"(2S,3S)-3-methyl-N-(1,2,3-thiadiazol-5-yl)tetrahydrofuran-2-carboxamide (non-preferred name)"
+NUDT5,5qj5,A,K0G,213.235,N-phenyl-N'-pyridin-3-ylurea
+NUDT5,5qj5,B,K0G,213.235,N-phenyl-N'-pyridin-3-ylurea
+NUDT5,5qj5,C,K0G,213.235,N-phenyl-N'-pyridin-3-ylurea
+NUDT5,5qj5,D,K0G,213.235,N-phenyl-N'-pyridin-3-ylurea
+NUDT5,5qj6,B,GQJ,239.225,"methyl (2~{S},4~{R})-1-(furan-2-ylcarbonyl)-4-oxidanyl-pyrrolidine-2-carboxylate"
+NUDT5,5qj6,D,GQJ,239.225,"methyl (2~{S},4~{R})-1-(furan-2-ylcarbonyl)-4-oxidanyl-pyrrolidine-2-carboxylate"
+NUDT5,5qj7,A,JMM,248.278,[4-(cyclopropanecarbonyl)piperazin-1-yl](furan-2-yl)methanone
+NUDT5,5qj7,C,JMM,248.278,[4-(cyclopropanecarbonyl)piperazin-1-yl](furan-2-yl)methanone
+NUDT5,5qj7,D,JMM,248.278,[4-(cyclopropanecarbonyl)piperazin-1-yl](furan-2-yl)methanone
+NUDT5,5qj8,B,ELQ,240.249,"[3,4-bis(fluoranyl)phenyl]-(4-methylpiperazin-1-yl)methanone"
+NUDT5,5qj9,A,K0D,227.283,"[(2R,5S)-2,5-dimethylmorpholin-4-yl](1,2,5-thiadiazol-3-yl)methanone"
+NUDT5,5qj9,B,K0D,227.283,"[(2R,5S)-2,5-dimethylmorpholin-4-yl](1,2,5-thiadiazol-3-yl)methanone"
+NUDT5,5qj9,C,K0D,227.283,"[(2R,5S)-2,5-dimethylmorpholin-4-yl](1,2,5-thiadiazol-3-yl)methanone"
+NUDT5,5qja,A,K0A,210.296,"(2,5-dimethyl-1,3-thiazol-4-yl)(pyrrolidin-1-yl)methanone"
+NUDT5,5qja,B,K0A,210.296,"(2,5-dimethyl-1,3-thiazol-4-yl)(pyrrolidin-1-yl)methanone"
+NUDT5,5qja,D,K0A,210.296,"(2,5-dimethyl-1,3-thiazol-4-yl)(pyrrolidin-1-yl)methanone"
+NUDT5,5qjb,A,K07,227.691,5-chloro-N-methyl-N-{[(3R)-oxolan-3-yl]methyl}pyrimidin-4-amine
+NUDT5,5qjb,C,K07,227.691,5-chloro-N-methyl-N-{[(3R)-oxolan-3-yl]methyl}pyrimidin-4-amine
+NUDT5,5qjc,A,K0J,140.143,"N-ethyl-1H-1,2,3-triazole-4-carboxamide"
+NUDT5,5qjc,C,K0J,140.143,"N-ethyl-1H-1,2,3-triazole-4-carboxamide"
+NUDT5,5qjd,A,K0M,206.201,"3-methyl-N-(1-methyl-1H-pyrazol-3-yl)-1,2-oxazole-5-carboxamide"
+NUDT5,5qjd,C,K0M,206.201,"3-methyl-N-(1-methyl-1H-pyrazol-3-yl)-1,2-oxazole-5-carboxamide"
+NUDT5,5qje,B,K0P,230.266,N-[(1-ethyl-1H-pyrazol-4-yl)methyl]pyridine-3-carboxamide
+NUDT5,5qje,D,K0P,230.266,N-[(1-ethyl-1H-pyrazol-4-yl)methyl]pyridine-3-carboxamide
+NUDT5,5qjg,A,K0V,242.315,methyl 1-(tert-butylcarbamoyl)piperidine-4-carboxylate
+NUDT5,5qjg,C,K0V,242.315,methyl 1-(tert-butylcarbamoyl)piperidine-4-carboxylate
+NUDT5,5qjg,D,K0V,242.315,methyl 1-(tert-butylcarbamoyl)piperidine-4-carboxylate
+NUDT5,5qjh,A,K0Y,198.176,"methyl N-(5-methyl-1,2-oxazole-3-carbonyl)glycinate"
+NUDT5,5qji,B,K1A,225.268,"3-[(3,5-dimethyl-1,2-oxazol-4-yl)methyl]-5-methyl-1,3,4-thiadiazol-2(3H)-one"
+NUDT5,5qji,D,K1A,225.268,"3-[(3,5-dimethyl-1,2-oxazol-4-yl)methyl]-5-methyl-1,3,4-thiadiazol-2(3H)-one"
+NUDT5,5qjj,C,6SU,229.253,methyl 3-(methylsulfonylamino)benzoate
+NUDT5,5qjj,D,6SU,229.253,methyl 3-(methylsulfonylamino)benzoate
+NUDT5,5qjk,A,K1D,175.191,6-(azetidin-1-yl)-9H-purine
+NUDT5,5qjk,B,K1D,175.191,6-(azetidin-1-yl)-9H-purine
+NUDT5,5qjk,C,K1D,175.191,6-(azetidin-1-yl)-9H-purine
+NUDT5,5qjk,D,K1D,175.191,6-(azetidin-1-yl)-9H-purine
+NUDT5,5qjl,B,JJM,239.276,"1-methyl-N-(3-methylphenyl)-1H-pyrazolo[3,4-d]pyrimidin-4-amine"
+NUDT5,5qjl,C,JJM,239.276,"1-methyl-N-(3-methylphenyl)-1H-pyrazolo[3,4-d]pyrimidin-4-amine"
+NUDT5,5qjl,D,JJM,239.276,"1-methyl-N-(3-methylphenyl)-1H-pyrazolo[3,4-d]pyrimidin-4-amine"
+NUDT5,5qjm,A,K1G,205.26,"N,1-dimethyl-N-(propan-2-yl)-1H-pyrazolo[3,4-d]pyrimidin-4-amine"
+NUDT5,5qjm,B,K1G,205.26,"N,1-dimethyl-N-(propan-2-yl)-1H-pyrazolo[3,4-d]pyrimidin-4-amine"
+NUDT5,5qjm,C,K1G,205.26,"N,1-dimethyl-N-(propan-2-yl)-1H-pyrazolo[3,4-d]pyrimidin-4-amine"
+NUDT5,5qjm,D,K1G,205.26,"N,1-dimethyl-N-(propan-2-yl)-1H-pyrazolo[3,4-d]pyrimidin-4-amine"
+NUDT5,5qjn,A,K1J,213.3,"(2S,3R)-2,3-dimethyl-4-(3-methyl-1,2,4-thiadiazol-5-yl)morpholine"
+NUDT5,5qjn,B,K1J,213.3,"(2S,3R)-2,3-dimethyl-4-(3-methyl-1,2,4-thiadiazol-5-yl)morpholine"
+NUDT5,5qjo,A,K41,169.184,2-methyl-N-(2-methyl-2H-tetrazol-5-yl)propanamide
+NUDT5,5qjo,B,K41,169.184,2-methyl-N-(2-methyl-2H-tetrazol-5-yl)propanamide
+NUDT5,5qjo,C,K41,169.184,2-methyl-N-(2-methyl-2H-tetrazol-5-yl)propanamide
+NUDT5,5qjo,D,K41,169.184,2-methyl-N-(2-methyl-2H-tetrazol-5-yl)propanamide
+NUDT5,5qjp,B,K1P,198.289,"1-(3-methyl-1,2,4-thiadiazol-5-yl)-1,4-diazepane"
+NUDT5,5qjp,C,K1P,198.289,"1-(3-methyl-1,2,4-thiadiazol-5-yl)-1,4-diazepane"
+NUDT5,5qjp,D,K1P,198.289,"1-(3-methyl-1,2,4-thiadiazol-5-yl)-1,4-diazepane"
+NUDT5,5qjq,A,K1S,205.26,"N,N-diethyl-5-methyl[1,2,4]triazolo[1,5-a]pyrimidin-7-amine"
+NUDT5,5qjq,B,K1S,205.26,"N,N-diethyl-5-methyl[1,2,4]triazolo[1,5-a]pyrimidin-7-amine"
+NUDT5,5qjq,C,K1S,205.26,"N,N-diethyl-5-methyl[1,2,4]triazolo[1,5-a]pyrimidin-7-amine"
+NUDT5,5qjr,A,K1V,170.209,(3R)-1-acetylpiperidine-3-carboxamide
+NUDT5,5qjs,A,K1Y,248.301,"methyl (2-methyl-4-phenyl-1,3-thiazol-5-yl)carbamate"
+NUDT5,5qjt,A,K24,156.206,"N,2-dimethyl-1,3-thiazole-5-carboxamide"
+NUDT5,5qjt,D,K24,156.206,"N,2-dimethyl-1,3-thiazole-5-carboxamide"
+NUDT5,5qju,A,K2G,199.637,5-chloro-2-(propan-2-yl)pyrimidine-4-carboxamide
+NUDT5,5qju,B,K2G,199.637,5-chloro-2-(propan-2-yl)pyrimidine-4-carboxamide
+NUDT5,5qju,C,K2G,199.637,5-chloro-2-(propan-2-yl)pyrimidine-4-carboxamide
+NUDT5,5qju,D,K2G,199.637,5-chloro-2-(propan-2-yl)pyrimidine-4-carboxamide
+NUDT5,5qjv,A,K2J,139.155,4-methoxy-N-methylpyrimidin-2-amine
+NUDT5,5qjv,C,K2J,139.155,4-methoxy-N-methylpyrimidin-2-amine
+NUDT5,5qjv,D,K2J,139.155,4-methoxy-N-methylpyrimidin-2-amine
+NUDT5,5qjw,A,K2M,223.229,4-(furan-2-carbonyl)piperazine-1-carboxamide
+NUDT5,5qjw,B,K2M,223.229,4-(furan-2-carbonyl)piperazine-1-carboxamide
+NUDT5,5qjw,D,K2M,223.229,4-(furan-2-carbonyl)piperazine-1-carboxamide
+NUDT5,5qjx,B,K2P,206.119,2-(trifluoromethoxy)benzoic acid
+NUDT5,5qjy,A,K2S,203.262,"N,N,3,5-tetramethyl-1H-pyrazole-4-sulfonamide"
+NUDT5,5qjy,C,K2S,203.262,"N,N,3,5-tetramethyl-1H-pyrazole-4-sulfonamide"
+NUDT5,5qk1,A,K34,152.177,"5-(1,3-thiazol-2-yl)-1H-1,2,4-triazole"
+NUDT5,5qk1,B,K34,152.177,"5-(1,3-thiazol-2-yl)-1H-1,2,4-triazole"
+NUDT5,5qk1,C,K34,152.177,"5-(1,3-thiazol-2-yl)-1H-1,2,4-triazole"
+NUDT5,5qk1,D,K34,152.177,"5-(1,3-thiazol-2-yl)-1H-1,2,4-triazole"
+NUDT5,5qk2,B,JH4,109.129,N-methylpyrimidin-2-amine
+NUDT5,5qk3,A,K3A,139.155,N-(5-methyl-1H-pyrazol-3-yl)acetamide
+NUDT5,5qk4,A,K3D,199.25,4-acetyl-N-ethylpiperazine-1-carboxamide
+NUDT5,5qk4,C,K3D,199.25,4-acetyl-N-ethylpiperazine-1-carboxamide
+NUDT5,5qk5,A,K3J,137.182,N-ethyl-6-methylpyridazin-3-amine
+NUDT5,5qk5,C,K3J,137.182,N-ethyl-6-methylpyridazin-3-amine
+NUDT5,5qk6,A,K3M,153.154,2-fluoro-4-methylbenzamide
+NUDT5,5qk7,B,K3P,210.62,5-chloro-4-[(1-methyl-1H-pyrazol-4-yl)oxy]pyrimidine
+NUDT5,5qk7,C,K3P,210.62,5-chloro-4-[(1-methyl-1H-pyrazol-4-yl)oxy]pyrimidine
+NUDT5,5qk8,A,K3S,140.186,"N-[(1-methyl-1H-1,2,3-triazol-4-yl)methyl]ethanamine"
+NUDT5,5qk9,A,K3V,206.198,"7,8-dimethoxyphthalazin-1(2H)-one"
+NUDT5,5qk9,B,K3V,206.198,"7,8-dimethoxyphthalazin-1(2H)-one"
+NUDT5,5qk9,C,K3V,206.198,"7,8-dimethoxyphthalazin-1(2H)-one"
+NUDT5,5qka,A,K3Y,208.26,1-methyl-3-[(3R)-piperidin-3-yl]-1H-pyrazole-4-carboxamide
+NUDT5,5qtl,B,PW7,163.101,4-(trifluoromethyl)pyrimidin-2-amine
+NUDT5,5qtl,C,PW7,163.101,4-(trifluoromethyl)pyrimidin-2-amine
+NUDT5,5qtl,D,PW7,163.101,4-(trifluoromethyl)pyrimidin-2-amine
+NUDT5,5qtm,A,PWA,164.137,7-fluoroquinazolin-4(3H)-one
+NUDT5,5qtm,B,PWA,164.137,7-fluoroquinazolin-4(3H)-one
+NUDT5,5qtm,D,PWA,164.137,7-fluoroquinazolin-4(3H)-one
+NUDT5,5qto,A,PWG,237.129,"3-(difluoromethyl)-8-(trifluoromethyl)[1,2,4]triazolo[4,3-a]pyridine"
+NUDT5,5qto,B,PWG,237.129,"3-(difluoromethyl)-8-(trifluoromethyl)[1,2,4]triazolo[4,3-a]pyridine"
+NUDT5,5qto,C,PWG,237.129,"3-(difluoromethyl)-8-(trifluoromethyl)[1,2,4]triazolo[4,3-a]pyridine"
+NUDT5,5qtp,A,PWJ,245.588,"8-chloro-6-(trifluoromethyl)imidazo[1,2-a]pyridine-7-carbonitrile"
+NUDT5,5qtp,B,PWJ,245.588,"8-chloro-6-(trifluoromethyl)imidazo[1,2-a]pyridine-7-carbonitrile"
+NUDT5,5qtp,C,PWJ,245.588,"8-chloro-6-(trifluoromethyl)imidazo[1,2-a]pyridine-7-carbonitrile"
+NUDT5,5qtp,D,PWJ,245.588,"8-chloro-6-(trifluoromethyl)imidazo[1,2-a]pyridine-7-carbonitrile"
+NUDT5,5qtq,A,PWM,164.137,5-fluoroquinazolin-4(3H)-one
+NUDT5,5qtq,B,PWM,164.137,5-fluoroquinazolin-4(3H)-one
+NUDT5,5qtq,C,PWM,164.137,5-fluoroquinazolin-4(3H)-one
+NUDT5,5qtq,D,PWM,164.137,5-fluoroquinazolin-4(3H)-one
+NUDT5,8otv,A,W0O,400.476,"1-(1-methylpiperidin-4-yl)-3-(4-phenoxyphenyl)pyrazolo[3,4-d]pyrimidin-4-amine"
+NUDT5,8otv,B,W0O,400.476,"1-(1-methylpiperidin-4-yl)-3-(4-phenoxyphenyl)pyrazolo[3,4-d]pyrimidin-4-amine"
+NUDT5,8ptt,A,F2V,436.861,"6-[(5~{R})-7-[3-chloranyl-4-(trifluoromethyl)phenyl]-2,7-diazaspiro[4.4]nonan-2-yl]-7-methyl-purine"
+NUDT5,8ptt,B,F2V,436.861,"6-[(5~{R})-7-[3-chloranyl-4-(trifluoromethyl)phenyl]-2,7-diazaspiro[4.4]nonan-2-yl]-7-methyl-purine"
+NUDT5,8ptt,C,F2V,436.861,"6-[(5~{R})-7-[3-chloranyl-4-(trifluoromethyl)phenyl]-2,7-diazaspiro[4.4]nonan-2-yl]-7-methyl-purine"
+NUDT5,8ptt,D,F2V,436.861,"6-[(5~{R})-7-[3-chloranyl-4-(trifluoromethyl)phenyl]-2,7-diazaspiro[4.4]nonan-2-yl]-7-methyl-purine"
+NUDT5,8rdz,A,A1H14,440.497,Ibrutinib (unbound form)
+NUDT5,8rdz,B,A1H14,440.497,Ibrutinib (unbound form)
+NUDT5,8rdz,C,A1H14,440.497,Ibrutinib (unbound form)
+NUDT5,8rdz,D,A1H14,440.497,Ibrutinib (unbound form)
+NUDT5,8riy,AAA,W0O,400.476,"1-(1-methylpiperidin-4-yl)-3-(4-phenoxyphenyl)pyrazolo[3,4-d]pyrimidin-4-amine"
+NUDT5,8riy,BBB,W0O,400.476,"1-(1-methylpiperidin-4-yl)-3-(4-phenoxyphenyl)pyrazolo[3,4-d]pyrimidin-4-amine"
+NUDT5,9g6y,A,A1IIY,534.355,"4-[7-[[5-(3,4-dichlorophenyl)-1,3,4-oxadiazol-2-yl]methyl]-1,3-dimethyl-2,6-bis(oxidanylidene)purin-8-yl]piperazine-1-carboxamide"
+NUDT5,9g6y,B,A1IIY,534.355,"4-[7-[[5-(3,4-dichlorophenyl)-1,3,4-oxadiazol-2-yl]methyl]-1,3-dimethyl-2,6-bis(oxidanylidene)purin-8-yl]piperazine-1-carboxamide"
+NUDT5,9q0n,A,A1CQ3,378.298,6-(methylsulfanyl)-9-(5-O-phosphono-beta-D-ribofuranosyl)-9H-purine
+NUDT5,9q0n,B,A1CQ3,378.298,6-(methylsulfanyl)-9-(5-O-phosphono-beta-D-ribofuranosyl)-9H-purine
+NUDT5,9q0n,C,A1CQ3,378.298,6-(methylsulfanyl)-9-(5-O-phosphono-beta-D-ribofuranosyl)-9H-purine
+NUDT5,9q0n,D,A1CQ3,378.298,6-(methylsulfanyl)-9-(5-O-phosphono-beta-D-ribofuranosyl)-9H-purine
+NUDT5,9q0o,A,A1CQ4,454.394,6-(benzylsulfanyl)-9-(5-O-phosphono-beta-D-ribofuranosyl)-9H-purine
+NUDT5,9q0o,B,A1CQ4,454.394,6-(benzylsulfanyl)-9-(5-O-phosphono-beta-D-ribofuranosyl)-9H-purine
+NUDT5,9q0o,C,A1CQ4,454.394,6-(benzylsulfanyl)-9-(5-O-phosphono-beta-D-ribofuranosyl)-9H-purine
+NUDT5,9q0o,D,A1CQ4,454.394,6-(benzylsulfanyl)-9-(5-O-phosphono-beta-D-ribofuranosyl)-9H-purine

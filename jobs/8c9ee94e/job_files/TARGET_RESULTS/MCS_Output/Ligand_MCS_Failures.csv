@@ -1,0 +1,63 @@
+Ligand,PDB,Error
+9QY,5vyy,Size mismatch: SMILES=27 vs 3D=46
+GD,4d1o,Missing SMILES (tried ['GD'])
+GD,4d1o,Missing SMILES (tried ['GD'])
+GD,9mwn,Missing SMILES (tried ['GD'])
+GD,9mwn,Missing SMILES (tried ['GD'])
+GD,9mwn,Missing SMILES (tried ['GD'])
+GD,9mwp,Missing SMILES (tried ['GD'])
+GD,9mwp,Missing SMILES (tried ['GD'])
+GD,9mwr,Missing SMILES (tried ['GD'])
+GD,9mwr,Missing SMILES (tried ['GD'])
+GD,9mwr,Missing SMILES (tried ['GD'])
+GD,9mwr,Missing SMILES (tried ['GD'])
+GD,9mwt,Missing SMILES (tried ['GD'])
+GD,9mwt,Missing SMILES (tried ['GD'])
+GD,9mwt,Missing SMILES (tried ['GD'])
+GD,9mwt,Missing SMILES (tried ['GD'])
+GD,9mwt,Missing SMILES (tried ['GD'])
+GD,9mwu,Missing SMILES (tried ['GD'])
+GD,9mwu,Missing SMILES (tried ['GD'])
+GD,9mwv,Missing SMILES (tried ['GD'])
+GD,9mwv,Missing SMILES (tried ['GD'])
+GD,9mwv,Missing SMILES (tried ['GD'])
+GD,9mww,Missing SMILES (tried ['GD'])
+GD,9mww,Missing SMILES (tried ['GD'])
+GD,9mww,Missing SMILES (tried ['GD'])
+GD,9mww,Missing SMILES (tried ['GD'])
+GD,9mz3,Missing SMILES (tried ['GD'])
+GD,9mz3,Missing SMILES (tried ['GD'])
+GD,9mz3,Missing SMILES (tried ['GD'])
+GD,9mz3,Missing SMILES (tried ['GD'])
+GD3,9cw7,Missing SMILES (tried ['GD3'])
+GD3,9cw7,Missing SMILES (tried ['GD3'])
+GD3,9cw7,Missing SMILES (tried ['GD3'])
+GD3,9cw7,Missing SMILES (tried ['GD3'])
+GD3,9cwk,Missing SMILES (tried ['GD3'])
+GD3,9cwk,Missing SMILES (tried ['GD3'])
+GD3,9cwk,Missing SMILES (tried ['GD3'])
+GD3,9cwk,Missing SMILES (tried ['GD3'])
+H44,9mwn,Size mismatch: SMILES=34 vs 3D=32
+H44,9mwn,Size mismatch: SMILES=34 vs 3D=32
+H44,9mwn,Size mismatch: SMILES=34 vs 3D=32
+H44,9mwn,Size mismatch: SMILES=34 vs 3D=32
+NL7,6p0i,Size mismatch: SMILES=22 vs 3D=32
+NLJ,6p0l,Size mismatch: SMILES=22 vs 3D=32
+NLM,6p0m,Size mismatch: SMILES=21 vs 3D=28
+NLS,6p0n,Size mismatch: SMILES=21 vs 3D=28
+NLV,6p0k,Size mismatch: SMILES=21 vs 3D=28
+PRO,6ehj,Size mismatch: SMILES=8 vs 3D=14
+PRO,6ehj,Size mismatch: SMILES=8 vs 3D=7
+R27,6vcu,Size mismatch: SMILES=61 vs 3D=134
+R27,6vcu,GRAPH_FULL skipped: size>80
+R27,6vcu,Size mismatch: SMILES=61 vs 3D=134
+R27,6vcu,GRAPH_FULL skipped: size>80
+R27,6vcu,Size mismatch: SMILES=61 vs 3D=134
+R27,6vcu,GRAPH_FULL skipped: size>80
+R27,6vcu,Size mismatch: SMILES=61 vs 3D=134
+R27,6vcu,GRAPH_FULL skipped: size>80
+SER,6ehj,Size mismatch: SMILES=7 vs 3D=12
+SER,6ehj,Size mismatch: SMILES=7 vs 3D=6
+SER,6ehj,Size mismatch: SMILES=7 vs 3D=12
+SER,6ehj,Size mismatch: SMILES=7 vs 3D=6
+VJH,7nzn,Size mismatch: SMILES=41 vs 3D=72

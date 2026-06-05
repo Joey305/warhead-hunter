@@ -1,0 +1,10 @@
+Ligand,Target,pdb_id,Chain,Residue_ID,basename,stage,timeout_sec,error_type,error_message
+8DD,NUDT5,3aca,A,2,3aca_A_8DD_2,BUILD_ROWS,,ITEM_FAILED,Template assign failed: No matching found
+8DD,NUDT5,3aca,B,209,3aca_B_8DD_209,BUILD_ROWS,,ITEM_FAILED,Template assign failed: No matching found
+8GD,NUDT5,3ac9,B,1,3ac9_B_8GD_1,BUILD_ROWS,,ITEM_FAILED,Template assign failed: No matching found
+8GD,NUDT5,3ac9,A,2,3ac9_A_8GD_2,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=28 vs 3D=19
+8OG,NUDT5,3l85,A,2,3l85_A_8OG_2,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=24 vs 3D=13
+ADV,NUDT5,3bm4,B,401,3bm4_B_ADV_401,BUILD_ROWS,,ITEM_FAILED,Template assign failed: No matching found
+ADV,NUDT5,3bm4,B,402,3bm4_B_ADV_402,BUILD_ROWS,,ITEM_FAILED,Template assign failed: No matching found
+APR,NUDT5,2dsc,B,401,2dsc_B_APR_401,BUILD_ROWS,,ITEM_FAILED,Template assign failed: No matching found
+APR,NUDT5,2dsc,A,402,2dsc_A_APR_402,BUILD_ROWS,,ITEM_FAILED,Template assign failed: No matching found
