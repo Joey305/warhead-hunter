@@ -474,7 +474,13 @@ CURATED_EXAMPLE_CONFIG = [
         "label": "HER2 / ERBB2",
         "protein": "HER2",
         "use_case": "receptor tyrosine kinase inhibitor structure example",
-    }
+    },
+        {
+            "job_id": "s4v4029c",
+            "label": "CARM1 /PRMT4 (example)",
+            "protein": "S4V4029C",
+            "use_case": "methyltransferase inhibitor structure example",
+        }
 
 ]
 
