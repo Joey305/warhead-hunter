@@ -184,6 +184,12 @@
     font-weight: 700;
   }
 
+  .example-card-title,
+  .example-meta-value,
+  .example-status-copy {
+    overflow-wrap: anywhere;
+  }
+
   .example-help-list {
     margin: 0;
     padding-left: 18px;
@@ -196,6 +202,53 @@
     .example-card-grid,
     .example-meta-grid {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .examples-wrap {
+      gap: 16px;
+    }
+
+    .examples-hero,
+    .example-panel,
+    .example-card {
+      border-radius: 20px;
+    }
+
+    .examples-hero,
+    .example-panel {
+      padding: 18px;
+    }
+
+    .example-actions,
+    .example-card-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .example-link,
+    .example-link-muted {
+      width: 100%;
+    }
+
+    .example-card {
+      padding: 16px;
+      gap: 12px;
+    }
+
+    .example-metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .example-count-card {
+      min-width: 0;
+    }
+
+    .example-help-list {
+      padding-left: 1.1rem;
     }
   }
 </style>

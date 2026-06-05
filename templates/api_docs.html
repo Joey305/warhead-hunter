@@ -25,7 +25,6 @@
       0 18px 44px rgba(0, 0, 0, 0.25),
       inset 0 1px 0 rgba(255,255,255,0.03);
     position: relative;
-    overflow: hidden;
   }
 
   .api-hero::before,
@@ -386,6 +385,66 @@
     .api-grid-3,
     .api-grid-2 {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .api-docs-wrap {
+      gap: 16px;
+    }
+
+    .api-hero,
+    .api-panel,
+    .api-code-card,
+    .api-card,
+    .api-route-group,
+    .api-example-card,
+    .api-feature-card,
+    .api-route-item,
+    .api-code {
+      border-radius: 18px;
+    }
+
+    .api-hero,
+    .api-panel,
+    .api-code-card {
+      padding: 18px;
+      overflow: visible;
+    }
+
+    .api-title {
+      font-size: clamp(1.75rem, 9vw, 2.45rem);
+    }
+
+    .api-actions,
+    .api-inline-actions,
+    .api-card-actions,
+    .api-link-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .api-btn,
+    .api-btn-link {
+      width: 100%;
+    }
+
+    .api-example-meta-row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+
+    .api-route-method {
+      margin-right: 0;
+      margin-bottom: 8px;
+    }
+
+    .api-code {
+      padding: 14px;
+      font-size: 0.84rem;
+      line-height: 1.56;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
     }
   }
 </style>

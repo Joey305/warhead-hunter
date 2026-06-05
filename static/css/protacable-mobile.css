@@ -238,7 +238,10 @@
   }
 
   .result-card-title {
-    font-size: clamp(1.08rem, 5vw, 1.3rem);
+    font-size: clamp(0.98rem, 4.6vw, 1.14rem);
+    letter-spacing: 0.1em;
+    margin: 4px auto 8px;
+    padding: 6px 12px;
   }
 
   .ligand-metrics {
@@ -286,14 +289,6 @@
     min-height: clamp(320px, 58dvh, 500px);
   }
 
-  .ligand-metrics {
-    grid-template-columns: 1fr;
-  }
-
-  .metric-wide {
-    grid-column: auto;
-  }
-
   .viewport-loading-title {
     font-size: 0.84rem;
   }
@@ -318,17 +313,26 @@
   }
 
   .result-card {
-    padding: 12px;
+    padding: 10px;
   }
 
   .result-card-top {
-    padding: 8px;
-    margin: -4px -4px 10px;
+    gap: 5px;
+    padding: 7px 8px;
+    margin: -2px -2px 8px;
   }
 
   .pdb-chip,
   .exp-chip {
     font-size: 0.7rem;
+  }
+
+  .metric {
+    padding: 9px 10px;
+  }
+
+  .metric-label {
+    margin-bottom: 4px;
   }
 
   .metric-main {

@@ -1044,6 +1044,15 @@ img, div, section, header, footer {
     filter: saturate(1);
 }
 
+@media (max-width: 900px) {
+    .fx-enabled .reveal {
+        opacity: 1;
+        transform: none;
+        filter: none;
+        transition: none;
+    }
+}
+
 .wh-hero,
 .wh-section,
 .wh-feature-card,
