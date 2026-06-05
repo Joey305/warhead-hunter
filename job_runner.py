@@ -942,14 +942,20 @@ def _attempt_randy_backup(job_id: str, job_dir: str, *, status: str, required_re
     if status == "completed" and required_result_tables and result.get("status") == "uploaded_unverified":
         result["ok"] = False
         result["status"] = "failed_verification"
+        result["reason"] = result.get("reason") or "uploaded_but_verification_incomplete"
     write_job_metadata(job_id, {"backup": result}, job_dir=job_dir)
 
     outcome = str(result.get("status") or "unknown")
+    endpoint = str(result.get("endpoint") or result.get("base_url") or "")
+    verification = result.get("verification") if isinstance(result.get("verification"), dict) else {}
+    verify_status = str(verification.get("status") or "not_attempted")
     if result.get("attempted"):
         summary = (
             f"configured={bool(result.get('configured'))} "
             f"ok={bool(result.get('ok'))} "
             f"status={outcome} "
+            f"verify={verify_status} "
+            f"endpoint={endpoint or 'unconfigured'} "
             f"files={int(result.get('uploaded_files') or 0)} "
             f"bytes={int(result.get('uploaded_bytes') or 0)}"
         )
@@ -958,7 +964,11 @@ def _attempt_randy_backup(job_id: str, job_dir: str, *, status: str, required_re
         log_message(job_id, f"🗄️ RANDY backup result: {summary}")
     else:
         reason = str(result.get("reason") or result.get("error") or "not configured")
-        log_message(job_id, f"🗄️ RANDY backup skipped: {reason}")
+        log_message(
+            job_id,
+            f"🗄️ RANDY backup skipped: {reason} endpoint={endpoint or 'unconfigured'} "
+            f"configured={bool(result.get('configured'))}",
+        )
     return result
 
 def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_seq: str) -> None:

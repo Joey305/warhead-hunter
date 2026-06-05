@@ -16,6 +16,8 @@ from urllib.parse import quote, unquote
 from flask import Flask, abort, jsonify, request, send_file
 from werkzeug.utils import secure_filename
 
+from backup_receiver.e3_data_routes import register_e3_routes
+
 APP = Flask(__name__)
 
 
@@ -32,8 +34,18 @@ def load_env_file() -> None:
 
 
 load_env_file()
+register_e3_routes(APP)
 
-BACKUP_TOKEN = os.environ.get("PROTAC_BACKUP_TOKEN", "").strip()
+def configured_backup_token() -> str:
+    return (
+        os.environ.get("RANDY_BACKUP_TOKEN", "").strip()
+        or os.environ.get("RANDY_ARCHIVE_TOKEN", "").strip()
+        or os.environ.get("WARHEAD_HANDOFF_TOKEN", "").strip()
+        or os.environ.get("PROTAC_BACKUP_TOKEN", "").strip()
+    )
+
+
+BACKUP_TOKEN = configured_backup_token()
 BACKUP_DIR = Path(os.environ.get("PROTAC_BACKUP_DIR", str(Path(__file__).resolve().parents[1] / "data"))).expanduser()
 HUNTER_JOBS_DIR = Path(
     os.environ.get(

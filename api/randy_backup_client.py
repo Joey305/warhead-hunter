@@ -13,6 +13,7 @@ from urllib.parse import quote
 import requests
 
 from api import randy_archive_client
+from requests import RequestException
 
 
 DEFAULT_TIMEOUT_SECONDS = 60
@@ -86,6 +87,10 @@ def _configured_token() -> str:
     )
 
 
+def _token_present() -> bool:
+    return bool(_configured_token())
+
+
 def _configured_base_url() -> str:
     for raw in [
         os.environ.get("RANDY_BACKUP_BASE_URL", ""),
@@ -102,6 +107,10 @@ def _configured_base_url() -> str:
     if handoff_storage.endswith("/backup/hunter-job-files"):
         return handoff_storage[: -len("/hunter-job-files")]
     return ""
+
+
+def _base_url_host_path() -> str:
+    return _configured_base_url()
 
 
 def backup_enabled() -> bool:
@@ -139,6 +148,23 @@ def _headers() -> Dict[str, str]:
     if token:
         headers["Authorization"] = f"Bearer {token}"
     return headers
+
+
+def backup_configuration_summary() -> Dict[str, Any]:
+    base_url = _base_url_host_path()
+    endpoint = backup_endpoint()
+    return {
+        "provider": "randy",
+        "configured": bool(base_url and _token_present()),
+        "base_url": base_url,
+        "endpoint": endpoint,
+        "token_present": _token_present(),
+        "backup_on_complete": backup_on_complete(),
+        "backup_on_failure": backup_on_failure(),
+        "archive_required": archive_required(),
+        "timeout_seconds": backup_timeout_seconds(),
+        "max_bytes": backup_max_bytes(),
+    }
 
 
 def _safe_rel(path: Path, root: Path) -> str:
@@ -277,10 +303,13 @@ def _verify_archive(job_id: str) -> Dict[str, Any]:
     exists = randy_archive_client.job_exists(job_id)
     detail = randy_archive_client.get_job_index(job_id) if exists else None
     status = {
+        "ok": False,
+        "status": "job_not_found",
         "job_exists": bool(exists),
         "table_ok": False,
         "artifact_ok": False,
         "table_path": "",
+        "checked_at": _utc_now_iso(),
     }
     if not detail:
         return status
@@ -302,13 +331,19 @@ def _verify_archive(job_id: str) -> Dict[str, Any]:
             protein = randy_archive_client.find_protein_pdb_asset(job_id, pdb=pdb, chain=chain, ligand=ligand)
             sdf = randy_archive_client.find_asset(job_id, pdb=pdb, chain=chain, ligand=ligand, resid=resid, kind="sdf")
             status["artifact_ok"] = bool(protein and sdf)
+    if status["job_exists"] and status["table_ok"]:
+        status["ok"] = True
+        status["status"] = "verified"
+    elif status["job_exists"]:
+        status["status"] = "uploaded_unverified"
     return status
 
 
 def initial_backup_status(job_id: str, *, reason: str = "") -> Dict[str, Any]:
-    configured = backup_enabled()
+    config = backup_configuration_summary()
+    configured = bool(config["configured"])
     return {
-        "provider": "randy",
+        **config,
         "configured": configured,
         "attempted": False,
         "ok": False,
@@ -318,6 +353,16 @@ def initial_backup_status(job_id: str, *, reason: str = "") -> Dict[str, Any]:
         "uploaded_files": 0,
         "uploaded_bytes": 0,
         "archive_path": "",
+        "started_at": "",
+        "finished_at": "",
+        "verification": {
+            "ok": False,
+            "status": "not_attempted",
+            "job_exists": False,
+            "table_ok": False,
+            "artifact_ok": False,
+            "table_path": "",
+        },
         "error": None,
         "reason": reason or ("" if configured else "RANDY backup endpoint/token not configured"),
     }
@@ -334,13 +379,21 @@ def backup_job_directory(
     result = initial_backup_status(job_id)
     result["started_at"] = _utc_now_iso()
     result["status"] = "skipped"
+    result["reason"] = result.get("reason") or ""
 
     if not job_dir.exists():
+        result["attempted"] = False
+        result["configured"] = backup_enabled()
+        result["status"] = "failed_local_job_missing"
         result["error"] = "Local job directory does not exist"
+        result["reason"] = "local_job_directory_missing"
         result["finished_at"] = _utc_now_iso()
         return result
 
     if not result["configured"]:
+        result["attempted"] = False
+        result["status"] = "skipped_not_configured"
+        result["reason"] = result.get("reason") or "RANDY backup endpoint/token not configured"
         result["finished_at"] = _utc_now_iso()
         return result
 
@@ -353,12 +406,14 @@ def backup_job_directory(
         result["attempted"] = False
         result["status"] = "failed_planning"
         result["error"] = str(plan.get("reason") or "Backup planning failed")
+        result["reason"] = "backup_planning_failed"
         result["finished_at"] = _utc_now_iso()
         return result
 
     if dry_run:
         result["status"] = "dry_run"
         result["ok"] = True
+        result["reason"] = "dry_run_only"
         result["finished_at"] = _utc_now_iso()
         return result
 
@@ -396,6 +451,7 @@ def backup_job_directory(
         if resp.status_code >= 400 or not payload.get("ok"):
             result["status"] = "upload_failed"
             result["error"] = f"HTTP {resp.status_code}: {str(payload.get('error') or 'upload failed')[:240]}"
+            result["reason"] = "upload_http_error"
             result["finished_at"] = _utc_now_iso()
             return result
 
@@ -404,20 +460,31 @@ def backup_job_directory(
         if verify.get("job_exists") and (verify.get("table_ok") or status != "completed"):
             result["ok"] = True
             result["status"] = "completed"
+            result["reason"] = "upload_and_verification_succeeded"
         elif verify.get("job_exists"):
             result["ok"] = True
             result["status"] = "uploaded_unverified"
             result["error"] = "Archive uploaded but result-table verification did not succeed"
+            result["reason"] = "uploaded_but_verification_incomplete"
         else:
             result["ok"] = False
             result["status"] = "failed_verification"
             result["error"] = "Archive upload completed but RANDY verification could not find the job"
+            result["reason"] = "uploaded_but_job_missing_in_verification"
+        result["finished_at"] = _utc_now_iso()
+        return result
+    except RequestException as exc:
+        result["attempted"] = True
+        result["status"] = "request_exception"
+        result["error"] = str(exc)[:240]
+        result["reason"] = "request_exception"
         result["finished_at"] = _utc_now_iso()
         return result
     except Exception as exc:
         result["attempted"] = True
         result["status"] = "exception"
         result["error"] = str(exc)[:240]
+        result["reason"] = "unexpected_exception"
         result["finished_at"] = _utc_now_iso()
         return result
     finally:
