@@ -449,7 +449,13 @@ CURATED_EXAMPLE_CONFIG = [
         "label": "AchE / Acetylcholinesterase",
         "protein": "AchE",
         "use_case": "AchE / Acetylcholinesterase inhibitor structure example",
-    }
+    },
+    {
+        "job_id": "cc5025a3",
+        "label": "SHMT / Serine Hydroxymethyltransferase",
+        "protein": "SHMT",
+        "use_case": "methyltransferase inhibitor structure example",
+    },
 
 ]
 

@@ -1,0 +1,8 @@
+Rank,Ligand_Resolved,PDB_List,Count
+1,A1AQW,['9boh'],1
+2,C2F,['9o5g'],1
+3,DSN,['8ssy'],1
+4,FFO,"['9boh', '9bow', '9bpe']",3
+5,KOU,"['10zb', '9bow']",2
+6,SER,"['8sui', '9bow']",2
+7,THG,"['10zb', '9o50']",2

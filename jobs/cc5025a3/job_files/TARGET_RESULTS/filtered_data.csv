@@ -1,0 +1,224 @@
+protein,pdb,chain,ligand,MW,Name
+SHMT,10zb,B,KOU,334.219,(E)-N-({3-hydroxy-2-methyl-5-[(phosphonooxy)methyl]pyridin-4-yl}methylidene)-L-serine
+SHMT,10zb,B,THG,445.429,"(6S)-5,6,7,8-TETRAHYDROFOLATE"
+SHMT,1dfo,A,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,1dfo,B,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,1dfo,C,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,1dfo,D,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,1eji,A,THF,473.439,5-HYDROXYMETHYLENE-6-HYDROFOLIC ACID
+SHMT,1eji,B,THF,473.439,5-HYDROXYMETHYLENE-6-HYDROFOLIC ACID
+SHMT,1eji,D,THF,473.439,5-HYDROXYMETHYLENE-6-HYDROFOLIC ACID
+SHMT,1eqb,A,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,1eqb,B,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,1eqb,C,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,1eqb,D,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,1kkp,A,SER,105.093,SERINE
+SHMT,1kl2,A,FON,473.439,"N-{[4-({[(6R)-2-amino-5-formyl-4-oxo-1,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)phenyl]carbonyl}-L-glutamic acid"
+SHMT,1kl2,B,FON,473.439,"N-{[4-({[(6R)-2-amino-5-formyl-4-oxo-1,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)phenyl]carbonyl}-L-glutamic acid"
+SHMT,1ps6,A,4TP,215.098,4-HYDROXY-L-THREONINE-5-MONOPHOSPHATE
+SHMT,1ls3,B,TGF,731.667,"2-[4-(4-{4-[(2-AMINO-5-FORMYL-4-OXO-3,4,5,6,7,8-HEXAHYDRO-PTERIDIN-6-YLMETHYL)-AMINO]-BENZOYLAMINO}-4-CARBOXY-BUTYRYLAM INO)-4-CARBOXY-BUTYRYLAMINO]-PENTANEDIOIC ACID"
+SHMT,1ls3,D,TGF,731.667,"2-[4-(4-{4-[(2-AMINO-5-FORMYL-4-OXO-3,4,5,6,7,8-HEXAHYDRO-PTERIDIN-6-YLMETHYL)-AMINO]-BENZOYLAMINO}-4-CARBOXY-BUTYRYLAM INO)-4-CARBOXY-BUTYRYLAMINO]-PENTANEDIOIC ACID"
+SHMT,1yjy,A,SER,105.093,SERINE
+SHMT,2vgu,A,SER,105.093,SERINE
+SHMT,2via,A,SER,105.093,SERINE
+SHMT,2vmp,A,SER,105.093,SERINE
+SHMT,2vmr,A,MRD,118.174,"(4R)-2-METHYLPENTANE-2,4-DIOL"
+SHMT,2vmt,A,SER,105.093,SERINE
+SHMT,2vmw,A,SER,105.093,SERINE
+SHMT,2vmx,A,ALO,119.119,ALLO-THREONINE
+SHMT,2vmy,A,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,2vmy,B,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,2vmy,B,MRD,118.174,"(4R)-2-METHYLPENTANE-2,4-DIOL"
+SHMT,2vmz,A,MRD,118.174,"(4R)-2-METHYLPENTANE-2,4-DIOL"
+SHMT,4ot8,A,SER,105.093,SERINE
+SHMT,4ot8,B,SER,105.093,SERINE
+SHMT,4oyt,A,1W9,334.219,(2R)-2-[(E)-[2-methyl-3-oxidanyl-5-(phosphonooxymethyl)pyridin-4-yl]methylideneamino]-3-oxidanyl-propanoic acid
+SHMT,4oyt,B,1W9,334.219,(2R)-2-[(E)-[2-methyl-3-oxidanyl-5-(phosphonooxymethyl)pyridin-4-yl]methylideneamino]-3-oxidanyl-propanoic acid
+SHMT,4oyt,C,1W9,334.219,(2R)-2-[(E)-[2-methyl-3-oxidanyl-5-(phosphonooxymethyl)pyridin-4-yl]methylideneamino]-3-oxidanyl-propanoic acid
+SHMT,4oyt,A,FON,473.439,"N-{[4-({[(6R)-2-amino-5-formyl-4-oxo-1,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)phenyl]carbonyl}-L-glutamic acid"
+SHMT,4oyt,B,FON,473.439,"N-{[4-({[(6R)-2-amino-5-formyl-4-oxo-1,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)phenyl]carbonyl}-L-glutamic acid"
+SHMT,4oyt,C,FON,473.439,"N-{[4-({[(6R)-2-amino-5-formyl-4-oxo-1,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)phenyl]carbonyl}-L-glutamic acid"
+SHMT,4oyt,C,ETF,100.04,TRIFLUOROETHANOL
+SHMT,4pfn,A,SER,105.093,SERINE
+SHMT,4pfn,B,SER,105.093,SERINE
+SHMT,4pfn,C,SER,105.093,SERINE
+SHMT,4tmr,A,99S,459.52,"methyl 5-{3-[(4S)-6-amino-5-cyano-3-methyl-4-(propan-2-yl)-2,4-dihydropyrano[2,3-c]pyrazol-4-yl]-5-cyanophenyl}thiophene-2-carboxylate"
+SHMT,4tmr,B,99S,459.52,"methyl 5-{3-[(4S)-6-amino-5-cyano-3-methyl-4-(propan-2-yl)-2,4-dihydropyrano[2,3-c]pyrazol-4-yl]-5-cyanophenyl}thiophene-2-carboxylate"
+SHMT,4tmr,C,99S,459.52,"methyl 5-{3-[(4S)-6-amino-5-cyano-3-methyl-4-(propan-2-yl)-2,4-dihydropyrano[2,3-c]pyrazol-4-yl]-5-cyanophenyl}thiophene-2-carboxylate"
+SHMT,4tn4,A,33G,425.458,"(4S)-6-amino-4-(5-cyano-3'-fluorobiphenyl-3-yl)-4-cyclobutyl-3-methyl-2,4-dihydropyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,4tn4,B,33G,425.458,"(4S)-6-amino-4-(5-cyano-3'-fluorobiphenyl-3-yl)-4-cyclobutyl-3-methyl-2,4-dihydropyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,4tn4,C,33G,425.458,"(4S)-6-amino-4-(5-cyano-3'-fluorobiphenyl-3-yl)-4-cyclobutyl-3-methyl-2,4-dihydropyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,5gvk,A,G45,508.616,"5-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-cyano-phenyl]-~{N},~{N}-dimethyl-thiophene-2-sulfonamide"
+SHMT,5gvk,B,G45,508.616,"5-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-cyano-phenyl]-~{N},~{N}-dimethyl-thiophene-2-sulfonamide"
+SHMT,5gvk,C,G45,508.616,"5-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-cyano-phenyl]-~{N},~{N}-dimethyl-thiophene-2-sulfonamide"
+SHMT,5gvl,A,GI8,445.537,"(4~{S})-6-azanyl-4-[3-cyano-5-[5-(methoxymethyl)thiophen-2-yl]phenyl]-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,5gvl,B,GI8,445.537,"(4~{S})-6-azanyl-4-[3-cyano-5-[5-(methoxymethyl)thiophen-2-yl]phenyl]-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,5gvl,C,GI8,445.537,"(4~{S})-6-azanyl-4-[3-cyano-5-[5-(methoxymethyl)thiophen-2-yl]phenyl]-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,5gvm,A,G57,496.481,"2-[3-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]phenyl]ethanoic acid"
+SHMT,5gvm,B,G57,496.481,"2-[3-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]phenyl]ethanoic acid"
+SHMT,5gvm,C,G57,496.481,"2-[3-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]phenyl]ethanoic acid"
+SHMT,5gvn,A,G6F,460.5,"3-[3-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-fluoranyl-phenyl]phenyl]propanoic acid"
+SHMT,5gvn,B,G6F,460.5,"3-[3-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-fluoranyl-phenyl]phenyl]propanoic acid"
+SHMT,5gvn,C,G6F,460.5,"3-[3-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-fluoranyl-phenyl]phenyl]propanoic acid"
+SHMT,5gvp,A,GCF,510.508,"3-[3-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]phenyl]propanoic acid"
+SHMT,5gvp,C,GCF,510.508,"3-[3-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]phenyl]propanoic acid"
+SHMT,5v7i,A,8Z1,431.454,"(4R)-6-amino-3-methyl-4-(propan-2-yl)-4-[3-(pyrrolidin-1-yl)-5-(trifluoromethyl)phenyl]-1,4-dihydropyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,5v7i,B,8Z1,431.454,"(4R)-6-amino-3-methyl-4-(propan-2-yl)-4-[3-(pyrrolidin-1-yl)-5-(trifluoromethyl)phenyl]-1,4-dihydropyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,5xmp,A,8A3,613.575,"4-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]-~{N}-methyl-~{N}-[2,2,2-tris(fluoranyl)ethyl]benzenesulfonamide"
+SHMT,5xmp,B,8A3,613.575,"4-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]-~{N}-methyl-~{N}-[2,2,2-tris(fluoranyl)ethyl]benzenesulfonamide"
+SHMT,5xmp,C,8A3,613.575,"4-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]-~{N}-methyl-~{N}-[2,2,2-tris(fluoranyl)ethyl]benzenesulfonamide"
+SHMT,5xmq,A,8A6,621.673,"4-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]-~{N}-methyl-~{N}-(phenylmethyl)benzenesulfonamide"
+SHMT,5xmq,B,8A6,621.673,"4-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]-~{N}-methyl-~{N}-(phenylmethyl)benzenesulfonamide"
+SHMT,5xmq,C,8A6,621.673,"4-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]-~{N}-methyl-~{N}-(phenylmethyl)benzenesulfonamide"
+SHMT,5xmr,A,8AO,592.631,"(4~{S})-6-azanyl-3-methyl-4-[3-[4-(phenylmethyl)sulfonylphenyl]-5-(trifluoromethyl)phenyl]-4-propan-2-yl-2~{H}-pyrano[2 ,3-c]pyrazole-5-carbonitrile"
+SHMT,5xmr,B,8AO,592.631,"(4~{S})-6-azanyl-3-methyl-4-[3-[4-(phenylmethyl)sulfonylphenyl]-5-(trifluoromethyl)phenyl]-4-propan-2-yl-2~{H}-pyrano[2 ,3-c]pyrazole-5-carbonitrile"
+SHMT,5xmr,C,8AO,592.631,"(4~{S})-6-azanyl-3-methyl-4-[3-[4-(phenylmethyl)sulfonylphenyl]-5-(trifluoromethyl)phenyl]-4-propan-2-yl-2~{H}-pyrano[2 ,3-c]pyrazole-5-carbonitrile"
+SHMT,5xms,A,8B3,456.435,"(4~{S})-6-azanyl-4-[3-(2-fluorophenyl)-5-(trifluoromethyl)phenyl]-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazole-5- carbonitrile"
+SHMT,5xms,B,8B3,456.435,"(4~{S})-6-azanyl-4-[3-(2-fluorophenyl)-5-(trifluoromethyl)phenyl]-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazole-5- carbonitrile"
+SHMT,5xms,C,8B3,456.435,"(4~{S})-6-azanyl-4-[3-(2-fluorophenyl)-5-(trifluoromethyl)phenyl]-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazole-5- carbonitrile"
+SHMT,5xmt,A,8B0,463.454,"(4~{S})-6-azanyl-4-[3-(2-cyanophenyl)-5-(trifluoromethyl)phenyl]-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,5xmt,B,8B0,463.454,"(4~{S})-6-azanyl-4-[3-(2-cyanophenyl)-5-(trifluoromethyl)phenyl]-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,5xmt,C,8B0,463.454,"(4~{S})-6-azanyl-4-[3-(2-cyanophenyl)-5-(trifluoromethyl)phenyl]-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,5xmu,A,8A0,452.472,"(4~{S})-6-azanyl-3-methyl-4-[3-(2-methylphenyl)-5-(trifluoromethyl)phenyl]-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,5xmu,B,8A0,452.472,"(4~{S})-6-azanyl-3-methyl-4-[3-(2-methylphenyl)-5-(trifluoromethyl)phenyl]-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,5xmu,C,8A0,452.472,"(4~{S})-6-azanyl-3-methyl-4-[3-(2-methylphenyl)-5-(trifluoromethyl)phenyl]-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,5xmv,A,8AU,472.89,"(4~{S})-6-azanyl-4-[3-(2-chlorophenyl)-5-(trifluoromethyl)phenyl]-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazole-5- carbonitrile"
+SHMT,5xmv,B,8AU,472.89,"(4~{S})-6-azanyl-4-[3-(2-chlorophenyl)-5-(trifluoromethyl)phenyl]-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazole-5- carbonitrile"
+SHMT,5xmv,C,8AU,472.89,"(4~{S})-6-azanyl-4-[3-(2-chlorophenyl)-5-(trifluoromethyl)phenyl]-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazole-5- carbonitrile"
+SHMT,5yfy,A,8UL,439.483,"1-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-fluoranyl-phenyl]piperidine-4-carboxylic acid"
+SHMT,5yfy,B,8UL,439.483,"1-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-fluoranyl-phenyl]piperidine-4-carboxylic acid"
+SHMT,5yfy,C,8UL,439.483,"1-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-fluoranyl-phenyl]piperidine-4-carboxylic acid"
+SHMT,5yfz,A,8UO,453.509,"2-[1-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-fluoranyl-phenyl]piperidin-4-yl]ethanoic acid"
+SHMT,5yfz,B,8UO,453.509,"2-[1-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-fluoranyl-phenyl]piperidin-4-yl]ethanoic acid"
+SHMT,5yfz,C,8UO,453.509,"2-[1-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-fluoranyl-phenyl]piperidin-4-yl]ethanoic acid"
+SHMT,5yg0,A,8UR,503.517,"2-[1-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]piperidin-4-yl]ethanoic acid"
+SHMT,5yg0,B,8UR,503.517,"2-[1-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]piperidin-4-yl]ethanoic acid"
+SHMT,5yg0,C,8UR,503.517,"2-[1-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]piperidin-4-yl]ethanoic acid"
+SHMT,5yg1,A,8UU,517.543,"3-[1-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]piperidin-4-yl]propanoic acid"
+SHMT,5yg1,B,8UU,517.543,"3-[1-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]piperidin-4-yl]propanoic acid"
+SHMT,5yg1,C,8UU,517.543,"3-[1-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-(trifluoromethyl)phenyl]piperidin-4-yl]propanoic acid"
+SHMT,5yg2,A,N05,467.536,"3-[1-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-fluoranyl-phenyl]piperidin-4-yl]propanoic acid"
+SHMT,5yg2,B,N05,467.536,"3-[1-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-fluoranyl-phenyl]piperidin-4-yl]propanoic acid"
+SHMT,5yg2,C,N05,467.536,"3-[1-[3-[(4~{S})-6-azanyl-5-cyano-3-methyl-4-propan-2-yl-2~{H}-pyrano[2,3-c]pyrazol-4-yl]-5-fluoranyl-phenyl]piperidin-4-yl]propanoic acid"
+SHMT,5yg3,A,8UC,401.436,"(3~{S})-6'-azanyl-7-fluoranyl-2,2,3'-trimethyl-5-pyridin-4-yl-spiro[1~{H}-indene-3,4'-2~{H}-pyrano[2,3-c]pyrazole]-5'-carbonitrile"
+SHMT,5yg3,B,8UC,401.436,"(3~{S})-6'-azanyl-7-fluoranyl-2,2,3'-trimethyl-5-pyridin-4-yl-spiro[1~{H}-indene-3,4'-2~{H}-pyrano[2,3-c]pyrazole]-5'-carbonitrile"
+SHMT,5yg3,C,8UC,401.436,"(3~{S})-6'-azanyl-7-fluoranyl-2,2,3'-trimethyl-5-pyridin-4-yl-spiro[1~{H}-indene-3,4'-2~{H}-pyrano[2,3-c]pyrazole]-5'-carbonitrile"
+SHMT,5yg4,A,8UF,465.52,"2-[1-[(3~{S})-6'-azanyl-5'-cyano-7-fluoranyl-2,2,3'-trimethyl-spiro[1~{H}-indene-3,4'-2~{H}-pyrano[2,3-c]pyrazole]-5-yl]piperidin-4-yl]ethanoic acid"
+SHMT,5yg4,B,8UF,465.52,"2-[1-[(3~{S})-6'-azanyl-5'-cyano-7-fluoranyl-2,2,3'-trimethyl-spiro[1~{H}-indene-3,4'-2~{H}-pyrano[2,3-c]pyrazole]-5-yl]piperidin-4-yl]ethanoic acid"
+SHMT,5yg4,C,8UF,465.52,"2-[1-[(3~{S})-6'-azanyl-5'-cyano-7-fluoranyl-2,2,3'-trimethyl-spiro[1~{H}-indene-3,4'-2~{H}-pyrano[2,3-c]pyrazole]-5-yl]piperidin-4-yl]ethanoic acid"
+SHMT,6ccz,A,SEY,123.016,selenourea
+SHMT,6ccz,B,SEY,123.016,selenourea
+SHMT,6cd1,A,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,6cd1,D,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,6m5o,A,DXC,392.572,"(3ALPHA,5BETA,12ALPHA)-3,12-DIHYDROXYCHOLAN-24-OIC ACID"
+SHMT,6m5w,A,DXC,392.572,"(3ALPHA,5BETA,12ALPHA)-3,12-DIHYDROXYCHOLAN-24-OIC ACID"
+SHMT,6qvg,A,DDF,443.453,"5,10-DIDEAZATETRAHYDROFOLIC ACID"
+SHMT,6qvg,B,DDF,443.453,"5,10-DIDEAZATETRAHYDROFOLIC ACID"
+SHMT,6qvl,B,4DW,425.395,"N-{4-[2-(2-amino-4-oxo-4,7-dihydro-3H-pyrrolo[2,3-d]pyrimidin-5-yl)ethyl]benzoyl}-L-glutamic acid"
+SHMT,6smn,A,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,6smn,B,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,6smn,C,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,6smn,A,MTX,454.439,METHOTREXATE
+SHMT,6smn,B,MTX,454.439,METHOTREXATE
+SHMT,6smn,C,MTX,454.439,METHOTREXATE
+SHMT,6smn,D,SER,105.093,SERINE
+SHMT,6smr,A,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,6smr,B,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,6smr,C,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,6smr,D,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,6smr,A,MTX,454.439,METHOTREXATE
+SHMT,6smr,B,MTX,454.439,METHOTREXATE
+SHMT,6smr,D,MTX,454.439,METHOTREXATE
+SHMT,6smw,A,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,6smw,B,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,6smw,C,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,6smw,A,LYA,427.411,"2-{4-[2-(2-AMINO-4-OXO-4,7-DIHYDRO-3H-PYRROLO[2,3-D]PYRIMIDIN-5-YL)-ETHYL]-BENZOYLAMINO}-PENTANEDIOIC ACID"
+SHMT,6smw,C,LYA,427.411,"2-{4-[2-(2-AMINO-4-OXO-4,7-DIHYDRO-3H-PYRROLO[2,3-D]PYRIMIDIN-5-YL)-ETHYL]-BENZOYLAMINO}-PENTANEDIOIC ACID"
+SHMT,6smw,D,LYA,427.411,"2-{4-[2-(2-AMINO-4-OXO-4,7-DIHYDRO-3H-PYRROLO[2,3-D]PYRIMIDIN-5-YL)-ETHYL]-BENZOYLAMINO}-PENTANEDIOIC ACID"
+SHMT,6smw,C,SER,105.093,SERINE
+SHMT,6tgh,A,EVM,333.211,"L-Serine, N-[[3-hydroxy-2-methyl-5-[(phosphonooxy)methyl]-4-pyridinyl]methylene]"
+SHMT,6tgh,B,EVM,333.211,"L-Serine, N-[[3-hydroxy-2-methyl-5-[(phosphonooxy)methyl]-4-pyridinyl]methylene]"
+SHMT,6tgh,C,DSN,105.093,D-SERINE
+SHMT,6tgh,D,DSN,105.093,D-SERINE
+SHMT,6ti3,A,DTH,119.119,D-THREONINE
+SHMT,6ti3,B,DTH,119.119,D-THREONINE
+SHMT,6ti3,C,DTH,119.119,D-THREONINE
+SHMT,6ti3,D,DTH,119.119,D-THREONINE
+SHMT,6ti1,A,2BO,350.262,N-({3-hydroxy-2-methyl-5-[(phosphonooxy)methyl]pyridin-4-yl}methyl)-L-threonine
+SHMT,6ti1,C,2BO,350.262,N-({3-hydroxy-2-methyl-5-[(phosphonooxy)methyl]pyridin-4-yl}methyl)-L-threonine
+SHMT,6ti4,A,O3Z,336.235,(2~{R})-2-[[2-methyl-3-oxidanyl-5-(phosphonooxymethyl)pyridin-4-yl]methylamino]-3-oxidanyl-propanoic acid
+SHMT,6ti4,C,O3Z,336.235,(2~{R})-2-[[2-methyl-3-oxidanyl-5-(phosphonooxymethyl)pyridin-4-yl]methylamino]-3-oxidanyl-propanoic acid
+SHMT,6uxj,A,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,6uxj,B,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,6uxj,C,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,6uxj,D,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,6yrw,A,DSN,105.093,D-SERINE
+SHMT,6yrw,B,DSN,105.093,D-SERINE
+SHMT,6yrw,C,DSN,105.093,D-SERINE
+SHMT,6yrw,D,DSN,105.093,D-SERINE
+SHMT,7byi,B,CBO,570.757,CARBENOXOLONE
+SHMT,7v3d,A,5M5,400.473,"(4R)-6-azanyl-4-[3-(hydroxymethyl)-5-phenyl-phenyl]-3-methyl-4-propan-2-yl-1H-pyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,7v3d,B,5M5,400.473,"(4R)-6-azanyl-4-[3-(hydroxymethyl)-5-phenyl-phenyl]-3-methyl-4-propan-2-yl-1H-pyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,7x5n,A,5M5,400.473,"(4R)-6-azanyl-4-[3-(hydroxymethyl)-5-phenyl-phenyl]-3-methyl-4-propan-2-yl-1H-pyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,7x5n,B,5M5,400.473,"(4R)-6-azanyl-4-[3-(hydroxymethyl)-5-phenyl-phenyl]-3-methyl-4-propan-2-yl-1H-pyrano[2,3-c]pyrazole-5-carbonitrile"
+SHMT,7x5n,A,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,7x5n,B,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,7x5o,A,THH,459.456,"N-[4-({[(6S)-2-AMINO-4-HYDROXY-5-METHYL-5,6,7,8-TETRAHYDROPTERIDIN-6-YL]METHYL}AMINO)BENZOYL]-L-GLUTAMIC ACID"
+SHMT,7x5o,B,THH,459.456,"N-[4-({[(6S)-2-AMINO-4-HYDROXY-5-METHYL-5,6,7,8-TETRAHYDROPTERIDIN-6-YL]METHYL}AMINO)BENZOYL]-L-GLUTAMIC ACID"
+SHMT,8dsk,A,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,8dsk,B,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,8dsk,C,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,8dsk,D,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,8fjt,A,Y72,479.482,"N-{4-[4-(2-amino-4-oxo-3,4-dihydro-5H-pyrrolo[3,2-d]pyrimidin-5-yl)butyl]-3-fluorothiophene-2-carbonyl}-L-glutamic acid"
+SHMT,8fjt,B,Y72,479.482,"N-{4-[4-(2-amino-4-oxo-3,4-dihydro-5H-pyrrolo[3,2-d]pyrimidin-5-yl)butyl]-3-fluorothiophene-2-carbonyl}-L-glutamic acid"
+SHMT,8fju,A,Y79,473.454,"N-{4-[4-(2-amino-4-oxo-3,4-dihydro-5H-pyrrolo[3,2-d]pyrimidin-5-yl)butyl]-2-fluorobenzoyl}-L-glutamic acid"
+SHMT,8fju,B,Y79,473.454,"N-{4-[4-(2-amino-4-oxo-3,4-dihydro-5H-pyrrolo[3,2-d]pyrimidin-5-yl)butyl]-2-fluorobenzoyl}-L-glutamic acid"
+SHMT,8fsd,A,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,8fsd,B,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,8fsd,C,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,8fsd,D,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,8gks,A,Y6U,441.437,"N-{4-[3-(2-amino-4-oxo-3,4-dihydro-5H-pyrrolo[3,2-d]pyrimidin-5-yl)propyl]benzoyl}-L-glutamic acid"
+SHMT,8gku,A,ZV1,487.481,"N-{4-[5-(2-amino-4-oxo-3,4-dihydro-5H-pyrrolo[3,2-d]pyrimidin-5-yl)pentyl]-2-fluorobenzoyl}-D-glutamic acid"
+SHMT,8gkt,A,Y7L,475.518,"N-{5-[5-(2-amino-4-oxo-3,4-dihydro-5H-pyrrolo[3,2-d]pyrimidin-5-yl)pentyl]thiophene-2-carbonyl}-L-glutamic acid"
+SHMT,8gkt,B,Y7L,475.518,"N-{5-[5-(2-amino-4-oxo-3,4-dihydro-5H-pyrrolo[3,2-d]pyrimidin-5-yl)pentyl]thiophene-2-carbonyl}-L-glutamic acid"
+SHMT,8gky,A,ZVR,459.428,"N-{4-[3-(2-amino-4-oxo-3,4-dihydro-5H-pyrrolo[3,2-d]pyrimidin-5-yl)propyl]-2-fluorobenzoyl}-L-glutamic acid"
+SHMT,8gky,B,ZVR,459.428,"N-{4-[3-(2-amino-4-oxo-3,4-dihydro-5H-pyrrolo[3,2-d]pyrimidin-5-yl)propyl]-2-fluorobenzoyl}-L-glutamic acid"
+SHMT,8gkw,B,ZVR,459.428,"N-{4-[3-(2-amino-4-oxo-3,4-dihydro-5H-pyrrolo[3,2-d]pyrimidin-5-yl)propyl]-2-fluorobenzoyl}-L-glutamic acid"
+SHMT,8gkz,B,Y72,479.482,"N-{4-[4-(2-amino-4-oxo-3,4-dihydro-5H-pyrrolo[3,2-d]pyrimidin-5-yl)butyl]-3-fluorothiophene-2-carbonyl}-L-glutamic acid"
+SHMT,8ssy,A,DSN,105.093,D-SERINE
+SHMT,8sui,B,SER,105.093,SERINE
+SHMT,8t4o,A,Y5C,344.34,"4-[4-(2-amino-4-oxo-3,4-dihydro-5H-pyrrolo[3,2-d]pyrimidin-5-yl)butyl]-2-fluorobenzoic acid"
+SHMT,8t4p,A,Y5Z,602.568,"N-{4-[4-(2-amino-4-oxo-3,4-dihydro-5H-pyrrolo[3,2-d]pyrimidin-5-yl)butyl]-2-fluorobenzoyl}-L-gamma-glutamyl-L-glutamic acid"
+SHMT,8tlc,A,I6I,731.682,"N-{4-[4-(2-amino-4-oxo-1,4-dihydro-5H-pyrrolo[3,2-d]pyrimidin-5-yl)butyl]-2-fluorobenzoyl}-D-gamma-glutamyl-L-gamma-glutamyl-D-glutamic acid"
+SHMT,8tqf,A,S8R,602.553,"N-[4-({[(6R)-2-amino-5-formyl-4-hydroxy-5,6,7,8-tetrahydropteridin-6-yl]methyl}amino)benzoyl]-L-gamma-glutamyl-L-glutamic acid"
+SHMT,8tqf,B,S8R,602.553,"N-[4-({[(6R)-2-amino-5-formyl-4-hydroxy-5,6,7,8-tetrahydropteridin-6-yl]methyl}amino)benzoyl]-L-gamma-glutamyl-L-glutamic acid"
+SHMT,8tqf,C,S8R,602.553,"N-[4-({[(6R)-2-amino-5-formyl-4-hydroxy-5,6,7,8-tetrahydropteridin-6-yl]methyl}amino)benzoyl]-L-gamma-glutamyl-L-glutamic acid"
+SHMT,8tqf,D,S8R,602.553,"N-[4-({[(6R)-2-amino-5-formyl-4-hydroxy-5,6,7,8-tetrahydropteridin-6-yl]methyl}amino)benzoyl]-L-gamma-glutamyl-L-glutamic acid"
+SHMT,9boh,B,A1AQW,304.193,(E)-N-({3-hydroxy-2-methyl-5-[(phosphonooxy)methyl]pyridin-4-yl}methylidene)glycine
+SHMT,9boh,B,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,9bow,A,SER,105.093,SERINE
+SHMT,9bow,B,KOU,334.219,(E)-N-({3-hydroxy-2-methyl-5-[(phosphonooxy)methyl]pyridin-4-yl}methylidene)-L-serine
+SHMT,9bow,B,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,9box,A,A1AQW,304.193,(E)-N-({3-hydroxy-2-methyl-5-[(phosphonooxy)methyl]pyridin-4-yl}methylidene)glycine
+SHMT,9box,B,A1AQW,304.193,(E)-N-({3-hydroxy-2-methyl-5-[(phosphonooxy)methyl]pyridin-4-yl}methylidene)glycine
+SHMT,9box,C,A1AQW,304.193,(E)-N-({3-hydroxy-2-methyl-5-[(phosphonooxy)methyl]pyridin-4-yl}methylidene)glycine
+SHMT,9box,D,A1AQW,304.193,(E)-N-({3-hydroxy-2-methyl-5-[(phosphonooxy)methyl]pyridin-4-yl}methylidene)glycine
+SHMT,9box,A,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,9box,B,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,9box,C,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,9box,D,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,9bpe,B,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,9dhb,A,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,9dhb,B,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,9dhb,C,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,9dhb,D,FFO,473.439,"N-[4-({[(6S)-2-amino-5-formyl-4-oxo-3,4,5,6,7,8-hexahydropteridin-6-yl]methyl}amino)benzoyl]-L-glutamic acid"
+SHMT,9j4g,A,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,9j4g,B,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,9j4g,A,A1L3N,406.478,(+)-SHIN-2
+SHMT,9j4g,B,A1L3N,406.478,(+)-SHIN-2
+SHMT,9o50,B,THG,445.429,"(6S)-5,6,7,8-TETRAHYDROFOLATE"
+SHMT,9kro,A,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,9kro,B,PLS,336.235,[3-HYDROXY-2-METHYL-5-PHOSPHONOOXYMETHYL-PYRIDIN-4-YLMETHYL]-SERINE
+SHMT,9kro,A,HZI,422.34,Mangiferin
+SHMT,9kro,B,HZI,422.34,Mangiferin
+SHMT,9o5g,B,C2F,459.456,"5-METHYL-5,6,7,8-TETRAHYDROFOLIC ACID"

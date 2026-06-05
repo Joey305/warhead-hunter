@@ -1,0 +1,22 @@
+Ligand,Target,pdb_id,Chain,Residue_ID,basename,stage,timeout_sec,error_type,error_message
+C2F,SHMT,9o5g,B,2002,9o5g_B_C2F_2002,BUILD_3D_MOL,,BUILD_3D_MOL_FAILED,"3D mol build failed: Post-condition Violation
+	Element 'Dn' not found
+	Violation occurred on line 93 in file Code/GraphMol/PeriodicTable.h
+	Failed Expression: anum > -1
+	RDKIT: 2022.09.5
+	BOOST: 1_78
+"
+FFO,SHMT,9bpe,B,2001,9bpe_B_FFO_2001,BUILD_3D_MOL,,BUILD_3D_MOL_FAILED,"3D mol build failed: Post-condition Violation
+	Element 'D' not found
+	Violation occurred on line 93 in file Code/GraphMol/PeriodicTable.h
+	Failed Expression: anum > -1
+	RDKIT: 2022.09.5
+	BOOST: 1_78
+"
+SER,SHMT,8sui,B,1502,8sui_B_SER_1502,BUILD_3D_MOL,,BUILD_3D_MOL_FAILED,"3D mol build failed: Post-condition Violation
+	Element 'D' not found
+	Violation occurred on line 93 in file Code/GraphMol/PeriodicTable.h
+	Failed Expression: anum > -1
+	RDKIT: 2022.09.5
+	BOOST: 1_78
+"

@@ -1,0 +1,2 @@
+protein,n_candidates,n_attempted,n_downloaded,n_verified,outdir,protein_dir,manifest_path
+SHMT,173,173,173,173,WAR,WAR/SHMT,CIF_Download_Manifest.csv

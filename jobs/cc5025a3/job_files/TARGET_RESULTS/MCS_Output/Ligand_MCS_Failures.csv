@@ -1,0 +1,22 @@
+Ligand,PDB,Error
+C2F,9o5g,"3D mol build failed: Post-condition Violation
+	Element 'Dn' not found
+	Violation occurred on line 93 in file Code/GraphMol/PeriodicTable.h
+	Failed Expression: anum > -1
+	RDKIT: 2022.09.5
+	BOOST: 1_78
+"
+FFO,9bpe,"3D mol build failed: Post-condition Violation
+	Element 'D' not found
+	Violation occurred on line 93 in file Code/GraphMol/PeriodicTable.h
+	Failed Expression: anum > -1
+	RDKIT: 2022.09.5
+	BOOST: 1_78
+"
+SER,8sui,"3D mol build failed: Post-condition Violation
+	Element 'D' not found
+	Violation occurred on line 93 in file Code/GraphMol/PeriodicTable.h
+	Failed Expression: anum > -1
+	RDKIT: 2022.09.5
+	BOOST: 1_78
+"

@@ -1,0 +1,9 @@
+Target,pdb_id,Chain,Warhead,Residue_ID,SMILES,%Exposed,pdb_path,sdf_path,sdf_available
+SHMT,8ssy,A,DSN,501,N[C@H](CO)C(=O)O,0.857,/app/jobs/cc5025a3/WAR_PDB/SHMT/8ssy_A_DSN.pdb,/app/jobs/cc5025a3/TARGET_RESULTS/MCS_Output/MCS_SDF/8ssy_A_DSN_501.sdf,True
+SHMT,10zb,B,THG,1502,Nc1nc2c(c(=O)[nH]1)N[C@@H](CNc1ccc(C(=O)N[C@@H](CCC(=O)O)C(=O)O)cc1)CN2,0.781,/app/jobs/cc5025a3/WAR_PDB/SHMT/10zb_B_THG.pdb,/app/jobs/cc5025a3/TARGET_RESULTS/MCS_Output/MCS_SDF/10zb_B_THG_1502.sdf,True
+SHMT,9o50,B,THG,501,Nc1nc2c(c(=O)[nH]1)N[C@@H](CNc1ccc(C(=O)N[C@@H](CCC(=O)O)C(=O)O)cc1)CN2,0.688,/app/jobs/cc5025a3/WAR_PDB/SHMT/9o50_B_THG.pdb,/app/jobs/cc5025a3/TARGET_RESULTS/MCS_Output/MCS_SDF/9o50_B_THG_501.sdf,True
+SHMT,9bow,B,FFO,502,Nc1nc2c(c(=O)[nH]1)N(C=O)C(CNc1ccc(C(=O)NC(CCC(=O)O)C(=O)O)cc1)CN2,0.618,/app/jobs/cc5025a3/WAR_PDB/SHMT/9bow_B_FFO.pdb,/app/jobs/cc5025a3/TARGET_RESULTS/MCS_Output/MCS_SDF/9bow_B_FFO_502.sdf,True
+SHMT,9boh,B,FFO,502,Nc1nc2c(c(=O)[nH]1)N(C=O)C(CNc1ccc(C(=O)NC(CCC(=O)O)C(=O)O)cc1)CN2,0.588,/app/jobs/cc5025a3/WAR_PDB/SHMT/9boh_B_FFO.pdb,/app/jobs/cc5025a3/TARGET_RESULTS/MCS_Output/MCS_SDF/9boh_B_FFO_502.sdf,True
+SHMT,10zb,B,KOU,1501,Cc1ncc(COP(=O)(O)O)c(/C=N/C(CO)C(=O)O)c1O,0.5,/app/jobs/cc5025a3/WAR_PDB/SHMT/10zb_B_KOU.pdb,/app/jobs/cc5025a3/TARGET_RESULTS/MCS_Output/MCS_SDF/10zb_B_KOU_1501.sdf,True
+SHMT,9bow,B,KOU,501,Cc1ncc(COP(=O)(O)O)c(/C=N/C(CO)C(=O)O)c1O,0.5,/app/jobs/cc5025a3/WAR_PDB/SHMT/9bow_B_KOU.pdb,/app/jobs/cc5025a3/TARGET_RESULTS/MCS_Output/MCS_SDF/9bow_B_KOU_501.sdf,True
+SHMT,9bow,A,SER,501,N[C@@H](CO)C(=O)O,0.464,/app/jobs/cc5025a3/WAR_PDB/SHMT/9bow_A_SER.pdb,/app/jobs/cc5025a3/TARGET_RESULTS/MCS_Output/MCS_SDF/9bow_A_SER_501.sdf,True

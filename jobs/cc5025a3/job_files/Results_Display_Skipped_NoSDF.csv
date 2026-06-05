@@ -1,0 +1,5 @@
+Target,pdb_id,Chain,Warhead,Residue_ID,pdb_path,reason
+SHMT,8sui,B,SER,1502,/app/jobs/cc5025a3/WAR_PDB/SHMT/8sui_B_SER.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+SHMT,9boh,B,A00,,/app/jobs/cc5025a3/WAR_PDB/SHMT/9boh_B_A00.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+SHMT,9bpe,B,FFO,2001,/app/jobs/cc5025a3/WAR_PDB/SHMT/9bpe_B_FFO.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+SHMT,9o5g,B,C2F,2002,/app/jobs/cc5025a3/WAR_PDB/SHMT/9o5g_B_C2F.pdb,No unique matching SDF in MCS_Output/MCS_SDF

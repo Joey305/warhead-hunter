@@ -1,0 +1,8 @@
+Protein,Recruiter,SMILES,Scaffold_ID,Scaffold_SMILES,Scaffold_Hash
+SHMT,DSN,C([C@H](C(=O)O)N)O,SHMT_SCAF_1,,b589faed
+SHMT,KOU,Cc1c(c(c(cn1)COP(=O)(O)O)/C=N/C(CO)C(=O)O)O,SHMT_SCAF_2,c1ccncc1,6e858b26
+SHMT,THG,c1cc(ccc1C(=O)N[C@@H](CCC(=O)O)C(=O)O)NC[C@H]2CNC3=C(N2)C(=O)NC(=N3)N,SHMT_SCAF_3,O=c1[nH]cnc2c1N[C@@H](CNc1ccccc1)CN2,76784ee6
+SHMT,A1AQW,Cc1c(c(c(cn1)COP(=O)(O)O)/C=N/CC(=O)O)O,SHMT_SCAF_2,c1ccncc1,6e858b26
+SHMT,FFO,c1cc(ccc1C(=O)NC(CCC(=O)O)C(=O)O)NCC2CNC3=C(N2C=O)C(=O)NC(=N3)N,SHMT_SCAF_4,O=c1[nH]cnc2c1NC(CNc1ccccc1)CN2,a60c2f9e
+SHMT,SER,C([C@@H](C(=O)O)N)O,SHMT_SCAF_5,,cc8bd527
+SHMT,C2F,C[N@@]1[C@H](CNC2=C1C(=O)NC(=N2)N)CNc3ccc(cc3)C(=O)N[C@@H](CCC(=O)O)C(=O)O,SHMT_SCAF_3,O=c1[nH]cnc2c1N[C@@H](CNc1ccccc1)CN2,76784ee6

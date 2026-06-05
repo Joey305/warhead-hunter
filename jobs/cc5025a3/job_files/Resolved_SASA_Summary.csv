@@ -1,0 +1,13 @@
+Target,pdb_id,Warhead,Residue_ID,Total_atoms,Exposed_atoms,SASA_in_complex_A2,%Exposed,%Buried,Chain,LigandX_Source,Ligand5_Source,Ligand_Resolved,Warhead_5,SMILES,Ion_Dropped,Ion_Drop_Reason,Parent_SMILES,Salt_Stripped
+SHMT,8ssy,DSN,501,7,6,100.967,0.857,0.143,A,DSN,DSN,DSN,,C([C@H](C(=O)O)N)O,False,,N[C@H](CO)C(=O)O,False
+SHMT,10zb,KOU,1501,22,11,105.817,0.5,0.5,B,KOU,KOU,KOU,,Cc1c(c(c(cn1)COP(=O)(O)O)/C=N/C(CO)C(=O)O)O,False,,Cc1ncc(COP(=O)(O)O)c(/C=N/C(CO)C(=O)O)c1O,False
+SHMT,10zb,THG,1502,32,25,306.854,0.781,0.219,B,THG,THG,THG,,c1cc(ccc1C(=O)N[C@@H](CCC(=O)O)C(=O)O)NC[C@H]2CNC3=C(N2)C(=O)NC(=N3)N,False,,Nc1nc2c(c(=O)[nH]1)N[C@@H](CNc1ccc(C(=O)N[C@@H](CCC(=O)O)C(=O)O)cc1)CN2,False
+SHMT,9boh,A00,,0,0,0.0,0.0,1.0,B,A00,A1AQW,A1AQW,A1AQW,Cc1c(c(c(cn1)COP(=O)(O)O)/C=N/CC(=O)O)O,False,,Cc1ncc(COP(=O)(O)O)c(/C=N/CC(=O)O)c1O,False
+SHMT,9boh,FFO,502,34,20,244.557,0.588,0.412,B,FFO,FFO,FFO,,c1cc(ccc1C(=O)NC(CCC(=O)O)C(=O)O)NCC2CNC3=C(N2C=O)C(=O)NC(=N3)N,False,,Nc1nc2c(c(=O)[nH]1)N(C=O)C(CNc1ccc(C(=O)NC(CCC(=O)O)C(=O)O)cc1)CN2,False
+SHMT,8sui,SER,1502,208,56,543.175,0.269,0.731,B,SER,SER,SER,,C([C@@H](C(=O)O)N)O,False,,N[C@@H](CO)C(=O)O,False
+SHMT,9bow,SER,501,97,45,450.455,0.464,0.536,A,SER,SER,SER,,C([C@@H](C(=O)O)N)O,False,,N[C@@H](CO)C(=O)O,False
+SHMT,9bow,FFO,502,34,21,248.492,0.618,0.382,B,FFO,FFO,FFO,,c1cc(ccc1C(=O)NC(CCC(=O)O)C(=O)O)NCC2CNC3=C(N2C=O)C(=O)NC(=N3)N,False,,Nc1nc2c(c(=O)[nH]1)N(C=O)C(CNc1ccc(C(=O)NC(CCC(=O)O)C(=O)O)cc1)CN2,False
+SHMT,9bow,KOU,501,22,11,102.738,0.5,0.5,B,KOU,KOU,KOU,,Cc1c(c(c(cn1)COP(=O)(O)O)/C=N/C(CO)C(=O)O)O,False,,Cc1ncc(COP(=O)(O)O)c(/C=N/C(CO)C(=O)O)c1O,False
+SHMT,9o50,THG,501,32,22,236.673,0.688,0.312,B,THG,THG,THG,,c1cc(ccc1C(=O)N[C@@H](CCC(=O)O)C(=O)O)NC[C@H]2CNC3=C(N2)C(=O)NC(=N3)N,False,,Nc1nc2c(c(=O)[nH]1)N[C@@H](CNc1ccc(C(=O)N[C@@H](CCC(=O)O)C(=O)O)cc1)CN2,False
+SHMT,9bpe,FFO,2001,55,22,159.191,0.4,0.6,B,FFO,FFO,FFO,,c1cc(ccc1C(=O)NC(CCC(=O)O)C(=O)O)NCC2CNC3=C(N2C=O)C(=O)NC(=N3)N,False,,Nc1nc2c(c(=O)[nH]1)N(C=O)C(CNc1ccc(C(=O)NC(CCC(=O)O)C(=O)O)cc1)CN2,False
+SHMT,9o5g,C2F,2002,56,26,196.134,0.464,0.536,B,C2F,C2F,C2F,,C[N@@]1[C@H](CNC2=C1C(=O)NC(=N2)N)CNc3ccc(cc3)C(=O)N[C@@H](CCC(=O)O)C(=O)O,False,,CN1c2c(nc(N)[nH]c2=O)NC[C@@H]1CNc1ccc(C(=O)N[C@@H](CCC(=O)O)C(=O)O)cc1,False

@@ -1,0 +1,657 @@
+[11:15:46] Job cc5025a3 created for target: SHMT
+[11:15:46] Initializing workspace for SHMT...
+[11:15:46] Job cc5025a3 started: 2026-06-05 11:15:46
+[11:15:46] 📦 Copying assets from pipeline_assets → jobs/cc5025a3 ...
+[11:15:46] 🧾 Wrote input.csv and Protein_Data.csv
+[11:15:46] 🚀 Running 1_GRABBER.py...
+[11:15:46] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[11:15:46] [mem] before 1_GRABBER.py parent=136.9MB combined=136.9MB
+[11:15:46] 🧵 Worker caps for 1_GRABBER.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[11:15:46] ⏱ No-output watchdog for 1_GRABBER.py: 180s
+[11:15:46] [mem] running 1_GRABBER.py parent=136.9MB child_tree=0.6MB combined=137.5MB
+🤖 AUTOMATED MODE: Processing input.csv
+=== Processing SHMT ===
+    🔄 Switching to EBI Backup Search for 'Serine_hydroxymethyltransferase'...
+  → Found 173 candidates
+[11:15:52] [mem] running 1_GRABBER.py parent=137.0MB child_tree=160.4MB combined=297.4MB
+  → Candidates=173 attempted=173 verified=173 failed=0
+  → CIF output directory: /app/jobs/cc5025a3/WAR/SHMT
+  → Sample verified CIFs: ['WAR/SHMT/10zb.cif', 'WAR/SHMT/1cj0.cif', 'WAR/SHMT/1eji.cif', 'WAR/SHMT/1eqb.cif', 'WAR/SHMT/1dfo.cif']
+=== DONE ===
+✅ Wrote queries.csv with MW_min=250.0, MW_max=700.0, MinID=90.0
+✅ CIF manifest rows=173 verified=173 failed=0 root=/app/jobs/cc5025a3/WAR
+✅ Sample manifest CIF paths: ['WAR/SHMT/10zb.cif', 'WAR/SHMT/1cj0.cif', 'WAR/SHMT/1eji.cif', 'WAR/SHMT/1eqb.cif', 'WAR/SHMT/1dfo.cif', 'WAR/SHMT/10nm.cif', 'WAR/SHMT/1kkj.cif', 'WAR/SHMT/1kl2.cif', 'WAR/SHMT/1kkp.cif', 'WAR/SHMT/1bj4.cif']
+[11:15:54] [mem] after 1_GRABBER.py parent=137.0MB delta=+0.1MB combined_peak=314.3MB child_peak=177.3MB
+[11:15:54] 🚀 Running 2_SQchk.py...
+[11:15:54] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[11:15:54] [mem] before 2_SQchk.py parent=137.0MB combined=137.0MB
+[11:15:54] 🧵 Worker caps for 2_SQchk.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[11:15:54] ⏱ No-output watchdog for 2_SQchk.py: 180s
+[11:15:54] [mem] running 2_SQchk.py parent=137.0MB child_tree=1.2MB combined=138.2MB
+🚀 Running Sequence Identity Analysis...
+   Proteins missing fasta/name rows skipped: 0
+   MW_min=250.0  MW_max=700.0  (MW filters currently ignored for ligand debug)
+   Total PDB jobs to process: 173
+   Worker mode=threadpool max_workers=2
+  0%|          | 0/173 [00:00<?, ?it/s]DEBUG: 10nm Chain(s) ['A', 'B'] -> Match: 46.2%
+  1%|          | 1/173 [00:00<01:02,  2.77it/s]DEBUG: 10yn Chain(s) ['A', 'B'] -> Match: 99.0%
+DEBUG: 10zb Chain(s) ['A'] -> Match: 99.0%
+DEBUG: 10zb Chain(s) ['B'] -> Match: 99.0%
+DEBUG: 1bj4 Chain(s) ['A'] -> Match: 51.3%
+  2%|▏         | 3/173 [00:00<00:41,  4.12it/s]DEBUG: 1cj0 Chain(s) ['A', 'B'] -> Match: 51.5%
+  3%|▎         | 5/173 [00:01<00:35,  4.75it/s]DEBUG: 1dfo Chain(s) ['A', 'B', 'C', 'D'] -> Match: 64.5%
+DEBUG: 1eji Chain(s) ['A', 'B', 'C', 'D'] -> Match: 50.4%
+  4%|▍         | 7/173 [00:01<00:33,  4.92it/s]DEBUG: 1eqb Chain(s) ['A', 'B', 'C', 'D'] -> Match: 64.3%
+DEBUG: 1kkj Chain(s) ['A'] -> Match: 68.0%
+  5%|▌         | 9/173 [00:01<00:32,  5.06it/s]DEBUG: 1kkp Chain(s) ['A'] -> Match: 68.0%
+DEBUG: 1kl2 Chain(s) ['A', 'B'] -> Match: 68.0%
+  6%|▋         | 11/173 [00:02<00:31,  5.07it/s]DEBUG: 1kl1 Chain(s) ['A'] -> Match: 68.0%
+DEBUG: 1ls3 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 50.9%DEBUG: 1ps6 Chain(s) ['A', 'B'] -> Match: 44.2%
+  8%|▊         | 13/173 [00:02<00:32,  4.97it/s]DEBUG: 1ps7 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 44.1%
+  9%|▊         | 15/173 [00:03<00:30,  5.12it/s]DEBUG: 1ptm Chain(s) ['A', 'B'] -> Match: 44.1%
+DEBUG: 1rv3 Chain(s) ['A', 'B'] -> Match: 50.7%
+ 10%|▉         | 17/173 [00:03<00:30,  5.17it/s]DEBUG: 1rv4 Chain(s) ['A', 'B'] -> Match: 50.7%
+DEBUG: 1rvy Chain(s) ['A', 'B'] -> Match: 50.7%
+ 11%|█         | 19/173 [00:03<00:30,  5.08it/s]DEBUG: 1rvu Chain(s) ['A', 'B'] -> Match: 50.7%
+DEBUG: 1yjs Chain(s) ['A'] -> Match: 67.8%
+DEBUG: 1yjy Chain(s) ['A'] -> Match: 67.8%
+ 12%|█▏        | 21/173 [00:04<00:29,  5.10it/s]DEBUG: 1yjz Chain(s) ['A'] -> Match: 67.8%
+ 13%|█▎        | 23/173 [00:04<00:29,  5.13it/s]DEBUG: 2vgs Chain(s) ['A'] -> Match: 69.3%
+DEBUG: 2vgt Chain(s) ['A'] -> Match: 69.3%
+[11:16:00] [mem] running 2_SQchk.py parent=137.0MB child_tree=86.9MB combined=223.9MB
+ 14%|█▍        | 25/173 [00:05<00:28,  5.18it/s]DEBUG: 2vgu Chain(s) ['A'] -> Match: 69.3%
+DEBUG: 2vgv Chain(s) ['A'] -> Match: 69.3%
+ 16%|█▌        | 27/173 [00:05<00:27,  5.23it/s]DEBUG: 2vgw Chain(s) ['A'] -> Match: 69.3%
+DEBUG: 2vi8 Chain(s) ['A'] -> Match: 69.6%
+ 17%|█▋        | 29/173 [00:05<00:27,  5.26it/s]DEBUG: 2vi9 Chain(s) ['A'] -> Match: 69.6%
+DEBUG: 2via Chain(s) ['A'] -> Match: 69.6%
+ 18%|█▊        | 31/173 [00:06<00:26,  5.29it/s]DEBUG: 2vmn Chain(s) ['A'] -> Match: 69.9%
+DEBUG: 2vmp Chain(s) ['A'] -> Match: 69.9%
+ 19%|█▉        | 33/173 [00:06<00:27,  5.14it/s]DEBUG: 2vmo Chain(s) ['A'] -> Match: 69.9%
+ 20%|█▉        | 34/173 [00:06<00:30,  4.52it/s]DEBUG: 2vmq Chain(s) ['A'] -> Match: 69.9%
+DEBUG: 2vms Chain(s) ['A'] -> Match: 69.6%
+ 21%|██        | 36/173 [00:07<00:29,  4.70it/s]DEBUG: 2vmr Chain(s) ['A'] -> Match: 69.6%
+ 21%|██▏       | 37/173 [00:07<00:28,  4.76it/s]DEBUG: 2vmt Chain(s) ['A'] -> Match: 69.6%
+ 22%|██▏       | 38/173 [00:07<00:27,  4.95it/s]DEBUG: 2vmu Chain(s) ['A'] -> Match: 69.6%
+ 23%|██▎       | 39/173 [00:07<00:26,  5.00it/s]DEBUG: 2vmv Chain(s) ['A'] -> Match: 69.9%
+ 23%|██▎       | 40/173 [00:08<00:25,  5.18it/s]DEBUG: 2vmw Chain(s) ['A'] -> Match: 69.9%
+ 24%|██▎       | 41/173 [00:08<00:25,  5.21it/s]DEBUG: 2vmx Chain(s) ['A'] -> Match: 69.9%
+ 24%|██▍       | 42/173 [00:08<00:24,  5.26it/s]DEBUG: 2vmy Chain(s) ['A', 'B'] -> Match: 69.9%
+ 25%|██▍       | 43/173 [00:08<00:24,  5.23it/s]DEBUG: 2vmz Chain(s) ['A'] -> Match: 69.9%
+ 25%|██▌       | 44/173 [00:08<00:24,  5.32it/s]DEBUG: 3ecd Chain(s) ['A', 'B', 'C', 'D'] -> Match: 62.4%
+ 26%|██▌       | 45/173 [00:08<00:24,  5.24it/s]DEBUG: 3g8m Chain(s) ['A'] -> Match: 64.3%
+ 27%|██▋       | 46/173 [00:09<00:23,  5.41it/s]DEBUG: 3gbx Chain(s) ['A', 'B'] -> Match: 62.6%
+ 27%|██▋       | 47/173 [00:09<00:24,  5.24it/s]DEBUG: 3h7f Chain(s) ['A', 'B'] -> Match: 58.6%
+ 28%|██▊       | 48/173 [00:09<00:22,  5.50it/s]DEBUG: 3n0l Chain(s) ['A', 'B'] -> Match: 59.0%
+ 28%|██▊       | 49/173 [00:09<00:24,  5.06it/s]DEBUG: 3pgy Chain(s) ['A', 'B', 'C', 'D'] -> Match: 67.7%
+ 29%|██▉       | 50/173 [00:09<00:22,  5.36it/s]DEBUG: 3pnx Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 55.6%
+[11:16:05] [mem] running 2_SQchk.py parent=137.0MB child_tree=86.9MB combined=223.9MB
+ 29%|██▉       | 51/173 [00:10<00:24,  4.96it/s]DEBUG: 3pu5 Chain(s) ['A'] -> Match: 39.3%
+ 30%|███       | 52/173 [00:10<00:23,  5.17it/s]DEBUG: 3puj Chain(s) ['A', 'B'] -> Match: 29.0%
+DEBUG: 3puj Chain(s) ['C', 'D'] -> Match: 100.0%
+ 31%|███       | 53/173 [00:10<00:22,  5.24it/s]DEBUG: 3puk Chain(s) ['A', 'B'] -> Match: 28.9%
+DEBUG: 3puk Chain(s) ['C', 'D'] -> Match: 100.0%
+ 31%|███       | 54/173 [00:10<00:22,  5.26it/s]DEBUG: 4bhd Chain(s) ['A', 'B'] -> Match: 43.7%
+ 32%|███▏      | 55/173 [00:10<00:22,  5.31it/s]DEBUG: 4j5u Chain(s) ['A', 'B'] -> Match: 61.9%
+ 32%|███▏      | 56/173 [00:11<00:22,  5.22it/s]DEBUG: 4mso Chain(s) ['A', 'B'] -> Match: 61.7%
+ 33%|███▎      | 57/173 [00:11<00:21,  5.44it/s]DEBUG: 4n0w Chain(s) ['A', 'B', 'C', 'D'] -> Match: 61.6%
+ 34%|███▎      | 58/173 [00:11<00:21,  5.24it/s]DEBUG: 4o6z Chain(s) ['A', 'B', 'C', 'D'] -> Match: 46.5%
+ 34%|███▍      | 59/173 [00:11<00:22,  5.08it/s]DEBUG: 4ot8 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 61.7%
+ 35%|███▍      | 60/173 [00:11<00:21,  5.27it/s]DEBUG: 4otl Chain(s) ['A', 'B', 'C', 'D'] -> Match: 61.7%
+ 35%|███▌      | 61/173 [00:12<00:22,  5.06it/s]DEBUG: 4oyt Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 36%|███▌      | 62/173 [00:12<00:22,  5.00it/s]DEBUG: 4p3m Chain(s) ['A', 'B'] -> Match: 61.1%
+ 36%|███▋      | 63/173 [00:12<00:20,  5.26it/s]DEBUG: 4pff Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 37%|███▋      | 64/173 [00:12<00:21,  5.04it/s]DEBUG: 4pfn Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 38%|███▊      | 65/173 [00:12<00:20,  5.19it/s]DEBUG: 4pvf Chain(s) ['A', 'B'] -> Match: 49.1%
+ 38%|███▊      | 66/173 [00:13<00:22,  4.83it/s]DEBUG: 4tmr Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 39%|███▊      | 67/173 [00:13<00:19,  5.30it/s]DEBUG: 4tn4 Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 39%|███▉      | 68/173 [00:13<00:23,  4.43it/s]DEBUG: 4uqv Chain(s) ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'] -> Match: 43.6%
+DEBUG: 5gvk Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 40%|████      | 70/173 [00:13<00:22,  4.63it/s]DEBUG: 5gvl Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+DEBUG: 5gvm Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 42%|████▏     | 72/173 [00:14<00:20,  4.83it/s]DEBUG: 5gvn Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+DEBUG: 5gvp Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 43%|████▎     | 74/173 [00:14<00:19,  5.04it/s]DEBUG: 5v7i Chain(s) ['A', 'B'] -> Match: 49.6%
+ 43%|████▎     | 75/173 [00:14<00:17,  5.56it/s]DEBUG: 5vc2 Chain(s) ['A', 'B'] -> Match: 58.0%
+ 44%|████▍     | 76/173 [00:15<00:19,  5.01it/s]DEBUG: 5x3v Chain(s) ['A', 'B'] -> Match: 47.6%
+DEBUG: 5xmp Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 45%|████▌     | 78/173 [00:15<00:18,  5.19it/s]DEBUG: 5xmq Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+DEBUG: 5xmr Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+[11:16:11] [mem] running 2_SQchk.py parent=137.0MB child_tree=86.9MB combined=223.9MB
+ 46%|████▌     | 80/173 [00:15<00:18,  5.12it/s]DEBUG: 5xms Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 47%|████▋     | 81/173 [00:15<00:16,  5.60it/s]DEBUG: 5xmt Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 47%|████▋     | 82/173 [00:16<00:18,  5.05it/s]DEBUG: 5xmu Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 48%|████▊     | 83/173 [00:16<00:15,  5.63it/s]DEBUG: 5xmv Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 49%|████▊     | 84/173 [00:16<00:17,  5.04it/s]DEBUG: 5yfy Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 49%|████▉     | 85/173 [00:16<00:16,  5.48it/s]DEBUG: 5yfz Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 50%|████▉     | 86/173 [00:16<00:17,  5.03it/s]DEBUG: 5yg0 Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 50%|█████     | 87/173 [00:17<00:16,  5.12it/s]DEBUG: 5yg1 Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 51%|█████     | 88/173 [00:17<00:16,  5.27it/s]DEBUG: 5yg2 Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 51%|█████▏    | 89/173 [00:17<00:16,  5.21it/s]DEBUG: 5yg3 Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 52%|█████▏    | 90/173 [00:17<00:15,  5.33it/s]DEBUG: 5yg4 Chain(s) ['A', 'B', 'C'] -> Match: 49.5%
+ 53%|█████▎    | 91/173 [00:17<00:15,  5.21it/s]DEBUG: 5z0y Chain(s) ['A'] -> Match: 48.7%
+ 53%|█████▎    | 92/173 [00:18<00:14,  5.42it/s]DEBUG: 6ccz Chain(s) ['A'] -> Match: 52.1%
+DEBUG: 6ccz Chain(s) ['B'] -> Match: 52.1%
+ 54%|█████▍    | 93/173 [00:18<00:17,  4.54it/s]DEBUG: 6cd0 Chain(s) ['A', 'B', 'D'] -> Match: 52.1%
+DEBUG: 6cd0 Chain(s) ['C'] -> Match: 52.1%
+ 54%|█████▍    | 94/173 [00:18<00:14,  5.40it/s]DEBUG: 6cd1 Chain(s) ['A', 'B', 'C', 'D', 'F'] -> Match: 52.1%
+DEBUG: 6cd1 Chain(s) ['E', 'G', 'H'] -> Match: 52.1%
+ 55%|█████▍    | 95/173 [00:18<00:15,  5.19it/s]DEBUG: 6dk3 Chain(s) ['A'] -> Match: 48.6%
+ 55%|█████▌    | 96/173 [00:18<00:13,  5.67it/s]DEBUG: 6f93 Chain(s) ['A', 'B'] -> Match: 58.0%
+ 56%|█████▌    | 97/173 [00:19<00:14,  5.20it/s]DEBUG: 6fl5 Chain(s) ['A', 'D', 'G', 'J'] -> Match: 51.2%
+ 57%|█████▋    | 98/173 [00:19<00:13,  5.40it/s]DEBUG: 6h3c Chain(s) ['A', 'F'] -> Match: 33.4%
+DEBUG: 6h3c Chain(s) ['B', 'G'] -> Match: 40.6%
+DEBUG: 6h3c Chain(s) ['C', 'H'] -> Match: 36.1%
+DEBUG: 6h3c Chain(s) ['D', 'I'] -> Match: 38.1%
+DEBUG: 6h3c Chain(s) ['E', 'J'] -> Match: 46.7%
+ 57%|█████▋    | 99/173 [00:19<00:16,  4.48it/s]DEBUG: 6m5o Chain(s) ['A', 'B'] -> Match: 46.7%
+DEBUG: 6m5w Chain(s) ['A'] -> Match: 48.1%
+ 58%|█████▊    | 101/173 [00:19<00:14,  4.88it/s]DEBUG: 6qvg Chain(s) ['A', 'B'] -> Match: 47.0%
+DEBUG: 6r8f Chain(s) ['A', 'C'] -> Match: 41.5%
+DEBUG: 6r8f Chain(s) ['B', 'D'] -> Match: 43.4%
+DEBUG: 6r8f Chain(s) ['K', 'L'] -> Match: 47.0%
+DEBUG: 6r8f Chain(s) ['E', 'G'] -> Match: 35.0%
+ 60%|█████▉    | 103/173 [00:20<00:16,  4.36it/s]DEBUG: 6qvl Chain(s) ['A', 'B'] -> Match: 47.0%
+DEBUG: 6smn Chain(s) ['A', 'B', 'C'] -> Match: 47.3%
+DEBUG: 6smn Chain(s) ['D'] -> Match: 47.3%
+ 61%|██████    | 105/173 [00:20<00:14,  4.60it/s]DEBUG: 6smr Chain(s) ['A', 'B', 'C', 'D'] -> Match: 48.3%
+DEBUG: 6smw Chain(s) ['A', 'B', 'C', 'D'] -> Match: 47.3%
+[11:16:16] [mem] running 2_SQchk.py parent=137.0MB child_tree=87.0MB combined=224.0MB
+ 62%|██████▏   | 107/173 [00:21<00:13,  4.75it/s]DEBUG: 6tgh Chain(s) ['A', 'B', 'C', 'D'] -> Match: 62.7%
+DEBUG: 6ti3 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 62.5%
+ 63%|██████▎   | 109/173 [00:21<00:13,  4.88it/s]DEBUG: 6ti1 Chain(s) ['A', 'C'] -> Match: 62.5%
+ 64%|██████▎   | 110/173 [00:21<00:12,  5.12it/s]DEBUG: 6ti4 Chain(s) ['A', 'C'] -> Match: 62.5%
+ 64%|██████▍   | 111/173 [00:21<00:12,  5.06it/s]DEBUG: 6uxh Chain(s) ['A', 'B'] -> Match: 48.0%
+ 65%|██████▍   | 112/173 [00:22<00:11,  5.09it/s]DEBUG: 6uxi Chain(s) ['A', 'B'] -> Match: 48.0%
+ 65%|██████▌   | 113/173 [00:22<00:11,  5.16it/s]DEBUG: 6uxj Chain(s) ['A', 'B', 'C', 'D'] -> Match: 48.0%
+ 66%|██████▌   | 114/173 [00:22<00:11,  5.32it/s]DEBUG: 6uxk Chain(s) ['A', 'B'] -> Match: 48.0%
+ 66%|██████▋   | 115/173 [00:22<00:11,  5.23it/s]DEBUG: 6uxl Chain(s) ['A', 'B'] -> Match: 48.0%
+ 67%|██████▋   | 116/173 [00:22<00:10,  5.56it/s]DEBUG: 6yrw Chain(s) ['A', 'B', 'C', 'D'] -> Match: 62.5%
+ 68%|██████▊   | 117/173 [00:23<00:10,  5.12it/s]DEBUG: 7byi Chain(s) ['A'] -> Match: 49.1%
+DEBUG: 7byi Chain(s) ['B'] -> Match: 48.7%
+ 68%|██████▊   | 118/173 [00:23<00:13,  4.01it/s]DEBUG: 7e13 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 45.0%
+DEBUG: 7q00 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 48.3%
+ 69%|██████▉   | 120/173 [00:23<00:12,  4.29it/s]DEBUG: 7pzz Chain(s) ['A', 'B', 'C', 'D'] -> Match: 47.3%
+DEBUG: 7qcw Chain(s) ['A', 'B'] -> Match: 49.1%
+ 71%|███████   | 122/173 [00:24<00:11,  4.62it/s]DEBUG: 7qpe Chain(s) ['A', 'B'] -> Match: 48.3%
+DEBUG: 7qx8 Chain(s) ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'] -> Match: 47.6%
+ 72%|███████▏  | 124/173 [00:24<00:10,  4.87it/s]DEBUG: 7rjl Chain(s) ['A', 'B'] -> Match: 56.9%
+DEBUG: 7rjl Chain(s) ['C', 'D'] -> Match: 100.0%
+ 72%|███████▏  | 125/173 [00:24<00:09,  5.31it/s]DEBUG: 7rjp Chain(s) ['A'] -> Match: 54.3%
+DEBUG: 7rjp Chain(s) ['B'] -> Match: 100.0%
+ 73%|███████▎  | 126/173 [00:25<00:09,  4.79it/s]DEBUG: 7ujh Chain(s) ['A', 'B'] -> Match: 48.0%
+DEBUG: 7uji Chain(s) ['A', 'B'] -> Match: 46.4%
+ 74%|███████▍  | 128/173 [00:25<00:09,  4.92it/s]DEBUG: 7v3d Chain(s) ['A', 'B'] -> Match: 67.1%
+DEBUG: 7x5n Chain(s) ['A', 'B'] -> Match: 67.1%
+ 75%|███████▌  | 130/173 [00:25<00:08,  5.09it/s]DEBUG: 7x5o Chain(s) ['A', 'B'] -> Match: 67.1%
+DEBUG: 8a11 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 49.8%
+ 76%|███████▋  | 132/173 [00:26<00:07,  5.17it/s]DEBUG: 8aql Chain(s) ['A', 'B', 'C', 'D'] -> Match: 49.6%
+ 77%|███████▋  | 133/173 [00:26<00:08,  4.61it/s]DEBUG: 8dom Chain(s) ['A', 'B'] -> Match: 46.3%
+ 77%|███████▋  | 134/173 [00:26<00:08,  4.83it/s]DEBUG: 8dsk Chain(s) ['A', 'B', 'C', 'D'] -> Match: 46.4%
+[11:16:22] [mem] running 2_SQchk.py parent=137.0MB child_tree=87.0MB combined=224.0MB
+ 78%|███████▊  | 135/173 [00:26<00:07,  4.80it/s]DEBUG: 8fjt Chain(s) ['A', 'B'] -> Match: 48.1%
+ 79%|███████▊  | 136/173 [00:27<00:09,  4.08it/s]DEBUG: 8fju Chain(s) ['A', 'B'] -> Match: 48.1%
+DEBUG: 8fsd Chain(s) ['A', 'B', 'C', 'D'] -> Match: 46.4%
+ 80%|███████▉  | 138/173 [00:27<00:07,  4.38it/s]DEBUG: 8gks Chain(s) ['A', 'B'] -> Match: 48.1%
+DEBUG: 8gku Chain(s) ['A', 'B'] -> Match: 48.1%
+ 81%|████████  | 140/173 [00:27<00:06,  4.78it/s]DEBUG: 8gkt Chain(s) ['A', 'B'] -> Match: 48.1%
+DEBUG: 8gky Chain(s) ['A', 'B'] -> Match: 47.9%
+DEBUG: 8gkw Chain(s) ['A', 'B'] -> Match: 48.1%
+ 82%|████████▏ | 142/173 [00:28<00:06,  4.88it/s]DEBUG: 8gkz Chain(s) ['A', 'B'] -> Match: 47.9%
+ 83%|████████▎ | 144/173 [00:28<00:05,  5.08it/s]DEBUG: 8qi7 Chain(s) ['A', 'B', 'C', 'D'] -> Match: 49.6%
+DEBUG: 8ssj Chain(s) ['A', 'B'] -> Match: 50.4%
+ 84%|████████▍ | 146/173 [00:29<00:05,  5.09it/s]DEBUG: 8r7h Chain(s) ['A', 'D'] -> Match: 49.8%
+DEBUG: 8r7h Chain(s) ['B', 'C'] -> Match: 49.8%
+ 85%|████████▍ | 147/173 [00:29<00:05,  5.19it/s]DEBUG: 8ssy Chain(s) ['A', 'B'] -> Match: 99.3%
+ 86%|████████▌ | 148/173 [00:29<00:04,  5.53it/s]DEBUG: 8suj Chain(s) ['A', 'B'] -> Match: 99.3%
+ 86%|████████▌ | 149/173 [00:29<00:05,  4.47it/s]DEBUG: 8sui Chain(s) ['A', 'B'] -> Match: 99.3%
+ 87%|████████▋ | 150/173 [00:29<00:04,  4.86it/s]DEBUG: 8t4o Chain(s) ['A', 'B'] -> Match: 48.1%
+ 87%|████████▋ | 151/173 [00:30<00:04,  4.72it/s]DEBUG: 8t4p Chain(s) ['A', 'B'] -> Match: 48.1%
+ 88%|████████▊ | 152/173 [00:30<00:04,  5.07it/s]DEBUG: 8tlc Chain(s) ['A', 'B'] -> Match: 48.1%
+ 88%|████████▊ | 153/173 [00:30<00:04,  4.84it/s]DEBUG: 8tqf Chain(s) ['A', 'B', 'C', 'D'] -> Match: 46.3%
+ 89%|████████▉ | 154/173 [00:30<00:03,  5.23it/s]DEBUG: 8xna Chain(s) ['A', 'B'] -> Match: 47.0%
+ 90%|████████▉ | 155/173 [00:30<00:03,  5.04it/s]DEBUG: 8xnd Chain(s) ['A', 'B', 'C', 'D'] -> Match: 50.8%
+ 90%|█████████ | 156/173 [00:31<00:03,  5.47it/s]DEBUG: 9boh Chain(s) ['A', 'B'] -> Match: 100.0%
+ 91%|█████████ | 157/173 [00:31<00:03,  5.25it/s]DEBUG: 9bow Chain(s) ['A'] -> Match: 100.0%
+DEBUG: 9bow Chain(s) ['B'] -> Match: 100.0%
+ 91%|█████████▏| 158/173 [00:31<00:02,  5.29it/s]DEBUG: 9box Chain(s) ['A', 'B', 'C', 'D'] -> Match: 50.9%
+ 92%|█████████▏| 159/173 [00:31<00:02,  5.21it/s]DEBUG: 9bpe Chain(s) ['A', 'B'] -> Match: 100.0%
+ 92%|█████████▏| 160/173 [00:31<00:02,  5.22it/s]DEBUG: 9cg8 Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 46.0%
+[11:16:27] [mem] running 2_SQchk.py parent=137.0MB child_tree=87.0MB combined=224.0MB
+ 93%|█████████▎| 161/173 [00:32<00:02,  5.17it/s]DEBUG: 9dhb Chain(s) ['A', 'B', 'C', 'D'] -> Match: 46.4%
+ 94%|█████████▎| 162/173 [00:32<00:02,  5.31it/s]DEBUG: 9dlt Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 46.4%
+ 94%|█████████▍| 163/173 [00:32<00:01,  5.19it/s]DEBUG: 9j4g Chain(s) ['A', 'B'] -> Match: 67.1%
+ 95%|█████████▍| 164/173 [00:32<00:01,  5.36it/s]DEBUG: 9j4h Chain(s) ['A', 'B', 'C', 'D'] -> Match: 67.1%
+ 95%|█████████▌| 165/173 [00:32<00:01,  5.24it/s]DEBUG: 9o50 Chain(s) ['A', 'B'] -> Match: 99.3%
+ 96%|█████████▌| 166/173 [00:33<00:01,  4.17it/s]DEBUG: 9kro Chain(s) ['A', 'B'] -> Match: 67.1%
+DEBUG: 9o5g Chain(s) ['A', 'B'] -> Match: 99.3%
+ 97%|█████████▋| 168/173 [00:33<00:01,  4.66it/s]DEBUG: 9rwd Chain(s) ['A', 'B', 'C', 'D'] -> Match: 49.6%
+DEBUG: 9y6b Chain(s) ['A', 'B', 'C', 'D', 'E'] -> Match: 46.2%
+ 98%|█████████▊| 170/173 [00:33<00:00,  4.80it/s]DEBUG: 9y6d Chain(s) ['A', 'B', 'C', 'D', 'E'] -> Match: 46.2%
+DEBUG: 9y7g Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 46.2%
+ 99%|█████████▉| 172/173 [00:34<00:00,  4.87it/s]DEBUG: 9ybz Chain(s) ['A', 'B', 'C', 'D', 'E', 'F'] -> Match: 46.2%
+100%|██████████| 173/173 [00:34<00:00,  5.03it/s]
+DONE
+✅ PDBs processed OK: 173
+❌ PDBs failed: 0
+[11:16:29] [mem] after 2_SQchk.py parent=137.0MB delta=+0.0MB combined_peak=224.0MB child_peak=87.0MB
+[11:16:29] 🚀 Running 3_PDBmkr.py...
+[11:16:29] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[11:16:29] [mem] before 3_PDBmkr.py parent=137.0MB combined=137.0MB
+[11:16:29] 🧵 Worker caps for 3_PDBmkr.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[11:16:29] ⏱ No-output watchdog for 3_PDBmkr.py: 180s
+[11:16:29] [mem] running 3_PDBmkr.py parent=137.0MB child_tree=0.7MB combined=137.7MB
+📁 Step 3 output root: /app/jobs/cc5025a3/WAR_PDB
+🧾 CIF sources: manifest_rows=173 verified_manifest=173 indexed_cifs=173
+📊 Similarity Stats: Max found = 100.00% (Threshold: 90.0%)
+🚀 BUILDING 12 PDB CHAINS...
+🧾 Step 3 selected build rows=12 resolvable_cifs=12 missing_cifs=0
+🧵 Worker mode=threadpool max_workers=2
+🧾 Step 3 sample CIF resolutions: ['10zb:manifest_path:WAR/SHMT/10zb.cif', '10zb:manifest_path:WAR/SHMT/10zb.cif', '8ssy:manifest_path:WAR/SHMT/8ssy.cif', '8sui:manifest_path:WAR/SHMT/8sui.cif', '9boh:manifest_path:WAR/SHMT/9boh.cif', '9boh:manifest_path:WAR/SHMT/9boh.cif', '9bow:manifest_path:WAR/SHMT/9bow.cif', '9bow:manifest_path:WAR/SHMT/9bow.cif', '9bow:manifest_path:WAR/SHMT/9bow.cif', '9bpe:manifest_path:WAR/SHMT/9bpe.cif']
+/app/.heroku/python/lib/python3.11/site-packages/Bio/PDB/StructureBuilder.py:100: PDBConstructionWarning: WARNING: Chain A is discontinuous at line 6284.
+  warnings.warn(
+/app/.heroku/python/lib/python3.11/site-packages/Bio/PDB/StructureBuilder.py:100: PDBConstructionWarning: WARNING: Chain B is discontinuous at line 6298.
+  warnings.warn(
+/app/.heroku/python/lib/python3.11/site-packages/Bio/PDB/StructureBuilder.py:100: PDBConstructionWarning: WARNING: Chain A is discontinuous at line 6357.
+  warnings.warn(
+/app/.heroku/python/lib/python3.11/site-packages/Bio/PDB/StructureBuilder.py:100: PDBConstructionWarning: WARNING: Chain B is discontinuous at line 6550.
+  warnings.warn(
+  0%|          | 0/12 [00:00<?, ?it/s]
+ 33%|███▎      | 4/12 [00:00<00:00, 36.73it/s]
+ 67%|██████▋   | 8/12 [00:01<00:00,  5.62it/s]
+ 83%|████████▎ | 10/12 [00:02<00:00,  4.19it/s]
+100%|██████████| 12/12 [00:02<00:00,  3.86it/s]
+100%|██████████| 12/12 [00:02<00:00,  4.57it/s]
+📁 Step 3 output root resolved: /app/jobs/cc5025a3/WAR_PDB
+📊 Step 3 requested=12 built=12 on_disk=12
+🧾 Step 3 sample PDBs: ['SHMT/10zb_B_KOU.pdb', 'SHMT/10zb_B_THG.pdb', 'SHMT/8ssy_A_DSN.pdb', 'SHMT/8sui_B_SER.pdb', 'SHMT/9boh_B_A1AQW.pdb', 'SHMT/9boh_B_FFO.pdb', 'SHMT/9bow_A_SER.pdb', 'SHMT/9bow_B_FFO.pdb', 'SHMT/9bow_B_KOU.pdb', 'SHMT/9bpe_B_FFO.pdb']
+✅ All PDBs built successfully.
+✅ Wrote 5CharMAP.csv with mapping rows (5-letter ligands detected).
+[11:16:34] [mem] after 3_PDBmkr.py parent=137.0MB delta=+0.0MB combined_peak=283.1MB child_peak=146.1MB
+[11:16:34] 🚀 Running 4_PDBfxr.py...
+[11:16:34] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[11:16:34] [mem] before 4_PDBfxr.py parent=137.0MB combined=137.0MB
+[11:16:34] 🧵 Worker caps for 4_PDBfxr.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[11:16:34] ⏱ No-output watchdog for 4_PDBfxr.py: 180s
+[11:16:34] [mem] running 4_PDBfxr.py parent=137.0MB child_tree=1.4MB combined=138.4MB
+============================================
+🔥 STEP 4: LIGAND5 → LIGANDX (TOKEN PARSE + STRICT REFORMAT)
+============================================
+🔬 Loaded 1 ligand5→ligandX mappings
+🔧 Fixing 9boh_B_A1AQW.pdb | A1AQW → A00
+   → 9boh_B_A00.pdb | atoms updated: 0
+============================================
+🎉 DONE — 1 files fixed
+✅ Total ligand atoms renamed: 0
+============================================
+[11:16:34] [mem] after 4_PDBfxr.py parent=137.0MB delta=+0.0MB combined_peak=138.4MB child_peak=1.4MB
+[11:16:34] 🚀 Running 5_PDBcln.py...
+[11:16:34] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[11:16:34] [mem] before 5_PDBcln.py parent=137.0MB combined=137.0MB
+[11:16:34] 🧵 Worker caps for 5_PDBcln.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[11:16:34] ⏱ No-output watchdog for 5_PDBcln.py: 180s
+[11:16:34] [mem] running 5_PDBcln.py parent=137.0MB child_tree=0.6MB combined=137.6MB
+📁 ROOT DIRECTORY: WAR_PDB
+📁 Step 5 input root resolved: /app/jobs/cc5025a3/WAR_PDB
+📊 Step 5 input PDB count before cleaning: 12
+=============================
+🔬 Processing Protein: SHMT
+📂 Folder: WAR_PDB/SHMT
+=============================
+🧪 Cleaning 9bpe_B_FFO.pdb  | Keeping ligand: FFO
+✔ Cleaned: 9bpe_B_FFO.pdb
+🧪 Cleaning 9o5g_B_C2F.pdb  | Keeping ligand: C2F
+✔ Cleaned: 9o5g_B_C2F.pdb
+🧪 Cleaning 9bow_B_KOU.pdb  | Keeping ligand: KOU
+✔ Cleaned: 9bow_B_KOU.pdb
+🧪 Cleaning 9boh_B_A00.pdb  | Keeping ligand: A00
+✔ Cleaned: 9boh_B_A00.pdb
+🧪 Cleaning 8ssy_A_DSN.pdb  | Keeping ligand: DSN
+✔ Cleaned: 8ssy_A_DSN.pdb
+🧪 Cleaning 9o50_B_THG.pdb  | Keeping ligand: THG
+✔ Cleaned: 9o50_B_THG.pdb
+🧪 Cleaning 10zb_B_THG.pdb  | Keeping ligand: THG
+✔ Cleaned: 10zb_B_THG.pdb
+🧪 Cleaning 10zb_B_KOU.pdb  | Keeping ligand: KOU
+✔ Cleaned: 10zb_B_KOU.pdb
+🧪 Cleaning 9boh_B_FFO.pdb  | Keeping ligand: FFO
+✔ Cleaned: 9boh_B_FFO.pdb
+🧪 Cleaning 8sui_B_SER.pdb  | Keeping ligand: SER
+✔ Cleaned: 8sui_B_SER.pdb
+🧪 Cleaning 9bow_B_FFO.pdb  | Keeping ligand: FFO
+✔ Cleaned: 9bow_B_FFO.pdb
+🧪 Cleaning 9bow_A_SER.pdb  | Keeping ligand: SER
+✔ Cleaned: 9bow_A_SER.pdb
+📊 Step 5 remaining PDB count after cleaning: 12
+🎉 DONE — cleaned=12, dropped=0
+[11:16:35] [mem] after 5_PDBcln.py parent=137.0MB delta=+0.0MB combined_peak=137.6MB child_peak=0.6MB
+[11:16:35] 🚀 Running 6_SASA.py...
+[11:16:35] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[11:16:35] [mem] before 6_SASA.py parent=137.0MB combined=137.0MB
+[11:16:35] 🧵 Worker caps for 6_SASA.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[11:16:35] ⏱ No-output watchdog for 6_SASA.py: 180s
+[11:16:35] [mem] running 6_SASA.py parent=137.0MB child_tree=0.5MB combined=137.5MB
+📁 Scanning WARHEAD PDB ROOT: WAR_PDB
+📁 Step 6 input root resolved: /app/jobs/cc5025a3/WAR_PDB
+🔎 Found 12 PDB files
+🧾 Step 6 sample PDBs: ['SHMT/10zb_B_KOU.pdb', 'SHMT/10zb_B_THG.pdb', 'SHMT/8ssy_A_DSN.pdb', 'SHMT/8sui_B_SER.pdb', 'SHMT/9boh_B_A00.pdb', 'SHMT/9boh_B_FFO.pdb', 'SHMT/9bow_A_SER.pdb', 'SHMT/9bow_B_FFO.pdb', 'SHMT/9bow_B_KOU.pdb', 'SHMT/9bpe_B_FFO.pdb']
+🧠 Using max_workers=3 stream_output=True
+✅ 8ssy_A_DSN.pdb: 6/7 exposed (0.86)
+✅ 10zb_B_KOU.pdb: 11/22 exposed (0.50)
+✅ 10zb_B_THG.pdb: 25/32 exposed (0.78)
+✅ 9boh_B_A00.pdb: 0/0 exposed (0.00)
+✅ 9boh_B_FFO.pdb: 20/34 exposed (0.59)
+✅ 8sui_B_SER.pdb: 56/208 exposed (0.27)
+[11:16:40] [mem] running 6_SASA.py parent=137.0MB child_tree=99.6MB combined=236.6MB
+✅ 9bow_A_SER.pdb: 45/97 exposed (0.46)
+✅ 9bow_B_FFO.pdb: 21/34 exposed (0.62)
+✅ 9bow_B_KOU.pdb: 11/22 exposed (0.50)
+✅ 9o50_B_THG.pdb: 22/32 exposed (0.69)
+[11:16:45] [mem] running 6_SASA.py parent=137.0MB child_tree=105.2MB combined=242.2MB
+✅ 9bpe_B_FFO.pdb: 22/55 exposed (0.40)
+✅ 9o5g_B_C2F.pdb: 26/56 exposed (0.46)
+🎉 WARHEAD SASA COMPLETE
+[11:16:46] [mem] after 6_SASA.py parent=137.0MB delta=+0.0MB combined_peak=242.2MB child_peak=105.2MB
+[11:16:46] 🚀 Running 7_metadata.py...
+[11:16:46] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[11:16:46] [mem] before 7_metadata.py parent=137.0MB combined=137.0MB
+[11:16:46] 🧵 Worker caps for 7_metadata.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[11:16:46] ⏱ No-output watchdog for 7_metadata.py: 180s
+[11:16:46] [mem] running 7_metadata.py parent=137.0MB child_tree=0.6MB combined=137.6MB
+📂 Using SMILES file: components-smiles-stereo-oe.smi
+🧬 Loaded 49558 SMILES entries.
+🔎 Sample SMILES keys: ['000', '001', '002', '003', '004', '005', '006', '007', '008', '009', '00A', '00B', '00C', '00D', '00E']
+🤖 AUTO MODE: Warhead_SASA_summary.csv
+📥 Loaded SASA table.
+📊 Step 7 input row count: 12
+🧾 Step 7 input columns: ['Target', 'pdb_id', 'Warhead', 'Residue_ID', 'Variant', 'Total_atoms', 'Exposed_atoms', 'SASA_in_complex_A2', '%Exposed', '%Buried']
+🧭 5CharMAP loaded: 1 (pdb,ligX)->lig5 mappings
+🧭 5CharMAP loaded: 1 (pdb,lig3)->lig5 mappings
+🔗 WAR_PDB chain map built: 12 (pdb,ligX) groups
+🔬 BEGIN RESOLUTION TRACE
+--------------------------------------------------
+Row 0
+  PDB: 8ssy
+  Warhead (input): DSN
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: DSN
+  SMILES found? YES
+--------------------------------------------------
+Row 1
+  PDB: 10zb
+  Warhead (input): KOU
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KOU
+  SMILES found? YES
+--------------------------------------------------
+Row 2
+  PDB: 10zb
+  Warhead (input): THG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: THG
+  SMILES found? YES
+--------------------------------------------------
+Row 3
+  PDB: 9boh
+  Warhead (input): A00
+  Warhead_5 (if mapped): A1AQW
+  SMILES lookup key: A1AQW
+  SMILES found? YES
+--------------------------------------------------
+Row 4
+  PDB: 9boh
+  Warhead (input): FFO
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: FFO
+  SMILES found? YES
+--------------------------------------------------
+Row 5
+  PDB: 8sui
+  Warhead (input): SER
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: SER
+  SMILES found? YES
+--------------------------------------------------
+Row 6
+  PDB: 9bow
+  Warhead (input): SER
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: SER
+  SMILES found? YES
+--------------------------------------------------
+Row 7
+  PDB: 9bow
+  Warhead (input): FFO
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: FFO
+  SMILES found? YES
+--------------------------------------------------
+Row 8
+  PDB: 9bow
+  Warhead (input): KOU
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: KOU
+  SMILES found? YES
+--------------------------------------------------
+Row 9
+  PDB: 9o50
+  Warhead (input): THG
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: THG
+  SMILES found? YES
+--------------------------------------------------
+Row 10
+  PDB: 9bpe
+  Warhead (input): FFO
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: FFO
+  SMILES found? YES
+--------------------------------------------------
+Row 11
+  PDB: 9o5g
+  Warhead (input): C2F
+  Warhead_5 (if mapped): (blank)
+  SMILES lookup key: C2F
+  SMILES found? YES
+🔬 END RESOLUTION TRACE
+✅ Filtered SASA table: removed 0 ion-only rows; remaining 12 rows
+💾 Saved Resolved_SASA_Summary.csv
+💾 Saved Ligand_PDB_Index.csv
+🚀 Launching metadata engine mode=threads max_workers=3
+🧪 Computing descriptors:   0%|          | 0/7 [00:00<?, ?it/s]
+🧪 Computing descriptors:  14%|█▍        | 1/7 [00:00<00:01,  5.86it/s]
+🧪 Computing descriptors:  57%|█████▋    | 4/7 [00:00<00:00, 16.66it/s]
+🧪 Computing descriptors: 100%|██████████| 7/7 [00:00<00:00, 21.32it/s]
+🧪 Computing descriptors: 100%|██████████| 7/7 [00:00<00:00, 18.41it/s]
+📊 Ligand metadata rows: total=7 success=7 failures=0
+🎉 COMPLETE → Ligand_Metadata.csv
+===================================================================
+[11:16:47] [mem] after 7_metadata.py parent=137.0MB delta=+0.0MB combined_peak=276.5MB child_peak=139.5MB
+[11:16:47] 🚀 Running 8_scaffold.py...
+[11:16:47] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[11:16:47] [mem] before 8_scaffold.py parent=137.0MB combined=137.0MB
+[11:16:47] 🧵 Worker caps for 8_scaffold.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[11:16:47] ⏱ No-output watchdog for 8_scaffold.py: 180s
+[11:16:47] [mem] running 8_scaffold.py parent=137.0MB child_tree=0.5MB combined=137.5MB
+📥 Loaded 12 rows from Resolved_SASA_Summary.csv
+🔬 Found 1 protein targets.
+✅ Stage 1 complete — base scaffold mapping and diversity scores saved.
+🎉 Stage 2 complete — advanced scaffold data saved.
+📦 All tables written to Target_Table/
+[11:16:47] [mem] after 8_scaffold.py parent=137.0MB delta=+0.0MB combined_peak=137.5MB child_peak=0.5MB
+[11:16:47] 🚀 Running 9_2Dmapping.py...
+[11:16:47] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[11:16:47] [mem] before 9_2Dmapping.py parent=137.0MB combined=137.0MB
+[11:16:47] 🧵 Worker caps for 9_2Dmapping.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[11:16:47] ⏱ No-output watchdog for 9_2Dmapping.py: 180s
+[11:16:47] [mem] running 9_2Dmapping.py parent=137.0MB child_tree=0.6MB combined=137.6MB
+📥 Loading: Resolved_SASA_Summary.csv
+✅ Using: Target=Target, Ligand=Warhead, SMILES=SMILES
+🧬 Generating atom-level mapping...
+🎉 SUCCESS: All maps saved to Target_Table
+[11:16:48] [mem] after 9_2Dmapping.py parent=137.0MB delta=+0.0MB combined_peak=137.6MB child_peak=0.6MB
+[11:16:48] 🚀 Running 10_2DmappingExtraction.py...
+[11:16:48] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[11:16:48] [mem] before 10_2DmappingExtraction.py parent=137.0MB combined=137.0MB
+[11:16:48] 🧵 Worker caps for 10_2DmappingExtraction.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[11:16:48] ⏱ No-output watchdog for 10_2DmappingExtraction.py: 180s
+[11:16:48] [mem] running 10_2DmappingExtraction.py parent=137.0MB child_tree=0.6MB combined=137.6MB
+✅ Extracted ligand atom coordinates for 315 atoms
+💾 Saved → Ligand_3D_Atoms.csv
+[11:16:48] [mem] after 10_2DmappingExtraction.py parent=137.0MB delta=+0.0MB combined_peak=137.6MB child_peak=0.6MB
+[11:16:48] 🚀 Running 11_mcsMatcher.py...
+[11:16:48] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[11:16:48] [mem] before 11_mcsMatcher.py parent=137.0MB combined=137.0MB
+[11:16:48] 🧵 Worker caps for 11_mcsMatcher.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[11:16:48] ⏱ No-output watchdog for 11_mcsMatcher.py: 300s
+[11:16:48] [mem] running 11_mcsMatcher.py parent=137.1MB child_tree=1.3MB combined=138.4MB
+ℹ️ No ligand alias resolution required (all ligands resolved in SMILES map).
+🚀 Running MCS on 11 ligand occurrences mode=isolated-sequential max_workers=1
+⚙️ Using hard timeout (60s per ligand) via SIGALRM
+⚙️ Step 11 heartbeat enabled=1 interval=20s progress_every=1
+⚙️ Step 11 skip policy skip_bad_items=1 skip_stuck_items=1 item_isolation=1 max_item_failures=0
+🔬 Step 11 item 1/11 start 9o5g_B_C2F_2002
+[11:16:48] 
+****
+Post-condition Violation
+Element 'Dn' not found
+Violation occurred on line 93 in file /project/build/temp.linux-x86_64-cpython-311/rdkit/Code/GraphMol/PeriodicTable.h
+Failed Expression: anum > -1
+****
+⚠️ Step 11 item skipped: 1/11 9o5g_B_C2F_2002 stage=BUILD_3D_MOL reason=BUILD_3D_MOL_FAILED
+🔬 Step 11 item 1/11 done 9o5g_B_C2F_2002 sdf=failed mapped=0 all_atoms=0 dt=0.0s
+⏳ Step 11 progress: 1/11
+🔬 Step 11 item 2/11 start 8ssy_A_DSN_501
+🖼️ Step 11 SVG ready 8ssy_A_DSN_501
+🔬 Step 11 item 2/11 done 8ssy_A_DSN_501 sdf=written mapped=7 all_atoms=7 dt=0.1s
+⏳ Step 11 progress: 2/11
+🔬 Step 11 item 3/11 start 9boh_B_FFO_502
+🖼️ Step 11 SVG ready 9boh_B_FFO_502
+🔬 Step 11 item 3/11 done 9boh_B_FFO_502 sdf=written mapped=34 all_atoms=34 dt=0.1s
+⏳ Step 11 progress: 3/11
+🔬 Step 11 item 4/11 start 9bow_B_FFO_502
+🖼️ Step 11 SVG ready 9bow_B_FFO_502
+🔬 Step 11 item 4/11 done 9bow_B_FFO_502 sdf=written mapped=34 all_atoms=34 dt=0.1s
+⏳ Step 11 progress: 4/11
+🔬 Step 11 item 5/11 start 9bpe_B_FFO_2001
+[11:16:49] 
+****
+Post-condition Violation
+Element 'D' not found
+Violation occurred on line 93 in file /project/build/temp.linux-x86_64-cpython-311/rdkit/Code/GraphMol/PeriodicTable.h
+Failed Expression: anum > -1
+****
+⚠️ Step 11 item skipped: 5/11 9bpe_B_FFO_2001 stage=BUILD_3D_MOL reason=BUILD_3D_MOL_FAILED
+🔬 Step 11 item 5/11 done 9bpe_B_FFO_2001 sdf=failed mapped=0 all_atoms=0 dt=0.0s
+⏳ Step 11 progress: 5/11
+🔬 Step 11 item 6/11 start 10zb_B_KOU_1501
+🖼️ Step 11 SVG ready 10zb_B_KOU_1501
+🔬 Step 11 item 6/11 done 10zb_B_KOU_1501 sdf=written mapped=22 all_atoms=22 dt=0.1s
+⏳ Step 11 progress: 6/11
+🔬 Step 11 item 7/11 start 9bow_B_KOU_501
+🖼️ Step 11 SVG ready 9bow_B_KOU_501
+🔬 Step 11 item 7/11 done 9bow_B_KOU_501 sdf=written mapped=22 all_atoms=22 dt=0.1s
+⏳ Step 11 progress: 7/11
+🔬 Step 11 item 8/11 start 8sui_B_SER_1502
+[11:16:49] 
+****
+Post-condition Violation
+Element 'D' not found
+Violation occurred on line 93 in file /project/build/temp.linux-x86_64-cpython-311/rdkit/Code/GraphMol/PeriodicTable.h
+Failed Expression: anum > -1
+****
+⚠️ Step 11 item skipped: 8/11 8sui_B_SER_1502 stage=BUILD_3D_MOL reason=BUILD_3D_MOL_FAILED
+🔬 Step 11 item 8/11 done 8sui_B_SER_1502 sdf=failed mapped=0 all_atoms=0 dt=0.0s
+⏳ Step 11 progress: 8/11
+🔬 Step 11 item 9/11 start 9bow_A_SER_501
+🖼️ Step 11 SVG ready 9bow_A_SER_501
+🔬 Step 11 item 9/11 done 9bow_A_SER_501 sdf=written mapped=7 all_atoms=7 dt=0.1s
+⏳ Step 11 progress: 9/11
+🔬 Step 11 item 10/11 start 10zb_B_THG_1502
+🖼️ Step 11 SVG ready 10zb_B_THG_1502
+🔬 Step 11 item 10/11 done 10zb_B_THG_1502 sdf=written mapped=32 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 10/11
+🔬 Step 11 item 11/11 start 9o50_B_THG_501
+🖼️ Step 11 SVG ready 9o50_B_THG_501
+🔬 Step 11 item 11/11 done 9o50_B_THG_501 sdf=written mapped=32 all_atoms=32 dt=0.1s
+⏳ Step 11 progress: 11/11
+⏱ Step 11 heartbeat: processed=11/11 current=9o50_B_THG_501 stage=ITEM_DONE elapsed=0s item_elapsed=0s sdf_written=8 sdf_failed=3 svg_written=8 item_failures=3 last_done=9o50_B_THG_501
+✅ MCS processing complete — outputs written
+🧪 Step 11 summary: work_items=11 successful_items=8 item_failures=3 sdf_attempted=8 sdf_written=8 sdf_failed=3 sdf_skipped_existing=0 svg_written=8
+🧪 SDF expected groups: 11
+🧪 SDF files available: 8 → MCS_Output/MCS_SDF
+🧪 SDF failure records: 3 → MCS_Output/Ligand_MCS_SDF_Failures.csv
+🧪 Item failure records: 3 → MCS_Output/Ligand_MCS_Item_Failures.csv
+🧪 SVG output path: MCS_Output/MCS_SVG
+🧪 CSV output path: MCS_Output
+🧪 SDF missing groups: 3
+⚠️ First missing SDFs: ['9o5g_B_C2F_2002.sdf', '9bpe_B_FFO_2001.sdf', '8sui_B_SER_1502.sdf']
+====================================================
+🎉 COMPLETED MCS MAPPING + SASA ANNOTATION
+📦 Map (MCS only)        → MCS_Output/Ligand_MCS_Map.csv
+🧪 SASA (MCS only)       → MCS_Output/Ligand_MCS_SASA.csv
+🧬 All atoms (debug)     → MCS_Output/Ligand_AllAtoms_Map.csv
+🧪 SASA (ALL atoms)      → MCS_Output/Ligand_MCS_SASA_ALL_ATOMS.csv
+⚠️ Failures              → MCS_Output/Ligand_MCS_Failures.csv
+⚠️ SDF failures          → MCS_Output/Ligand_MCS_SDF_Failures.csv
+⚠️ Item failures         → MCS_Output/Ligand_MCS_Item_Failures.csv
+====================================================
+🖼️  SVGs generated: 8 → MCS_Output/MCS_SVG
+⚠️ MCS failures (first 10):
+C2F | 9o5g | 3D mol build failed: Post-condition Violation
+	Element 'Dn' not found
+	Violation occurred on line 93 in file Code/GraphMol/PeriodicTable.h
+	Failed Expression: anum > -1
+	RDKIT: 2022.09.5
+	BOOST: 1_78
+FFO | 9bpe | 3D mol build failed: Post-condition Violation
+	Element 'D' not found
+	Violation occurred on line 93 in file Code/GraphMol/PeriodicTable.h
+	Failed Expression: anum > -1
+	RDKIT: 2022.09.5
+	BOOST: 1_78
+SER | 8sui | 3D mol build failed: Post-condition Violation
+	Element 'D' not found
+	Violation occurred on line 93 in file Code/GraphMol/PeriodicTable.h
+	Failed Expression: anum > -1
+	RDKIT: 2022.09.5
+	BOOST: 1_78
+[11:16:49] [mem] after 11_mcsMatcher.py parent=137.1MB delta=+0.1MB combined_peak=259.6MB child_peak=122.5MB
+[11:16:49] ✅ SDF validation PASS after 11_mcsMatcher.py: MCS_Output/MCS_SDF files=8 expected=11 recorded_failures=3
+[11:16:49] 🚀 Running 12_Results.py...
+[11:16:49] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[11:16:49] [mem] before 12_Results.py parent=137.2MB combined=137.2MB
+[11:16:49] 🧵 Worker caps for 12_Results.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[11:16:49] ⏱ No-output watchdog for 12_Results.py: 180s
+[11:16:49] [mem] running 12_Results.py parent=137.2MB child_tree=0.6MB combined=137.8MB
+✅ Integrated 3DSASAmapped.csv created with standard headers.
+[11:16:50] [mem] after 12_Results.py parent=137.2MB delta=+0.0MB combined_peak=137.8MB child_peak=0.6MB
+[11:16:50] ✅ SDF validation PASS after 12_Results.py: TARGET_RESULTS/MCS_Output/MCS_SDF files=8 expected=11 recorded_failures=3
+[11:16:50] 🚀 Running 15_ResultsMerged.py...
+[11:16:50] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[11:16:50] [mem] before 15_ResultsMerged.py parent=137.3MB combined=137.3MB
+[11:16:50] 🧵 Worker caps for 15_ResultsMerged.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[11:16:50] ⏱ No-output watchdog for 15_ResultsMerged.py: 180s
+[11:16:50] [mem] running 15_ResultsMerged.py parent=137.3MB child_tree=0.6MB combined=137.9MB
+🧬 Using SASA file: Warhead_SASA_atoms.csv
+✅ Wrote merged atom table: Ligand_3D_Atoms_with_SASA.csv
+📊 Total atoms: 315
+🎉 RESULTS MERGE COMPLETE
+[11:16:50] [mem] after 15_ResultsMerged.py parent=137.3MB delta=+0.0MB combined_peak=137.9MB child_peak=0.6MB
+[11:16:50] 🚀 Running 16_ResultsDisplay.py...
+[11:16:50] 🐍 Pipeline Python: /app/.heroku/python/bin/python
+[11:16:50] [mem] before 16_ResultsDisplay.py parent=137.3MB combined=137.3MB
+[11:16:50] 🧵 Worker caps for 16_ResultsDisplay.py: pipeline_max=2 WARHEAD_SQCHK_MAX_WORKERS=2 WARHEAD_PDBMKR_MAX_WORKERS=2 WARHEAD_SASA_MAX_WORKERS=3 WARHEAD_METADATA_MAX_WORKERS=3 WARHEAD_MCS_MAX_WORKERS=3
+[11:16:50] ⏱ No-output watchdog for 16_ResultsDisplay.py: 180s
+[11:16:50] [mem] running 16_ResultsDisplay.py parent=137.3MB child_tree=0.5MB combined=137.8MB
+📁 ResultsDisplay root: /app/jobs/cc5025a3
+📁 WAR_PDB root: /app/jobs/cc5025a3/WAR_PDB
+📁 SDF roots: ['/app/jobs/cc5025a3/MCS_Output/MCS_SDF', '/app/jobs/cc5025a3/TARGET_RESULTS/MCS_Output/MCS_SDF']
+🧪 Indexed SDF exact keys: 8
+🧪 Indexed SDF loose keys: 8
+🧾 Residue lookup keys: 11
+⚠️ Skipped 4 PDB rows without SDF support → /app/jobs/cc5025a3/Results_Display_Skipped_NoSDF.csv
+✅ Wrote /app/jobs/cc5025a3/Results_Display.csv (8 SDF-backed entries)
+📊 Input WAR_PDB rows skipped due to missing SDF: 4
+[11:16:50] [mem] after 16_ResultsDisplay.py parent=137.3MB delta=+0.0MB combined_peak=137.8MB child_peak=0.5MB
+[11:16:50] ✅ final SDF validation PASS: rows=8 matched=8 sdf_files=8 dir=jobs/cc5025a3/TARGET_RESULTS/MCS_Output/MCS_SDF

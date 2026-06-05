@@ -132,7 +132,8 @@ secrets*.json
 !jobs/c17316cd/
 !jobs/c17316cd/**
 
-
+!jobs/cc5025a3/
+!jobs/cc5025a3/**
 
 # ------------------------------------------------------------
 # Never commit transient junk inside jobs
