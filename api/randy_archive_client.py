@@ -150,6 +150,10 @@ def _file_url(job_id: str, relative_path: str) -> str:
     return f"{_job_url(job_id)}/file/{quote(rel, safe='/')}"
 
 
+def _jobs_url() -> str:
+    return f"{_base_url()}/hunter-jobs"
+
+
 @lru_cache(maxsize=512)
 def get_job(job_id: str) -> Optional[Dict[str, Any]]:
     if not archive_enabled():
@@ -171,6 +175,7 @@ def get_job(job_id: str) -> Optional[Dict[str, Any]]:
 def reset_job_cache(job_id: Optional[str] = None) -> None:
     # lru_cache only exposes full-clear; keep signature for callers.
     get_job.cache_clear()
+    _list_archived_jobs_cached.cache_clear()
 
 
 def job_exists(job_id: str) -> bool:
@@ -179,6 +184,54 @@ def job_exists(job_id: str) -> bool:
 
 def get_job_index(job_id: str) -> Optional[Dict[str, Any]]:
     return get_job(job_id)
+
+
+@lru_cache(maxsize=16)
+def _list_archived_jobs_cached(
+    limit: int,
+    include_metadata: bool,
+    include_counts: bool,
+    include_test: bool,
+) -> tuple[Dict[str, Any], ...]:
+    if not archive_enabled():
+        return tuple()
+
+    params = {
+        "limit": max(1, min(int(limit or 5000), 5000)),
+        "include_metadata": "1" if include_metadata else "0",
+        "include_counts": "1" if include_counts else "0",
+        "include_test": "1" if include_test else "0",
+    }
+
+    try:
+        resp = requests.get(_jobs_url(), headers=_headers(), params=params, timeout=30)
+        resp.raise_for_status()
+        payload = resp.json()
+    except Exception:
+        return tuple()
+
+    jobs = payload.get("jobs")
+    if not payload.get("ok") or not isinstance(jobs, list):
+        return tuple()
+    return tuple(job for job in jobs if isinstance(job, dict))
+
+
+def list_archived_jobs(
+    limit: int = 5000,
+    include_metadata: bool = True,
+    include_counts: bool = False,
+    include_test: bool = False,
+    refresh: bool = False,
+) -> list[Dict[str, Any]]:
+    if refresh:
+        _list_archived_jobs_cached.cache_clear()
+    jobs = _list_archived_jobs_cached(
+        max(1, min(int(limit or 5000), 5000)),
+        bool(include_metadata),
+        bool(include_counts),
+        bool(include_test),
+    )
+    return [dict(job) for job in jobs]
 
 
 def last_table_diagnostic() -> Dict[str, Any]:

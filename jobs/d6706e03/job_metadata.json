@@ -6,10 +6,21 @@
   "job_dir": "/Users/jxs794/Documents/warhead-hunter/jobs/d6706e03",
   "job_id": "d6706e03",
   "last_log_at": "",
+  "outputs": {
+    "bundle_url": "/api/jobs/d6706e03/bundle",
+    "files_url": "/api/jobs/d6706e03/files",
+    "has_results": true,
+    "job_dir": "jobs/d6706e03",
+    "legacy_download_url": "/api/jobs/d6706e03/download",
+    "public_bundle_path": "bundles/d6706e03_warhead_hunter_public_results.zip",
+    "results_url": "/api/jobs/d6706e03/results",
+    "war_pdbs_url": "/api/jobs/d6706e03/war-pdbs"
+  },
+  "request": {},
   "results_ready": true,
   "started_at": "",
   "status": "completed",
   "step_started_at": "",
   "target": "DYRK1A",
-  "updated_at": "2026-06-05T07:53:42Z"
+  "updated_at": "2026-06-05T19:12:35Z"
 }

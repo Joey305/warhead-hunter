@@ -41,6 +41,7 @@ try:
         find_protein_pdb_asset as randy_find_protein_pdb_asset,
         get_job_index as randy_get_job_index,
         get_file_bytes as randy_get_file_bytes,
+        list_archived_jobs as randy_list_archived_jobs,
         get_table_dataframe as randy_get_table_dataframe,
         proxy_file_response as randy_proxy_file_response,
         job_exists as randy_job_exists,
@@ -60,6 +61,9 @@ except Exception:
 
     def randy_get_file_bytes(*args, **kwargs):
         return None
+
+    def randy_list_archived_jobs(*args, **kwargs):
+        return []
 
     def randy_get_table_dataframe(*args, **kwargs):
         return None
@@ -117,6 +121,7 @@ app.register_blueprint(hand_bp)
 
 ARTIFACT_INDEX_CACHE_TTL_SECONDS = int(os.getenv("WARHEAD_RESULTS_INDEX_TTL", "600") or "600")
 _ARTIFACT_INDEX_CACHE: Dict[str, Dict[str, Any]] = {}
+_BROWSE_INDEX_CACHE: Dict[str, Dict[str, Any]] = {}
 
 
 # Subfolders for organization (uploads area)
@@ -1859,9 +1864,12 @@ def api_example_artifacts(job_id):
 
 @app.get("/api/indexed-jobs")
 def api_indexed_jobs():
+    refresh = str(request.args.get("refresh") or "").strip().lower() in {"1", "true", "yes"}
     protein_filter = (request.args.get("protein") or request.args.get("target") or "").strip().lower()
     query_filter = (request.args.get("query") or "").strip().lower()
     available_filter = (request.args.get("available") or "").strip().lower()
+    source_filter = (request.args.get("source") or "").strip().lower()
+    status_filter = (request.args.get("status") or "").strip().lower()
     limit = _parse_limit(request.args.get("limit") or "50", default=50, maximum=5000)
     try:
         offset = max(0, int((request.args.get("offset") or "0").strip() or 0))
@@ -1869,15 +1877,25 @@ def api_indexed_jobs():
         offset = 0
     sort_key = (request.args.get("sort") or "created_desc").strip().lower()
 
-    jobs = load_indexed_jobs()
+    jobs, browse_meta = load_browse_jobs(refresh=refresh)
 
     if protein_filter:
         jobs = [j for j in jobs if protein_filter in (j.get("protein", "").lower()) or protein_filter in (j.get("target_name", "").lower())]
     if query_filter:
-        jobs = [j for j in jobs if query_filter in (j.get("search_query", "").lower())]
+        jobs = [
+            j for j in jobs
+            if query_filter in (j.get("search_query", "").lower())
+            or query_filter in (j.get("job_id", "").lower())
+            or query_filter in (j.get("protein", "").lower())
+            or query_filter in (j.get("target_name", "").lower())
+        ]
     if available_filter in {"true", "false"}:
         want = available_filter == "true"
         jobs = [j for j in jobs if bool(j.get("has_results")) == want]
+    if source_filter:
+        jobs = [j for j in jobs if source_filter in str(j.get("source") or "").lower()]
+    if status_filter:
+        jobs = [j for j in jobs if status_filter == str(j.get("status") or "").lower()]
 
     if sort_key == "created_asc":
         jobs.sort(key=lambda j: j.get("created_at", ""))
@@ -1899,19 +1917,28 @@ def api_indexed_jobs():
             "fasta_len": j.get("fasta_len", 0),
             "has_results": bool(j.get("has_results")),
             "available": bool(j.get("available")),
+            "status": j.get("status", ""),
+            "source": j.get("source", ""),
+            "source_label": j.get("source_label", ""),
             "created_at": j.get("created_at", ""),
             "modified_at": j.get("modified_at", ""),
-            "monitor_url": f"/monitor/{j.get('job_id', '')}",
-            "browser_results_url": f"/results/{j.get('job_id', '')}",
+            "monitor_url": j.get("monitor_url", f"/monitor/{j.get('job_id', '')}"),
+            "open_job_url": j.get("open_job_url", f"/open_job/{j.get('job_id', '')}"),
+            "browser_results_url": j.get("results_url", f"/results/{j.get('job_id', '')}"),
             "api_status_url": f"/api/jobs/{j.get('job_id', '')}",
             "files_url": f"/api/jobs/{j.get('job_id', '')}/files",
-            "bundle_url": f"/api/jobs/{j.get('job_id', '')}/bundle",
+            "bundle_url": j.get("bundle_url", f"/api/jobs/{j.get('job_id', '')}/download"),
+            "download_url": j.get("bundle_url", f"/api/jobs/{j.get('job_id', '')}/download"),
+            "bundle_available": bool(j.get("bundle_available")),
             "war_pdbs_url": f"/api/jobs/{j.get('job_id', '')}/war-pdbs",
         }
         for j in jobs
     ]
     return _api_json({
         "ok": True,
+        "source_mode": browse_meta.get("source_mode", browse_source_mode()),
+        "source_label": browse_meta.get("source_label", _browse_source_label(browse_source_mode())),
+        "warning": browse_meta.get("warning", ""),
         "count": total_count,
         "returned": len(job_summaries),
         "jobs": job_summaries,
@@ -2008,21 +2035,16 @@ def _safe_job_id(job_id: str) -> bool:
     return True
 
 
-def _read_protein_data_csv(job_path: Path) -> Optional[Dict[str, str]]:
-    """
-    Returns: {protein, search_query, fasta} from Protein_Data.csv if present.
-    Handles your format where fasta includes a header line starting with ">"
-    and the sequence continues on next lines (possibly quoted).
-    """
+def _read_job_request_csv(job_path: Path, filename: str = "Protein_Data.csv") -> Optional[Dict[str, str]]:
+    """Return the first row from an archived/local request CSV, tolerating quoted multiline FASTA."""
     fp = _first_existing([
-        job_path / "Protein_Data.csv",
-        job_path / "job_files" / "Protein_Data.csv",
+        job_path / filename,
+        job_path / "job_files" / filename,
     ])
     if not fp:
         return None
 
     try:
-        # Use pandas to tolerate commas/quotes/newlines in fasta field
         df = pd.read_csv(fp, dtype=str).fillna("")
         if df.empty:
             return None
@@ -2051,6 +2073,14 @@ def _read_protein_data_csv(job_path: Path) -> Optional[Dict[str, str]]:
             return None
 
 
+def _read_protein_data_csv(job_path: Path) -> Optional[Dict[str, str]]:
+    return _read_job_request_csv(job_path, "Protein_Data.csv")
+
+
+def _read_input_csv(job_path: Path) -> Optional[Dict[str, str]]:
+    return _read_job_request_csv(job_path, "input.csv")
+
+
 def _job_has_results(job_path: Path) -> bool:
     return disk_jobs.results_ready_from_disk(job_path.name, JOBS_DIR)
 
@@ -2076,6 +2106,7 @@ def _fasta_length(fasta: str) -> int:
 
 def _job_meta_from_dir(job_dir: Path) -> Dict[str, Any]:
     protein_meta = _read_protein_data_csv(job_dir) or {}
+    input_meta = _read_input_csv(job_dir) or {}
     disk_meta = _read_job_metadata(job_dir.name) or {}
     if not disk_meta:
         archived_meta_path = job_dir / "job_files" / "job_metadata.json"
@@ -2090,6 +2121,7 @@ def _job_meta_from_dir(job_dir: Path) -> Dict[str, Any]:
     request_meta = disk_meta.get("request") or {}
     fasta = (
         str(request_meta.get("fasta_seq") or "").strip()
+        or str(input_meta.get("fasta") or "").strip()
         or str(protein_meta.get("fasta") or "").strip()
     )
 
@@ -2103,10 +2135,12 @@ def _job_meta_from_dir(job_dir: Path) -> Dict[str, Any]:
 
     target_name = (
         str(request_meta.get("target_name") or "").strip()
+        or str(input_meta.get("protein") or "").strip()
         or str(protein_meta.get("protein") or "").strip()
     )
     search_query = (
         str(request_meta.get("search_query") or "").strip()
+        or str(input_meta.get("search_query") or "").strip()
         or str(protein_meta.get("search_query") or "").strip()
     )
     has_results = bool(hydrated.get("results_ready")) or bool(_first_existing([
@@ -2130,10 +2164,19 @@ def _job_meta_from_dir(job_dir: Path) -> Dict[str, Any]:
         "created_at": str(disk_meta.get("created_at") or created_s),
         "modified_at": modified_s,
         "mtime": modified_s,
+        "source": "local_disk",
+        "source_label": "LOCAL DISK",
+        "browse_source_label": "Local jobs directory",
+        "open_job_url": f"/open_job/{job_dir.name}",
+        "results_url": f"/results/{job_dir.name}",
+        "bundle_url": f"/api/jobs/{job_dir.name}/download",
+        "monitor_url": f"/monitor/{job_dir.name}",
+        "fasta_missing_message": "No FASTA found in local job metadata.",
+        "bundle_available": True,
     }
 
 
-def load_indexed_jobs() -> List[Dict[str, Any]]:
+def _load_local_indexed_jobs() -> List[Dict[str, Any]]:
     jobs_root = get_jobs_root()
     jobs: List[Dict[str, Any]] = []
     if not jobs_root.exists():
@@ -2150,6 +2193,138 @@ def load_indexed_jobs() -> List[Dict[str, Any]]:
         jobs.append(_job_meta_from_dir(d))
 
     jobs.sort(key=lambda x: x.get("modified_at", ""), reverse=True)
+    return jobs
+
+
+def browse_source_mode() -> str:
+    raw = str(os.getenv("WARHEAD_BROWSE_SOURCE", "randy") or "randy").strip().lower()
+    return raw if raw in {"randy", "local", "merged"} else "randy"
+
+
+def browse_cache_ttl_seconds() -> int:
+    try:
+        return max(0, int(str(os.getenv("WARHEAD_BROWSE_CACHE_TTL", "300") or "300").strip() or 300))
+    except Exception:
+        return 300
+
+
+def _browse_source_label(mode: str) -> str:
+    return {
+        "randy": "RANDY hunter_jobs archive",
+        "local": "Local jobs directory",
+        "merged": "RANDY archive + local jobs",
+    }.get(mode, "RANDY hunter_jobs archive")
+
+
+def _normalize_browse_job(meta: Dict[str, Any], *, source: str, mode: str) -> Dict[str, Any]:
+    job_id = str(meta.get("job_id") or "").strip()
+    has_results = bool(meta.get("has_results"))
+    available = bool(meta.get("available", has_results))
+    status = str(meta.get("status") or ("completed" if has_results else "partial")).strip().lower()
+    source_label = "RANDY ARCHIVE" if source == "randy_hunter_job_archive" else "LOCAL DISK"
+    if source == "randy_hunter_job_archive":
+        open_job_url = f"/results/{job_id}" if has_results else ""
+        open_job_disabled_reason = "Archived job is partial and does not have a browsable results gallery."
+    else:
+        open_job_url = f"/results/{job_id}" if has_results else f"/open_job/{job_id}"
+        open_job_disabled_reason = ""
+    bundle_available = bool(meta.get("bundle_available"))
+    if source == "local_disk":
+        bundle_available = True
+    return {
+        **meta,
+        "job_id": job_id,
+        "protein": str(meta.get("protein") or meta.get("target_name") or job_id).strip(),
+        "target_name": str(meta.get("target_name") or meta.get("protein") or job_id).strip(),
+        "search_query": str(meta.get("search_query") or "").strip(),
+        "fasta": str(meta.get("fasta") or "").strip(),
+        "fasta_len": int(meta.get("fasta_len") or 0),
+        "has_results": has_results,
+        "available": available,
+        "status": status,
+        "source": source,
+        "source_label": source_label,
+        "browse_source_label": _browse_source_label(mode),
+        "open_job_url": open_job_url,
+        "open_job_disabled_reason": open_job_disabled_reason,
+        "results_url": f"/results/{job_id}",
+        "bundle_url": f"/api/jobs/{job_id}/download",
+        "monitor_url": f"/monitor/{job_id}",
+        "fasta_missing_message": "No FASTA found in archived input metadata." if source == "randy_hunter_job_archive" else "No FASTA found in local job metadata.",
+        "bundle_available": bundle_available,
+    }
+
+
+def _load_randy_indexed_jobs(refresh: bool = False) -> tuple[List[Dict[str, Any]], Optional[str]]:
+    if not randy_archive_enabled():
+        return [], "RANDY archive access is not configured."
+    jobs = randy_list_archived_jobs(limit=5000, include_metadata=True, include_counts=False, refresh=refresh)
+    return [
+        _normalize_browse_job(meta, source="randy_hunter_job_archive", mode="randy")
+        for meta in jobs
+        if str(meta.get("job_id") or "").strip()
+    ], ""
+
+
+def load_browse_jobs(refresh: bool = False) -> tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    mode = browse_source_mode()
+    ttl = browse_cache_ttl_seconds()
+    cache_key = f"{mode}"
+    now_s = time.time()
+    cached = _BROWSE_INDEX_CACHE.get(cache_key)
+    if not refresh and ttl > 0 and cached and (now_s - float(cached.get("ts") or 0.0) < ttl):
+        jobs = [dict(item) for item in cached.get("jobs", [])]
+        meta = dict(cached.get("meta", {}))
+        meta["cache_hit"] = True
+        return jobs, meta
+
+    warning = ""
+    local_jobs = [_normalize_browse_job(meta, source="local_disk", mode=mode) for meta in _load_local_indexed_jobs()]
+    randy_jobs: List[Dict[str, Any]] = []
+
+    if mode in {"randy", "merged"}:
+        randy_jobs, warning = _load_randy_indexed_jobs(refresh=refresh)
+
+    if mode == "local":
+        jobs = local_jobs
+    elif mode == "merged":
+        by_id = {job["job_id"]: job for job in local_jobs}
+        for job in randy_jobs:
+            by_id[job["job_id"]] = job
+        jobs = list(by_id.values())
+        if warning:
+            warning = "RANDY browse source is unavailable. Showing local jobs only."
+    else:
+        jobs = randy_jobs
+
+    jobs.sort(key=lambda x: (x.get("modified_at", "") or x.get("created_at", "")), reverse=True)
+    meta = {
+        "source_mode": mode,
+        "source_label": _browse_source_label(mode),
+        "warning": warning,
+        "available_count": len([j for j in jobs if j.get("has_results")]),
+        "partial_count": len([j for j in jobs if str(j.get("status") or "").lower() == "partial"]),
+        "count": len(jobs),
+        "randy_available": randy_archive_enabled(),
+        "cache_hit": False,
+    }
+    if mode == "randy" and not jobs:
+        meta["empty_message"] = "No RANDY archived jobs found. Check RANDY archive config and /api/archive health."
+    elif not jobs:
+        meta["empty_message"] = "No jobs found for the selected browse source."
+    else:
+        meta["empty_message"] = ""
+
+    _BROWSE_INDEX_CACHE[cache_key] = {
+        "ts": now_s,
+        "jobs": [dict(item) for item in jobs],
+        "meta": dict(meta),
+    }
+    return jobs, meta
+
+
+def load_indexed_jobs(refresh: bool = False) -> List[Dict[str, Any]]:
+    jobs, _meta = load_browse_jobs(refresh=refresh)
     return jobs
 
 
@@ -2981,7 +3156,18 @@ def ligand_sdf_dir(job_id: str) -> Optional[Path]:
 
 @app.route("/browse")
 def browse():
-    return render_template("browse.html", jobs=load_indexed_jobs())
+    refresh = str(request.args.get("refresh") or "").strip().lower() in {"1", "true", "yes"}
+    jobs, browse_meta = load_browse_jobs(refresh=refresh)
+    return render_template(
+        "browse.html",
+        jobs=jobs,
+        browse_source_mode=browse_meta.get("source_mode", browse_source_mode()),
+        browse_source_label=browse_meta.get("source_label", _browse_source_label(browse_source_mode())),
+        browse_warning=browse_meta.get("warning", ""),
+        browse_empty_message=browse_meta.get("empty_message", ""),
+        available_jobs=browse_meta.get("available_count", 0),
+        partial_jobs=browse_meta.get("partial_count", 0),
+    )
 
 
 @app.get("/open_job/<job_id>")
@@ -3005,6 +3191,13 @@ def api_download_job(job_id):
 
     base = job_root(job_id)
     if not base.exists():
+        if randy_job_exists(job_id):
+            payload = randy_get_job_index(job_id) or {}
+            bundle_relative_path = str(payload.get("bundle_relative_path") or "").strip()
+            if bundle_relative_path:
+                proxied = randy_proxy_file_response(job_id, bundle_relative_path, as_attachment=True)
+                if proxied is not None:
+                    return proxied
         abort(404, "Job not found")
 
     public_bundle = get_preferred_public_bundle(job_id)
@@ -3038,16 +3231,20 @@ def explore():
 @app.get("/api/jobs/export")
 def api_export_jobs():
     rows = []
-    for meta in load_indexed_jobs():
+    refresh = str(request.args.get("refresh") or "").strip().lower() in {"1", "true", "yes"}
+    jobs, browse_meta = load_browse_jobs(refresh=refresh)
+    for meta in jobs:
         rows.append({
             "job_id": meta.get("job_id", ""),
             "protein": (meta.get("protein") or "").strip(),
             "search_query": (meta.get("search_query") or "").strip(),
-            "has_results": "yes" if meta.get("has_results") else "no"
+            "has_results": "yes" if meta.get("has_results") else "no",
+            "status": (meta.get("status") or "").strip(),
+            "source": (meta.get("source_label") or meta.get("source") or "").strip(),
         })
 
     out = io.StringIO()
-    w = csv.DictWriter(out, fieldnames=["job_id", "protein", "search_query", "has_results"])
+    w = csv.DictWriter(out, fieldnames=["job_id", "protein", "search_query", "has_results", "status", "source"])
     w.writeheader()
     for r in rows:
         w.writerow(r)

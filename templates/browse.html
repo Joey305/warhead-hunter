@@ -26,9 +26,23 @@
   }
 
   .meta-row{
-    display:flex; align-items:center; gap:10px;
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
     color:#888; font-size:0.9em;
     margin-top: 6px;
+  }
+
+  .subhead{
+    margin-top:-6px;
+    margin-bottom: 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .subtext{
+    color:#97f9ff;
+    letter-spacing: 0.2px;
   }
 
   .panel{ padding: 16px; }
@@ -94,6 +108,22 @@
     min-width: 260px;
   }
 
+  .filters-inline{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+
+  .filters-inline select{
+    padding: 11px 12px;
+    background:black;
+    color:white;
+    border:1px solid #333;
+    border-radius: 6px;
+    min-width: 130px;
+  }
+
   .link-btn {
     text-decoration:none;
     font-weight:900;
@@ -125,6 +155,17 @@
   }
   .badge.ok { color:#7dffb3; border-color: rgba(125,255,179,0.25); }
   .badge.no { color:#ff9a9a; border-color: rgba(255,154,154,0.25); }
+  .badge.warn { color:#ffd37d; border-color: rgba(255,211,125,0.25); }
+  .badge.src { color:#7dc4ff; border-color: rgba(125,196,255,0.25); }
+
+  .warning{
+    margin-top: 12px;
+    padding: 12px 14px;
+    border: 1px solid rgba(255,211,125,0.25);
+    border-radius: 10px;
+    color:#ffd37d;
+    background: rgba(255,211,125,0.06);
+  }
 
   /* FASTA details row */
   .fasta-row{
@@ -169,7 +210,19 @@
 </style>
 
 <div class="wrap">
-  <h1 class="glow-text">PAST JOBS BROWSER</h1>
+  <h1 class="glow-text">ARCHIVED WARHEAD HUNTER JOBS</h1>
+  <div class="subhead">
+    <span class="badge src">{{ browse_source_mode|upper }}</span>
+    <span class="subtext">
+      {% if browse_source_mode == "randy" %}
+        Browsing verified RANDY backups
+      {% elif browse_source_mode == "merged" %}
+        Browsing RANDY backups with local disk fallback
+      {% else %}
+        Browsing local Warhead Hunter job folders
+      {% endif %}
+    </span>
+  </div>
 
   <div class="topbar">
     <div class="glass-panel searchbox">
@@ -177,20 +230,40 @@
       <input id="filter" type="text"
              placeholder="Filter by protein, search query, or job id…"
              oninput="applyFilter()" />
-      <button class="tron-btn" style="padding:8px 12px;" onclick="clearFilter()">CLEAR</button>
+      <div class="filters-inline">
+        <select id="sourceFilter" onchange="applyFilter()">
+          <option value="">All sources</option>
+          <option value="randy archive">RANDY archive</option>
+          <option value="local disk">Local disk</option>
+        </select>
+        <select id="statusFilter" onchange="applyFilter()">
+          <option value="">All statuses</option>
+          <option value="completed">Completed</option>
+          <option value="partial">Partial</option>
+          <option value="unknown">Unknown</option>
+        </select>
+        <button class="tron-btn" style="padding:8px 12px;" onclick="clearFilter()">CLEAR</button>
+      </div>
     </div>
 
     <div class="actions" style="min-width:auto; justify-content:flex-end;">
       <a class="link-btn open" href="/examples" title="Open curated examples">🧪 CURATED EXAMPLES</a>
       <a class="link-btn dl" href="/api/jobs/export" title="Download job index as CSV">⬇ EXPORT CSV</a>
+      <a class="link-btn dl" href="/browse?refresh=1" title="Refresh archived browse index">⟳ REFRESH</a>
     </div>
   </div>
 
   <div class="meta-row">
     <span class="badge">Indexed jobs: <span id="countAll">{{ jobs|length }}</span></span>
     <span class="badge">Visible: <span id="countVisible">{{ jobs|length }}</span></span>
-    <span class="badge">Source: jobs/&lt;job_id&gt;/Protein_Data.csv</span>
+    <span class="badge ok">Available galleries: {{ available_jobs }}</span>
+    <span class="badge">Partial: {{ partial_jobs }}</span>
+    <span class="badge">Source: {{ browse_source_label }}</span>
   </div>
+
+  {% if browse_warning %}
+    <div class="warning">{{ browse_warning }}</div>
+  {% endif %}
 
   <div class="glass-panel panel" style="margin-top: 10px;">
     <div class="table-wrap">
@@ -200,6 +273,7 @@
             <th style="width: 170px;">Job ID</th>
             <th style="width: 170px;">Protein</th>
             <th>Search Query</th>
+            <th style="width: 170px;">Source / Status</th>
             <th style="width: 160px;">Results</th>
             <th style="width: 310px; text-align:right;">Actions</th>
           </tr>
@@ -207,21 +281,31 @@
 
         <tbody id="jobsBody">
           {% if jobs|length == 0 %}
-            <tr><td colspan="5" class="empty">No jobs found on disk.</td></tr>
+            <tr><td colspan="6" class="empty">{{ browse_empty_message or "No jobs found for this browse source." }}</td></tr>
           {% endif %}
 
           {% for j in jobs %}
             <tr class="job-row"
                 data-job="{{ j.job_id|lower }}"
                 data-protein="{{ (j.protein or '')|lower }}"
-                data-query="{{ (j.search_query or '')|lower }}">
+                data-query="{{ (j.search_query or '')|lower }}"
+                data-source="{{ (j.source_label or j.source or '')|lower }}"
+                data-status="{{ (j.status or '')|lower }}">
               <td class="jobid">{{ j.job_id }}</td>
               <td class="protein">{{ j.protein or "—" }}</td>
               <td title="{{ j.search_query or '' }}" class="query">{{ j.search_query or "—" }}</td>
+              <td>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <span class="badge src">{{ j.source_label or "UNKNOWN" }}</span>
+                  <span class="badge">{{ (j.status or "unknown")|upper }}</span>
+                </div>
+              </td>
 
               <td>
                 {% if j.has_results %}
                   <span class="badge ok">AVAILABLE</span>
+                {% elif (j.status or "")|lower == "partial" %}
+                  <span class="badge warn">PARTIAL</span>
                 {% else %}
                   <span class="badge no">NONE</span>
                 {% endif %}
@@ -229,23 +313,31 @@
 
               <td style="text-align:right;">
                 <div class="actions">
-                  <a class="link-btn open" href="/open_job/{{ j.job_id }}">🚀 OPEN JOB</a>
+                  {% if j.open_job_url %}
+                    <a class="link-btn open" href="{{ j.open_job_url }}">🚀 OPEN JOB</a>
+                  {% else %}
+                    <span class="link-btn open" title="{{ j.open_job_disabled_reason or 'No browsable results are available for this archived job.' }}" style="opacity:0.55; cursor:not-allowed;">🚀 OPEN JOB</span>
+                  {% endif %}
 
                   {% if j.has_results %}
-                    <a class="link-btn res" href="/results/{{ j.job_id }}">🖼 TARGET GALLERY</a>
+                    <a class="link-btn res" href="{{ j.results_url or ('/results/' ~ j.job_id) }}">🖼 TARGET GALLERY</a>
                   {% endif %}
 
                   <button class="link-btn fasta-btn" type="button" onclick="toggleFasta('{{ j.job_id }}')">
                     🧬 FASTA
                   </button>
 
-                  <a class="link-btn dl" href="/api/jobs/{{ j.job_id }}/download">⬇ JOB ZIP</a>
+                  {% if j.bundle_available %}
+                    <a class="link-btn dl" href="{{ j.bundle_url or ('/api/jobs/' ~ j.job_id ~ '/download') }}">⬇ JOB ZIP</a>
+                  {% else %}
+                    <span class="link-btn dl" title="No archive ZIP is available for this row." style="opacity:0.55; cursor:not-allowed;">⬇ JOB ZIP</span>
+                  {% endif %}
                 </div>
               </td>
             </tr>
 
             <tr id="fasta-row-{{ j.job_id }}" class="fasta-row">
-              <td colspan="5" class="fasta-cell">
+              <td colspan="6" class="fasta-cell">
                 <div class="fasta-box">
                   <div class="fasta-head">
                     <div class="fasta-title">FASTA — {{ j.protein or "Unknown" }} (Job {{ j.job_id }})</div>
@@ -255,7 +347,7 @@
                       <button class="tron-btn" style="padding:6px 10px;" onclick="toggleFasta('{{ j.job_id }}')">CLOSE</button>
                     </div>
                   </div>
-                  <pre class="fasta" id="fasta-pre-{{ j.job_id }}">{{ j.fasta or "No FASTA found." }}</pre>
+                  <pre class="fasta" id="fasta-pre-{{ j.job_id }}">{{ j.fasta or j.fasta_missing_message or "No FASTA found." }}</pre>
                 </div>
               </td>
             </tr>
@@ -272,6 +364,8 @@
 <script>
   function applyFilter(){
     const q = (document.getElementById("filter").value || "").trim().toLowerCase();
+    const sourceQ = (document.getElementById("sourceFilter").value || "").trim().toLowerCase();
+    const statusQ = (document.getElementById("statusFilter").value || "").trim().toLowerCase();
     const rows = document.querySelectorAll(".job-row");
     let visible = 0;
 
@@ -279,8 +373,13 @@
       const job = r.getAttribute("data-job") || "";
       const protein = r.getAttribute("data-protein") || "";
       const query = r.getAttribute("data-query") || "";
+      const source = r.getAttribute("data-source") || "";
+      const status = r.getAttribute("data-status") || "";
 
-      const ok = (!q) || job.includes(q) || protein.includes(q) || query.includes(q);
+      const textOk = (!q) || job.includes(q) || protein.includes(q) || query.includes(q);
+      const sourceOk = (!sourceQ) || source.includes(sourceQ);
+      const statusOk = (!statusQ) || status === statusQ;
+      const ok = textOk && sourceOk && statusOk;
       r.style.display = ok ? "" : "none";
 
       // hide FASTA row too when filtered out
@@ -297,6 +396,8 @@
 
   function clearFilter(){
     document.getElementById("filter").value = "";
+    document.getElementById("sourceFilter").value = "";
+    document.getElementById("statusFilter").value = "";
     applyFilter();
   }
 

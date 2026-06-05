@@ -1257,6 +1257,209 @@ def _target_name_from_job(job_dir: Path) -> str:
         return ""
 
 
+def _read_archive_csv_row(fp: Path) -> Dict[str, str]:
+    try:
+        with fp.open("r", encoding="utf-8", errors="replace", newline="") as handle:
+            row = next(csv.DictReader(handle), {}) or {}
+        return {str(k or ""): str(v or "") for k, v in row.items()}
+    except Exception:
+        return {}
+
+
+def _read_archive_json(fp: Path) -> Dict[str, Any]:
+    try:
+        data = json.loads(fp.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
+def _sequence_length_from_fasta(fasta: str) -> int:
+    if not fasta:
+        return 0
+    seq = []
+    for line in str(fasta).splitlines():
+        line = line.strip()
+        if not line or line.startswith(">"):
+            continue
+        seq.append(re.sub(r"[^A-Za-z]", "", line))
+    return len("".join(seq))
+
+
+def _candidate_table_paths(job_dir: Path, name: str) -> List[Path]:
+    return [
+        job_dir / "job_files" / name,
+        job_dir / "job_files" / "TARGET_RESULTS" / name,
+        job_dir / name,
+        job_dir / "TARGET_RESULTS" / name,
+        job_dir / "archives" / name,
+        job_dir / "archives" / "TARGET_RESULTS" / name,
+    ]
+
+
+def _first_existing_archive_table(job_dir: Path, names: List[str]) -> Optional[Path]:
+    for name in names:
+        for candidate in _candidate_table_paths(job_dir, name):
+            if candidate.exists() and candidate.is_file():
+                return candidate
+    return None
+
+
+def _archive_job_metadata(job_dir: Path) -> Dict[str, Any]:
+    job_files = job_dir / "job_files"
+    input_row = _read_archive_csv_row(job_files / "input.csv")
+    protein_row = _read_archive_csv_row(job_files / "Protein_Data.csv")
+    job_meta = _read_archive_json(job_files / "job_metadata.json")
+    summary = _read_archive_json(job_files / "summary.json")
+    manifest = _load_archive_manifest(job_dir)
+
+    request_meta = job_meta.get("request") if isinstance(job_meta.get("request"), dict) else {}
+    summary_request = summary.get("request") if isinstance(summary.get("request"), dict) else {}
+
+    protein = (
+        str(input_row.get("protein") or "").strip()
+        or str(protein_row.get("protein") or "").strip()
+        or str(request_meta.get("target_name") or "").strip()
+        or str(summary_request.get("target_name") or summary.get("target_name") or "").strip()
+        or str(manifest.get("target_name") or manifest.get("protein") or "").strip()
+        or job_dir.name
+    )
+    search_query = (
+        str(input_row.get("search_query") or "").strip()
+        or str(protein_row.get("search_query") or "").strip()
+        or str(request_meta.get("search_query") or "").strip()
+        or str(summary_request.get("search_query") or summary.get("search_query") or "").strip()
+        or str(manifest.get("search_query") or "").strip()
+    )
+    fasta = (
+        str(input_row.get("fasta") or "").strip()
+        or str(protein_row.get("fasta") or "").strip()
+        or str(request_meta.get("fasta_seq") or "").strip()
+        or str(summary_request.get("fasta_seq") or summary.get("fasta_seq") or "").strip()
+    )
+
+    has_results = bool(_first_existing_archive_table(job_dir, ["Results_Display.csv", "Resolved_SASA_Summary.csv", "Resolved_SASA_Summary.tsv"]))
+    status = (
+        str(job_meta.get("status") or summary.get("status") or manifest.get("status") or "").strip().lower()
+        or ("completed" if has_results else "partial")
+    )
+
+    return {
+        "protein": protein,
+        "target_name": protein,
+        "search_query": search_query,
+        "fasta": fasta,
+        "fasta_len": _sequence_length_from_fasta(fasta),
+        "has_results": has_results,
+        "available": has_results,
+        "status": status,
+        "manifest": manifest,
+    }
+
+
+def _archive_job_counts(job_dir: Path, include_counts: bool = False) -> Dict[str, int]:
+    counts = {
+        "result_rows": 0,
+        "sdf_count": 0,
+        "svg_count": 0,
+        "war_pdb_count": 0,
+    }
+    if not include_counts:
+        return counts
+
+    try:
+        result_fp = _first_existing_archive_table(job_dir, ["Results_Display.csv"])
+        if result_fp:
+            with result_fp.open("r", encoding="utf-8", errors="replace", newline="") as handle:
+                counts["result_rows"] = sum(1 for _ in csv.DictReader(handle))
+    except Exception:
+        counts["result_rows"] = 0
+
+    for root in [
+        job_dir / "job_files" / "MCS_Output" / "MCS_SDF",
+        job_dir / "job_files" / "TARGET_RESULTS" / "MCS_Output" / "MCS_SDF",
+        job_dir / "MCS_Output" / "MCS_SDF",
+        job_dir / "TARGET_RESULTS" / "MCS_Output" / "MCS_SDF",
+    ]:
+        if root.is_dir():
+            counts["sdf_count"] = sum(1 for fp in root.glob("*.sdf") if fp.is_file())
+            break
+    for root in [
+        job_dir / "job_files" / "MCS_Output" / "MCS_SVG",
+        job_dir / "job_files" / "TARGET_RESULTS" / "MCS_Output" / "MCS_SVG",
+        job_dir / "MCS_Output" / "MCS_SVG",
+        job_dir / "TARGET_RESULTS" / "MCS_Output" / "MCS_SVG",
+    ]:
+        if root.is_dir():
+            counts["svg_count"] = sum(1 for fp in root.glob("*.svg") if fp.is_file())
+            break
+    for root in [
+        job_dir / "job_files" / "WAR_PDB",
+        job_dir / "job_files" / "TARGET_RESULTS" / "WAR_PDB",
+        job_dir / "WAR_PDB",
+        job_dir / "TARGET_RESULTS" / "WAR_PDB",
+    ]:
+        if root.is_dir():
+            counts["war_pdb_count"] = sum(1 for fp in root.rglob("*.pdb") if fp.is_file())
+            break
+    return counts
+
+
+def _should_include_hunter_job_dir(job_dir: Path, include_test: bool = False) -> bool:
+    name = job_dir.name
+    if not job_dir.is_dir():
+        return False
+    if name.startswith(".") or name.startswith("_"):
+        return False
+    if name == "_batches":
+        return False
+    if not include_test and (name == "test_handoff_https" or name.lower().startswith("test")):
+        return False
+    return bool(SAFE_JOB_ID_RE.fullmatch(name))
+
+
+def _archived_job_entry(job_dir: Path, include_counts: bool = False) -> Dict[str, Any]:
+    meta = _archive_job_metadata(job_dir)
+    manifest = meta.pop("manifest", {})
+    stat = job_dir.stat()
+    archive_zips = _archive_zip_paths(job_dir)
+    bundle_name = archive_zips[0].name if archive_zips else ""
+
+    entry = {
+        "job_id": job_dir.name,
+        "protein": meta.get("protein", ""),
+        "target_name": meta.get("target_name", ""),
+        "search_query": meta.get("search_query", ""),
+        "fasta": meta.get("fasta", ""),
+        "fasta_len": int(meta.get("fasta_len") or 0),
+        "has_results": bool(meta.get("has_results")),
+        "available": bool(meta.get("available")),
+        "status": str(meta.get("status") or "partial"),
+        "created_at": datetime.fromtimestamp(stat.st_ctime, tz=timezone.utc).isoformat().replace("+00:00", "Z"),
+        "modified_at": datetime.fromtimestamp(stat.st_mtime, tz=timezone.utc).isoformat().replace("+00:00", "Z"),
+        "source": "randy_hunter_job_archive",
+        "source_label": "RANDY ARCHIVE",
+        "detail_url": f"/backup/hunter-job/{job_dir.name}",
+        "bundle_relative_path": f"archives/{bundle_name}" if bundle_name else "",
+        "bundle_available": bool(bundle_name),
+        "archive_layout": {
+            "job_root": job_dir.name,
+            "job_files": f"{job_dir.name}/job_files",
+            "manifest": f"{job_dir.name}/job_archive_manifest.json",
+            "archives": f"{job_dir.name}/archives",
+        },
+        "counts": _archive_job_counts(job_dir, include_counts=include_counts),
+        "manifest_summary": {
+            "stored_at_utc": manifest.get("stored_at_utc", ""),
+            "archive_size_bytes": manifest.get("archive_size_bytes", 0),
+            "source": manifest.get("source", ""),
+        },
+    }
+    if not entry["has_results"] and (job_dir / "job_files").is_dir():
+        entry["status"] = entry["status"] or "partial"
+    return entry
+
+
 def _available_artifact_dirs(job_dir: Path) -> Dict[str, List[str]]:
     specs = {
         "sdf_dirs": [
@@ -1440,28 +1643,30 @@ def backup_hunter_jobs():
     if not ok:
         message, status_code = error
         return jsonify({"ok": False, "error": message}), status_code
-    limit = parse_limit(default=100, maximum=500)
+    limit = parse_limit(default=250, maximum=5000)
+    try:
+        offset = max(0, int(str(request.args.get("offset") or "0").strip() or 0))
+    except Exception:
+        offset = 0
+    include_counts = str(request.args.get("include_counts") or "").strip().lower() in {"1", "true", "yes"}
+    include_test = str(request.args.get("include_test") or "").strip().lower() in {"1", "true", "yes"}
     init_storage()
-    jobs = []
-    for job_dir in sorted([p for p in HUNTER_JOBS_DIR.iterdir() if p.is_dir()], key=lambda p: p.stat().st_mtime, reverse=True)[:limit]:
-        archive_manifest = {}
-        for name in ["job_archive_manifest.json", "manifest.json"]:
-            fp = job_dir / name
-            if fp.exists():
-                try:
-                    archive_manifest = json.loads(fp.read_text(encoding="utf-8"))
-                    break
-                except Exception:
-                    archive_manifest = {}
-        jobs.append({
-            "job_id": job_dir.name,
-            "remote_dir": str(job_dir),
-            "file_count": len(_safe_file_records(job_dir, limit=100000)),
-            "option_count": len(_scan_hunter_job_options(job_dir.name, job_dir)),
-            "manifest": archive_manifest,
-            "detail_url": f"/backup/hunter-job/{job_dir.name}",
-        })
-    return jsonify({"ok": True, "count": len(jobs), "jobs": jobs})
+    candidates = [
+        p for p in HUNTER_JOBS_DIR.iterdir()
+        if _should_include_hunter_job_dir(p, include_test=include_test)
+    ]
+    candidates.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+    selected = candidates[offset:offset + limit]
+    jobs = [_archived_job_entry(job_dir, include_counts=include_counts) for job_dir in selected]
+    return jsonify({
+        "ok": True,
+        "source": "randy_hunter_job_archive",
+        "root_configured": HUNTER_JOBS_DIR.exists(),
+        "count": len(candidates),
+        "returned": len(jobs),
+        "offset": offset,
+        "jobs": jobs,
+    })
 
 
 @APP.get("/backup/hunter-job/<job_id>")
@@ -1504,6 +1709,9 @@ def backup_hunter_job_detail(job_id: str):
             }
 
     archive_manifest = _load_archive_manifest(job_dir)
+    meta = _archive_job_metadata(job_dir)
+    archive_zips = _archive_zip_paths(job_dir)
+    bundle_name = archive_zips[0].name if archive_zips else ""
     available_tables = {
         table_name: info["relative_path"]
         for table_name, info in tables.items()
@@ -1522,13 +1730,21 @@ def backup_hunter_job_detail(job_id: str):
         "ok": True,
         "job_id": job_id,
         "source": "randy_hunter_job_archive",
-        "remote_dir": str(job_dir),
-        "target_name": _target_name_from_job(job_dir),
+        "target_name": meta.get("target_name") or _target_name_from_job(job_dir),
+        "protein": meta.get("protein", ""),
+        "search_query": meta.get("search_query", ""),
+        "fasta": meta.get("fasta", ""),
+        "fasta_len": int(meta.get("fasta_len") or 0),
+        "has_results": bool(meta.get("has_results")),
+        "available": bool(meta.get("available")),
+        "status": str(meta.get("status") or "partial"),
         "tables": tables,
         "available_tables": available_tables,
         "available_artifacts": _available_artifact_dirs(job_dir),
         "archive_layout": archive_layout,
         "zip_index": _zip_index_summary(job_dir),
+        "bundle_relative_path": f"archives/{bundle_name}" if bundle_name else "",
+        "bundle_available": bool(bundle_name),
         "options": options,
         "option_count": len(options),
         "files": [{**rec, "url": _file_url(job_id, rec["relative_path"])} for rec in files],

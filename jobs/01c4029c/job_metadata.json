@@ -6,10 +6,21 @@
   "job_dir": "/Users/jxs794/Documents/warhead-hunter/jobs/01c4029c",
   "job_id": "01c4029c",
   "last_log_at": "",
+  "outputs": {
+    "bundle_url": "/api/jobs/01c4029c/bundle",
+    "files_url": "/api/jobs/01c4029c/files",
+    "has_results": false,
+    "job_dir": "jobs/01c4029c",
+    "legacy_download_url": "/api/jobs/01c4029c/download",
+    "public_bundle_path": "",
+    "results_url": "/api/jobs/01c4029c/results",
+    "war_pdbs_url": "/api/jobs/01c4029c/war-pdbs"
+  },
+  "request": {},
   "results_ready": false,
   "started_at": "",
   "status": "unknown",
   "step_started_at": "",
   "target": "",
-  "updated_at": "2026-06-05T08:31:00Z"
+  "updated_at": "2026-06-05T19:12:30Z"
 }
