@@ -126,6 +126,8 @@ secrets*.json
 !jobs/d6706e03/
 !jobs/d6706e03/**
 
+!jobs/3aeb3b71/
+!jobs/3aeb3b71/**
 
 # ------------------------------------------------------------
 # Never commit transient junk inside jobs

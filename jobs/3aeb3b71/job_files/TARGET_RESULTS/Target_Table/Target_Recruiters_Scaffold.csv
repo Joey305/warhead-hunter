@@ -1,0 +1,3 @@
+Protein,Recruiter,SMILES,Scaffold_ID,Scaffold_SMILES,Scaffold_Hash
+PRMT5,84W,Cn1cc(cn1)c2ccc3c(c2)C(=NNC3=O)C[NH3+],PRMT5_SCAF_1,O=c1[nH]ncc2cc(-c3cn[nH]c3)ccc12,c2759c6a
+PRMT5,MTA,CSC[C@@H]1[C@H]([C@H]([C@@H](O1)n2cnc3c2ncnc3N)O)O,PRMT5_SCAF_2,c1ncc2ncn([C@H]3CCCO3)c2n1,bec95c18

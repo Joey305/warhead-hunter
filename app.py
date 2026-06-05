@@ -438,6 +438,13 @@ CURATED_EXAMPLE_CONFIG = [
         "protein": "DYRK1A",
         "use_case": "kinase inhibitor structure example",
     },
+    {
+        "job_id": "3aeb3b71",
+        "label": "PRMT5",
+        "protein": "PRMT5",
+        "use_case": "methyltransferase inhibitor structure example",
+    },
+
 ]
 
 DEFAULT_CURATED_EXAMPLE_JOB_ID = CURATED_EXAMPLE_CONFIG[0]["job_id"]

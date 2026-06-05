@@ -1,0 +1,3 @@
+protein,pdb,chain,ligand,MW,Name
+PRMT5,7s1q,A,MTA,297.334,5'-DEOXY-5'-METHYLTHIOADENOSINE
+PRMT5,7s1q,A,84W,256.283,"[7-(1-methyl-1H-pyrazol-4-yl)-4-oxo-3,4-dihydrophthalazin-1-yl]methanaminium"

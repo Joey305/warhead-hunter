@@ -1,0 +1,2 @@
+Ligand,Target,pdb_id,Chain,Residue_ID,basename,stage,timeout_sec,error_type,error_message
+84W,PRMT5,7s1q,A,702,7s1q_A_84W_702,BUILD_ROWS,,ITEM_FAILED,Size mismatch: SMILES=19 vs 3D=33

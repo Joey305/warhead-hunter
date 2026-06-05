@@ -1,0 +1,3 @@
+Target,pdb_id,Warhead,Residue_ID,Total_atoms,Exposed_atoms,SASA_in_complex_A2,%Exposed,%Buried,Chain,LigandX_Source,Ligand5_Source,Ligand_Resolved,Warhead_5,SMILES,Ion_Dropped,Ion_Drop_Reason,Parent_SMILES,Salt_Stripped
+PRMT5,7s1q,84W,702,33,10,41.983,0.303,0.697,A,84W,84W,84W,,Cn1cc(cn1)c2ccc3c(c2)C(=NNC3=O)C[NH3+],False,,Cn1cc(-c2ccc3c(=O)[nH]nc(C[NH3+])c3c2)cn1,False
+PRMT5,7s1q,MTA,701,20,4,12.178,0.2,0.8,A,MTA,MTA,MTA,,CSC[C@@H]1[C@H]([C@H]([C@@H](O1)n2cnc3c2ncnc3N)O)O,False,,CSC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1O,False

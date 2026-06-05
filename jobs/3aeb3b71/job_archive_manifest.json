@@ -1,0 +1,412 @@
+{
+  "archive_file": "/home/jxs794/PROTAC_BUILDER/warhead_hunter/hunter_jobs/3aeb3b71/archives/3aeb3b71_warhead_hunter_full_job.zip",
+  "archive_size_bytes": 2943693,
+  "extract_dir": "/home/jxs794/PROTAC_BUILDER/warhead_hunter/hunter_jobs/3aeb3b71/job_files",
+  "extracted_file_count": 113,
+  "extracted_files_sample": [
+    {
+      "relative_path": "Ligand_3D_Atoms.csv",
+      "size_bytes": 3023
+    },
+    {
+      "relative_path": "Ligand_Metadata.csv",
+      "size_bytes": 1762
+    },
+    {
+      "relative_path": "MCS_Output/Ligand_AllAtoms_Map.csv",
+      "size_bytes": 5710
+    },
+    {
+      "relative_path": "MCS_Output/Ligand_MCS_Failures.csv",
+      "size_bytes": 62
+    },
+    {
+      "relative_path": "MCS_Output/Ligand_MCS_Item_Failures.csv",
+      "size_bytes": 186
+    },
+    {
+      "relative_path": "MCS_Output/Ligand_MCS_Map.csv",
+      "size_bytes": 4275
+    },
+    {
+      "relative_path": "MCS_Output/Ligand_MCS_SASA.csv",
+      "size_bytes": 4452
+    },
+    {
+      "relative_path": "MCS_Output/Ligand_MCS_SASA_ALL_ATOMS.csv",
+      "size_bytes": 5963
+    },
+    {
+      "relative_path": "MCS_Output/Ligand_MCS_SDF_Failures.csv",
+      "size_bytes": 54
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/7s1q_A_84W_702.sdf",
+      "size_bytes": 2856
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SDF/7s1q_A_MTA_701.sdf",
+      "size_bytes": 1777
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SVG/7s1q_A_84W_702_exposed.svg",
+      "size_bytes": 12685
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SVG/7s1q_A_84W_702_plain.svg",
+      "size_bytes": 12685
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SVG/7s1q_A_MTA_701_exposed.svg",
+      "size_bytes": 18806
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SVG/7s1q_A_MTA_701_plain.svg",
+      "size_bytes": 18806
+    },
+    {
+      "relative_path": "MCS_Output/MCS_SVG/SVG_failures.csv",
+      "size_bytes": 19
+    },
+    {
+      "relative_path": "Protein_Data.csv",
+      "size_bytes": 944
+    },
+    {
+      "relative_path": "Resolved_SASA_Summary.csv",
+      "size_bytes": 542
+    },
+    {
+      "relative_path": "Results_Display.csv",
+      "size_bytes": 482
+    },
+    {
+      "relative_path": "TARGET_RESULTS/3DSASAmapped.csv",
+      "size_bytes": 1607
+    },
+    {
+      "relative_path": "TARGET_RESULTS/5CharMAP.csv",
+      "size_bytes": 36
+    },
+    {
+      "relative_path": "TARGET_RESULTS/CIF_Download_Manifest.csv",
+      "size_bytes": 459
+    },
+    {
+      "relative_path": "TARGET_RESULTS/CIFdata.csv",
+      "size_bytes": 144
+    },
+    {
+      "relative_path": "TARGET_RESULTS/ChainRenameMAP.csv",
+      "size_bytes": 25
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Ligand_3D_Atoms.csv",
+      "size_bytes": 3023
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Ligand_3D_Atoms_with_SASA.csv",
+      "size_bytes": 3222
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Ligand_Metadata.csv",
+      "size_bytes": 1762
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Ligand_Metadata_Failures.csv",
+      "size_bytes": 21
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Ligand_PDB_Index.csv",
+      "size_bytes": 70
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/Ligand_AllAtoms_Map.csv",
+      "size_bytes": 5710
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/Ligand_MCS_Failures.csv",
+      "size_bytes": 62
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/Ligand_MCS_Item_Failures.csv",
+      "size_bytes": 186
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/Ligand_MCS_Map.csv",
+      "size_bytes": 4275
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/Ligand_MCS_SASA.csv",
+      "size_bytes": 4452
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/Ligand_MCS_SASA_ALL_ATOMS.csv",
+      "size_bytes": 5963
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/Ligand_MCS_SDF_Failures.csv",
+      "size_bytes": 54
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7s1q_A_84W_702.sdf",
+      "size_bytes": 2856
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7s1q_A_MTA_701.sdf",
+      "size_bytes": 1777
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SVG/7s1q_A_84W_702_exposed.svg",
+      "size_bytes": 12685
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SVG/7s1q_A_84W_702_plain.svg",
+      "size_bytes": 12685
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SVG/7s1q_A_MTA_701_exposed.svg",
+      "size_bytes": 18806
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SVG/7s1q_A_MTA_701_plain.svg",
+      "size_bytes": 18806
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SVG/SVG_failures.csv",
+      "size_bytes": 19
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Resolved_SASA_Summary.csv",
+      "size_bytes": 542
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Target_Table/Ligand_Atom_Map.csv",
+      "size_bytes": 359
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Target_Table/Ligand_SMILES_Map.csv",
+      "size_bytes": 121
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Target_Table/Ligand_Target_Map.csv",
+      "size_bytes": 43
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Target_Table/SMILES_Ligand_Map.csv",
+      "size_bytes": 121
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Target_Table/Target_Ligand_Map.csv",
+      "size_bytes": 35
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Target_Table/Target_Recruiters_Scaffold.csv",
+      "size_bytes": 281
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Target_Table/Target_SMILES_Map.csv",
+      "size_bytes": 119
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Target_Table/Target_Scaffold.log",
+      "size_bytes": 63
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Target_Table/Target_Scaffold_Data.csv",
+      "size_bytes": 511
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Target_Table/Target_Scaffold_Frequency.csv",
+      "size_bytes": 78
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Target_Table/Target_Scaffold_Summary.csv",
+      "size_bytes": 92
+    },
+    {
+      "relative_path": "TARGET_RESULTS/WAR_PDB/PRMT5/7s1q_A_84W.pdb",
+      "size_bytes": 411893
+    },
+    {
+      "relative_path": "TARGET_RESULTS/WAR_PDB/PRMT5/7s1q_A_MTA.pdb",
+      "size_bytes": 410840
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Warhead_SASA_atoms.csv",
+      "size_bytes": 951
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Warhead_SASA_summary.csv",
+      "size_bytes": 193
+    },
+    {
+      "relative_path": "TARGET_RESULTS/chain_similarity.csv",
+      "size_bytes": 83
+    },
+    {
+      "relative_path": "TARGET_RESULTS/filtered_data.csv",
+      "size_bytes": 197
+    },
+    {
+      "relative_path": "TARGET_RESULTS/queries.csv",
+      "size_bytes": 37
+    },
+    {
+      "relative_path": "WAR_PDB/PRMT5/7s1q_A_84W.pdb",
+      "size_bytes": 411893
+    },
+    {
+      "relative_path": "WAR_PDB/PRMT5/7s1q_A_MTA.pdb",
+      "size_bytes": 410840
+    },
+    {
+      "relative_path": "Warhead_SASA_atoms.csv",
+      "size_bytes": 951
+    },
+    {
+      "relative_path": "job.log",
+      "size_bytes": 17651
+    },
+    {
+      "relative_path": "job_metadata.json",
+      "size_bytes": 2472
+    },
+    {
+      "relative_path": "10_2DmappingExtraction.py",
+      "size_bytes": 3077
+    },
+    {
+      "relative_path": "11_mcsMatcher-original.py",
+      "size_bytes": 42490
+    },
+    {
+      "relative_path": "11_mcsMatcher.py",
+      "size_bytes": 72698
+    },
+    {
+      "relative_path": "12_Results.py",
+      "size_bytes": 2387
+    },
+    {
+      "relative_path": "13_mcsSASA_svg.py",
+      "size_bytes": 14252
+    },
+    {
+      "relative_path": "14_SVGmkr.py",
+      "size_bytes": 32578
+    },
+    {
+      "relative_path": "15_ResultsMerged.py",
+      "size_bytes": 2169
+    },
+    {
+      "relative_path": "16_ResultsDisplay.py",
+      "size_bytes": 13188
+    },
+    {
+      "relative_path": "17_obabelSDF.py",
+      "size_bytes": 3109
+    },
+    {
+      "relative_path": "18_CleanJobDirNzip.py",
+      "size_bytes": 43410
+    },
+    {
+      "relative_path": "1_GRABBER.py",
+      "size_bytes": 12592
+    },
+    {
+      "relative_path": "2_SQchk.py",
+      "size_bytes": 15054
+    },
+    {
+      "relative_path": "3_PDBmkr.py",
+      "size_bytes": 22751
+    },
+    {
+      "relative_path": "4_PDBfxr.py",
+      "size_bytes": 9550
+    },
+    {
+      "relative_path": "5CharMAP.csv",
+      "size_bytes": 36
+    },
+    {
+      "relative_path": "5_PDBcln.py",
+      "size_bytes": 5667
+    },
+    {
+      "relative_path": "6_SASA.py",
+      "size_bytes": 11505
+    },
+    {
+      "relative_path": "7_metadata.py",
+      "size_bytes": 38320
+    },
+    {
+      "relative_path": "8_scaffold.py",
+      "size_bytes": 8823
+    },
+    {
+      "relative_path": "9_2Dmapping.py",
+      "size_bytes": 3952
+    },
+    {
+      "relative_path": "CIF_Download_Manifest.csv",
+      "size_bytes": 459
+    },
+    {
+      "relative_path": "CIFdata.csv",
+      "size_bytes": 144
+    },
+    {
+      "relative_path": "ChainRenameMAP.csv",
+      "size_bytes": 25
+    },
+    {
+      "relative_path": "Ligand_Metadata_Failures.csv",
+      "size_bytes": 21
+    },
+    {
+      "relative_path": "Ligand_PDB_Index.csv",
+      "size_bytes": 70
+    },
+    {
+      "relative_path": "NON_LIGAND_CODES.py",
+      "size_bytes": 2009
+    },
+    {
+      "relative_path": "Skip4.txt",
+      "size_bytes": 60
+    },
+    {
+      "relative_path": "Target_Table/Ligand_Atom_Map.csv",
+      "size_bytes": 359
+    },
+    {
+      "relative_path": "Target_Table/Ligand_SMILES_Map.csv",
+      "size_bytes": 121
+    },
+    {
+      "relative_path": "Target_Table/Ligand_Target_Map.csv",
+      "size_bytes": 43
+    },
+    {
+      "relative_path": "Target_Table/SMILES_Ligand_Map.csv",
+      "size_bytes": 121
+    },
+    {
+      "relative_path": "Target_Table/Target_Ligand_Map.csv",
+      "size_bytes": 35
+    },
+    {
+      "relative_path": "Target_Table/Target_Recruiters_Scaffold.csv",
+      "size_bytes": 281
+    }
+  ],
+  "job_id": "3aeb3b71",
+  "source": "warhead-hunter-job-runner",
+  "stored_at_utc": "2026-06-05T08:43:06.451605Z",
+  "stored_dir": "/home/jxs794/PROTAC_BUILDER/warhead_hunter/hunter_jobs/3aeb3b71"
+}

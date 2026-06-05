@@ -1,0 +1,2 @@
+pdb_id,requested_pdb_id,target,source,query,download_url,status,intended_path,actual_path,exists,size_bytes,error,downloaded_at
+7s1q,7s1q,PRMT5,rcsb,"Protein arginine N-methyltransferase 5 5'-DEOXY-5'-METHYLTHIOADENOSINE MTA [7-(1-methyl-1H-pyrazol-4-yl)-4-oxo-3,4-dihydrophthalazin-1-yl]methanaminium 84W bound inhibitor Homo sapiens",https://files.rcsb.org/download/7S1Q.cif,verified,WAR/PRMT5/7s1q.cif,WAR/PRMT5/7s1q.cif,true,1620846,,2026-06-05T08:42:53Z

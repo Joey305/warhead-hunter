@@ -1,0 +1,3 @@
+Target,pdb_id,Chain,Warhead,Residue_ID,SMILES,%Exposed,pdb_path,sdf_path,sdf_available
+PRMT5,7s1q,A,84W,702,Cn1cc(-c2ccc3c(=O)[nH]nc(C[NH3+])c3c2)cn1,0.303,/app/jobs/3aeb3b71/WAR_PDB/PRMT5/7s1q_A_84W.pdb,/app/jobs/3aeb3b71/TARGET_RESULTS/MCS_Output/MCS_SDF/7s1q_A_84W_702.sdf,True
+PRMT5,7s1q,A,MTA,701,CSC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1O,0.2,/app/jobs/3aeb3b71/WAR_PDB/PRMT5/7s1q_A_MTA.pdb,/app/jobs/3aeb3b71/TARGET_RESULTS/MCS_Output/MCS_SDF/7s1q_A_MTA_701.sdf,True

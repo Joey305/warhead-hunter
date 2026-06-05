@@ -1,0 +1,59 @@
+{
+  "backup": {
+    "archive_path": "",
+    "archive_required": false,
+    "attempted": false,
+    "backup_on_complete": true,
+    "backup_on_failure": true,
+    "base_url": "https://randy.rove-vernier.ts.net/backup",
+    "configured": true,
+    "endpoint": "https://randy.rove-vernier.ts.net/backup/hunter-job-archive",
+    "error": null,
+    "finished_at": "",
+    "job_id": "3aeb3b71",
+    "max_bytes": 300000000,
+    "ok": false,
+    "provider": "randy",
+    "reason": "",
+    "remote_job_id": "",
+    "started_at": "2026-06-05T08:43:02Z",
+    "status": "skipped",
+    "timeout_seconds": 60,
+    "token_present": true,
+    "uploaded_bytes": 0,
+    "uploaded_files": 0,
+    "verification": {
+      "artifact_ok": false,
+      "job_exists": false,
+      "ok": false,
+      "status": "not_attempted",
+      "table_ok": false,
+      "table_path": ""
+    }
+  },
+  "created_at": "2026-06-05T08:42:52Z",
+  "current_step": "",
+  "error": null,
+  "finished_at": "2026-06-05 08:43:02",
+  "job_dir": "/app/jobs/3aeb3b71",
+  "job_id": "3aeb3b71",
+  "last_log_at": "2026-06-05T08:43:02Z",
+  "outputs": {
+    "bundle_url": "/api/jobs/3aeb3b71/bundle",
+    "files_url": "/api/jobs/3aeb3b71/files",
+    "job_dir": "jobs/3aeb3b71",
+    "results_url": "/api/jobs/3aeb3b71/results"
+  },
+  "request": {
+    "fasta_seq": ">7S1Q_1|Chains A|Protein arginine N-methyltransferase 5|Homo sapiens (9606)\nMDYKDDDDKAAMAVGGAGGSRVSSGRDLNCVPEIADTLGAVAKQGFDFLCMPVFHPRFKREFIQEPAKNRPGPQTRSDLLLSGRDWNTLIVGKLSPWIRPDSKVEKIRRNSEAAMLQELNFGAYLGLPAFLLPLNQEDNTNLARVLTNHIHTGHHSSMFWMRVPLVAPEDLRDDIIENAPTTHTEEYSGEEKTWMWWHNFRTLCDYSKRIAVALEIGADLPSNHVIDRWLGEPIKAAILPTSIFLTNKKGFPVLSKMHQRLIFRLLKLEVQFIITGTNHHSEKEFCSYLQYLEYLSQNRPPPNAYELFAKGYEDYLQSPLQPLMDNLESQTYEVFEKDPIKYSQYQQAIYKCLLDRVPEEEKDTNVQVLMVLGAGRGPLVNASLRAAKQADRRIKLYAVEKNPNAVVTLENWQFEEWGSQVTVVSSDMREWVAPEKADIIVSELLGSFADNELSPECLDGAQHFLKDDGVSIPGEYTSFLAPISSSKLYNEVRACREKDRDPEAQFEMPYVVRLHNFHQLSAPQPCFTFSHPNRDPMIDNNRYCTLEFPVEVNTVLHGFAGYFETVLYQDITLSIRPETHSPGMFSWFPILFPIKQPITVREGQTICVRFWRCSNSKKVWYEWAVTAPVCSAIHNPTGRSYTIGL",
+    "search_query": "Protein arginine N-methyltransferase 5 5'-DEOXY-5'-METHYLTHIOADENOSINE MTA [7-(1-methyl-1H-pyrazol-4-yl)-4-oxo-3,4-dihydrophthalazin-1-yl]methanaminium 84W bound inhibitor Homo sapiens",
+    "target_name": "PRMT5"
+  },
+  "results_ready": true,
+  "source": "web",
+  "started_at": "2026-06-05 08:42:52",
+  "status": "completed",
+  "step_started_at": "08:43:02",
+  "target": "PRMT5",
+  "updated_at": "2026-06-05T08:43:02Z"
+}
