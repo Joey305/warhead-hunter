@@ -240,17 +240,47 @@
   .result-card-title {
     font-size: clamp(0.98rem, 4.6vw, 1.14rem);
     letter-spacing: 0.1em;
-    margin: 4px auto 8px;
-    padding: 6px 12px;
-  }
-
-  .ligand-metrics {
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    margin: 2px auto 6px;
+    padding: 5px 10px;
   }
 
   .metric {
     min-width: 0;
+  }
+
+  .result-card-mobile-meta {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .result-card-mobile-pill {
+    min-width: 0;
+    padding: 8px 9px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.38);
+    border: 1px solid rgba(0, 255, 255, 0.1);
+    box-shadow: inset 0 0 10px rgba(0, 217, 255, 0.04);
+  }
+
+  .result-card-mobile-label {
+    display: block;
+    margin-bottom: 3px;
+    color: rgba(0, 217, 255, 0.82);
+    font-size: 0.56rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .result-card-mobile-value {
+    display: block;
+    color: var(--tron-yellow);
+    font-family: "JetBrains Mono", "Consolas", monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
   }
 
   .viewport-loading-card {
@@ -281,7 +311,7 @@
   }
 
   .cc-left {
-    grid-auto-columns: minmax(min(84vw, 300px), 1fr);
+    grid-auto-columns: minmax(min(78vw, 272px), 1fr);
     padding-bottom: 10px;
   }
 
@@ -308,35 +338,46 @@
   }
 
   .cc-left {
-    grid-auto-columns: minmax(min(88vw, 308px), 1fr);
-    gap: 10px;
+    grid-auto-columns: minmax(min(76vw, 250px), 1fr);
+    gap: 9px;
   }
 
   .result-card {
-    padding: 10px;
+    padding: 8px;
   }
 
   .result-card-top {
-    gap: 5px;
-    padding: 7px 8px;
-    margin: -2px -2px 8px;
+    gap: 4px;
+    padding: 6px 7px;
+    margin: -1px -1px 7px;
   }
 
   .pdb-chip,
   .exp-chip {
-    font-size: 0.7rem;
+    font-size: 0.66rem;
   }
 
-  .metric {
-    padding: 9px 10px;
+  .ligand-metrics {
+    display: none;
   }
 
-  .metric-label {
-    margin-bottom: 4px;
+  .result-card-mobile-meta {
+    gap: 6px;
+    margin-top: 6px;
   }
 
-  .metric-main {
-    font-size: 0.98rem;
+  .result-card-mobile-pill {
+    padding: 7px 8px;
+    border-radius: 10px;
+  }
+
+  .result-card-mobile-label {
+    font-size: 0.53rem;
+    margin-bottom: 2px;
+  }
+
+  .result-card-mobile-value {
+    font-size: 0.74rem;
   }
 
   .map-legend {

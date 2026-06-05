@@ -156,6 +156,21 @@
             </div>
 
           </div>
+
+          <div class="result-card-mobile-meta" aria-hidden="true">
+            <div class="result-card-mobile-pill">
+              <span class="result-card-mobile-label">Atoms</span>
+              <span class="result-card-mobile-value">{{ p_expat }}/{{ p_tot }}</span>
+            </div>
+            <div class="result-card-mobile-pill">
+              <span class="result-card-mobile-label">Buried</span>
+              <span class="result-card-mobile-value">{{ p_bur|round(1) }}%</span>
+            </div>
+            <div class="result-card-mobile-pill">
+              <span class="result-card-mobile-label">SASA</span>
+              <span class="result-card-mobile-value">{{ p_sasa|round(1) }} Å²</span>
+            </div>
+          </div>
         </div>
       {% endfor %}
     </div>

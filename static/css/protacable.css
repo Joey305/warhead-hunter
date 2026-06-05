@@ -838,6 +838,10 @@
   box-shadow: 0 0 10px rgba(255,215,0,0.25);
 }
 
+.result-card-mobile-meta{
+  display: none;
+}
+
 
 /* =========================
    % EXPOSED VISIBILITY BOOST
