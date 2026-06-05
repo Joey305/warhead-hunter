@@ -1,0 +1,59 @@
+{
+  "backup": {
+    "archive_path": "",
+    "archive_required": false,
+    "attempted": false,
+    "backup_on_complete": true,
+    "backup_on_failure": true,
+    "base_url": "https://randy.rove-vernier.ts.net/backup",
+    "configured": true,
+    "endpoint": "https://randy.rove-vernier.ts.net/backup/hunter-job-archive",
+    "error": null,
+    "finished_at": "",
+    "job_id": "01c4029c",
+    "max_bytes": 300000000,
+    "ok": false,
+    "provider": "randy",
+    "reason": "",
+    "remote_job_id": "",
+    "started_at": "2026-06-05T08:22:57Z",
+    "status": "skipped",
+    "timeout_seconds": 60,
+    "token_present": true,
+    "uploaded_bytes": 0,
+    "uploaded_files": 0,
+    "verification": {
+      "artifact_ok": false,
+      "job_exists": false,
+      "ok": false,
+      "status": "not_attempted",
+      "table_ok": false,
+      "table_path": ""
+    }
+  },
+  "created_at": "2026-06-05T08:10:28Z",
+  "current_step": "",
+  "error": null,
+  "finished_at": "2026-06-05 08:22:57",
+  "job_dir": "/app/jobs/01c4029c",
+  "job_id": "01c4029c",
+  "last_log_at": "2026-06-05T08:22:57Z",
+  "outputs": {
+    "bundle_url": "/api/jobs/01c4029c/bundle",
+    "files_url": "/api/jobs/01c4029c/files",
+    "job_dir": "jobs/01c4029c",
+    "results_url": "/api/jobs/01c4029c/results"
+  },
+  "request": {
+    "fasta_seq": ">8SIH_1|Chains A|Histone-arginine methyltransferase CARM1|Homo sapiens (9606)\nMHHHHHHSSGRENLYFQGRTEESSAVQYFQFYGYLSQQQNMMQDYVRTGTYQRAILQNHTDFKDKIVLDVGCGSGILSFFAAQAGARKIYAVEASTMAQHAEVLVKSNNLTDRIVVIPGKVEEVSLPEQVDIIISEPMGYMLFNERMLESYLHAKKYLKPSGNMFPTIGDVHLAPFTDEQLYMEQFTKANFWYQPSFHGVDLSALRGAAVDEYFRQPVVDTFDIRILMAKSVKYTVNFLEAKEGDLHRIEIPFKFHMLHSGLVHGLAFWFDVAFIGSIMTVWLSTAPTEPLTHWYQVRCLFQSPLFAKAGDTLSGTCLLIANKRQSYDISIVAQVDQTGSKSSNLLDLKNPFFRYTGTT",
+    "search_query": "Histone-arginine methyltransferase CARM1 5'-{[2-(benzylcarbamamido)ethyl][3-(N'-cyclopentylcarbamimidamido)propyl]amino}-5'-deoxyadenosine I1K CALCIUM ION CA bound inhibitor Homo sapiens",
+    "target_name": "PRMT4"
+  },
+  "results_ready": true,
+  "source": "web",
+  "started_at": "2026-06-05 08:10:28",
+  "status": "completed",
+  "step_started_at": "08:22:55",
+  "target": "PRMT4",
+  "updated_at": "2026-06-05T08:22:57Z"
+}

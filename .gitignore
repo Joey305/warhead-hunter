@@ -108,11 +108,14 @@ secrets*.json
 
 # ------------------------------------------------------------
 # Warhead Hunter curated / public demo jobs
-# These are the four example jobs shown on the API docs page.
+# These are the curated example jobs shown on the public examples/API pages.
 # ------------------------------------------------------------
 
 !jobs/b281996d/
 !jobs/b281996d/**
+
+!jobs/01c4029c/
+!jobs/01c4029c/**
 
 !jobs/032917e1/
 !jobs/032917e1/**

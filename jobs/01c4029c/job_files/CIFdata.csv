@@ -1,0 +1,2 @@
+protein,n_candidates,n_attempted,n_downloaded,n_verified,outdir,protein_dir,manifest_path
+PRMT4,77,77,77,77,WAR,WAR/PRMT4,CIF_Download_Manifest.csv

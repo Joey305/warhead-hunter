@@ -421,6 +421,12 @@ CURATED_EXAMPLE_CONFIG = [
         "use_case": "E3 ligase recruiter / PROTAC-oriented example",
     },
     {
+        "job_id": "01c4029c",
+        "label": "PRMT4 / CARM1",
+        "protein": "PRMT4",
+        "use_case": "methyltransferase inhibitor structure example",
+    },
+    {
         "job_id": "d750cfea",
         "label": "HIV-1 Protease",
         "protein": "Protease",
@@ -743,6 +749,10 @@ def target_results_dir(job_id: str) -> Path:
     return job_root(job_id) / "TARGET_RESULTS"
 
 
+def extracted_job_root(job_id: str) -> Path:
+    return job_root(job_id) / "job_files"
+
+
 def _first_existing(paths: List[Path]) -> Optional[Path]:
     for p in paths:
         if p and p.exists():
@@ -801,6 +811,8 @@ def load_results_display(job_id: str) -> Optional[pd.DataFrame]:
     build cards from RANDY's archived Results_Display.csv.
     """
     fp = _first_existing([
+        extracted_job_root(job_id) / "TARGET_RESULTS" / "Results_Display.csv",
+        extracted_job_root(job_id) / "Results_Display.csv",
         target_results_dir(job_id) / "Results_Display.csv",
         job_root(job_id) / "Results_Display.csv",
     ])
@@ -1945,8 +1957,11 @@ def _read_protein_data_csv(job_path: Path) -> Optional[Dict[str, str]]:
     Handles your format where fasta includes a header line starting with ">"
     and the sequence continues on next lines (possibly quoted).
     """
-    fp = job_path / "Protein_Data.csv"
-    if not fp.exists():
+    fp = _first_existing([
+        job_path / "Protein_Data.csv",
+        job_path / "job_files" / "Protein_Data.csv",
+    ])
+    if not fp:
         return None
 
     try:
@@ -2005,6 +2020,15 @@ def _fasta_length(fasta: str) -> int:
 def _job_meta_from_dir(job_dir: Path) -> Dict[str, Any]:
     protein_meta = _read_protein_data_csv(job_dir) or {}
     disk_meta = _read_job_metadata(job_dir.name) or {}
+    if not disk_meta:
+        archived_meta_path = job_dir / "job_files" / "job_metadata.json"
+        if archived_meta_path.exists():
+            try:
+                loaded = json.loads(archived_meta_path.read_text(encoding="utf-8"))
+                if isinstance(loaded, dict):
+                    disk_meta = loaded
+            except Exception:
+                disk_meta = {}
     hydrated = disk_jobs.hydrate_job_from_disk(job_dir.name, get_jobs_root(), JOB_STORE.get(job_dir.name)) or {}
     request_meta = disk_meta.get("request") or {}
     fasta = (
@@ -2028,6 +2052,13 @@ def _job_meta_from_dir(job_dir: Path) -> Dict[str, Any]:
         str(request_meta.get("search_query") or "").strip()
         or str(protein_meta.get("search_query") or "").strip()
     )
+    has_results = bool(hydrated.get("results_ready")) or bool(_first_existing([
+        job_dir / "job_files" / "TARGET_RESULTS" / "Results_Display.csv",
+        job_dir / "job_files" / "Results_Display.csv",
+        job_dir / "TARGET_RESULTS" / "Results_Display.csv",
+        job_dir / "Results_Display.csv",
+    ]))
+    status = str(hydrated.get("status") or disk_meta.get("status") or ("completed" if has_results else "unknown")).lower()
 
     return {
         "job_id": job_dir.name,
@@ -2036,9 +2067,9 @@ def _job_meta_from_dir(job_dir: Path) -> Dict[str, Any]:
         "search_query": search_query,
         "fasta": fasta,
         "fasta_len": _fasta_length(fasta),
-        "has_results": bool(hydrated.get("results_ready")),
-        "available": bool(hydrated.get("results_ready")),
-        "status": str(hydrated.get("status") or disk_meta.get("status") or "unknown").lower(),
+        "has_results": has_results,
+        "available": has_results,
+        "status": status,
         "created_at": str(disk_meta.get("created_at") or created_s),
         "modified_at": modified_s,
         "mtime": modified_s,
@@ -2531,32 +2562,48 @@ def _preferred_existing_path(candidates: List[Path]) -> Optional[Path]:
 def _preferred_example_paths(job_id: str) -> Dict[str, Optional[Path]]:
     return {
         "results_display": _preferred_existing_path([
+            extracted_job_root(job_id) / "TARGET_RESULTS" / "Results_Display.csv",
+            extracted_job_root(job_id) / "Results_Display.csv",
             target_results_dir(job_id) / "Results_Display.csv",
             job_root(job_id) / "Results_Display.csv",
         ]),
         "resolved_sasa_summary": _preferred_existing_path([
+            extracted_job_root(job_id) / "TARGET_RESULTS" / "Resolved_SASA_Summary.csv",
+            extracted_job_root(job_id) / "TARGET_RESULTS" / "Resolved_SASA_Summary.tsv",
+            extracted_job_root(job_id) / "Resolved_SASA_Summary.csv",
+            extracted_job_root(job_id) / "Resolved_SASA_Summary.tsv",
             target_results_dir(job_id) / "Resolved_SASA_Summary.csv",
             target_results_dir(job_id) / "Resolved_SASA_Summary.tsv",
             job_root(job_id) / "Resolved_SASA_Summary.csv",
             job_root(job_id) / "Resolved_SASA_Summary.tsv",
         ]),
         "ligand_metadata": _preferred_existing_path([
+            extracted_job_root(job_id) / "TARGET_RESULTS" / "Ligand_Metadata.csv",
+            extracted_job_root(job_id) / "Ligand_Metadata.csv",
             target_results_dir(job_id) / "Ligand_Metadata.csv",
             job_root(job_id) / "Ligand_Metadata.csv",
         ]),
         "war_pdb_dir": _preferred_existing_path([
+            extracted_job_root(job_id) / "TARGET_RESULTS" / "WAR_PDB",
+            extracted_job_root(job_id) / "WAR_PDB",
             target_results_dir(job_id) / "WAR_PDB",
             job_root(job_id) / "WAR_PDB",
         ]),
         "mcs_sdf_dir": _preferred_existing_path([
+            extracted_job_root(job_id) / "TARGET_RESULTS" / "MCS_Output" / "MCS_SDF",
+            extracted_job_root(job_id) / "MCS_Output" / "MCS_SDF",
             target_results_dir(job_id) / "MCS_Output" / "MCS_SDF",
             job_root(job_id) / "MCS_Output" / "MCS_SDF",
         ]),
         "mcs_svg_dir": _preferred_existing_path([
+            extracted_job_root(job_id) / "TARGET_RESULTS" / "MCS_Output" / "MCS_SVG",
+            extracted_job_root(job_id) / "MCS_Output" / "MCS_SVG",
             target_results_dir(job_id) / "MCS_Output" / "MCS_SVG",
             job_root(job_id) / "MCS_Output" / "MCS_SVG",
         ]),
         "target_results_dir": _preferred_existing_path([
+            extracted_job_root(job_id) / "TARGET_RESULTS",
+            extracted_job_root(job_id),
             target_results_dir(job_id),
             job_root(job_id) / "TARGET_RESULTS",
         ]),

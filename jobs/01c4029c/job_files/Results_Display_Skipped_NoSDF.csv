@@ -1,0 +1,18 @@
+Target,pdb_id,Chain,Warhead,Residue_ID,pdb_path,reason
+PRMT4,9i0a,A,A00,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9i0a_A_A00.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+PRMT4,9i0a,B,A00,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9i0a_B_A00.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+PRMT4,9i0a,C,A00,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9i0a_C_A00.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+PRMT4,9i0a,D,A00,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9i0a_D_A00.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+PRMT4,9i1t,A,A01,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9i1t_A_A01.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+PRMT4,9i1t,B,A01,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9i1t_B_A01.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+PRMT4,9i1t,C,A01,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9i1t_C_A01.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+PRMT4,9i1t,D,A01,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9i1t_D_A01.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+PRMT4,9i9u,A,A02,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9i9u_A_A02.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+PRMT4,9i9u,B,A02,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9i9u_B_A02.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+PRMT4,9i9u,C,A02,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9i9u_C_A02.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+PRMT4,9i9u,D,A02,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9i9u_D_A02.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+PRMT4,9o37,A,A03,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9o37_A_A03.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+PRMT4,9o6h,A,A04,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9o6h_A_A04.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+PRMT4,9o6h,B,A04,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9o6h_B_A04.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+PRMT4,9o6h,C,A04,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9o6h_C_A04.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+PRMT4,9o6h,D,A04,,/app/jobs/01c4029c/WAR_PDB/PRMT4/9o6h_D_A04.pdb,No unique matching SDF in MCS_Output/MCS_SDF

@@ -807,6 +807,7 @@
 
 <script>
   let viewer = null;
+  let render3DRequestId = 0;
 
   // -----------------------------
   // Progressive loading controls
@@ -967,6 +968,54 @@
     el.innerHTML = msg;
   }
 
+  function setViewerStatus(message, isError = false) {
+    const el = document.getElementById("viewer");
+    if (!el) return;
+    if (!message) {
+      el.innerHTML = "";
+      return;
+    }
+    const accent = isError ? "var(--scout-danger)" : "var(--tron-cyan)";
+    el.innerHTML = `
+      <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;text-align:center;color:#bbb;background:black;">
+        <div>
+          <div style="font-size:1.05em;color:${accent};font-weight:800;margin-bottom:10px;">
+            ${isError ? "3D structure unavailable" : "Loading 3D structure…"}
+          </div>
+          <div style="line-height:1.5;">${escapeHtml(message)}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  async function fetchStructureText(pdbIdUpper) {
+    const candidates = [
+      { url: `https://files.rcsb.org/download/${pdbIdUpper}.pdb`, format: "pdb", label: ".pdb" },
+      { url: `https://files.rcsb.org/download/${pdbIdUpper}.cif`, format: "cif", label: ".cif" }
+    ];
+
+    const failures = [];
+    for (const candidate of candidates) {
+      try {
+        const resp = await fetch(candidate.url);
+        if (!resp.ok) {
+          failures.push(`${candidate.label}: HTTP ${resp.status}`);
+          continue;
+        }
+        const text = await resp.text();
+        if (!text || !text.trim()) {
+          failures.push(`${candidate.label}: empty response`);
+          continue;
+        }
+        return { ...candidate, text };
+      } catch (err) {
+        failures.push(`${candidate.label}: ${err?.message || "request failed"}`);
+      }
+    }
+
+    throw new Error(failures.join(" | "));
+  }
+
   // -----------------------------
   // Fetch helpers
   // -----------------------------
@@ -994,29 +1043,32 @@
   // -----------------------------
   // 3D render
   // -----------------------------
-  function render3D(pdbId) {
+  async function render3D(pdbId) {
+    const requestId = ++render3DRequestId;
+    const pdbUpper = String(pdbId || "").toUpperCase();
+    setViewerStatus(`Trying ${pdbUpper}.pdb, then ${pdbUpper}.cif if needed.`);
+
+    const structure = await fetchStructureText(pdbUpper);
+    if (requestId !== render3DRequestId) return;
+
     if (!viewer) viewer = $3Dmol.createViewer("viewer", { backgroundColor: "black" });
-
     viewer.clear();
+    viewer.addModel(structure.text, structure.format);
+    viewer.setStyle({}, {});
 
-    const pdbUpper = pdbId.toUpperCase();
-    $3Dmol.download(`url:https://files.rcsb.org/download/${pdbUpper}.pdb`, viewer, { format: 'pdb' }, function() {
-      viewer.setStyle({}, {});
-
-      viewer.addStyle({ hetflag: false }, {
-        cartoon: { colorscheme: 'chain', thickness: 1.0, opacity: 1.0 }
-      });
-
-      viewer.addStyle({ hetflag: true }, {
-        stick:  { colorscheme: 'greenCarbon', radius: 0.25 },
-        sphere: { scale: 0.3 }
-      });
-
-      viewer.setStyle({ resn: 'HOH' }, { hidden: true });
-
-      viewer.zoomTo();
-      viewer.render();
+    viewer.addStyle({ hetflag: false }, {
+      cartoon: { colorscheme: 'chain', thickness: 1.0, opacity: 1.0 }
     });
+
+    viewer.addStyle({ hetflag: true }, {
+      stick:  { colorscheme: 'greenCarbon', radius: 0.25 },
+      sphere: { scale: 0.3 }
+    });
+
+    viewer.setStyle({ resn: 'HOH' }, { hidden: true });
+
+    viewer.zoomTo();
+    viewer.render();
   }
 
   // -----------------------------------------
@@ -1037,7 +1089,14 @@
 
     showResultsLoading();
 
-    render3D(pdbId);
+    render3D(pdbId).catch(err => {
+      if (signal.aborted) return;
+      console.error("3D render error:", err);
+      setViewerStatus(
+        `RCSB did not provide a usable .pdb or .cif file for ${pdbId.toUpperCase()}. ${err?.message || ""}`.trim(),
+        true
+      );
+    });
 
     if (opts.focusViewer) focusViewerSmooth();
 
