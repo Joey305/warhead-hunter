@@ -1125,7 +1125,8 @@ def compute_mcs(key, grouped, stage_callback=None):
     map_3d_to_2d = {}
     mode = "NONE"
 
-    # If no 2D, output -1 for all atoms (still include SMILES cols)
+    # If no 2D SMILES are available, keep atom order from the 3D molecule so we
+    # can still depict and highlight directly from the SDF fallback later.
     if mol2d is None:
         set_step("NO_2D_OUTPUT_ALL")
         rows_all = []
@@ -1133,7 +1134,7 @@ def compute_mcs(key, grouped, stage_callback=None):
             row = df3d.iloc[a3]
             rows_all.append([
                 ligand, target, pdb_id, resid, chain,
-                -1, atom_symbols.iloc[a3],
+                a3, atom_symbols.iloc[a3],
                 row["atom_id"], row["atom_name"], row["x"], row["y"], row["z"],
                 smiles_id_out, smiles_out
             ])
@@ -1558,6 +1559,80 @@ def draw_svg(mol: Chem.Mol, highlights=None, size=(420, 420)) -> str:
     return recolor_svg(drawer.GetDrawingText())
 
 
+def render_plain_and_exposed_svgs_from_mol(mol: Chem.Mol, g: pd.DataFrame):
+    """
+    Render SVGs from an existing molecule when no trusted SMILES is available.
+
+    In this fallback path, AtomIndex is interpreted as the molecule's own atom
+    order, which stays aligned with the Step 11 SDF that was written from the
+    same 3D molecule.
+    """
+    if mol is None:
+        return None, None, "molecule unavailable"
+
+    try:
+        mol2d = Chem.Mol(mol)
+    except Exception as exc:
+        return None, None, f"molecule copy failed: {exc}"
+
+    try:
+        rdDepictor.Compute2DCoords(mol2d)
+    except Exception as exc:
+        return None, None, f"Compute2DCoords failed: {exc}"
+
+    n = mol2d.GetNumAtoms()
+    plain_svg = draw_svg(mol2d)
+
+    RGB = {
+        "green":  (0.000, 0.784, 0.325),
+        "yellow": (1.000, 0.839, 0.000),
+        "red":    (0.835, 0.000, 0.000),
+    }
+
+    gg = g.copy()
+    gg["AtomIndex"] = pd.to_numeric(gg["AtomIndex"], errors="coerce")
+    gg["Exposure_A2"] = pd.to_numeric(gg["Exposure_A2"], errors="coerce")
+
+    highlights = {}
+    for _, r in gg.dropna(subset=["AtomIndex", "Exposure_A2"]).iterrows():
+        idx = int(r["AtomIndex"])
+        if idx < 0 or idx >= n:
+            continue
+        band = bucket_from_exposure(float(r["Exposure_A2"]))
+        if band == "none":
+            continue
+        highlights[idx] = RGB[band]
+
+    exposed_svg = draw_svg(mol2d, highlights=highlights)
+    return plain_svg, exposed_svg, f"ok atoms={n} highlights={len(highlights)}"
+
+
+def load_svg_fallback_mol_from_sdf(path: Path):
+    """
+    Load a depiction-ready molecule from the SDF written earlier in Step 11.
+    """
+    if not path.exists():
+        return None, f"sdf missing: {path.name}"
+
+    try:
+        supplier = Chem.SDMolSupplier(str(path), removeHs=False, sanitize=True)
+        mol = supplier[0] if len(supplier) else None
+        if mol is not None:
+            return mol, "loaded sanitized SDF"
+    except Exception as exc:
+        dbg(f"SDF sanitized load failed for {path.name}: {exc}")
+
+    try:
+        supplier = Chem.SDMolSupplier(str(path), removeHs=False, sanitize=False)
+        mol = supplier[0] if len(supplier) else None
+        if mol is None:
+            return None, "SDF supplier returned no molecule"
+        mol.UpdatePropertyCache(strict=False)
+        return mol, "loaded unsanitized SDF"
+    except Exception as exc:
+        return None, f"SDF load failed: {exc}"
+
+
 
 
 
@@ -1824,30 +1899,42 @@ if __name__ == "__main__":
             smiles = str(all_sasa_df["SMILES"].iloc[0]).strip() if "SMILES" in all_sasa_df.columns else ""
             smiles_id = str(all_sasa_df["SMILES_ID"].iloc[0]).strip() if "SMILES_ID" in all_sasa_df.columns else ""
             if (not plain_path.exists()) or (not exposed_path.exists()):
-                if not smiles or smiles.lower() in {"nan", "none", ""}:
-                    record = {"base": base, "error": "missing_smiles", "detail": f"smiles_id={smiles_id}"}
+                render_mode = "smiles"
+                render_detail = ""
+                plain_svg = None
+                exposed_svg = None
+
+                if smiles and smiles.lower() not in {"nan", "none", ""}:
+                    update_heartbeat_state(current_key=base, stage="SVG_WRITE")
+                    plain_svg, exposed_svg, render_detail = render_plain_and_exposed_svgs(smiles, all_sasa_df)
+                else:
+                    render_mode = "sdf_fallback"
+                    sdf_path = SDF_DIR / f"{base}.sdf"
+                    fallback_mol, fallback_msg = load_svg_fallback_mol_from_sdf(sdf_path)
+                    render_detail = f"missing_smiles ({fallback_msg})"
+                    if fallback_mol is not None:
+                        update_heartbeat_state(current_key=base, stage="SVG_WRITE_FALLBACK")
+                        plain_svg, exposed_svg, fallback_render_detail = render_plain_and_exposed_svgs_from_mol(fallback_mol, all_sasa_df)
+                        render_detail = f"{fallback_msg}; {fallback_render_detail}"
+
+                if not plain_svg or not exposed_svg:
+                    record = {
+                        "base": base,
+                        "error": "render_failed" if render_mode == "smiles" else "missing_smiles_and_render_failed",
+                        "detail": f"mode={render_mode} smiles_id={smiles_id} {render_detail}".strip(),
+                    }
                     if MCS_STREAM_OUTPUT:
                         svg_fail_writer.writerow(record)
                     else:
                         buffered_svg_failures.append(record)
-                        stats["svg_failure_count"] += 1
+                    stats["svg_failure_count"] += 1
                 else:
-                    update_heartbeat_state(current_key=base, stage="SVG_WRITE")
-                    plain_svg, exposed_svg, render_msg = render_plain_and_exposed_svgs(smiles, all_sasa_df)
-                    if not plain_svg or not exposed_svg:
-                        record = {"base": base, "error": "render_failed", "detail": render_msg}
-                        if MCS_STREAM_OUTPUT:
-                            svg_fail_writer.writerow(record)
-                        else:
-                            buffered_svg_failures.append(record)
-                        stats["svg_failure_count"] += 1
-                    else:
-                        plain_path.write_text(plain_svg, encoding="utf-8")
-                        exposed_path.write_text(exposed_svg, encoding="utf-8")
-                        stats["svg_count"] += 1
-                        update_heartbeat_state(svg_written=stats["svg_count"])
-                        print(f"🖼️ Step 11 SVG ready {base}", flush=True)
-                        debug_mem("wrote SVG pair", key=base)
+                    plain_path.write_text(plain_svg, encoding="utf-8")
+                    exposed_path.write_text(exposed_svg, encoding="utf-8")
+                    stats["svg_count"] += 1
+                    update_heartbeat_state(svg_written=stats["svg_count"])
+                    print(f"🖼️ Step 11 SVG ready {base} mode={render_mode}", flush=True)
+                    debug_mem("wrote SVG pair", key=base, mode=render_mode)
 
         item_dt = time.perf_counter() - started_at
         update_heartbeat_state(

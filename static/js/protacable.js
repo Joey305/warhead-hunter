@@ -296,11 +296,23 @@
   async function fetchText(url) {
     try {
       const r = await fetch(url);
-      if (!r.ok) return { ok: false, status: r.status, data: "" };
-      return { ok: true, status: r.status, data: await r.text() };
+      const text = await r.text();
+      if (!r.ok) return { ok: false, status: r.status, data: text || "" };
+      return { ok: true, status: r.status, data: text };
     } catch {
       return { ok: false, status: 0, data: "" };
     }
+  }
+
+  function get2DMapFailureReason(status, body, warhead) {
+    const text = String(body || "");
+    if (status === 404) return `2D map unavailable for ${warhead}. Reason: SVG artifact not found.`;
+    if (text && /svg/i.test(text) && /not found/i.test(text)) {
+      return `2D map unavailable for ${warhead}. Reason: SVG artifact not found.`;
+    }
+    if (status >= 500) return `2D map unavailable for ${warhead}. Reason: server error while loading SVG.`;
+    if (status === 0) return `2D map unavailable for ${warhead}. Reason: request failed.`;
+    return `2D map unavailable for ${warhead}.`;
   }
 
   async function fetchArtifactDebug(row) {
@@ -722,11 +734,12 @@
     const t = await fetchText(url);
     if (!t.ok || !t.data) {
       node.classList.remove("is-loading");
-      node.innerHTML = `<div style="color:#888;padding:8px;">Failed to load 2D map.</div>`;
+      const message = get2DMapFailureReason(t.status, t.data, warhead);
+      node.innerHTML = `<div style="color:#888;padding:8px;">${escapeHtml(message)}</div>`;
       return {
         ok: false,
         degraded: true,
-        message: "2D ligand map failed to load."
+        message
       };
     }
     node.innerHTML = t.data;

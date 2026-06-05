@@ -920,12 +920,25 @@ def infer_chain_from_results(job_id: str, pdb: str, warhead: str) -> Optional[st
 
 
 
-def mcs_svgs_dir(job_id: str) -> Optional[Path]:
-    return _first_existing([
+def mcs_svg_dirs(job_id: str) -> List[Path]:
+    out: List[Path] = []
+    seen: set[str] = set()
+    for path in [
         target_results_dir(job_id) / "MCS_Output" / "MCS_SVG",
         job_root(job_id) / "TARGET_RESULTS" / "MCS_Output" / "MCS_SVG",
         job_root(job_id) / "MCS_Output" / "MCS_SVG",
-    ])
+    ]:
+        if path.exists() and path.is_dir():
+            resolved = str(path.resolve())
+            if resolved not in seen:
+                out.append(path)
+                seen.add(resolved)
+    return out
+
+
+def mcs_svgs_dir(job_id: str) -> Optional[Path]:
+    dirs = mcs_svg_dirs(job_id)
+    return dirs[0] if dirs else None
 
 
 def infer_residue_from_mcs(job_id: str, pdb: str, chain: str, warhead: str) -> Optional[str]:
@@ -3507,24 +3520,22 @@ def api_svg(job_id, pdb, warhead, chain=None):
     chain = (chain or infer_chain_from_results(job_id, pdb, warhead) or "A").upper()
 
     # --- NEW: try MCS SVGs first ---
-    mcs_dir = mcs_svgs_dir(job_id)
-    if mcs_dir:
-        # allow caller override: /api/svg/... ?resid=1101
+    mcs_dirs = mcs_svg_dirs(job_id)
+    if mcs_dirs:
         resid = (request.args.get("resid") or "").strip()
         if not resid:
             resid = infer_residue_from_mcs(job_id, pdb, chain, warhead) or ""
 
-        # 1) exact match if resid known
-        if resid:
-            fname = f"{pdb}_{chain}_{warhead}_{resid}_exposed.svg"
-            fp = (mcs_dir / fname)
-            if fp.exists():
-                return _serve_themed_svg(fp)
+        for mcs_dir in mcs_dirs:
+            if resid:
+                fname = f"{pdb}_{chain}_{warhead}_{resid}_exposed.svg"
+                fp = (mcs_dir / fname)
+                if fp.exists():
+                    return _serve_themed_svg(fp)
 
-        # 2) fallback: wildcard any residue
-        hits = sorted(mcs_dir.glob(f"{pdb}_{chain}_{warhead}_*_exposed.svg"))
-        if hits:
-            return _serve_themed_svg(hits[0])
+            hits = sorted(mcs_dir.glob(f"{pdb}_{chain}_{warhead}_*_exposed.svg"))
+            if hits:
+                return _serve_themed_svg(hits[0])
 
     # --- Legacy fallback (old LIGAND_SVGS behavior) ---
     base_dir = ligand_svgs_dir(job_id)
@@ -3565,23 +3576,22 @@ def api_svg_plain(job_id, pdb, warhead, chain=None):
     chain = (chain or infer_chain_from_results(job_id, pdb, warhead) or "A").upper()
 
     # --- NEW: try MCS SVGs first ---
-    mcs_dir = mcs_svgs_dir(job_id)
-    if mcs_dir:
+    mcs_dirs = mcs_svg_dirs(job_id)
+    if mcs_dirs:
         resid = (request.args.get("resid") or "").strip()
         if not resid:
             resid = infer_residue_from_mcs(job_id, pdb, chain, warhead) or ""
 
-        # 1) exact match if resid known
-        if resid:
-            fname = f"{pdb}_{chain}_{warhead}_{resid}_plain.svg"
-            fp = (mcs_dir / fname)
-            if fp.exists():
-                return _serve_themed_svg(fp)
+        for mcs_dir in mcs_dirs:
+            if resid:
+                fname = f"{pdb}_{chain}_{warhead}_{resid}_plain.svg"
+                fp = (mcs_dir / fname)
+                if fp.exists():
+                    return _serve_themed_svg(fp)
 
-        # 2) fallback: wildcard any residue
-        hits = sorted(mcs_dir.glob(f"{pdb}_{chain}_{warhead}_*_plain.svg"))
-        if hits:
-            return _serve_themed_svg(hits[0])
+            hits = sorted(mcs_dir.glob(f"{pdb}_{chain}_{warhead}_*_plain.svg"))
+            if hits:
+                return _serve_themed_svg(hits[0])
 
     # --- Legacy fallback (old LIGAND_SVGS behavior) ---
     base_dir = ligand_svgs_dir(job_id)
@@ -3749,34 +3759,36 @@ def api_protein(job_id, pdb, chain):
 
 
 def _resolve_local_svg_asset(job_id: str, pdb: str, chain: str, ligand: str, resid: str, plain: bool) -> Optional[Dict[str, Any]]:
-    mcs_dir = mcs_svgs_dir(job_id)
-    if not mcs_dir or not mcs_dir.exists():
+    mcs_dirs = mcs_svg_dirs(job_id)
+    if not mcs_dirs:
         return None
 
     tag = "plain" if plain else "exposed"
     wanted_resid = _normalize_resid_token(resid)
-    if wanted_resid:
-        exact = mcs_dir / f"{pdb}_{chain}_{ligand}_{wanted_resid}_{tag}.svg"
-        if exact.exists() and exact.is_file():
+
+    for mcs_dir in mcs_dirs:
+        if wanted_resid:
+            exact = mcs_dir / f"{pdb}_{chain}_{ligand}_{wanted_resid}_{tag}.svg"
+            if exact.exists() and exact.is_file():
+                return {
+                    "ok": True,
+                    "source": "local_job",
+                    "relative_path": _job_relative_path(job_id, exact),
+                    "filename": exact.name,
+                    "local_path": exact.resolve(),
+                }
+
+        pattern = f"{pdb}_{chain}_{ligand}_*_{tag}.svg"
+        hits = sorted(fp.resolve() for fp in mcs_dir.glob(pattern) if fp.exists() and fp.is_file())
+        if hits:
+            chosen = hits[0]
             return {
                 "ok": True,
-                "source": "local_job",
-                "relative_path": _job_relative_path(job_id, exact),
-                "filename": exact.name,
-                "local_path": exact.resolve(),
+                "source": "local_job_glob",
+                "relative_path": _job_relative_path(job_id, chosen),
+                "filename": chosen.name,
+                "local_path": chosen,
             }
-
-    pattern = f"{pdb}_{chain}_{ligand}_*_{tag}.svg"
-    hits = sorted(fp.resolve() for fp in mcs_dir.glob(pattern) if fp.exists() and fp.is_file())
-    if hits:
-        chosen = hits[0]
-        return {
-            "ok": True,
-            "source": "local_job_glob",
-            "relative_path": _job_relative_path(job_id, chosen),
-            "filename": chosen.name,
-            "local_path": chosen,
-        }
     return None
 
 
@@ -3889,6 +3901,8 @@ def _artifact_index_row_payload(job_id: str, row_index: int, row: Dict[str, Any]
             "plain_ok": bool(plain_asset.get("ok")),
             "exposed_ok": bool(exposed_asset.get("ok")),
         }
+        if not svg["ok"]:
+            warnings.append("svg_missing")
 
     hard_renderable = bool(protein.get("ok") and sdf.get("ok") and pdb and chain and ligand)
     if not hard_renderable and "insufficient_row_data" not in warnings and not (pdb and chain and ligand):
@@ -4130,14 +4144,12 @@ def api_ligand_props(job_id, ligand_code):
     resid = (request.args.get("resid") or request.args.get("residue_id") or "").strip()
 
     # ---------- helper: compute from SMILES ----------
-    def compute_from_smiles(smiles_str: str) -> Dict[str, Any]:
+    def compute_from_mol(mol) -> Dict[str, Any]:
         try:
-            from rdkit import Chem
             from rdkit.Chem import Descriptors, Crippen, Lipinski, rdMolDescriptors, QED
         except Exception:
             return {}
 
-        mol = Chem.MolFromSmiles(smiles_str)
         if mol is None:
             return {}
 
@@ -4183,6 +4195,15 @@ def api_ligand_props(job_id, ligand_code):
             "Egan_Pass": bool(egan),
             "Muegge_Pass": bool(muegge),
         }
+
+    def compute_from_smiles(smiles_str: str) -> Dict[str, Any]:
+        try:
+            from rdkit import Chem
+        except Exception:
+            return {}
+
+        mol = Chem.MolFromSmiles(smiles_str)
+        return compute_from_mol(mol)
 
     def metadata_has_descriptors(d: Dict[str, Any]) -> bool:
         required = [
@@ -4336,6 +4357,12 @@ def api_ligand_props(job_id, ligand_code):
                     return value
         return ""
 
+    def resolve_sdf_from_job_context() -> Optional[Path]:
+        if not (pdb_id and chain and ligand_code_u):
+            return None
+        fp, _diag = resolve_sdf_path(job_root(job_id), pdb_id, chain, ligand_code_u, resid)
+        return fp
+
     # ---------- 1) Try metadata lookup ----------
     if meta and meta.exists():
         try:
@@ -4374,6 +4401,32 @@ def api_ligand_props(job_id, ligand_code):
         d = compute_from_smiles(resolved_smiles)
         if d:
             d["Ligand"] = ligand_code_u
+            if pdb_id:
+                d["pdb_id"] = pdb_id
+            if chain:
+                d["Chain"] = chain
+            if resid:
+                d["Residue_ID"] = resid
+            return jsonify(d)
+
+    resolved_sdf = resolve_sdf_from_job_context()
+    if resolved_sdf and resolved_sdf.exists():
+        try:
+            from rdkit import Chem
+            supplier = Chem.SDMolSupplier(str(resolved_sdf), removeHs=False, sanitize=True)
+            mol = supplier[0] if len(supplier) else None
+            if mol is None:
+                supplier = Chem.SDMolSupplier(str(resolved_sdf), removeHs=False, sanitize=False)
+                mol = supplier[0] if len(supplier) else None
+                if mol is not None:
+                    mol.UpdatePropertyCache(strict=False)
+        except Exception:
+            mol = None
+
+        d = compute_from_mol(mol)
+        if d:
+            d["Ligand"] = ligand_code_u
+            d["source"] = "sdf_fallback"
             if pdb_id:
                 d["pdb_id"] = pdb_id
             if chain:

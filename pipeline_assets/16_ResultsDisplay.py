@@ -122,6 +122,25 @@ def find_sdf_roots(root: Path):
     return out
 
 
+def find_svg_roots(root: Path):
+    candidates = [
+        root / "MCS_Output" / "MCS_SVG",
+        root / "TARGET_RESULTS" / "MCS_Output" / "MCS_SVG",
+        root.parent / "MCS_Output" / "MCS_SVG",
+        root.parent / "TARGET_RESULTS" / "MCS_Output" / "MCS_SVG",
+    ]
+
+    out = []
+    seen = set()
+    for cand in candidates:
+        if cand.exists() and cand.is_dir():
+            resolved = str(cand.resolve())
+            if resolved not in seen:
+                out.append(cand)
+                seen.add(resolved)
+    return out
+
+
 def load_sdf_index(root: Path):
     """
     Returns:
@@ -158,6 +177,53 @@ def load_sdf_index(root: Path):
             sdf_loose_lookup.setdefault(loose_key, []).append((exact_key, sdf_file))
 
     return sdf_index_exact, sdf_index_loose, sdf_path_lookup, sdf_loose_lookup, sdf_roots
+
+
+def load_svg_index(root: Path):
+    svg_index = {
+        "plain_exact": set(),
+        "plain_loose": set(),
+        "plain_lookup": {},
+        "plain_loose_lookup": {},
+        "exposed_exact": set(),
+        "exposed_loose": set(),
+        "exposed_lookup": {},
+        "exposed_loose_lookup": {},
+        "roots": find_svg_roots(root),
+    }
+
+    for svg_root in svg_index["roots"]:
+        for svg_file in svg_root.glob("*.svg"):
+            stem = svg_file.stem
+            kind = None
+            base = ""
+            if stem.endswith("_plain"):
+                kind = "plain"
+                base = stem[:-6]
+            elif stem.endswith("_exposed"):
+                kind = "exposed"
+                base = stem[:-8]
+            else:
+                continue
+
+            parts = base.split("_")
+            if len(parts) < 4:
+                continue
+
+            pdb_id = norm_pdb(parts[0])
+            chain = norm_chain(parts[1])
+            ligand = norm_ligand(parts[2])
+            resid = norm_resid("_".join(parts[3:]))
+
+            exact_key = (pdb_id, chain, ligand, resid)
+            loose_key = (pdb_id, chain, ligand)
+
+            svg_index[f"{kind}_exact"].add(exact_key)
+            svg_index[f"{kind}_loose"].add(loose_key)
+            svg_index[f"{kind}_lookup"][exact_key] = svg_file
+            svg_index[f"{kind}_loose_lookup"].setdefault(loose_key, []).append((exact_key, svg_file))
+
+    return svg_index
 
 
 def load_residue_lookup(root: Path):
@@ -305,6 +371,7 @@ def main():
     war_pdb_root = find_war_pdb_root(root)
 
     sdf_index_exact, sdf_index_loose, sdf_path_lookup, sdf_loose_lookup, sdf_roots = load_sdf_index(root)
+    svg_index = load_svg_index(root)
     residue_lookup = load_residue_lookup(root)
     meta_map = load_smiles_lookup(root)
     exp_lookup = load_exposure_lookup(root)
@@ -312,13 +379,16 @@ def main():
     print(f"📁 ResultsDisplay root: {root}")
     print(f"📁 WAR_PDB root: {war_pdb_root}")
     print(f"📁 SDF roots: {[str(p) for p in sdf_roots]}")
+    print(f"📁 SVG roots: {[str(p) for p in svg_index['roots']]}")
     print(f"🧪 Indexed SDF exact keys: {len(sdf_index_exact)}")
     print(f"🧪 Indexed SDF loose keys: {len(sdf_index_loose)}")
+    print(f"🧪 Indexed SVG exact keys: plain={len(svg_index['plain_exact'])} exposed={len(svg_index['exposed_exact'])}")
     print(f"🧾 Residue lookup keys: {len(residue_lookup)}")
 
     rows = []
     skipped_no_sdf = []
     skipped_bad_name = []
+    artifact_audit = []
 
     for target_dir in sorted(war_pdb_root.iterdir()):
         if not target_dir.is_dir():
@@ -366,17 +436,62 @@ def main():
                 })
                 continue
 
+            plain_svg_path = ""
+            exposed_svg_path = ""
+            exact_svg_key = (pdb_id, chain, warhead, resid) if resid else None
+            loose_svg_key = (pdb_id, chain, warhead)
+
+            if exact_svg_key and exact_svg_key in svg_index["plain_exact"]:
+                plain_svg_path = str(svg_index["plain_lookup"].get(exact_svg_key, ""))
+            elif loose_svg_key in svg_index["plain_loose"]:
+                matches = svg_index["plain_loose_lookup"].get(loose_svg_key, [])
+                if len(matches) == 1:
+                    plain_svg_path = str(matches[0][1])
+
+            if exact_svg_key and exact_svg_key in svg_index["exposed_exact"]:
+                exposed_svg_path = str(svg_index["exposed_lookup"].get(exact_svg_key, ""))
+            elif loose_svg_key in svg_index["exposed_loose"]:
+                matches = svg_index["exposed_loose_lookup"].get(loose_svg_key, [])
+                if len(matches) == 1:
+                    exposed_svg_path = str(matches[0][1])
+
+            smiles_value = meta_map.get(warhead, "")
+            svg_plain_available = bool(plain_svg_path)
+            svg_exposed_available = bool(exposed_svg_path)
+
             rows.append({
                 "Target": target_name,
                 "pdb_id": pdb_id,
                 "Chain": chain,
                 "Warhead": warhead,
                 "Residue_ID": resid,
-                "SMILES": meta_map.get(warhead, ""),
+                "SMILES": smiles_value,
                 "%Exposed": exp_lookup.get((pdb_id, chain, warhead), 0.0),
                 "pdb_path": str(pdb_file.resolve()),
                 "sdf_path": sdf_path,
                 "sdf_available": True,
+                "svg_plain_available": svg_plain_available,
+                "svg_exposed_available": svg_exposed_available,
+                "svg_available": bool(svg_plain_available or svg_exposed_available),
+                "svg_plain_path": plain_svg_path,
+                "svg_exposed_path": exposed_svg_path,
+            })
+
+            artifact_audit.append({
+                "Target": target_name,
+                "pdb_id": pdb_id,
+                "Chain": chain,
+                "Warhead": warhead,
+                "Residue_ID": resid,
+                "SMILES": smiles_value,
+                "sdf_available": True,
+                "sdf_path": sdf_path,
+                "svg_plain_available": svg_plain_available,
+                "svg_exposed_available": svg_exposed_available,
+                "svg_available": bool(svg_plain_available or svg_exposed_available),
+                "svg_plain_path": plain_svg_path,
+                "svg_exposed_path": exposed_svg_path,
+                "artifact_status": "ok" if (svg_plain_available or svg_exposed_available) else "missing_svg",
             })
 
     out = pd.DataFrame(rows)
@@ -397,6 +512,8 @@ def main():
 
     out_file = root / "Results_Display.csv"
     out.to_csv(out_file, index=False)
+    audit_file = root / "Results_Display_Artifact_Audit.csv"
+    pd.DataFrame(artifact_audit).to_csv(audit_file, index=False)
 
     if skipped_no_sdf:
         skipped_file = root / "Results_Display_Skipped_NoSDF.csv"
@@ -407,6 +524,12 @@ def main():
         bad_file = root / "Results_Display_Skipped_BadNames.csv"
         pd.DataFrame({"pdb_path": skipped_bad_name}).to_csv(bad_file, index=False)
         print(f"⚠️ Skipped {len(skipped_bad_name)} badly named PDB files → {bad_file}")
+
+    missing_svg_count = sum(1 for row in artifact_audit if row["artifact_status"] == "missing_svg")
+    if missing_svg_count:
+        print(f"⚠️ Included {missing_svg_count} display rows without SVG support → {audit_file}")
+    else:
+        print(f"✅ All display rows have routable SVG support → {audit_file}")
 
     print(f"✅ Wrote {out_file} ({len(out)} SDF-backed entries)")
     print(f"📊 Input WAR_PDB rows skipped due to missing SDF: {len(skipped_no_sdf)}")
