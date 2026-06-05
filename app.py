@@ -421,12 +421,6 @@ CURATED_EXAMPLE_CONFIG = [
         "use_case": "E3 ligase recruiter / PROTAC-oriented example",
     },
     {
-        "job_id": "032917e1",
-        "label": "EGFR",
-        "protein": "EGFR",
-        "use_case": "kinase target example",
-    },
-    {
         "job_id": "d750cfea",
         "label": "HIV-1 Protease",
         "protein": "Protease",
