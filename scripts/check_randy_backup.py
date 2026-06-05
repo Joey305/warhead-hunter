@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -16,6 +17,7 @@ if str(APP_ROOT) not in sys.path:
 
 from api import randy_archive_client
 from api.randy_backup_client import (
+    TIMEOUT_ENV_NAMES,
     backup_configuration_summary,
     backup_job_directory,
     build_backup_plan,
@@ -34,6 +36,37 @@ def _safe_url(raw: str) -> str:
 
 def _print_json(payload: dict[str, Any]) -> None:
     print(json.dumps(payload, indent=2, sort_keys=True))
+
+
+def _safe_env_value(name: str) -> str:
+    raw = os.getenv(name)
+    if raw is None or str(raw).strip() == "":
+        return "<missing>"
+    if "TOKEN" in name:
+        return f"<set:redacted:length={len(str(raw))}>"
+    return str(raw)
+
+
+def _env_names_payload() -> dict[str, Any]:
+    exact_names = [
+        "RANDY_BACKUP_BASE_URL",
+        "RANDY_BACKUP_TOKEN",
+        "RANDY_ARCHIVE_BASE_URL",
+        "RANDY_ARCHIVE_TOKEN",
+        "RANDY_BACKUP_CONNECT_TIMEOUT",
+        "RANDY_BACKUP_READ_TIMEOUT",
+        "RANDY_BACKUP_UPLOAD_TIMEOUT",
+        "RANDY_BACKUP_TOTAL_TIMEOUT",
+        "RANDY_BACKUP_RETRIES",
+        "RANDY_BACKUP_RETRY_BACKOFF_SECONDS",
+        "WARHEAD_BACKUP_TIMEOUT_SECONDS",
+        "WARHEAD_BACKUP_MAX_BYTES",
+        "WARHEAD_BACKUP_REQUIRED",
+        "WARHEAD_BACKUP_ON_COMPLETE",
+        "WARHEAD_BACKUP_ON_FAILURE",
+        "DYNO",
+    ]
+    return {name: _safe_env_value(name) for name in exact_names}
 
 
 def _env_payload() -> dict[str, Any]:
@@ -56,6 +89,10 @@ def _env_payload() -> dict[str, Any]:
         "max_attempts": int(cfg.get("max_attempts") or 0),
         "retry_backoff_seconds": float(cfg.get("retry_backoff_seconds") or 0),
         "max_bytes": int(cfg.get("max_bytes") or 0),
+        "endpoint_host_path": str(cfg.get("endpoint_host_path") or ""),
+        "timeout_model": cfg.get("timeout_model") or {},
+        "env": _env_names_payload(),
+        "supported_timeout_env_names": TIMEOUT_ENV_NAMES,
     }
 
 
@@ -69,12 +106,14 @@ def _health_check() -> int:
     if not base_url:
         _print_json({
             "ok": False,
+            "status": "not_configured",
             "error": "RANDY backup base URL is not configured.",
             **_env_payload(),
         })
         return 1
 
     probes: list[dict[str, Any]] = []
+    failure_statuses: list[str] = []
     for url, auth in [
         (base_url.replace("/backup", "") + "/healthz", False),
         (base_url + "/summary", True),
@@ -89,28 +128,69 @@ def _health_check() -> int:
                 body = resp.json()
             except Exception:
                 body = {"text": resp.text[:200]}
+            if auth and resp.status_code in {401, 403}:
+                status = "auth_failed"
+            elif resp.status_code == 408:
+                status = "timeout"
+            elif resp.status_code >= 500:
+                status = "receiver_unhealthy"
+            elif resp.status_code >= 400:
+                status = "receiver_unreachable"
+            else:
+                status = "ok"
+            if status != "ok":
+                failure_statuses.append(status)
             probes.append({
                 "url": _safe_url(url),
                 "auth": auth,
                 "status_code": resp.status_code,
                 "ok": bool(resp.ok),
+                "status": status,
                 "body": body,
             })
-        except Exception as exc:
+        except requests.Timeout as exc:
+            failure_statuses.append("timeout")
             probes.append({
                 "url": _safe_url(url),
                 "auth": auth,
                 "status_code": 0,
                 "ok": False,
+                "status": "timeout",
+                "error": str(exc),
+            })
+        except requests.ConnectionError as exc:
+            failure_statuses.append("receiver_unreachable")
+            probes.append({
+                "url": _safe_url(url),
+                "auth": auth,
+                "status_code": 0,
+                "ok": False,
+                "status": "receiver_unreachable",
+                "error": str(exc),
+            })
+        except Exception as exc:
+            failure_statuses.append("receiver_unreachable")
+            probes.append({
+                "url": _safe_url(url),
+                "auth": auth,
+                "status_code": 0,
+                "ok": False,
+                "status": "receiver_unreachable",
                 "error": str(exc),
             })
 
-    overall_ok = any(
-        item.get("status_code") == 200 and (item.get("auth") is False or bool(item.get("body", {}).get("ok")))
+    public_ok = any(item.get("status_code") == 200 and item.get("auth") is False for item in probes)
+    auth_ok = any(
+        item.get("status_code") == 200 and item.get("auth") is True and bool(item.get("body", {}).get("ok"))
         for item in probes
     )
+    overall_ok = bool(public_ok and auth_ok)
+    overall_status = "ok" if overall_ok else (failure_statuses[0] if failure_statuses else "receiver_unhealthy")
     _print_json({
         "ok": overall_ok,
+        "status": overall_status,
+        "public_health_ok": public_ok,
+        "authenticated_summary_ok": auth_ok,
         "checks": probes,
         **_env_payload(),
     })

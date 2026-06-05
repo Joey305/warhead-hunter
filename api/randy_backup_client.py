@@ -28,6 +28,24 @@ DEFAULT_RETRIES = 2
 DEFAULT_RETRY_BACKOFF_SECONDS = 15.0
 DEFAULT_MAX_BYTES = 300_000_000
 RETRYABLE_HTTP_STATUS_CODES = {408, 429, 500, 502, 503, 504}
+TIMEOUT_ENV_NAMES = {
+    "connect_timeout": ["RANDY_BACKUP_CONNECT_TIMEOUT", "WARHEAD_BACKUP_CONNECT_TIMEOUT_SECONDS"],
+    "read_timeout": [
+        "RANDY_BACKUP_READ_TIMEOUT",
+        "RANDY_BACKUP_UPLOAD_TIMEOUT",
+        "WARHEAD_BACKUP_READ_TIMEOUT_SECONDS",
+        "WARHEAD_BACKUP_TIMEOUT_SECONDS",
+    ],
+    "upload_timeout": [
+        "RANDY_BACKUP_UPLOAD_TIMEOUT",
+        "RANDY_BACKUP_READ_TIMEOUT",
+        "WARHEAD_BACKUP_UPLOAD_TIMEOUT_SECONDS",
+        "WARHEAD_BACKUP_TIMEOUT_SECONDS",
+    ],
+    "total_timeout": ["RANDY_BACKUP_TOTAL_TIMEOUT", "WARHEAD_BACKUP_TOTAL_TIMEOUT_SECONDS"],
+    "retries": ["RANDY_BACKUP_RETRIES", "WARHEAD_BACKUP_RETRIES"],
+    "retry_backoff": ["RANDY_BACKUP_RETRY_BACKOFF_SECONDS", "WARHEAD_BACKUP_RETRY_BACKOFF_SECONDS"],
+}
 SAFE_SKIP_DIRS = {
     ".git",
     "__pycache__",
@@ -188,41 +206,28 @@ def backup_timeout_config() -> Dict[str, float]:
     connect_timeout = max(
         1.0,
         _env_float_aliases(
-            ["RANDY_BACKUP_CONNECT_TIMEOUT", "WARHEAD_BACKUP_CONNECT_TIMEOUT_SECONDS"],
+            TIMEOUT_ENV_NAMES["connect_timeout"],
             DEFAULT_CONNECT_TIMEOUT_SECONDS,
         ),
     )
     read_timeout = max(
         5.0,
         _env_float_aliases(
-            [
-                "RANDY_BACKUP_READ_TIMEOUT",
-                "RANDY_BACKUP_UPLOAD_TIMEOUT",
-                "WARHEAD_BACKUP_READ_TIMEOUT_SECONDS",
-                "WARHEAD_BACKUP_TIMEOUT_SECONDS",
-            ],
+            TIMEOUT_ENV_NAMES["read_timeout"],
             max(DEFAULT_READ_TIMEOUT_SECONDS, legacy_timeout),
         ),
     )
     upload_timeout = max(
         5.0,
         _env_float_aliases(
-            [
-                "RANDY_BACKUP_UPLOAD_TIMEOUT",
-                "RANDY_BACKUP_READ_TIMEOUT",
-                "WARHEAD_BACKUP_UPLOAD_TIMEOUT_SECONDS",
-                "WARHEAD_BACKUP_TIMEOUT_SECONDS",
-            ],
+            TIMEOUT_ENV_NAMES["upload_timeout"],
             max(DEFAULT_UPLOAD_TIMEOUT_SECONDS, read_timeout),
         ),
     )
     total_timeout = max(
         connect_timeout,
         _env_float_aliases(
-            [
-                "RANDY_BACKUP_TOTAL_TIMEOUT",
-                "WARHEAD_BACKUP_TOTAL_TIMEOUT_SECONDS",
-            ],
+            TIMEOUT_ENV_NAMES["total_timeout"],
             max(DEFAULT_TOTAL_TIMEOUT_SECONDS, connect_timeout, read_timeout, upload_timeout),
         ),
     )
@@ -252,6 +257,26 @@ def backup_retry_config() -> Dict[str, float | int]:
     }
 
 
+def _timeout_model_summary() -> Dict[str, Any]:
+    # requests/urllib3 supports connect, read, and total deadlines here.
+    # Large multipart uploads can still fail during socket writes or proxy
+    # buffering, so RANDY_BACKUP_UPLOAD_TIMEOUT is preserved as a separate knob
+    # for configuration clarity and is folded into the effective request window.
+    return {
+        "client_library": "requests+urllib3",
+        "supports_connect_timeout": True,
+        "supports_read_timeout": True,
+        "supports_total_timeout": True,
+        "supports_dedicated_write_timeout": False,
+        "upload_timeout_behavior": (
+            "RANDY_BACKUP_UPLOAD_TIMEOUT is treated as the intended upload/read window. "
+            "Python requests does not expose a separate socket write timeout knob, so large "
+            "archive uploads can still fail as connection/write/read/total timeouts depending "
+            "on proxy buffering and receiver behavior."
+        ),
+    }
+
+
 def backup_configuration_summary() -> Dict[str, Any]:
     base_url = _base_url_host_path()
     endpoint = backup_endpoint()
@@ -262,6 +287,7 @@ def backup_configuration_summary() -> Dict[str, Any]:
         "configured": bool(base_url and _token_present()),
         "base_url": base_url,
         "endpoint": endpoint,
+        "endpoint_host_path": _endpoint_host_path(endpoint),
         "token_present": _token_present(),
         "backup_on_complete": backup_on_complete(),
         "backup_on_failure": backup_on_failure(),
@@ -270,6 +296,7 @@ def backup_configuration_summary() -> Dict[str, Any]:
         **timeout_cfg,
         **retry_cfg,
         "max_bytes": backup_max_bytes(),
+        "timeout_model": _timeout_model_summary(),
     }
 
 
@@ -558,6 +585,7 @@ def backup_job_directory(
     result["started_at"] = _utc_now_iso()
     result["status"] = "skipped"
     result["reason"] = result.get("reason") or ""
+    result["endpoint_host_path"] = endpoint_host_path
 
     if not job_dir.exists():
         result["attempted"] = False
@@ -637,6 +665,11 @@ def backup_job_directory(
                 ),
             )
             try:
+                # "Quick internet" is not enough for archive backup uploads.
+                # A 70-300 MB multipart ZIP still has to finish TLS writes,
+                # proxy buffering, remote disk/extract work, and verification.
+                # requests only gives us connect/read/total timeouts here, so
+                # write-side stalls often surface as ConnectionError/Timeout.
                 with archive_path.open("rb") as handle:
                     resp = requests.post(
                         endpoint,

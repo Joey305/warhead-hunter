@@ -29,6 +29,8 @@ import pandas as pd
 import requests
 from flask import Response
 
+from api.svg_theme import themed_svg_response
+
 
 TABLE_CANDIDATES = {
     "Results_Display.csv": [
@@ -511,6 +513,14 @@ def proxy_file_response(job_id: str, relative_path: str, mimetype: str = "applic
         return None
 
     content, content_type = got
+    if (mimetype or content_type or "").lower().startswith("image/svg") or str(relative_path or "").lower().endswith(".svg"):
+        return themed_svg_response(
+            content.decode("utf-8", errors="replace"),
+            headers={
+                "Cache-Control": "no-store",
+                "X-Warhead-Handoff-Source": "RANDY_ARCHIVE",
+            },
+        )
     return Response(
         content,
         mimetype=mimetype or content_type or "application/octet-stream",

@@ -61,6 +61,8 @@ class RandyBackupClientTests(unittest.TestCase):
         self.assertEqual(cfg["retries"], 3)
         self.assertEqual(cfg["max_attempts"], 4)
         self.assertEqual(cfg["retry_backoff_seconds"], 7.0)
+        self.assertEqual(cfg["timeout_model"]["supports_dedicated_write_timeout"], False)
+        self.assertIn("upload/read window", cfg["timeout_model"]["upload_timeout_behavior"])
 
     def test_upload_http_auth_error_does_not_retry(self):
         env = {
@@ -78,6 +80,7 @@ class RandyBackupClientTests(unittest.TestCase):
         self.assertEqual(result["status"], "auth_failed")
         self.assertEqual(result["attempts"], 1)
         self.assertEqual(result["max_attempts"], 3)
+        self.assertEqual(result["endpoint_host_path"], "randy.example.test/backup/hunter-job-archive")
         self.assertEqual(post_mock.call_count, 1)
 
     def test_retryable_timeout_then_success(self):

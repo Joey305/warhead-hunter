@@ -622,6 +622,7 @@
 .map-scroll {
   width: 100%;
   height: auto;
+  min-height: 320px;
 
   /* NO INTERNAL SCROLL */
   overflow: visible;
@@ -632,6 +633,28 @@
 }
 
 .map-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 320px;
+  background: #020607;
+}
+
+.map-svg-shell {
+  position: relative;
+}
+
+.map-svg-shell.is-loading::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 25% 20%, rgba(0, 217, 255, 0.16), transparent 32%),
+    linear-gradient(180deg, rgba(2, 6, 7, 0.98), rgba(2, 6, 7, 1));
+}
+
+.map-svg-shell svg {
   display: block;
   width: 100%;
   height: auto;

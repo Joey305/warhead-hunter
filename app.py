@@ -32,6 +32,7 @@ from api.sasa_api import bp as sasa_bp
 from routes import bp as routes_bp
 from api.handoff_server import hand_bp
 from api.sdf_resolver import expected_mcs_sdf_filename, normalize_sdf_key, resolve_sdf_path
+from api.svg_theme import themed_svg_response
 
 try:
     from api.randy_archive_client import (
@@ -3466,79 +3467,12 @@ def proxy_fasta(pdb_id):
 
 
 
-# ----------------------------
-# SVG
-# ----------------------------
-SVG_CANVAS_BG = "#020607"
-
-
 def _serve_themed_svg(fp: Path):
     try:
         svg = fp.read_text(encoding="utf-8", errors="replace")
     except Exception:
         return send_file(fp)
-
-    # RDKit often emits a full-canvas white background rect or root-level white
-    # background styling. Keep molecule/highlight colors untouched and only
-    # theme the canvas/background layer.
-    bg_rect = re.compile(
-        r"(<rect\b(?=[^>]*\bwidth=['\"](?:100%|[0-9.]+)['\"])(?=[^>]*\bheight=['\"](?:100%|[0-9.]+)['\"])[^>]*\b(?:fill\s*:\s*(?:#fff(?:fff)?|white)|fill=['\"](?:#fff(?:fff)?|white)['\"])[^>]*>)",
-        re.IGNORECASE,
-    )
-
-    def replace_rect(match):
-        rect = match.group(1)
-        if re.search(r"fill\s*:\s*(?:#fff(?:fff)?|white)", rect, flags=re.IGNORECASE):
-            rect = re.sub(r"fill\s*:\s*(?:#fff(?:fff)?|white)", f"fill:{SVG_CANVAS_BG}", rect, flags=re.IGNORECASE)
-        else:
-            rect = re.sub(r"fill=['\"](?:#fff(?:fff)?|white)['\"]", f"fill='{SVG_CANVAS_BG}'", rect, flags=re.IGNORECASE)
-        return rect
-
-    themed, count = bg_rect.subn(replace_rect, svg, count=1)
-
-    themed = re.sub(
-        r"(<svg\b[^>]*\bstyle=['\"])([^'\"]*)(['\"])",
-        lambda m: (
-            f"{m.group(1)}"
-            + re.sub(
-                r"background(?:-color)?\s*:\s*(?:#fff(?:fff)?|white)\s*;?",
-                f"background:{SVG_CANVAS_BG};",
-                m.group(2),
-                flags=re.IGNORECASE,
-            )
-            + ("" if re.search(r"background(?:-color)?\s*:", m.group(2), flags=re.IGNORECASE) else f"background:{SVG_CANVAS_BG};")
-            + f"{m.group(3)}"
-        ),
-        themed,
-        count=1,
-        flags=re.IGNORECASE,
-    )
-
-    themed = re.sub(
-        r"(<svg\b(?![^>]*\bstyle=)([^>]*))>",
-        rf"\1 style='background:{SVG_CANVAS_BG};'>",
-        themed,
-        count=1,
-        flags=re.IGNORECASE,
-    )
-
-    themed = re.sub(
-        r"(<(?:rect|svg)\b[^>]*)(fill=['\"])(?:#fff(?:fff)?|white)(['\"])",
-        rf"\1\2{SVG_CANVAS_BG}\3",
-        themed,
-        flags=re.IGNORECASE,
-    )
-
-    if count == 0:
-        themed = re.sub(
-            r"(<svg\b[^>]*>)",
-            rf"\1<rect width='100%' height='100%' x='0' y='0' fill='{SVG_CANVAS_BG}'/>",
-            themed,
-            count=1,
-            flags=re.IGNORECASE,
-        )
-
-    return Response(themed, mimetype="image/svg+xml")
+    return themed_svg_response(svg)
 
 
 @app.route("/api/svg/<job_id>/<pdb>/<chain>/<warhead>")
@@ -3587,13 +3521,13 @@ def api_svg(job_id, pdb, warhead, chain=None):
         plain=False,
     )
     if asset:
-        proxied = randy_proxy_file_response(
-            job_id,
-            asset.get("relative_path", ""),
-            mimetype="image/svg+xml",
-        )
-        if proxied:
-            return proxied
+        got = randy_get_file_bytes(job_id, asset.get("relative_path", ""))
+        if got:
+            content, _content_type = got
+            return themed_svg_response(
+                content.decode("utf-8", errors="replace"),
+                headers={"Cache-Control": "no-store", "X-Warhead-Handoff-Source": "RANDY_ARCHIVE"},
+            )
 
     abort(404, description="Exposed SVG not found")
 
@@ -3648,13 +3582,13 @@ def api_svg_plain(job_id, pdb, warhead, chain=None):
         plain=True,
     )
     if asset:
-        proxied = randy_proxy_file_response(
-            job_id,
-            asset.get("relative_path", ""),
-            mimetype="image/svg+xml",
-        )
-        if proxied:
-            return proxied
+        got = randy_get_file_bytes(job_id, asset.get("relative_path", ""))
+        if got:
+            content, _content_type = got
+            return themed_svg_response(
+                content.decode("utf-8", errors="replace"),
+                headers={"Cache-Control": "no-store", "X-Warhead-Handoff-Source": "RANDY_ARCHIVE"},
+            )
 
     abort(404, description="Plain SVG not found")
 

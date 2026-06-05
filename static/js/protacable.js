@@ -621,6 +621,53 @@
   // ============================================================================
   // 5) 2D MAP (includes resid)
   // ============================================================================
+  function normalizeInlineSvg(node) {
+    if (!node) return false;
+    const svg = node.querySelector("svg");
+    if (!svg) return false;
+
+    const dark = "#020607";
+    svg.style.background = dark;
+    svg.style.display = "block";
+    svg.style.width = "100%";
+    svg.style.height = "auto";
+
+    const fullCanvasRect = Array.from(svg.children || []).find((child) => {
+      if (!child || String(child.tagName || "").toLowerCase() !== "rect") return false;
+      const rect = child;
+      const width = String(rect.getAttribute("width") || "").trim().toLowerCase();
+      const height = String(rect.getAttribute("height") || "").trim().toLowerCase();
+      const x = String(rect.getAttribute("x") || "0").trim().toLowerCase();
+      const y = String(rect.getAttribute("y") || "0").trim().toLowerCase();
+      const looksFull = (width === "100%" || /^\d+(\.\d+)?(px)?$/.test(width)) && (height === "100%" || /^\d+(\.\d+)?(px)?$/.test(height));
+      return looksFull && (x === "0" || x === "0.0") && (y === "0" || y === "0.0");
+    });
+
+    const fillLooksLight = (value) => {
+      const low = String(value || "").trim().toLowerCase();
+      return !low || low === "none" || low === "transparent" || low === "#fff" || low === "#ffffff" || low === "#00000000" || low === "#ffffff00" || low.includes("rgb(255");
+    };
+
+    if (fullCanvasRect) {
+      const styleFill = String(fullCanvasRect.style.fill || "").trim();
+      const attrFill = String(fullCanvasRect.getAttribute("fill") || "").trim();
+      if (fillLooksLight(styleFill) || fillLooksLight(attrFill)) {
+        fullCanvasRect.setAttribute("fill", dark);
+        fullCanvasRect.style.fill = dark;
+      }
+    } else {
+      const backgroundRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      backgroundRect.setAttribute("width", "100%");
+      backgroundRect.setAttribute("height", "100%");
+      backgroundRect.setAttribute("x", "0");
+      backgroundRect.setAttribute("y", "0");
+      backgroundRect.setAttribute("fill", dark);
+      svg.insertBefore(backgroundRect, svg.firstChild);
+    }
+
+    return true;
+  }
+
   async function load2DMap(pdb, chain, warhead, resid) {
     const node = $("2d-map");
     if (!node) {
@@ -650,6 +697,8 @@
       if (normalUI) normalUI.style.display = "block";
     }
 
+    node.classList.add("is-loading");
+
     if (node.tagName === "IMG") {
       const requestToken = `${Date.now()}:${Math.random().toString(16).slice(2)}`;
       node.dataset.loadToken = requestToken;
@@ -657,6 +706,7 @@
       return await new Promise((resolve) => {
         function settle(ok, message) {
           if (node.dataset.loadToken !== requestToken) return;
+          node.classList.toggle("is-loading", !ok);
           resolve({ ok, degraded: !ok, message, url });
         }
 
@@ -671,6 +721,7 @@
 
     const t = await fetchText(url);
     if (!t.ok || !t.data) {
+      node.classList.remove("is-loading");
       node.innerHTML = `<div style="color:#888;padding:8px;">Failed to load 2D map.</div>`;
       return {
         ok: false,
@@ -679,6 +730,8 @@
       };
     }
     node.innerHTML = t.data;
+    normalizeInlineSvg(node);
+    node.classList.remove("is-loading");
     return {
       ok: true,
       degraded: false,

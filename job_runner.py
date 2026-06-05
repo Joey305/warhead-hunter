@@ -984,7 +984,7 @@ def _attempt_randy_backup(job_id: str, job_dir: str, *, status: str, required_re
     )
 
     outcome = str(result.get("status") or "unknown")
-    endpoint = str(result.get("endpoint") or result.get("base_url") or "")
+    endpoint = str(result.get("endpoint_host_path") or result.get("endpoint") or result.get("base_url") or "")
     verification = result.get("verification") if isinstance(result.get("verification"), dict) else {}
     verify_status = str(verification.get("status") or "not_attempted")
     if result.get("attempted"):
@@ -996,7 +996,11 @@ def _attempt_randy_backup(job_id: str, job_dir: str, *, status: str, required_re
             f"verify={verify_status} "
             f"endpoint={endpoint or 'unconfigured'} "
             f"files={int(result.get('files') or result.get('uploaded_files') or 0)} "
-            f"bytes={int(result.get('bytes') or result.get('uploaded_bytes') or 0)}"
+            f"bytes={int(result.get('bytes') or result.get('uploaded_bytes') or 0)} "
+            f"connect={result.get('connect_timeout_seconds')}s "
+            f"read={result.get('read_timeout_seconds')}s "
+            f"upload={result.get('upload_timeout_seconds')}s "
+            f"total={result.get('total_timeout_seconds')}s"
         )
         if result.get("error"):
             summary += f" error={str(result.get('error'))}"

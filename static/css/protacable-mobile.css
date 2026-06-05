@@ -154,11 +154,13 @@
     overflow: auto;
     max-width: 100%;
     max-height: min(56vh, 420px);
+    min-height: 260px;
     -webkit-overflow-scrolling: touch;
   }
 
   .map-img {
     max-width: 100%;
+    min-height: 260px;
     object-fit: contain;
   }
 
