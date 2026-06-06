@@ -220,9 +220,25 @@ def _backup_state_patch(backup_result: Dict[str, Any], *, results_ready: bool) -
     attempted = bool(backup_result.get("attempted"))
     status = str(backup_result.get("status") or "unknown")
 
+    failure_statuses = {
+        "archive_too_large",
+        "failed_planning",
+        "failed_local_job_missing",
+        "job_missing",
+        "job_corrupt",
+        "exception",
+        "auth_failed",
+        "http_error",
+        "request_exception",
+        "verification_failed",
+        "failed_verification",
+        "max_retries_exceeded",
+    }
+    reason = str(backup_result.get("reason") or "")
+
     if backup_ok:
         archive_status = "verified"
-    elif attempted:
+    elif attempted or status in failure_statuses or reason == "backup_planning_failed":
         archive_status = "backup_failed"
     elif status.startswith("skipped"):
         archive_status = "backup_skipped"
@@ -992,6 +1008,7 @@ def _attempt_randy_backup(job_id: str, job_dir: str, *, status: str, required_re
             f"configured={bool(result.get('configured'))} "
             f"ok={bool(result.get('ok'))} "
             f"status={outcome} "
+            f"profile={result.get('archive_profile') or ''} "
             f"attempts={int(result.get('attempts') or 0)}/{int(result.get('max_attempts') or 0)} "
             f"verify={verify_status} "
             f"endpoint={endpoint or 'unconfigured'} "
@@ -1007,11 +1024,28 @@ def _attempt_randy_backup(job_id: str, job_dir: str, *, status: str, required_re
         log_message(job_id, f"🗄️ RANDY backup result: {summary}")
     else:
         reason = str(result.get("reason") or result.get("error") or "not configured")
-        log_message(
-            job_id,
-            f"🗄️ RANDY backup skipped: {reason} endpoint={endpoint or 'unconfigured'} "
-            f"configured={bool(result.get('configured'))}",
-        )
+        if reason == "backup_planning_failed":
+            log_message(
+                job_id,
+                "🗄️ RANDY backup planning failed: "
+                f"status={outcome} "
+                f"reason=\"{str(result.get('plan_reason') or result.get('error') or '').strip()}\" "
+                f"profile={result.get('archive_profile') or 'failed_planning'} "
+                f"selected={int(result.get('selected_file_count') or 0)} "
+                f"selected_bytes={int(result.get('selected_bytes') or 0)} "
+                f"skipped={int(result.get('skipped_file_count') or 0)} "
+                f"skipped_bytes={int(result.get('skipped_bytes') or 0)} "
+                f"max={int(result.get('max_bytes') or 0)} "
+                f"required_skipped={len(result.get('required_skipped') or [])} "
+                f"endpoint={endpoint or 'unconfigured'} "
+                f"configured={bool(result.get('configured'))}",
+            )
+        else:
+            log_message(
+                job_id,
+                f"🗄️ RANDY backup skipped: {reason} endpoint={endpoint or 'unconfigured'} "
+                f"configured={bool(result.get('configured'))}",
+            )
     return result
 
 def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_seq: str) -> None:

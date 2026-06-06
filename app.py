@@ -3271,9 +3271,13 @@ def job_summary(job_id):
 
     # ---- infer target (best effort) ----
     target = None
+    backup_meta = {}
     hydrated = disk_jobs.hydrate_job_from_disk(job_id, get_jobs_root(), JOB_STORE.get(job_id)) or {}
     if hydrated:
         target = (hydrated.get("target") or "").strip() or None
+    meta_json = disk_jobs.load_job_metadata(job_id, get_jobs_root()) or {}
+    if isinstance(meta_json.get("backup"), dict):
+        backup_meta = meta_json.get("backup") or {}
     if not target:
         meta = _read_protein_data_csv(jp) or {}
         target = (meta.get("protein") or "").strip() or None
@@ -3292,7 +3296,16 @@ def job_summary(job_id):
             "total_warheads": 0,
             "unique_warheads": 0,
             "structures_downloaded": None,
-            "warhead_id_col": None
+            "warhead_id_col": None,
+            "archive_status": meta_json.get("archive_status") or "",
+            "results_available_not_backed_up": bool(meta_json.get("results_available_not_backed_up")),
+            "backup": {
+                "status": backup_meta.get("status") or "",
+                "reason": backup_meta.get("reason") or "",
+                "plan_reason": backup_meta.get("plan_reason") or "",
+                "plan_status": backup_meta.get("plan_status") or "",
+                "archive_profile": backup_meta.get("archive_profile") or "",
+            },
         })
 
     try:
@@ -3304,7 +3317,16 @@ def job_summary(job_id):
             "total_warheads": 0,
             "unique_warheads": 0,
             "structures_downloaded": None,
-            "warhead_id_col": None
+            "warhead_id_col": None,
+            "archive_status": meta_json.get("archive_status") or "",
+            "results_available_not_backed_up": bool(meta_json.get("results_available_not_backed_up")),
+            "backup": {
+                "status": backup_meta.get("status") or "",
+                "reason": backup_meta.get("reason") or "",
+                "plan_reason": backup_meta.get("plan_reason") or "",
+                "plan_status": backup_meta.get("plan_status") or "",
+                "archive_profile": backup_meta.get("archive_profile") or "",
+            },
         })
 
     # Choose the best identity column for "unique"
@@ -3338,7 +3360,21 @@ def job_summary(job_id):
         "total_warheads": total,
         "unique_warheads": uniq,
         "structures_downloaded": structures_downloaded,
-        "warhead_id_col": id_col
+        "warhead_id_col": id_col,
+        "archive_status": meta_json.get("archive_status") or "",
+        "results_available_not_backed_up": bool(meta_json.get("results_available_not_backed_up")),
+        "backup": {
+            "status": backup_meta.get("status") or "",
+            "reason": backup_meta.get("reason") or "",
+            "plan_reason": backup_meta.get("plan_reason") or "",
+            "plan_status": backup_meta.get("plan_status") or "",
+            "archive_profile": backup_meta.get("archive_profile") or "",
+            "selected_file_count": int(backup_meta.get("selected_file_count") or 0),
+            "selected_bytes": int(backup_meta.get("selected_bytes") or 0),
+            "skipped_file_count": int(backup_meta.get("skipped_file_count") or 0),
+            "skipped_bytes": int(backup_meta.get("skipped_bytes") or 0),
+            "max_bytes": int(backup_meta.get("max_bytes") or 0),
+        },
     })
 
 @app.route("/viewer/<path:filename>")

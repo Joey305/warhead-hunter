@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import json
 import os
 import socket
+import subprocess
 import tempfile
 import time
 import zipfile
@@ -63,26 +65,82 @@ SAFE_SKIP_FILES = {
     ".ds_store",
     "thumbs.db",
 }
-PREFERRED_ROOTS = [
-    "TARGET_RESULTS",
-    "WAR_PDB",
+ARCHIVE_PROFILE_FULL = "full"
+ARCHIVE_PROFILE_CURATED = "curated_results"
+ARCHIVE_PROFILE_METADATA_ONLY = "metadata_only"
+ARCHIVE_PROFILE_FAILED = "failed_planning"
+PLANNER_LIST_LIMIT = 20
+BACKUP_MANIFEST_NAME = "job_backup_manifest.json"
+ROOT_DUPLICATE_TARGET_FILES = {
+    "3DSASAmapped.csv",
+    "Ligand_3D_Atoms.csv",
+    "Ligand_3D_Atoms_with_SASA.csv",
+    "Ligand_Metadata.csv",
+    "Ligand_PDB_Index.csv",
+    "Resolved_SASA_Summary.csv",
+    "Results_Display.csv",
+    "Warhead_SASA_atoms.csv",
+    "Warhead_SASA_summary.csv",
+    "chain_similarity.csv",
+    "filtered_data.csv",
+    "queries.csv",
+}
+ROOT_DUPLICATE_TARGET_DIRS = {
     "MCS_Output",
-    "bundles",
+    "WAR_PDB",
+}
+REQUIRED_FILE_GROUPS = [
+    ["job_metadata.json", "job_files/job_metadata.json"],
+    ["job.log", "job_files/job.log"],
+    ["input.csv", "job_files/input.csv"],
+    ["Protein_Data.csv", "TARGET_RESULTS/Protein_Data.csv", "job_files/Protein_Data.csv"],
+    ["summary.json", "job_files/summary.json"],
+    ["TARGET_RESULTS/Results_Display.csv", "Results_Display.csv", "job_files/Results_Display.csv"],
+    ["TARGET_RESULTS/Resolved_SASA_Summary.csv", "Resolved_SASA_Summary.csv", "job_files/Resolved_SASA_Summary.csv"],
+    ["TARGET_RESULTS/Warhead_SASA_summary.csv", "Warhead_SASA_summary.csv", "job_files/Warhead_SASA_summary.csv"],
+    ["TARGET_RESULTS/Warhead_SASA_atoms.csv", "Warhead_SASA_atoms.csv", "job_files/Warhead_SASA_atoms.csv"],
+    ["TARGET_RESULTS/Ligand_Metadata.csv", "Ligand_Metadata.csv", "job_files/Ligand_Metadata.csv"],
 ]
-PREFERRED_FILES = [
-    "job_metadata.json",
-    "job.log",
+VIEWER_CRITICAL_ROOTS = [
+    "TARGET_RESULTS/MCS_Output/MCS_SDF",
+    "TARGET_RESULTS/MCS_Output/MCS_SVG",
+    "TARGET_RESULTS/WAR_PDB",
+    "MCS_Output/MCS_SDF",
+    "MCS_Output/MCS_SVG",
+    "WAR_PDB",
+]
+VIEWER_CRITICAL_FILES = [
+    "TARGET_RESULTS/Results_Display.csv",
+    "TARGET_RESULTS/Resolved_SASA_Summary.csv",
+    "TARGET_RESULTS/Warhead_SASA_summary.csv",
+    "TARGET_RESULTS/Warhead_SASA_atoms.csv",
+    "TARGET_RESULTS/Ligand_Metadata.csv",
+    "TARGET_RESULTS/Ligand_3D_Atoms.csv",
+    "TARGET_RESULTS/Ligand_3D_Atoms_with_SASA.csv",
+    "TARGET_RESULTS/3DSASAmapped.csv",
     "Results_Display.csv",
     "Resolved_SASA_Summary.csv",
-    "Resolved_SASA_Summary.tsv",
+    "Warhead_SASA_summary.csv",
     "Warhead_SASA_atoms.csv",
+    "Ligand_Metadata.csv",
     "Ligand_3D_Atoms.csv",
     "Ligand_3D_Atoms_with_SASA.csv",
     "3DSASAmapped.csv",
-    "Ligand_Metadata.csv",
-    "Protein_Data.csv",
+    "job_files/Results_Display.csv",
+    "job_files/Resolved_SASA_Summary.csv",
+    "job_files/Warhead_SASA_summary.csv",
+    "job_files/Warhead_SASA_atoms.csv",
+    "job_files/Ligand_Metadata.csv",
+]
+PREFERRED_FILES = [
     "job_result_manifest.json",
+    "job_archive_manifest.json",
     "cleanup_report.md",
+    "CIF_Download_Manifest.csv",
+]
+PREFERRED_ROOTS = [
+    "TARGET_RESULTS",
+    "bundles",
 ]
 
 
@@ -385,9 +443,46 @@ def _exception_is_retryable(exc: BaseException) -> bool:
 
 def _planning_failure_status(reason: str) -> str:
     text = str(reason or "").lower()
-    if "could not fit within warhead_backup_max_bytes" in text:
+    if "could not fit within warhead_backup_max_bytes" in text or "minimum viable results archive could not fit" in text:
         return "archive_too_large"
     return "failed_planning"
+
+
+def _apply_plan_metadata(result: Dict[str, Any], plan: Dict[str, Any]) -> None:
+    for key in [
+        "plan_ok",
+        "plan_reason",
+        "plan_status",
+        "archive_profile",
+        "selected_file_count",
+        "selected_bytes",
+        "skipped_file_count",
+        "skipped_bytes",
+        "max_bytes",
+        "required_selected",
+        "required_missing",
+        "required_skipped",
+        "largest_selected_files",
+        "largest_skipped_files",
+        "preferred_file_count",
+        "preferred_bytes",
+        "other_file_count",
+        "other_bytes",
+        "contains_target_results",
+        "contains_mcs_sdf",
+        "contains_mcs_svg",
+        "contains_war_pdb",
+        "cif_excluded",
+        "cif_selected_count",
+        "script_selected_count",
+        "script_skipped_count",
+        "selected_path_kinds",
+        "skipped_path_kinds",
+        "route_critical_checks",
+        "results_route_sufficient",
+    ]:
+        if key in plan:
+            result[key] = plan.get(key)
 
 
 @dataclass
@@ -395,11 +490,208 @@ class CandidateFile:
     path: Path
     rel: str
     size_bytes: int
-    preferred: bool
+    category: str
+    required: bool
+
+
+def _exclude_cif_from_backup() -> bool:
+    return _env_flag("WARHEAD_JOB_BACKUP_EXCLUDE_CIF", False)
+
+
+def _duplicate_target_results_rel(rel: str) -> Optional[str]:
+    rel = rel.strip("/")
+    if not rel or rel.startswith("TARGET_RESULTS/") or rel.startswith("job_files/"):
+        return None
+    first = rel.split("/", 1)[0]
+    if first in ROOT_DUPLICATE_TARGET_DIRS:
+        suffix = rel[len(first):].lstrip("/")
+        return f"TARGET_RESULTS/{first}/{suffix}" if suffix else f"TARGET_RESULTS/{first}"
+    if "/" not in rel and rel in ROOT_DUPLICATE_TARGET_FILES:
+        return f"TARGET_RESULTS/{rel}"
+    return None
+
+
+def _required_backup_relpaths(job_dir: Path) -> set[str]:
+    relpaths: set[str] = set()
+    for options in REQUIRED_FILE_GROUPS:
+        for rel in options:
+            if (job_dir / rel).exists():
+                relpaths.add(rel)
+                break
+    return relpaths
+
+
+def _missing_required_backup_groups(job_dir: Path) -> List[str]:
+    missing: List[str] = []
+    for options in REQUIRED_FILE_GROUPS:
+        if any((job_dir / rel).exists() for rel in options):
+            continue
+        missing.append(options[0])
+    return missing
+
+
+def _viewer_critical_relpath(rel: str) -> bool:
+    rel_low = rel.lower()
+    if any(rel_low == item.lower() for item in VIEWER_CRITICAL_FILES):
+        return True
+    return any(rel_low.startswith(f"{root.lower()}/") for root in VIEWER_CRITICAL_ROOTS)
+
+
+def _candidate_category(path: Path, rel: str, *, required_relpaths: set[str]) -> str:
+    if rel in required_relpaths:
+        return "required"
+    if _viewer_critical_relpath(rel):
+        return "viewer_critical"
+    if _preferred_file(path, rel):
+        return "preferred"
+    return "other"
+
+
+def _classify_path_kind(rel: str) -> str:
+    rel_low = rel.lower()
+    if rel_low.endswith(".cif"):
+        return "cif"
+    if rel_low.endswith(".py"):
+        return "script"
+    if rel_low.endswith(".sdf"):
+        return "sdf"
+    if rel_low.endswith(".svg"):
+        return "svg"
+    if rel_low.endswith(".pdb"):
+        return "pdb"
+    return "other"
+
+
+def _summarize_candidate_files(files: List[CandidateFile], limit: int = PLANNER_LIST_LIMIT) -> List[Dict[str, Any]]:
+    top = sorted(files, key=lambda item: (-item.size_bytes, item.rel))[: max(0, limit)]
+    return [
+        {
+            "rel": item.rel,
+            "size_bytes": int(item.size_bytes),
+            "category": item.category,
+            "required": bool(item.required),
+        }
+        for item in top
+    ]
+
+
+def _route_critical_checks(selected_files: List[CandidateFile]) -> Dict[str, Any]:
+    rels = {item.rel for item in selected_files}
+    has_results = any(rel in rels for rel in [
+        "TARGET_RESULTS/Results_Display.csv",
+        "Results_Display.csv",
+        "job_files/Results_Display.csv",
+    ])
+    has_summary = any(rel in rels for rel in [
+        "TARGET_RESULTS/Resolved_SASA_Summary.csv",
+        "Resolved_SASA_Summary.csv",
+        "job_files/Resolved_SASA_Summary.csv",
+    ])
+    has_sdf = any(_viewer_critical_relpath(rel) and rel.lower().endswith(".sdf") for rel in rels)
+    has_svg = any(_viewer_critical_relpath(rel) and rel.lower().endswith(".svg") for rel in rels)
+    has_pdb = any(_viewer_critical_relpath(rel) and rel.lower().endswith(".pdb") for rel in rels)
+    return {
+        "results_display_present": has_results,
+        "resolved_sasa_summary_present": has_summary,
+        "mcs_sdf_present": has_sdf,
+        "mcs_svg_present": has_svg,
+        "war_pdb_present": has_pdb,
+        "results_route_sufficient": bool(has_results and has_summary and has_sdf and has_svg and has_pdb),
+    }
+
+
+def _git_commit() -> str:
+    try:
+        proc = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if proc.returncode == 0:
+            return (proc.stdout or "").strip()
+    except Exception:
+        pass
+    return ""
+
+
+def _plan_diagnostics(
+    *,
+    job_dir: Path,
+    max_bytes: int,
+    selected: List[CandidateFile],
+    skipped: List[CandidateFile],
+    required_relpaths: set[str],
+    plan_ok: bool,
+    plan_reason: str = "",
+    plan_status: str = "",
+    archive_profile: str = ARCHIVE_PROFILE_FAILED,
+) -> Dict[str, Any]:
+    selected_rels = {item.rel for item in selected}
+    selected_bytes = sum(item.size_bytes for item in selected)
+    skipped_bytes = sum(item.size_bytes for item in skipped)
+    required_selected = sorted(rel for rel in required_relpaths if rel in selected_rels)
+    required_skipped = sorted(rel for rel in required_relpaths if rel not in selected_rels and (job_dir / rel).exists())
+    required_missing = _missing_required_backup_groups(job_dir)
+    preferred_selected = [item for item in selected if item.category == "preferred"]
+    other_selected = [item for item in selected if item.category == "other"]
+    selected_relpaths = [item.rel for item in selected]
+    skipped_relpaths = [item.rel for item in skipped]
+    rel_checks = _route_critical_checks(selected)
+    return {
+        "ok": plan_ok,
+        "reason": plan_reason,
+        "plan_ok": plan_ok,
+        "plan_reason": plan_reason,
+        "plan_status": plan_status,
+        "archive_profile": archive_profile,
+        "selected_files": selected,
+        "selected_file_count": len(selected),
+        "selected_bytes": selected_bytes,
+        "skipped_files": skipped,
+        "skipped_file_count": len(skipped),
+        "skipped_bytes": skipped_bytes,
+        "curated_only": archive_profile != ARCHIVE_PROFILE_FULL,
+        "max_bytes": max_bytes,
+        "required_selected": required_selected,
+        "required_skipped": required_skipped,
+        "required_missing": required_missing,
+        "largest_selected_files": _summarize_candidate_files(selected),
+        "largest_skipped_files": _summarize_candidate_files(skipped),
+        "preferred_file_count": len(preferred_selected),
+        "preferred_bytes": sum(item.size_bytes for item in preferred_selected),
+        "other_file_count": len(other_selected),
+        "other_bytes": sum(item.size_bytes for item in other_selected),
+        "contains_target_results": any(rel == "TARGET_RESULTS" or rel.startswith("TARGET_RESULTS/") for rel in selected_relpaths),
+        "contains_mcs_sdf": any(rel.startswith("TARGET_RESULTS/MCS_Output/MCS_SDF/") or rel.startswith("MCS_Output/MCS_SDF/") for rel in selected_relpaths),
+        "contains_mcs_svg": any(rel.startswith("TARGET_RESULTS/MCS_Output/MCS_SVG/") or rel.startswith("MCS_Output/MCS_SVG/") for rel in selected_relpaths),
+        "contains_war_pdb": any(rel.startswith("TARGET_RESULTS/WAR_PDB/") or rel.startswith("WAR_PDB/") for rel in selected_relpaths),
+        "cif_excluded": _exclude_cif_from_backup(),
+        "cif_selected_count": sum(1 for rel in selected_relpaths if rel.lower().endswith(".cif")),
+        "script_selected_count": sum(1 for rel in selected_relpaths if rel.lower().endswith(".py")),
+        "script_skipped_count": sum(1 for rel in skipped_relpaths if rel.lower().endswith(".py")),
+        "selected_path_kinds": {
+            "cif": sum(1 for rel in selected_relpaths if rel.lower().endswith(".cif")),
+            "script": sum(1 for rel in selected_relpaths if rel.lower().endswith(".py")),
+            "sdf": sum(1 for rel in selected_relpaths if rel.lower().endswith(".sdf")),
+            "svg": sum(1 for rel in selected_relpaths if rel.lower().endswith(".svg")),
+            "pdb": sum(1 for rel in selected_relpaths if rel.lower().endswith(".pdb")),
+        },
+        "skipped_path_kinds": {
+            "cif": sum(1 for rel in skipped_relpaths if rel.lower().endswith(".cif")),
+            "script": sum(1 for rel in skipped_relpaths if rel.lower().endswith(".py")),
+            "sdf": sum(1 for rel in skipped_relpaths if rel.lower().endswith(".sdf")),
+            "svg": sum(1 for rel in skipped_relpaths if rel.lower().endswith(".svg")),
+            "pdb": sum(1 for rel in skipped_relpaths if rel.lower().endswith(".pdb")),
+        },
+        "route_critical_checks": rel_checks,
+        "results_route_sufficient": bool(rel_checks.get("results_route_sufficient")),
+    }
 
 
 def iter_backup_candidates(job_dir: Path) -> Iterator[CandidateFile]:
     root = job_dir.resolve()
+    required_relpaths = _required_backup_relpaths(root)
     for current_root, dirnames, filenames in os.walk(root):
         current = Path(current_root)
         dirnames[:] = [
@@ -416,66 +708,179 @@ def iter_backup_candidates(job_dir: Path) -> Iterator[CandidateFile]:
                 size = path.stat().st_size
             except Exception:
                 continue
+            duplicate_rel = _duplicate_target_results_rel(rel)
+            if duplicate_rel and (root / duplicate_rel).exists():
+                continue
+            if _exclude_cif_from_backup() and path.suffix.lower() == ".cif":
+                continue
+            category = _candidate_category(path, rel, required_relpaths=required_relpaths)
             yield CandidateFile(
                 path=path,
                 rel=rel,
                 size_bytes=size,
-                preferred=_preferred_file(path, rel),
+                category=category,
+                required=(category == "required"),
             )
 
 
 def build_backup_plan(job_dir: Path, *, max_bytes: Optional[int] = None) -> Dict[str, Any]:
+    job_dir = Path(job_dir).resolve()
     max_bytes = int(max_bytes or backup_max_bytes())
-    preferred: List[CandidateFile] = []
-    other: List[CandidateFile] = []
-    skipped_count = 0
-    skipped_bytes = 0
+    if not job_dir.exists():
+        return _plan_diagnostics(
+            job_dir=job_dir,
+            max_bytes=max_bytes,
+            selected=[],
+            skipped=[],
+            required_relpaths=set(),
+            plan_ok=False,
+            plan_reason="Local job directory does not exist",
+            plan_status="job_missing",
+            archive_profile=ARCHIVE_PROFILE_FAILED,
+        )
 
-    for item in iter_backup_candidates(job_dir):
-        if item.preferred:
-            preferred.append(item)
-        else:
-            other.append(item)
+    required_relpaths = _required_backup_relpaths(job_dir)
+    candidates = sorted(iter_backup_candidates(job_dir), key=lambda rec: rec.rel)
+    if not candidates:
+        return _plan_diagnostics(
+            job_dir=job_dir,
+            max_bytes=max_bytes,
+            selected=[],
+            skipped=[],
+            required_relpaths=required_relpaths,
+            plan_ok=False,
+            plan_reason="No backup candidates found in job directory",
+            plan_status="job_corrupt",
+            archive_profile=ARCHIVE_PROFILE_FAILED,
+        )
+
+    groups: Dict[str, List[CandidateFile]] = {
+        "required": [],
+        "viewer_critical": [],
+        "preferred": [],
+        "other": [],
+    }
+    for item in candidates:
+        groups[item.category].append(item)
 
     selected: List[CandidateFile] = []
+    skipped: List[CandidateFile] = []
+    selected_rels: set[str] = set()
     selected_bytes = 0
-    for group in [preferred, other]:
-        for item in sorted(group, key=lambda rec: rec.rel):
+
+    def add_mandatory(group_name: str) -> Optional[str]:
+        nonlocal selected_bytes
+        for item in groups[group_name]:
+            if item.rel in selected_rels:
+                continue
             if selected_bytes + item.size_bytes > max_bytes:
-                skipped_count += 1
-                skipped_bytes += item.size_bytes
+                return item.rel
+            selected.append(item)
+            selected_rels.add(item.rel)
+            selected_bytes += item.size_bytes
+        return None
+
+    def add_optional(group_name: str) -> None:
+        nonlocal selected_bytes
+        for item in groups[group_name]:
+            if item.rel in selected_rels:
+                continue
+            if selected_bytes + item.size_bytes > max_bytes:
+                skipped.append(item)
                 continue
             selected.append(item)
+            selected_rels.add(item.rel)
             selected_bytes += item.size_bytes
 
-    required_names = {
-        "job_metadata.json",
-        "job.log",
-    }
-    selected_names = {item.rel for item in selected}
-    for required_name in required_names:
-        if required_name not in selected_names and (job_dir / required_name).exists():
-            return {
-                "ok": False,
-                "reason": f"Required backup file could not fit within WARHEAD_BACKUP_MAX_BYTES: {required_name}",
-                "selected_files": selected,
-                "selected_file_count": len(selected),
-                "selected_bytes": selected_bytes,
-                "skipped_file_count": skipped_count,
-                "skipped_bytes": skipped_bytes,
-                "curated_only": skipped_count > 0,
-                "max_bytes": max_bytes,
-            }
+    overflow_required = add_mandatory("required")
+    if overflow_required:
+        return _plan_diagnostics(
+            job_dir=job_dir,
+            max_bytes=max_bytes,
+            selected=selected,
+            skipped=[item for item in candidates if item.rel not in selected_rels],
+            required_relpaths=required_relpaths,
+            plan_ok=False,
+            plan_reason=f"Required backup file could not fit within WARHEAD_BACKUP_MAX_BYTES: {overflow_required}",
+            plan_status="archive_too_large",
+            archive_profile=ARCHIVE_PROFILE_FAILED,
+        )
 
+    overflow_critical = add_mandatory("viewer_critical")
+    if overflow_critical:
+        return _plan_diagnostics(
+            job_dir=job_dir,
+            max_bytes=max_bytes,
+            selected=selected,
+            skipped=[item for item in candidates if item.rel not in selected_rels],
+            required_relpaths=required_relpaths,
+            plan_ok=False,
+            plan_reason=f"Minimum viable results archive could not fit within WARHEAD_BACKUP_MAX_BYTES: {overflow_critical}",
+            plan_status="archive_too_large",
+            archive_profile=ARCHIVE_PROFILE_FAILED,
+        )
+
+    add_optional("preferred")
+    add_optional("other")
+
+    route_checks = _route_critical_checks(selected)
+    has_viewer_critical_candidates = bool(groups["viewer_critical"])
+    if has_viewer_critical_candidates and not route_checks.get("results_route_sufficient"):
+        return _plan_diagnostics(
+            job_dir=job_dir,
+            max_bytes=max_bytes,
+            selected=selected,
+            skipped=[item for item in candidates if item.rel not in selected_rels],
+            required_relpaths=required_relpaths,
+            plan_ok=False,
+            plan_reason="Minimum viable results archive is missing route-critical artifacts",
+            plan_status="job_corrupt",
+            archive_profile=ARCHIVE_PROFILE_FAILED,
+        )
+
+    archive_profile = ARCHIVE_PROFILE_FULL
+    if skipped:
+        archive_profile = ARCHIVE_PROFILE_CURATED if has_viewer_critical_candidates else ARCHIVE_PROFILE_METADATA_ONLY
+    elif not has_viewer_critical_candidates:
+        archive_profile = ARCHIVE_PROFILE_METADATA_ONLY
+
+    return _plan_diagnostics(
+        job_dir=job_dir,
+        max_bytes=max_bytes,
+        selected=selected,
+        skipped=skipped,
+        required_relpaths=required_relpaths,
+        plan_ok=True,
+        plan_reason="",
+        plan_status="ready",
+        archive_profile=archive_profile,
+    )
+
+
+def _plan_manifest(job_id: str, plan: Dict[str, Any]) -> Dict[str, Any]:
     return {
-        "ok": True,
-        "selected_files": selected,
-        "selected_file_count": len(selected),
-        "selected_bytes": selected_bytes,
-        "skipped_file_count": skipped_count,
-        "skipped_bytes": skipped_bytes,
-        "curated_only": skipped_count > 0,
-        "max_bytes": max_bytes,
+        "job_id": job_id,
+        "created_at": _utc_now_iso(),
+        "archive_profile": str(plan.get("archive_profile") or ""),
+        "selected_file_count": int(plan.get("selected_file_count") or 0),
+        "selected_bytes": int(plan.get("selected_bytes") or 0),
+        "skipped_file_count": int(plan.get("skipped_file_count") or 0),
+        "skipped_bytes": int(plan.get("skipped_bytes") or 0),
+        "required_selected": list(plan.get("required_selected") or []),
+        "required_missing": list(plan.get("required_missing") or []),
+        "required_skipped": list(plan.get("required_skipped") or []),
+        "plan_ok": bool(plan.get("plan_ok")),
+        "plan_status": str(plan.get("plan_status") or ""),
+        "plan_reason": str(plan.get("plan_reason") or ""),
+        "max_bytes": int(plan.get("max_bytes") or 0),
+        "cif_excluded": bool(plan.get("cif_excluded")),
+        "route_critical_checks": plan.get("route_critical_checks") or {},
+        "results_route_sufficient": bool(plan.get("results_route_sufficient")),
+        "largest_selected_files": list(plan.get("largest_selected_files") or []),
+        "largest_skipped_files": list(plan.get("largest_skipped_files") or []),
+        "app_version": {
+            "git_commit": _git_commit(),
+        },
     }
 
 
@@ -486,6 +891,10 @@ def _create_archive(job_id: str, job_dir: Path, plan: Dict[str, Any]) -> Path:
     with zipfile.ZipFile(archive_path, "w", compression=zipfile.ZIP_DEFLATED, allowZip64=True) as zf:
         for item in plan.get("selected_files", []):
             zf.write(item.path, arcname=item.rel)
+        zf.writestr(
+            BACKUP_MANIFEST_NAME,
+            json.dumps(_plan_manifest(job_id, plan), indent=2, sort_keys=True),
+        )
     return archive_path
 
 
@@ -588,16 +997,19 @@ def backup_job_directory(
     result["endpoint_host_path"] = endpoint_host_path
 
     if not job_dir.exists():
+        plan = build_backup_plan(job_dir)
+        _apply_plan_metadata(result, plan)
         result["attempted"] = False
         result["configured"] = backup_enabled()
         result["status"] = "failed_local_job_missing"
-        result["error"] = "Local job directory does not exist"
+        result["error"] = str(plan.get("plan_reason") or plan.get("reason") or "Local job directory does not exist")
         result["reason"] = "local_job_directory_missing"
         result["finished_at"] = _utc_now_iso()
         return result
 
     result["status"] = "planning"
     plan = build_backup_plan(job_dir)
+    _apply_plan_metadata(result, plan)
     result["selected_files"] = int(plan.get("selected_file_count") or 0)
     result["selected_bytes"] = int(plan.get("selected_bytes") or 0)
     result["curated_only"] = bool(plan.get("curated_only"))
@@ -609,6 +1021,21 @@ def backup_job_directory(
         result["error"] = str(plan.get("reason") or "Backup planning failed")
         result["reason"] = "backup_planning_failed"
         result["finished_at"] = _utc_now_iso()
+        _emit(
+            log,
+            (
+                "🗄️ RANDY backup planning failed: "
+                f"status={result['status']} "
+                f"reason=\"{result['error']}\" "
+                f"profile={result.get('archive_profile') or ARCHIVE_PROFILE_FAILED} "
+                f"selected={int(result.get('selected_file_count') or 0)} "
+                f"selected_bytes={int(result.get('selected_bytes') or 0)} "
+                f"skipped={int(result.get('skipped_file_count') or 0)} "
+                f"skipped_bytes={int(result.get('skipped_bytes') or 0)} "
+                f"max={int(result.get('max_bytes') or 0)} "
+                f"required_skipped={len(result.get('required_skipped') or [])}"
+            ),
+        )
         return result
 
     if dry_run:
@@ -617,6 +1044,18 @@ def backup_job_directory(
         result["reason"] = "dry_run_only"
         result["finished_at"] = _utc_now_iso()
         return result
+
+    _emit(
+        log,
+        (
+            f"🗄️ RANDY backup plan: profile={result.get('archive_profile') or ARCHIVE_PROFILE_FAILED} "
+            f"selected_files={int(result.get('selected_file_count') or 0)} "
+            f"selected_bytes={int(result.get('selected_bytes') or 0)} "
+            f"skipped_files={int(result.get('skipped_file_count') or 0)} "
+            f"skipped_bytes={int(result.get('skipped_bytes') or 0)} "
+            f"max_bytes={int(result.get('max_bytes') or 0)}"
+        ),
+    )
 
     if not result["configured"]:
         result["attempted"] = False

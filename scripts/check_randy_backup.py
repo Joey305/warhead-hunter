@@ -61,9 +61,11 @@ def _env_names_payload() -> dict[str, Any]:
         "RANDY_BACKUP_RETRY_BACKOFF_SECONDS",
         "WARHEAD_BACKUP_TIMEOUT_SECONDS",
         "WARHEAD_BACKUP_MAX_BYTES",
+        "WARHEAD_JOB_BACKUP_EXCLUDE_CIF",
         "WARHEAD_BACKUP_REQUIRED",
         "WARHEAD_BACKUP_ON_COMPLETE",
         "WARHEAD_BACKUP_ON_FAILURE",
+        "WARHEAD_RUN_CLEANUP_STEP",
         "DYNO",
     ]
     return {name: _safe_env_value(name) for name in exact_names}
@@ -207,12 +209,32 @@ def _plan_payload(job_id: str) -> dict[str, Any]:
         "job_id": job_id,
         "job_dir": str(_job_dir(job_id)),
         "plan_ok": bool(plan.get("ok")),
+        "plan_status": str(plan.get("plan_status") or ""),
+        "plan_reason": str(plan.get("plan_reason") or plan.get("reason") or ""),
+        "archive_profile": str(plan.get("archive_profile") or ""),
         "selected_file_count": int(plan.get("selected_file_count") or 0),
         "selected_bytes": int(plan.get("selected_bytes") or 0),
         "skipped_file_count": int(plan.get("skipped_file_count") or 0),
         "skipped_bytes": int(plan.get("skipped_bytes") or 0),
         "curated_only": bool(plan.get("curated_only")),
         "max_bytes": int(plan.get("max_bytes") or 0),
+        "required_selected": list(plan.get("required_selected") or []),
+        "required_missing": list(plan.get("required_missing") or []),
+        "required_skipped": list(plan.get("required_skipped") or []),
+        "largest_selected_files": list(plan.get("largest_selected_files") or []),
+        "largest_skipped_files": list(plan.get("largest_skipped_files") or []),
+        "preferred_file_count": int(plan.get("preferred_file_count") or 0),
+        "preferred_bytes": int(plan.get("preferred_bytes") or 0),
+        "other_file_count": int(plan.get("other_file_count") or 0),
+        "other_bytes": int(plan.get("other_bytes") or 0),
+        "contains_target_results": bool(plan.get("contains_target_results")),
+        "contains_mcs_sdf": bool(plan.get("contains_mcs_sdf")),
+        "contains_mcs_svg": bool(plan.get("contains_mcs_svg")),
+        "contains_war_pdb": bool(plan.get("contains_war_pdb")),
+        "cif_excluded": bool(plan.get("cif_excluded")),
+        "selected_path_kinds": plan.get("selected_path_kinds") or {},
+        "skipped_path_kinds": plan.get("skipped_path_kinds") or {},
+        "route_critical_checks": plan.get("route_critical_checks") or {},
         "sample_paths": [item.rel for item in plan.get("selected_files", [])[:25]],
         "reason": str(plan.get("reason") or ""),
     }
@@ -221,7 +243,12 @@ def _plan_payload(job_id: str) -> dict[str, Any]:
 def _dry_run(job_id: str, status: str) -> int:
     job_dir = _job_dir(job_id)
     if not job_dir.exists():
-        _print_json({"ok": False, "error": f"Local job directory not found: {job_dir}", "job_id": job_id})
+        _print_json({
+            **_env_payload(),
+            **_plan_payload(job_id),
+            "ok": False,
+            "error": f"Local job directory not found: {job_dir}",
+        })
         return 1
 
     result = backup_job_directory(job_id, job_dir, status=status, dry_run=True, log=print)

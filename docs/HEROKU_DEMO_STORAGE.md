@@ -89,3 +89,17 @@ Operational notes:
 - Manual dry-run/upload/verify tooling is available through `python scripts/check_randy_backup.py --job <job_id> --dry-run|--upload-test|--verify`.
 - Retry an existing Heroku job before ephemeral storage disappears with `heroku run -a <app-name> python scripts/check_randy_backup.py --job <job_id> --upload-test`.
 - RANDY should run behind Gunicorn with at least a 900 second timeout for moderate uploads; use 1800 seconds if you expect slow links with archives approaching the 300 MB cap.
+- If `WARHEAD_BACKUP_MAX_BYTES` is unset, the app falls back to `300000000` bytes. That is often too small for 600+ compound completed jobs even with curated planning. For large production jobs, set `WARHEAD_BACKUP_MAX_BYTES=1073741824` and keep `WARHEAD_JOB_BACKUP_EXCLUDE_CIF=1`.
+
+Recommended non-secret Heroku settings for large completed jobs:
+
+```bash
+heroku config:set WARHEAD_BACKUP_MAX_BYTES=1073741824 -a warhead-hunter
+heroku config:set WARHEAD_JOB_BACKUP_EXCLUDE_CIF=1 -a warhead-hunter
+heroku config:set RANDY_BACKUP_CONNECT_TIMEOUT=30 -a warhead-hunter
+heroku config:set RANDY_BACKUP_READ_TIMEOUT=1800 -a warhead-hunter
+heroku config:set RANDY_BACKUP_UPLOAD_TIMEOUT=1800 -a warhead-hunter
+heroku config:set RANDY_BACKUP_TOTAL_TIMEOUT=2400 -a warhead-hunter
+heroku config:set RANDY_BACKUP_RETRIES=2 -a warhead-hunter
+heroku config:set RANDY_BACKUP_RETRY_BACKOFF_SECONDS=20 -a warhead-hunter
+```
