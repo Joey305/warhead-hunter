@@ -6,6 +6,7 @@
 {% set science_active = path.startswith('/science') %}
 {% set usecases_active = path.startswith('/use-cases') %}
 {% set examples_active = path.startswith('/examples') %}
+{% set browse_active = path.startswith('/browse') %}
 {% set docs_active = path.startswith('/docs') %}
 {% set api_active = path == '/api' or path.startswith('/api-docs') %}
 {% set about_active = path.startswith('/about') %}
@@ -36,6 +37,7 @@
                 <a class="nav-link {% if science_active %}active{% endif %}" href="{{ url_for('science') }}">Science</a>
                 <a class="nav-link {% if usecases_active %}active{% endif %}" href="{{ url_for('use_cases') }}">Use Cases</a>
                 <a class="nav-link {% if examples_active %}active{% endif %}" href="{{ url_for('examples_page') }}">Examples</a>
+                <a class="nav-link {% if browse_active %}active{% endif %}" href="{{ url_for('browse') }}">Results Library</a>
                 <a class="nav-link {% if docs_active %}active{% endif %}" href="{{ url_for('docs_page') }}">Docs</a>
                 <a class="nav-link {% if api_active %}active{% endif %}" href="/api-docs">API</a>
                 <a class="nav-link {% if about_active %}active{% endif %}" href="{{ url_for('about') }}">About</a>

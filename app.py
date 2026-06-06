@@ -9,6 +9,7 @@ import re
 import json
 import csv
 import io
+import math
 import zipfile
 import uuid
 from pathlib import Path
@@ -2210,10 +2211,10 @@ def browse_cache_ttl_seconds() -> int:
 
 def _browse_source_label(mode: str) -> str:
     return {
-        "randy": "RANDY hunter_jobs archive",
-        "local": "Local jobs directory",
-        "merged": "RANDY archive + local jobs",
-    }.get(mode, "RANDY hunter_jobs archive")
+        "randy": "Indexed results library",
+        "local": "Local results library",
+        "merged": "Results library + local jobs",
+    }.get(mode, "Indexed results library")
 
 
 def _normalize_browse_job(meta: Dict[str, Any], *, source: str, mode: str) -> Dict[str, Any]:
@@ -2221,7 +2222,7 @@ def _normalize_browse_job(meta: Dict[str, Any], *, source: str, mode: str) -> Di
     has_results = bool(meta.get("has_results"))
     available = bool(meta.get("available", has_results))
     status = str(meta.get("status") or ("completed" if has_results else "partial")).strip().lower()
-    source_label = "RANDY ARCHIVE" if source == "randy_hunter_job_archive" else "LOCAL DISK"
+    source_label = "INDEXED RESULTS" if source == "randy_hunter_job_archive" else "LOCAL WORKSPACE"
     if source == "randy_hunter_job_archive":
         open_job_url = f"/results/{job_id}" if has_results else ""
         open_job_disabled_reason = "Archived job is partial and does not have a browsable results gallery."
@@ -2257,7 +2258,7 @@ def _normalize_browse_job(meta: Dict[str, Any], *, source: str, mode: str) -> Di
 
 def _load_randy_indexed_jobs(refresh: bool = False) -> tuple[List[Dict[str, Any]], Optional[str]]:
     if not randy_archive_enabled():
-        return [], "RANDY archive access is not configured."
+        return [], "Indexed results are temporarily unavailable."
     jobs = randy_list_archived_jobs(limit=5000, include_metadata=True, include_counts=False, refresh=refresh)
     return [
         _normalize_browse_job(meta, source="randy_hunter_job_archive", mode="randy")
@@ -2293,7 +2294,7 @@ def load_browse_jobs(refresh: bool = False) -> tuple[List[Dict[str, Any]], Dict[
             by_id[job["job_id"]] = job
         jobs = list(by_id.values())
         if warning:
-            warning = "RANDY browse source is unavailable. Showing local jobs only."
+            warning = "Indexed results are temporarily unavailable. Showing local jobs only."
     else:
         jobs = randy_jobs
 
@@ -2309,7 +2310,7 @@ def load_browse_jobs(refresh: bool = False) -> tuple[List[Dict[str, Any]], Dict[
         "cache_hit": False,
     }
     if mode == "randy" and not jobs:
-        meta["empty_message"] = "No RANDY archived jobs found. Check RANDY archive config and /api/archive health."
+        meta["empty_message"] = "No indexed result galleries were found yet."
     elif not jobs:
         meta["empty_message"] = "No jobs found for the selected browse source."
     else:
@@ -3158,15 +3159,33 @@ def ligand_sdf_dir(job_id: str) -> Optional[Path]:
 def browse():
     refresh = str(request.args.get("refresh") or "").strip().lower() in {"1", "true", "yes"}
     jobs, browse_meta = load_browse_jobs(refresh=refresh)
+    try:
+        page = max(1, int(str(request.args.get("page") or "1").strip() or "1"))
+    except Exception:
+        page = 1
+    per_page = 50
+    total_jobs = len(jobs)
+    total_pages = max(1, math.ceil(total_jobs / per_page)) if total_jobs else 1
+    if page > total_pages:
+        page = total_pages
+    start_idx = (page - 1) * per_page
+    end_idx = start_idx + per_page
+    page_jobs = jobs[start_idx:end_idx]
     return render_template(
         "browse.html",
-        jobs=jobs,
+        jobs=page_jobs,
         browse_source_mode=browse_meta.get("source_mode", browse_source_mode()),
         browse_source_label=browse_meta.get("source_label", _browse_source_label(browse_source_mode())),
         browse_warning=browse_meta.get("warning", ""),
         browse_empty_message=browse_meta.get("empty_message", ""),
         available_jobs=browse_meta.get("available_count", 0),
         partial_jobs=browse_meta.get("partial_count", 0),
+        total_jobs=total_jobs,
+        page=page,
+        per_page=per_page,
+        total_pages=total_pages,
+        page_start=(start_idx + 1) if total_jobs else 0,
+        page_end=min(end_idx, total_jobs),
     )
 
 

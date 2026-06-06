@@ -5,13 +5,19 @@
   .wrap { max-width: 1500px; margin: 0 auto; padding: 10px; }
 
   .topbar{
-    display:flex; align-items:center; justify-content:space-between;
-    gap: 12px; margin-bottom: 14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
   }
 
   .searchbox{
     flex: 1;
-    display:flex; align-items:center; gap:10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
     padding: 12px 14px;
   }
 
@@ -26,8 +32,12 @@
   }
 
   .meta-row{
-    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
-    color:#888; font-size:0.9em;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    color:#888;
+    font-size:0.9em;
     margin-top: 6px;
   }
 
@@ -43,6 +53,11 @@
   .subtext{
     color:#97f9ff;
     letter-spacing: 0.2px;
+  }
+
+  .muted-note{
+    color:#8fa7af;
+    font-size:0.92em;
   }
 
   .panel{ padding: 16px; }
@@ -108,6 +123,14 @@
     min-width: 260px;
   }
 
+  .browse-actions{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    justify-content:flex-end;
+    flex-wrap:wrap;
+  }
+
   .filters-inline{
     display:flex;
     gap:10px;
@@ -137,12 +160,18 @@
     align-items:center;
     gap: 8px;
   }
-  .link-btn:hover { transform: translateY(-1px); border-color:#444; background: rgba(255,255,255,0.04); }
+
+  .link-btn:hover {
+    transform: translateY(-1px);
+    border-color:#444;
+    background: rgba(255,255,255,0.04);
+  }
 
   .open { color: var(--tron-cyan); border-color: rgba(0,255,255,0.25); }
   .res  { color: #9be7ff; border-color: rgba(155,231,255,0.25); }
   .dl   { color: #bbb; }
   .fasta-btn { color: #eee; border-color: rgba(255,255,255,0.18); }
+  .gallery-btn { color: #7dffb3; border-color: rgba(125,255,179,0.25); }
 
   .badge{
     display:inline-block;
@@ -153,10 +182,10 @@
     font-size: 0.78em;
     white-space: nowrap;
   }
+
   .badge.ok { color:#7dffb3; border-color: rgba(125,255,179,0.25); }
   .badge.no { color:#ff9a9a; border-color: rgba(255,154,154,0.25); }
   .badge.warn { color:#ffd37d; border-color: rgba(255,211,125,0.25); }
-  .badge.src { color:#7dc4ff; border-color: rgba(125,196,255,0.25); }
 
   .warning{
     margin-top: 12px;
@@ -167,20 +196,50 @@
     background: rgba(255,211,125,0.06);
   }
 
-  /* FASTA details row */
+  .results-cell{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+
+  .pager{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top: 14px;
+  }
+
+  .pager-links{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .pager-summary{
+    color:#9dd8de;
+    font-size:0.95em;
+  }
+
   .fasta-row{
     display:none;
     background: rgba(0,0,0,0.35);
   }
+
   .fasta-cell{
     padding: 14px 12px 18px 12px;
   }
+
   .fasta-box{
     border: 1px solid #222;
     border-radius: 10px;
     padding: 12px;
     background: rgba(255,255,255,0.02);
   }
+
   .fasta-head{
     display:flex;
     align-items:center;
@@ -188,14 +247,16 @@
     gap: 10px;
     margin-bottom: 10px;
   }
+
   .fasta-title{
     font-weight: 900;
     color:#ddd;
   }
+
   pre.fasta{
     margin:0;
-    white-space: pre-wrap;       /* wrap */
-    word-break: break-word;      /* break long chunks */
+    white-space: pre-wrap;
+    word-break: break-word;
     line-height: 1.35;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
     color: #b9ffb9;
@@ -207,21 +268,20 @@
     padding: 14px 0;
     text-align:center;
   }
+
+  @media (max-width: 980px){
+    .browse-actions{
+      width:100%;
+      justify-content:flex-start;
+    }
+  }
 </style>
 
 <div class="wrap">
-  <h1 class="glow-text">ARCHIVED WARHEAD HUNTER JOBS</h1>
+  <h1 class="glow-text">WARHEAD HUNTER RESULTS LIBRARY</h1>
   <div class="subhead">
-    <span class="badge src">{{ browse_source_mode|upper }}</span>
-    <span class="subtext">
-      {% if browse_source_mode == "randy" %}
-        Browsing verified RANDY backups
-      {% elif browse_source_mode == "merged" %}
-        Browsing RANDY backups with local disk fallback
-      {% else %}
-        Browsing local Warhead Hunter job folders
-      {% endif %}
-    </span>
+    <span class="badge ok">Result galleries ready to reopen</span>
+    <span class="subtext">Browse prior jobs, reopen their target galleries, and jump back into completed runs without exposing backend storage details.</span>
   </div>
 
   <div class="topbar">
@@ -231,11 +291,6 @@
              placeholder="Filter by protein, search query, or job id…"
              oninput="applyFilter()" />
       <div class="filters-inline">
-        <select id="sourceFilter" onchange="applyFilter()">
-          <option value="">All sources</option>
-          <option value="randy archive">RANDY archive</option>
-          <option value="local disk">Local disk</option>
-        </select>
         <select id="statusFilter" onchange="applyFilter()">
           <option value="">All statuses</option>
           <option value="completed">Completed</option>
@@ -246,19 +301,20 @@
       </div>
     </div>
 
-    <div class="actions" style="min-width:auto; justify-content:flex-end;">
+    <div class="browse-actions">
+      <a class="link-btn gallery-btn" href="/browse">🖼 RESULTS LIBRARY</a>
       <a class="link-btn open" href="/examples" title="Open curated examples">🧪 CURATED EXAMPLES</a>
       <a class="link-btn dl" href="/api/jobs/export" title="Download job index as CSV">⬇ EXPORT CSV</a>
-      <a class="link-btn dl" href="/browse?refresh=1" title="Refresh archived browse index">⟳ REFRESH</a>
+      <a class="link-btn dl" href="/browse?refresh=1&page={{ page }}" title="Refresh indexed result listings">⟳ REFRESH</a>
     </div>
   </div>
 
   <div class="meta-row">
-    <span class="badge">Indexed jobs: <span id="countAll">{{ jobs|length }}</span></span>
-    <span class="badge">Visible: <span id="countVisible">{{ jobs|length }}</span></span>
+    <span class="badge">Indexed jobs: <span id="countAll">{{ total_jobs }}</span></span>
+    <span class="badge">Visible on page: <span id="countVisible">{{ jobs|length }}</span></span>
     <span class="badge ok">Available galleries: {{ available_jobs }}</span>
     <span class="badge">Partial: {{ partial_jobs }}</span>
-    <span class="badge">Source: {{ browse_source_label }}</span>
+    <span class="badge">Page size: {{ per_page }}</span>
   </div>
 
   {% if browse_warning %}
@@ -273,15 +329,15 @@
             <th style="width: 170px;">Job ID</th>
             <th style="width: 170px;">Protein</th>
             <th>Search Query</th>
-            <th style="width: 170px;">Source / Status</th>
-            <th style="width: 160px;">Results</th>
+            <th style="width: 170px;">Status</th>
+            <th style="width: 220px;">Results</th>
             <th style="width: 310px; text-align:right;">Actions</th>
           </tr>
         </thead>
 
         <tbody id="jobsBody">
           {% if jobs|length == 0 %}
-            <tr><td colspan="6" class="empty">{{ browse_empty_message or "No jobs found for this browse source." }}</td></tr>
+            <tr><td colspan="6" class="empty">{{ browse_empty_message or "No jobs found in the results library." }}</td></tr>
           {% endif %}
 
           {% for j in jobs %}
@@ -289,21 +345,25 @@
                 data-job="{{ j.job_id|lower }}"
                 data-protein="{{ (j.protein or '')|lower }}"
                 data-query="{{ (j.search_query or '')|lower }}"
-                data-source="{{ (j.source_label or j.source or '')|lower }}"
                 data-status="{{ (j.status or '')|lower }}">
               <td class="jobid">{{ j.job_id }}</td>
               <td class="protein">{{ j.protein or "—" }}</td>
               <td title="{{ j.search_query or '' }}" class="query">{{ j.search_query or "—" }}</td>
               <td>
                 <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                  <span class="badge src">{{ j.source_label or "UNKNOWN" }}</span>
                   <span class="badge">{{ (j.status or "unknown")|upper }}</span>
+                  {% if j.has_results %}
+                    <span class="badge ok">GALLERY READY</span>
+                  {% endif %}
                 </div>
               </td>
 
               <td>
                 {% if j.has_results %}
-                  <span class="badge ok">AVAILABLE</span>
+                  <div class="results-cell">
+                    <span class="badge ok">AVAILABLE</span>
+                    <a class="link-btn gallery-btn" href="{{ j.results_url or ('/results/' ~ j.job_id) }}">OPEN RESULTS</a>
+                  </div>
                 {% elif (j.status or "")|lower == "partial" %}
                   <span class="badge warn">PARTIAL</span>
                 {% else %}
@@ -314,9 +374,9 @@
               <td style="text-align:right;">
                 <div class="actions">
                   {% if j.open_job_url %}
-                    <a class="link-btn open" href="{{ j.open_job_url }}">🚀 OPEN JOB</a>
+                    <a class="link-btn open" href="{{ j.open_job_url }}">{{ "🚀 OPEN RESULTS" if j.has_results else "🚀 OPEN JOB" }}</a>
                   {% else %}
-                    <span class="link-btn open" title="{{ j.open_job_disabled_reason or 'No browsable results are available for this archived job.' }}" style="opacity:0.55; cursor:not-allowed;">🚀 OPEN JOB</span>
+                    <span class="link-btn open" title="{{ j.open_job_disabled_reason or 'No browsable results are available for this job yet.' }}" style="opacity:0.55; cursor:not-allowed;">🚀 OPEN JOB</span>
                   {% endif %}
 
                   {% if j.has_results %}
@@ -351,20 +411,36 @@
                 </div>
               </td>
             </tr>
-
           {% endfor %}
         </tbody>
       </table>
     </div>
   </div>
+
+  <div class="pager">
+    <div class="pager-summary">
+      Showing {{ page_start }}-{{ page_end }} of {{ total_jobs }} indexed jobs.
+      <span class="muted-note">The library is paginated at {{ per_page }} jobs per page.</span>
+    </div>
+    <div class="pager-links">
+      {% if page > 1 %}
+        <a class="link-btn dl" href="/browse?page={{ page - 1 }}">← PREVIOUS</a>
+      {% else %}
+        <span class="link-btn dl" style="opacity:0.55; cursor:not-allowed;">← PREVIOUS</span>
+      {% endif %}
+      <span class="badge">Page {{ page }} / {{ total_pages }}</span>
+      {% if page < total_pages %}
+        <a class="link-btn dl" href="/browse?page={{ page + 1 }}">NEXT →</a>
+      {% else %}
+        <span class="link-btn dl" style="opacity:0.55; cursor:not-allowed;">NEXT →</span>
+      {% endif %}
+    </div>
+  </div>
 </div>
-
-
 
 <script>
   function applyFilter(){
     const q = (document.getElementById("filter").value || "").trim().toLowerCase();
-    const sourceQ = (document.getElementById("sourceFilter").value || "").trim().toLowerCase();
     const statusQ = (document.getElementById("statusFilter").value || "").trim().toLowerCase();
     const rows = document.querySelectorAll(".job-row");
     let visible = 0;
@@ -373,20 +449,18 @@
       const job = r.getAttribute("data-job") || "";
       const protein = r.getAttribute("data-protein") || "";
       const query = r.getAttribute("data-query") || "";
-      const source = r.getAttribute("data-source") || "";
       const status = r.getAttribute("data-status") || "";
 
       const textOk = (!q) || job.includes(q) || protein.includes(q) || query.includes(q);
-      const sourceOk = (!sourceQ) || source.includes(sourceQ);
       const statusOk = (!statusQ) || status === statusQ;
-      const ok = textOk && sourceOk && statusOk;
+      const ok = textOk && statusOk;
       r.style.display = ok ? "" : "none";
 
-      // hide FASTA row too when filtered out
       const jobId = (r.querySelector(".jobid")?.innerText || "").trim();
       const fastaRow = document.getElementById("fasta-row-" + jobId);
-      if (fastaRow) fastaRow.style.display = (ok && fastaRow.dataset.open === "1") ? "table-row" : "none";
-
+      if (fastaRow) {
+        fastaRow.style.display = (ok && fastaRow.dataset.open === "1") ? "table-row" : "none";
+      }
 
       if (ok) visible++;
     });
@@ -396,7 +470,6 @@
 
   function clearFilter(){
     document.getElementById("filter").value = "";
-    document.getElementById("sourceFilter").value = "";
     document.getElementById("statusFilter").value = "";
     applyFilter();
   }
@@ -408,11 +481,8 @@
     const isOpen = row.dataset.open === "1";
     row.dataset.open = isOpen ? "0" : "1";
     row.style.display = isOpen ? "none" : "table-row";
-
-    // If filtered out, keep it hidden
     applyFilter();
   }
-
 
   async function copyFasta(jobId){
     const pre = document.getElementById("fasta-pre-" + jobId);
@@ -420,7 +490,6 @@
     try{
       await navigator.clipboard.writeText(pre.innerText || "");
     }catch(e){
-      // fallback
       const ta = document.createElement("textarea");
       ta.value = pre.innerText || "";
       document.body.appendChild(ta);
@@ -431,10 +500,8 @@
   }
 </script>
 
-
 <script>
   window.addEventListener("DOMContentLoaded", () => applyFilter());
 </script>
-
 
 {% endblock %}
