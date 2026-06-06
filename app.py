@@ -591,6 +591,29 @@ def _normalize_job_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
     return normalized
 
 
+def _canonical_request_fields(payload: Optional[Dict[str, Any]]) -> Dict[str, str]:
+    normalized = _normalize_job_payload(dict(payload or {}))
+    return {
+        "protein": str(
+            normalized.get("target_name")
+            or normalized.get("protein")
+            or normalized.get("target")
+            or ""
+        ).strip(),
+        "search_query": str(
+            normalized.get("search_query")
+            or normalized.get("query")
+            or ""
+        ).strip(),
+        "fasta": str(
+            normalized.get("fasta_seq")
+            or normalized.get("fasta")
+            or normalized.get("sequence")
+            or ""
+        ).strip(),
+    }
+
+
 def _batch_metadata_path(batch_id: str) -> Path:
     return BATCHES_DIR / f"{batch_id}.json"
 
@@ -2056,10 +2079,7 @@ def _read_job_request_csv(job_path: Path, filename: str = "Protein_Data.csv") ->
         if df.empty:
             return None
         row = df.iloc[0].to_dict()
-        protein = (row.get("protein") or "").strip()
-        query = (row.get("search_query") or "").strip()
-        fasta = (row.get("fasta") or "").strip()
-        return {"protein": protein, "search_query": query, "fasta": fasta}
+        return _canonical_request_fields(row)
     except Exception:
         # fallback naive read
         try:
@@ -2075,7 +2095,8 @@ def _read_job_request_csv(job_path: Path, filename: str = "Protein_Data.csv") ->
             parts = first.split(",", 2)
             if len(parts) < 3:
                 return None
-            return {"protein": parts[0].strip(), "search_query": parts[1].strip(), "fasta": parts[2].strip()}
+            rough_row = dict(zip(header, parts))
+            return _canonical_request_fields(rough_row)
         except Exception:
             return None
 
@@ -2125,9 +2146,11 @@ def _job_meta_from_dir(job_dir: Path) -> Dict[str, Any]:
             except Exception:
                 disk_meta = {}
     hydrated = disk_jobs.hydrate_job_from_disk(job_dir.name, get_jobs_root(), JOB_STORE.get(job_dir.name)) or {}
-    request_meta = disk_meta.get("request") or {}
+    request_meta = _canonical_request_fields(disk_meta.get("request") or {})
+    disk_request_meta = _canonical_request_fields(disk_meta)
     fasta = (
-        str(request_meta.get("fasta_seq") or "").strip()
+        str(request_meta.get("fasta") or "").strip()
+        or str(disk_request_meta.get("fasta") or "").strip()
         or str(input_meta.get("fasta") or "").strip()
         or str(protein_meta.get("fasta") or "").strip()
     )
@@ -2141,12 +2164,14 @@ def _job_meta_from_dir(job_dir: Path) -> Dict[str, Any]:
         modified_s = ""
 
     target_name = (
-        str(request_meta.get("target_name") or "").strip()
+        str(request_meta.get("protein") or "").strip()
+        or str(disk_request_meta.get("protein") or "").strip()
         or str(input_meta.get("protein") or "").strip()
         or str(protein_meta.get("protein") or "").strip()
     )
     search_query = (
         str(request_meta.get("search_query") or "").strip()
+        or str(disk_request_meta.get("search_query") or "").strip()
         or str(input_meta.get("search_query") or "").strip()
         or str(protein_meta.get("search_query") or "").strip()
     )
