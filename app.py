@@ -481,12 +481,18 @@ CURATED_EXAMPLE_CONFIG = [
         "protein": "HER2",
         "use_case": "receptor tyrosine kinase inhibitor structure example",
     },
-        {
-            "job_id": "s4v4029c",
-            "label": "CARM1 /PRMT4 (example)",
-            "protein": "S4V4029C",
-            "use_case": "methyltransferase inhibitor structure example",
-        }
+    {
+        "job_id": "s4v4029c",
+        "label": "CARM1 /PRMT4 (example)",
+        "protein": "S4V4029C",
+        "use_case": "methyltransferase inhibitor structure example",
+    },
+    {
+        "job_id": "8926f69a",
+        "label": "BACE1 / Beta-secretase 1",
+        "protein": "BACE1",
+        "use_case": "Example Alzheimer's target structure example",
+    }
 
 ]
 

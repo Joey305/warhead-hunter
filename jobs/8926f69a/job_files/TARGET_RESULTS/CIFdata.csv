@@ -1,0 +1,2 @@
+protein,n_candidates,n_attempted,n_downloaded,n_verified,outdir,protein_dir,manifest_path
+BACE1,500,500,500,500,WAR,WAR/BACE1,CIF_Download_Manifest.csv

@@ -1,0 +1,2 @@
+Ligand,Target,pdb_id,Chain,Residue_ID,basename,Error
+5T5,BACE1,6dmi,A,504,6dmi_A_5T5_504,ITEM_TIMEOUT (>60s) at MCS

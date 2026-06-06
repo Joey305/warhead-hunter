@@ -1,0 +1,163 @@
+{
+  "app_version": {
+    "git_commit": ""
+  },
+  "archive_profile": "full",
+  "cif_excluded": true,
+  "created_at": "2026-06-06T08:11:57Z",
+  "job_id": "8926f69a",
+  "largest_selected_files": [
+    {
+      "category": "other",
+      "rel": "components-smiles-stereo-oe.smi",
+      "required": false,
+      "size_bytes": 7086904
+    },
+    {
+      "category": "preferred",
+      "rel": "TARGET_RESULTS/MCS_Output/Ligand_MCS_SASA_ALL_ATOMS.csv",
+      "required": false,
+      "size_bytes": 3015118
+    },
+    {
+      "category": "preferred",
+      "rel": "TARGET_RESULTS/MCS_Output/Ligand_AllAtoms_Map.csv",
+      "required": false,
+      "size_bytes": 2908411
+    },
+    {
+      "category": "preferred",
+      "rel": "TARGET_RESULTS/MCS_Output/Ligand_MCS_SASA.csv",
+      "required": false,
+      "size_bytes": 2900966
+    },
+    {
+      "category": "preferred",
+      "rel": "TARGET_RESULTS/MCS_Output/Ligand_MCS_Map.csv",
+      "required": false,
+      "size_bytes": 2798154
+    },
+    {
+      "category": "viewer_critical",
+      "rel": "TARGET_RESULTS/3DSASAmapped.csv",
+      "required": false,
+      "size_bytes": 1313511
+    },
+    {
+      "category": "viewer_critical",
+      "rel": "TARGET_RESULTS/Ligand_3D_Atoms_with_SASA.csv",
+      "required": false,
+      "size_bytes": 1231989
+    },
+    {
+      "category": "viewer_critical",
+      "rel": "TARGET_RESULTS/Ligand_3D_Atoms.csv",
+      "required": false,
+      "size_bytes": 1146415
+    },
+    {
+      "category": "required",
+      "rel": "TARGET_RESULTS/Warhead_SASA_atoms.csv",
+      "required": true,
+      "size_bytes": 573824
+    },
+    {
+      "category": "viewer_critical",
+      "rel": "TARGET_RESULTS/WAR_PDB/BACE1/6wny_A_U64.pdb",
+      "required": false,
+      "size_bytes": 476693
+    },
+    {
+      "category": "viewer_critical",
+      "rel": "TARGET_RESULTS/WAR_PDB/BACE1/6c2i_A_EJ7.pdb",
+      "required": false,
+      "size_bytes": 476207
+    },
+    {
+      "category": "required",
+      "rel": "job.log",
+      "required": true,
+      "size_bytes": 448298
+    },
+    {
+      "category": "required",
+      "rel": "TARGET_RESULTS/Ligand_Metadata.csv",
+      "required": true,
+      "size_bytes": 303351
+    },
+    {
+      "category": "viewer_critical",
+      "rel": "TARGET_RESULTS/WAR_PDB/BACE1/6uwp_A_QKA.pdb",
+      "required": false,
+      "size_bytes": 265364
+    },
+    {
+      "category": "viewer_critical",
+      "rel": "TARGET_RESULTS/WAR_PDB/BACE1/3zmg_A_6Z0.pdb",
+      "required": false,
+      "size_bytes": 261395
+    },
+    {
+      "category": "viewer_critical",
+      "rel": "TARGET_RESULTS/WAR_PDB/BACE1/4ewo_A_996.pdb",
+      "required": false,
+      "size_bytes": 261395
+    },
+    {
+      "category": "viewer_critical",
+      "rel": "TARGET_RESULTS/WAR_PDB/BACE1/4gmi_A_0XA.pdb",
+      "required": false,
+      "size_bytes": 261314
+    },
+    {
+      "category": "viewer_critical",
+      "rel": "TARGET_RESULTS/WAR_PDB/BACE1/4exg_A_916.pdb",
+      "required": false,
+      "size_bytes": 260990
+    },
+    {
+      "category": "viewer_critical",
+      "rel": "TARGET_RESULTS/WAR_PDB/BACE1/6uwv_A_QK7.pdb",
+      "required": false,
+      "size_bytes": 260585
+    },
+    {
+      "category": "viewer_critical",
+      "rel": "TARGET_RESULTS/WAR_PDB/BACE1/6bfe_A_DJV.pdb",
+      "required": false,
+      "size_bytes": 260342
+    }
+  ],
+  "largest_skipped_files": [],
+  "max_bytes": 1073741824,
+  "plan_ok": true,
+  "plan_reason": "",
+  "plan_status": "ready",
+  "required_missing": [],
+  "required_selected": [
+    "Protein_Data.csv",
+    "Results_Display.csv",
+    "TARGET_RESULTS/Ligand_Metadata.csv",
+    "TARGET_RESULTS/Resolved_SASA_Summary.csv",
+    "TARGET_RESULTS/Warhead_SASA_atoms.csv",
+    "TARGET_RESULTS/Warhead_SASA_summary.csv",
+    "input.csv",
+    "job.log",
+    "job_metadata.json",
+    "summary.json"
+  ],
+  "required_skipped": [],
+  "results_route_sufficient": true,
+  "route_critical_checks": {
+    "mcs_sdf_present": true,
+    "mcs_svg_present": true,
+    "resolved_sasa_summary_present": true,
+    "results_display_present": true,
+    "results_route_sufficient": true,
+    "war_pdb_present": true
+  },
+  "selected_bytes": 206098769,
+  "selected_file_count": 2564,
+  "skipped_bytes": 0,
+  "skipped_file_count": 0
+}
