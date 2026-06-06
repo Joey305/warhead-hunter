@@ -2287,6 +2287,23 @@ def _normalize_browse_job(meta: Dict[str, Any], *, source: str, mode: str) -> Di
     }
 
 
+def _merge_browse_job_records(primary: Dict[str, Any], secondary: Dict[str, Any]) -> Dict[str, Any]:
+    merged = dict(secondary)
+    merged.update(primary)
+
+    for field in ["protein", "target_name", "search_query", "fasta", "created_at", "modified_at", "mtime"]:
+        primary_value = str(primary.get(field) or "").strip()
+        secondary_value = str(secondary.get(field) or "").strip()
+        merged[field] = primary_value or secondary_value
+
+    merged["fasta_len"] = int(primary.get("fasta_len") or secondary.get("fasta_len") or 0)
+    merged["has_results"] = bool(primary.get("has_results") or secondary.get("has_results"))
+    merged["available"] = bool(primary.get("available") or secondary.get("available") or merged["has_results"])
+    merged["bundle_available"] = bool(primary.get("bundle_available") or secondary.get("bundle_available"))
+    merged["status"] = str(primary.get("status") or secondary.get("status") or "").strip().lower()
+    return merged
+
+
 def _load_randy_indexed_jobs(refresh: bool = False) -> tuple[List[Dict[str, Any]], Optional[str]]:
     if not randy_archive_enabled():
         return [], "Indexed results are temporarily unavailable."
@@ -2322,7 +2339,8 @@ def load_browse_jobs(refresh: bool = False) -> tuple[List[Dict[str, Any]], Dict[
     elif mode == "merged":
         by_id = {job["job_id"]: job for job in local_jobs}
         for job in randy_jobs:
-            by_id[job["job_id"]] = job
+            existing = by_id.get(job["job_id"])
+            by_id[job["job_id"]] = _merge_browse_job_records(existing, job) if existing else job
         jobs = list(by_id.values())
         if warning:
             warning = "Indexed results are temporarily unavailable. Showing local jobs only."

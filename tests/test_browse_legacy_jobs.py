@@ -44,6 +44,32 @@ class BrowseLegacyJobsTests(unittest.TestCase):
         self.assertEqual(meta["target_name"], "OGA")
         self.assertEqual(meta["search_query"], "O-GlcNAcase 9BA9 6PM9 5UN9 5M7T")
 
+    def test_merge_browse_job_records_prefers_original_metadata(self):
+        merged = app._merge_browse_job_records(
+            {
+                "job_id": "2d9b72a8",
+                "protein": "OGA",
+                "target_name": "OGA",
+                "search_query": "O-GlcNAcase 9BA9 6PM9 5UN9 5M7T",
+                "has_results": True,
+                "available": True,
+                "status": "completed",
+            },
+            {
+                "job_id": "2d9b72a8",
+                "protein": "2d9b72a8",
+                "target_name": "2d9b72a8",
+                "search_query": "",
+                "has_results": True,
+                "available": True,
+                "status": "completed",
+            },
+        )
+
+        self.assertEqual(merged["protein"], "OGA")
+        self.assertEqual(merged["target_name"], "OGA")
+        self.assertEqual(merged["search_query"], "O-GlcNAcase 9BA9 6PM9 5UN9 5M7T")
+
 
 if __name__ == "__main__":
     unittest.main()

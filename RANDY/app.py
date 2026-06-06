@@ -1274,6 +1274,29 @@ def _read_archive_json(fp: Path) -> Dict[str, Any]:
         return {}
 
 
+def _canonical_archive_request_fields(payload: Optional[Dict[str, Any]]) -> Dict[str, str]:
+    data = dict(payload or {})
+    return {
+        "protein": str(
+            data.get("protein")
+            or data.get("target_name")
+            or data.get("target")
+            or ""
+        ).strip(),
+        "search_query": str(
+            data.get("search_query")
+            or data.get("query")
+            or ""
+        ).strip(),
+        "fasta": str(
+            data.get("fasta")
+            or data.get("fasta_seq")
+            or data.get("sequence")
+            or ""
+        ).strip(),
+    }
+
+
 def _sequence_length_from_fasta(fasta: str) -> int:
     if not fasta:
         return 0
@@ -1306,36 +1329,49 @@ def _first_existing_archive_table(job_dir: Path, names: List[str]) -> Optional[P
 
 
 def _archive_job_metadata(job_dir: Path) -> Dict[str, Any]:
-    job_files = job_dir / "job_files"
-    input_row = _read_archive_csv_row(job_files / "input.csv")
-    protein_row = _read_archive_csv_row(job_files / "Protein_Data.csv")
-    job_meta = _read_archive_json(job_files / "job_metadata.json")
-    summary = _read_archive_json(job_files / "summary.json")
+    input_row = _canonical_archive_request_fields(
+        _read_archive_csv_row(_first_existing_archive_table(job_dir, ["input.csv"]) or Path("__missing__"))
+    )
+    protein_row = _canonical_archive_request_fields(
+        _read_archive_csv_row(_first_existing_archive_table(job_dir, ["Protein_Data.csv"]) or Path("__missing__"))
+    )
+    job_meta = _read_archive_json(_first_existing_archive_table(job_dir, ["job_metadata.json"]) or Path("__missing__"))
+    summary = _read_archive_json(_first_existing_archive_table(job_dir, ["summary.json"]) or Path("__missing__"))
     manifest = _load_archive_manifest(job_dir)
 
-    request_meta = job_meta.get("request") if isinstance(job_meta.get("request"), dict) else {}
-    summary_request = summary.get("request") if isinstance(summary.get("request"), dict) else {}
+    request_meta = _canonical_archive_request_fields(job_meta.get("request") if isinstance(job_meta.get("request"), dict) else {})
+    summary_request = _canonical_archive_request_fields(summary.get("request") if isinstance(summary.get("request"), dict) else {})
+    manifest_meta = _canonical_archive_request_fields(manifest)
+    top_level_job_meta = _canonical_archive_request_fields(job_meta)
+    top_level_summary = _canonical_archive_request_fields(summary)
 
     protein = (
         str(input_row.get("protein") or "").strip()
         or str(protein_row.get("protein") or "").strip()
-        or str(request_meta.get("target_name") or "").strip()
-        or str(summary_request.get("target_name") or summary.get("target_name") or "").strip()
-        or str(manifest.get("target_name") or manifest.get("protein") or "").strip()
+        or str(request_meta.get("protein") or "").strip()
+        or str(top_level_job_meta.get("protein") or "").strip()
+        or str(summary_request.get("protein") or "").strip()
+        or str(top_level_summary.get("protein") or "").strip()
+        or str(manifest_meta.get("protein") or "").strip()
         or job_dir.name
     )
     search_query = (
         str(input_row.get("search_query") or "").strip()
         or str(protein_row.get("search_query") or "").strip()
         or str(request_meta.get("search_query") or "").strip()
-        or str(summary_request.get("search_query") or summary.get("search_query") or "").strip()
-        or str(manifest.get("search_query") or "").strip()
+        or str(top_level_job_meta.get("search_query") or "").strip()
+        or str(summary_request.get("search_query") or "").strip()
+        or str(top_level_summary.get("search_query") or "").strip()
+        or str(manifest_meta.get("search_query") or "").strip()
     )
     fasta = (
         str(input_row.get("fasta") or "").strip()
         or str(protein_row.get("fasta") or "").strip()
-        or str(request_meta.get("fasta_seq") or "").strip()
-        or str(summary_request.get("fasta_seq") or summary.get("fasta_seq") or "").strip()
+        or str(request_meta.get("fasta") or "").strip()
+        or str(top_level_job_meta.get("fasta") or "").strip()
+        or str(summary_request.get("fasta") or "").strip()
+        or str(top_level_summary.get("fasta") or "").strip()
+        or str(manifest_meta.get("fasta") or "").strip()
     )
 
     has_results = bool(_first_existing_archive_table(job_dir, ["Results_Display.csv", "Resolved_SASA_Summary.csv", "Resolved_SASA_Summary.tsv"]))
