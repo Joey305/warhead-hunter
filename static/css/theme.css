@@ -456,6 +456,54 @@ pre {
   border-color: var(--info-border);
 }
 
+:root[data-theme="light"] .wh-orbit-visual {
+  background:
+    radial-gradient(circle at center, rgba(10, 167, 199, 0.14), transparent 44%),
+    radial-gradient(circle at center, rgba(217, 164, 0, 0.12), transparent 60%),
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.92), rgba(231, 241, 249, 0.78));
+  border-color: rgba(10, 167, 199, 0.18);
+  box-shadow:
+    inset 0 0 60px rgba(10, 167, 199, 0.06),
+    0 0 0 1px rgba(255, 255, 255, 0.72),
+    0 18px 42px rgba(115, 144, 173, 0.12);
+}
+
+:root[data-theme="light"] .wh-orbit-visual::before {
+  border-color: rgba(10, 167, 199, 0.16);
+}
+
+:root[data-theme="light"] .wh-orbit-visual::after {
+  border-color: rgba(217, 164, 0, 0.18);
+}
+
+:root[data-theme="light"] .wh-orbit-core {
+  background: radial-gradient(circle, rgba(217, 164, 0, 0.2), rgba(10, 167, 199, 0.08));
+  border-color: rgba(217, 164, 0, 0.22);
+  color: #8a6400;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.72),
+    0 10px 24px rgba(130, 110, 40, 0.12);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+:root[data-theme="light"] .wh-orbit-node,
+:root[data-theme="light"] .wh-orbit-tag {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(63, 94, 128, 0.18);
+  color: var(--text-primary);
+  box-shadow:
+    0 10px 24px rgba(107, 126, 147, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.72);
+}
+
+:root[data-theme="light"] .wh-orbit-node {
+  font-weight: 700;
+}
+
+:root[data-theme="light"] .wh-visual-caption {
+  color: var(--text-secondary);
+}
+
 .theme-toggle {
   display: inline-flex;
   align-items: center;

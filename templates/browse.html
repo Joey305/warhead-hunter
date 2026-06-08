@@ -125,11 +125,13 @@
     white-space: normal;
     overflow-wrap: anywhere;
     word-break: break-word;
+    display: inline-block;
+    max-width: 18ch;
   }
 
   .query{
     color: var(--text-secondary);
-    max-width: 420px;
+    max-width: 280px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -387,7 +389,7 @@
         <thead>
           <tr>
             <th style="width: 118px;">Job ID</th>
-            <th style="width: 88px;">Protein</th>
+            <th style="width: 180px;">Protein</th>
             <th>Search Query</th>
             <th style="width: 145px;">Status</th>
             <th style="width: 160px;">Results</th>
