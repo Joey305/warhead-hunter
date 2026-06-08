@@ -77,7 +77,7 @@
   table{
     width:100%;
     border-collapse: collapse;
-    min-width: 1100px;
+    min-width: 980px;
   }
 
   thead th{
@@ -125,7 +125,7 @@
 
   .query{
     color: var(--text-secondary);
-    max-width: 520px;
+    max-width: 420px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -133,10 +133,10 @@
 
   .actions{
     display:flex;
-    gap:10px;
+    gap:8px;
     flex-wrap: wrap;
     justify-content: flex-end;
-    min-width: 260px;
+    min-width: 220px;
   }
 
   .browse-actions{
@@ -167,7 +167,7 @@
     text-decoration:none;
     font-weight:900;
     letter-spacing: 0.2px;
-    padding: 7px 10px;
+    padding: 6px 9px;
     border-radius: 8px;
     border: 1px solid var(--button-border);
     background: var(--button-bg);
@@ -176,6 +176,7 @@
     display:inline-flex;
     align-items:center;
     gap: 8px;
+    font-size: 0.95em;
   }
 
   .link-btn:hover {
@@ -189,6 +190,35 @@
   .dl   { color: var(--text-secondary); }
   .fasta-btn { color: var(--text-primary); border-color: var(--button-border); }
   .gallery-btn { color: #7dffb3; border-color: rgba(125,255,179,0.25); }
+
+  :root[data-theme="light"] .gallery-btn {
+    color: #177245;
+    border-color: rgba(23, 114, 69, 0.28);
+    background: #ecfbf2;
+  }
+
+  :root[data-theme="light"] .gallery-btn:hover {
+    background: #ddf7e8;
+    border-color: rgba(23, 114, 69, 0.4);
+  }
+
+  :root[data-theme="light"] .results-cell .gallery-btn,
+  :root[data-theme="light"] .actions .gallery-btn {
+    color: #15693f;
+    background: #e4f9ec;
+    border-color: rgba(21, 105, 63, 0.24);
+  }
+
+  :root[data-theme="light"] .open {
+    color: #0b89bf;
+    border-color: rgba(11, 137, 191, 0.24);
+    background: #edf9ff;
+  }
+
+  :root[data-theme="light"] .open:hover {
+    background: #ddf3ff;
+    border-color: rgba(11, 137, 191, 0.38);
+  }
 
   .badge{
     display:inline-block;
@@ -219,6 +249,11 @@
     gap:8px;
     align-items:center;
     flex-wrap:wrap;
+  }
+
+  .actions .link-btn,
+  .results-cell .link-btn {
+    white-space: nowrap;
   }
 
   .pager{
@@ -347,12 +382,12 @@
       <table>
         <thead>
           <tr>
-            <th style="width: 170px;">Job ID</th>
-            <th style="width: 170px;">Protein</th>
+            <th style="width: 145px;">Job ID</th>
+            <th style="width: 110px;">Protein</th>
             <th>Search Query</th>
-            <th style="width: 170px;">Status</th>
-            <th style="width: 220px;">Results</th>
-            <th style="width: 310px; text-align:right;">Actions</th>
+            <th style="width: 145px;">Status</th>
+            <th style="width: 160px;">Results</th>
+            <th style="width: 250px; text-align:right;">Actions</th>
           </tr>
         </thead>
 
