@@ -12,7 +12,7 @@
   }
 
   .wh-subtitle {
-    color:#777;
+    color: var(--text-muted);
     font-size: 0.95em;
     line-height: 1.4;
   }
@@ -31,7 +31,7 @@
   .wh-field { display:flex; flex-direction:column; gap: 8px; }
 
   .wh-label {
-    color: #aaa;
+    color: var(--text-secondary);
     font-weight: 800;
     letter-spacing: 0.6px;
     font-size: 0.88em;
@@ -39,7 +39,7 @@
   }
 
   .wh-help {
-    color:#666;
+    color: var(--text-muted);
     font-size: 0.85em;
     margin-top: -2px;
     line-height: 1.4;
@@ -48,10 +48,10 @@
   .wh-input, .wh-textarea {
     width: 100%;
     padding: 12px 12px;
-    background: #000;
-    border: 1px solid rgba(0,255,255,0.35);
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
     border-radius: 8px;
-    color: #fff;
+    color: var(--input-text);
     outline: none;
     transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
   }
@@ -65,14 +65,15 @@
   .wh-textarea {
     min-height: 170px;
     resize: vertical;
-    color: var(--tron-yellow);
+    color: var(--code-text);
+    background: var(--code-bg);
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
     line-height: 1.35;
   }
 
   .wh-divider {
     height: 1px;
-    background: #1e1e1e;
+    background: var(--surface-border);
     margin: 18px 0;
   }
 
@@ -84,9 +85,9 @@
   }
 
   .wh-chip {
-    border: 1px solid #222;
-    background: rgba(255,255,255,0.02);
-    color: #bbb;
+    border: 1px solid var(--button-border);
+    background: var(--button-bg);
+    color: var(--button-text);
     padding: 6px 10px;
     border-radius: 999px;
     cursor:pointer;
@@ -96,9 +97,9 @@
   }
   .wh-chip:hover {
     transform: translateY(-1px);
-    border-color: rgba(0,255,255,0.25);
-    background: rgba(0,255,255,0.05);
-    color: #e9ffff;
+    border-color: var(--nav-pill-hover-border);
+    background: var(--button-bg-hover);
+    color: var(--text-primary);
   }
 
   .wh-actions {
@@ -112,14 +113,14 @@
   .wh-secondary {
     padding: 10px 12px;
     border-radius: 8px;
-    border: 1px solid #222;
-    background: rgba(255,255,255,0.02);
-    color:#bbb;
+    border: 1px solid var(--button-border);
+    background: var(--button-bg);
+    color: var(--button-text);
     font-weight: 800;
     cursor:pointer;
     transition: transform 160ms ease, border-color 160ms ease;
   }
-  .wh-secondary:hover { transform: translateY(-1px); border-color:#3a3a3a; }
+  .wh-secondary:hover { transform: translateY(-1px); border-color: var(--nav-pill-hover-border); background: var(--button-bg-hover); }
 
   .wh-primary {
     flex: 1;
@@ -127,7 +128,7 @@
   }
 
   .wh-note {
-    color:#666;
+    color: var(--text-muted);
     font-size: 0.85em;
     line-height: 1.4;
   }

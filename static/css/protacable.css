@@ -13,7 +13,8 @@
 .cc-wrap {
   height: 92vh;
   padding: 20px;
-  background: #000;
+  background: transparent;
+  color: var(--text-primary);
   font-family: 'Orbitron', sans-serif;
 
   display: flex;
@@ -72,7 +73,7 @@
   height: 100%;
 
   border: 2px solid var(--tron-cyan);
-  background: radial-gradient(circle, #001a1a 0%, #000 100%);
+  background: radial-gradient(circle, rgba(0, 26, 26, 0.9) 0%, var(--code-bg) 100%);
   overflow: hidden;
 }
 
@@ -164,7 +165,7 @@
   text-align: center;
   border: 1px solid rgba(0, 238, 255, .38);
   border-radius: 18px;
-  background: rgba(0, 8, 14, .84);
+  background: var(--page-surface-elevated);
   box-shadow:
     0 0 22px rgba(0, 238, 255, .20),
     inset 0 0 28px rgba(0, 238, 255, .08);
@@ -233,7 +234,7 @@
   padding: 30px 34px;
   border: 1px solid rgba(0, 238, 255, .42);
   border-radius: 22px;
-  background: rgba(0, 8, 14, .92);
+  background: var(--page-surface-elevated);
   box-shadow:
     0 0 34px rgba(0, 238, 255, .24),
     0 0 72px rgba(255, 214, 0, .08),

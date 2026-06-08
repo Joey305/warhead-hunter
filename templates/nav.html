@@ -41,6 +41,20 @@
                 <a class="nav-link {% if docs_active %}active{% endif %}" href="{{ url_for('docs_page') }}">Docs</a>
                 <a class="nav-link {% if api_active %}active{% endif %}" href="/api-docs">API</a>
                 <a class="nav-link {% if about_active %}active{% endif %}" href="{{ url_for('about') }}">About</a>
+                <div class="theme-toggle" aria-label="Theme controls">
+                    <button
+                        type="button"
+                        class="theme-toggle__button"
+                        data-theme-choice="dark"
+                        aria-label="Switch to dark mode"
+                        aria-pressed="false">🌙</button>
+                    <button
+                        type="button"
+                        class="theme-toggle__button"
+                        data-theme-choice="light"
+                        aria-label="Switch to light mode"
+                        aria-pressed="false">☀️</button>
+                </div>
             </nav>
         </div>
     </div>
