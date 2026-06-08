@@ -25,19 +25,25 @@ function applyWarheadHunterTheme(theme, persist) {
     }
   }
 
-  document.querySelectorAll("[data-theme-choice]").forEach((button) => {
-    const isActive = button.getAttribute("data-theme-choice") === normalizedTheme;
-    button.setAttribute("aria-pressed", isActive ? "true" : "false");
-    button.dataset.active = isActive ? "true" : "false";
+  document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+    const nextTheme = normalizedTheme === "dark" ? "light" : "dark";
+    const nextEmoji = nextTheme === "dark" ? "🌙" : "☀️";
+    const nextLabel = nextTheme === "dark" ? "Switch to dark mode" : "Switch to light mode";
+    button.textContent = nextEmoji;
+    button.setAttribute("aria-label", nextLabel);
+    button.setAttribute("aria-pressed", normalizedTheme === "dark" ? "true" : "false");
+    button.dataset.theme = normalizedTheme;
   });
 }
 
 function initWarheadHunterThemeToggle() {
   applyWarheadHunterTheme(getStoredWarheadHunterTheme(), false);
 
-  document.querySelectorAll("[data-theme-choice]").forEach((button) => {
+  document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
     button.addEventListener("click", () => {
-      applyWarheadHunterTheme(button.getAttribute("data-theme-choice"), true);
+      const currentTheme = normalizeWarheadHunterTheme(document.documentElement.dataset.theme);
+      const nextTheme = currentTheme === "dark" ? "light" : "dark";
+      applyWarheadHunterTheme(nextTheme, true);
     });
   });
 }
