@@ -114,13 +114,17 @@
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
     color: var(--tron-cyan);
     font-weight: 800;
-    white-space: nowrap;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .protein{
     font-weight: 900;
     color: var(--tron-yellow);
-    white-space: nowrap;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .query{
@@ -382,8 +386,8 @@
       <table>
         <thead>
           <tr>
-            <th style="width: 145px;">Job ID</th>
-            <th style="width: 110px;">Protein</th>
+            <th style="width: 118px;">Job ID</th>
+            <th style="width: 88px;">Protein</th>
             <th>Search Query</th>
             <th style="width: 145px;">Status</th>
             <th style="width: 160px;">Results</th>
