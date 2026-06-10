@@ -1,0 +1,6 @@
+Target,pdb_id,Chain,Warhead,Residue_ID,pdb_path,reason
+Mpro,9mvo,A,A37,,/app/jobs/5a21a564/WAR_PDB/Mpro/9mvo_A_A37.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+Mpro,9mvo,A,A38,,/app/jobs/5a21a564/WAR_PDB/Mpro/9mvo_A_A38.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+Mpro,9mvp,A,A39,,/app/jobs/5a21a564/WAR_PDB/Mpro/9mvp_A_A39.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+Mpro,9uoq,A,A44,,/app/jobs/5a21a564/WAR_PDB/Mpro/9uoq_A_A44.pdb,No unique matching SDF in MCS_Output/MCS_SDF
+Mpro,9whe,A,A45,,/app/jobs/5a21a564/WAR_PDB/Mpro/9whe_A_A45.pdb,No unique matching SDF in MCS_Output/MCS_SDF

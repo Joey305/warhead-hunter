@@ -1,0 +1,539 @@
+protein,pdb,chain,ligand,MW,Name
+Mpro,12af,A,A1DA8,509.521,"N-(trifluoroacetyl)-D-phenylalanyl-3-cyclopropyl-N-{(1Z,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-L-alaninamide"
+Mpro,11ro,A,A1DAK,545.553,"N-(trifluoroacetyl)-D-phenylalanyl-N-{(1Z,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-L-phenylalaninamide"
+Mpro,23lx,A,7ON,641.722,Leritrelvir bound form
+Mpro,23lw,A,7ON,641.722,Leritrelvir bound form
+Mpro,23lw,B,7ON,641.722,Leritrelvir bound form
+Mpro,23ly,A,7ON,641.722,Leritrelvir bound form
+Mpro,23ly,B,7ON,641.722,Leritrelvir bound form
+Mpro,23lz,A,7ON,641.722,Leritrelvir bound form
+Mpro,23lz,B,7ON,641.722,Leritrelvir bound form
+Mpro,23lz,C,7ON,641.722,Leritrelvir bound form
+Mpro,23lz,D,7ON,641.722,Leritrelvir bound form
+Mpro,23mb,A,A1EN0,639.706,"(3~{S},3~{a}~{S},6~{a}~{R})-2-[(2~{S})-2-cyclohexyl-2-[2,2,2-tris(fluoranyl)ethanoylamino]ethanoyl]-~{N}-[(2~{S})-4-(cyclopentylamino)-3,4-bis(oxidanylidene)-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]butan-2-yl]-3,3~{a},4,5,6,6~{a}-hexahydro-1~{H}-cyclopenta[c]pyrrole-3-carboxamide"
+Mpro,23mb,B,A1EN0,639.706,"(3~{S},3~{a}~{S},6~{a}~{R})-2-[(2~{S})-2-cyclohexyl-2-[2,2,2-tris(fluoranyl)ethanoylamino]ethanoyl]-~{N}-[(2~{S})-4-(cyclopentylamino)-3,4-bis(oxidanylidene)-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]butan-2-yl]-3,3~{a},4,5,6,6~{a}-hexahydro-1~{H}-cyclopenta[c]pyrrole-3-carboxamide"
+Mpro,23ma,A,7ON,641.722,Leritrelvir bound form
+Mpro,23ma,B,7ON,641.722,Leritrelvir bound form
+Mpro,23md,A,A1EN0,639.706,"(3~{S},3~{a}~{S},6~{a}~{R})-2-[(2~{S})-2-cyclohexyl-2-[2,2,2-tris(fluoranyl)ethanoylamino]ethanoyl]-~{N}-[(2~{S})-4-(cyclopentylamino)-3,4-bis(oxidanylidene)-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]butan-2-yl]-3,3~{a},4,5,6,6~{a}-hexahydro-1~{H}-cyclopenta[c]pyrrole-3-carboxamide"
+Mpro,23md,B,A1EN0,639.706,"(3~{S},3~{a}~{S},6~{a}~{R})-2-[(2~{S})-2-cyclohexyl-2-[2,2,2-tris(fluoranyl)ethanoylamino]ethanoyl]-~{N}-[(2~{S})-4-(cyclopentylamino)-3,4-bis(oxidanylidene)-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]butan-2-yl]-3,3~{a},4,5,6,6~{a}-hexahydro-1~{H}-cyclopenta[c]pyrrole-3-carboxamide"
+Mpro,23mc,A,7ON,641.722,Leritrelvir bound form
+Mpro,23mc,B,7ON,641.722,Leritrelvir bound form
+Mpro,23mf,A,A1EN0,639.706,"(3~{S},3~{a}~{S},6~{a}~{R})-2-[(2~{S})-2-cyclohexyl-2-[2,2,2-tris(fluoranyl)ethanoylamino]ethanoyl]-~{N}-[(2~{S})-4-(cyclopentylamino)-3,4-bis(oxidanylidene)-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]butan-2-yl]-3,3~{a},4,5,6,6~{a}-hexahydro-1~{H}-cyclopenta[c]pyrrole-3-carboxamide"
+Mpro,23mf,B,A1EN0,639.706,"(3~{S},3~{a}~{S},6~{a}~{R})-2-[(2~{S})-2-cyclohexyl-2-[2,2,2-tris(fluoranyl)ethanoylamino]ethanoyl]-~{N}-[(2~{S})-4-(cyclopentylamino)-3,4-bis(oxidanylidene)-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]butan-2-yl]-3,3~{a},4,5,6,6~{a}-hexahydro-1~{H}-cyclopenta[c]pyrrole-3-carboxamide"
+Mpro,23me,A,7ON,641.722,Leritrelvir bound form
+Mpro,23me,B,7ON,641.722,Leritrelvir bound form
+Mpro,23mh,A,7ON,641.722,Leritrelvir bound form
+Mpro,23mh,B,7ON,641.722,Leritrelvir bound form
+Mpro,23mg,A,A1EN0,639.706,"(3~{S},3~{a}~{S},6~{a}~{R})-2-[(2~{S})-2-cyclohexyl-2-[2,2,2-tris(fluoranyl)ethanoylamino]ethanoyl]-~{N}-[(2~{S})-4-(cyclopentylamino)-3,4-bis(oxidanylidene)-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]butan-2-yl]-3,3~{a},4,5,6,6~{a}-hexahydro-1~{H}-cyclopenta[c]pyrrole-3-carboxamide"
+Mpro,23mg,B,A1EN0,639.706,"(3~{S},3~{a}~{S},6~{a}~{R})-2-[(2~{S})-2-cyclohexyl-2-[2,2,2-tris(fluoranyl)ethanoylamino]ethanoyl]-~{N}-[(2~{S})-4-(cyclopentylamino)-3,4-bis(oxidanylidene)-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]butan-2-yl]-3,3~{a},4,5,6,6~{a}-hexahydro-1~{H}-cyclopenta[c]pyrrole-3-carboxamide"
+Mpro,23mi,A,A1EN0,639.706,"(3~{S},3~{a}~{S},6~{a}~{R})-2-[(2~{S})-2-cyclohexyl-2-[2,2,2-tris(fluoranyl)ethanoylamino]ethanoyl]-~{N}-[(2~{S})-4-(cyclopentylamino)-3,4-bis(oxidanylidene)-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]butan-2-yl]-3,3~{a},4,5,6,6~{a}-hexahydro-1~{H}-cyclopenta[c]pyrrole-3-carboxamide"
+Mpro,23mi,B,A1EN0,639.706,"(3~{S},3~{a}~{S},6~{a}~{R})-2-[(2~{S})-2-cyclohexyl-2-[2,2,2-tris(fluoranyl)ethanoylamino]ethanoyl]-~{N}-[(2~{S})-4-(cyclopentylamino)-3,4-bis(oxidanylidene)-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]butan-2-yl]-3,3~{a},4,5,6,6~{a}-hexahydro-1~{H}-cyclopenta[c]pyrrole-3-carboxamide"
+Mpro,23mj,A,7ON,641.722,Leritrelvir bound form
+Mpro,23mj,B,7ON,641.722,Leritrelvir bound form
+Mpro,23mk,A,7ON,641.722,Leritrelvir bound form
+Mpro,23ml,A,7ON,641.722,Leritrelvir bound form
+Mpro,23ml,B,7ON,641.722,Leritrelvir bound form
+Mpro,6z2e,AAA,Q5T,993.282,"(4~{S})-4-[[(2~{S})-2-[[(2~{S})-2-[[(2~{S})-2-[3-[2-[2-[2-[2-[5-[(3~{a}~{S},4~{R},6~{a}~{R})-2-oxidanylidene-3,3~{a},4,6~{a}-tetrahydro-1~{H}-thieno[3,4-d]imidazol-4-yl]pentanoylamino]ethoxy]ethoxy]ethoxy]ethoxy]propanoylamino]butanoyl]amino]-3,3-dimethyl-butanoyl]amino]-4-methyl-pentanoyl]amino]-6-methylsulfonyl-hexanamide"
+Mpro,7aeh,A,R8H,486.562,"(2~{R})-5-oxidanylidene-~{N}-[(2~{R},3~{S})-3-oxidanyl-4-oxidanylidene-1-phenyl-4-(pyridin-2-ylmethylamino)butan-2-yl]-1-(phenylmethyl)pyrrolidine-2-carboxamide"
+Mpro,7be7,A,ALD,477.637,N-[(benzyloxy)carbonyl]-L-leucyl-N-[(2S)-1-hydroxy-4-methylpentan-2-yl]-L-leucinamide
+Mpro,7be7,B,ALD,477.637,N-[(benzyloxy)carbonyl]-L-leucyl-N-[(2S)-1-hydroxy-4-methylpentan-2-yl]-L-leucinamide
+Mpro,7bfb,A,9JT,276.193,N-phenyl-2-selanylbenzamide
+Mpro,7bfb,B,9JT,276.193,N-phenyl-2-selanylbenzamide
+Mpro,7bgp,A,ALD,477.637,N-[(benzyloxy)carbonyl]-L-leucyl-N-[(2S)-1-hydroxy-4-methylpentan-2-yl]-L-leucinamide
+Mpro,7bgp,B,ALD,477.637,N-[(benzyloxy)carbonyl]-L-leucyl-N-[(2S)-1-hydroxy-4-methylpentan-2-yl]-L-leucinamide
+Mpro,7gax,A,KJI,292.335,N-(4-methylpyridin-3-yl)-N~2~-(quinolin-4-yl)glycinamide
+Mpro,7gay,A,KJO,224.258,N-phenyl-2-(pyridin-3-yl)prop-2-enamide
+Mpro,7gaz,A,KL6,333.427,"1-{2-[(methanesulfonyl)amino]ethyl}-1,2,3,4-tetrahydroquinoline-7-sulfonamide"
+Mpro,7gb0,A,KLR,336.431,(2S)-N-tert-butyl-2-[4-(2-cyanoethyl)anilino]-2-(pyridin-3-yl)acetamide
+Mpro,7gb1,A,KMF,325.405,N-[2-(4-acetylpiperazin-1-yl)ethyl]naphthalene-1-carboxamide
+Mpro,7gb2,A,KMX,315.433,"1-{4-[(2-benzyl-1,3-thiazol-5-yl)methyl]piperazin-1-yl}ethan-1-one"
+Mpro,7gb3,A,KNU,215.652,N-[(1S)-1-(3-chloro-5-fluorophenyl)ethyl]acetamide
+Mpro,7gb4,A,KO9,238.245,N-(5-cyanopyridin-3-yl)-2-(pyridin-3-yl)acetamide
+Mpro,7gb5,A,KOI,246.692,2-(3-chlorophenyl)-N-(pyridin-3-yl)acetamide
+Mpro,7gb6,A,KP0,357.877,N-(3-chlorophenyl)-N-(2-cyclohexylethyl)-N'-(pyridin-3-yl)urea
+Mpro,7gb7,A,KQ3,360.838,N-(3-chlorophenyl)-N-[2-(morpholin-4-yl)ethyl]-N'-(pyridin-3-yl)urea
+Mpro,7gb8,A,KQL,294.272,N-(4-methylpyridin-3-yl)-2-[3-(trifluoromethyl)phenyl]acetamide
+Mpro,7gb9,A,KQX,240.3,2-(4-methylphenyl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gba,A,KS0,250.312,1-{4-[(4-fluorophenyl)methyl]piperazin-1-yl}propan-1-one
+Mpro,7gbb,A,KSI,308.846,1-[(3S)-4-[(3-chlorophenyl)methyl]-3-(2-methylpropyl)piperazin-1-yl]ethan-1-one
+Mpro,7gbc,A,KSX,252.271,2-(5-cyanopyridin-3-yl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gbd,A,KT9,312.323,N-(3-methyl-5-{[(2S)-4-oxoazetidin-2-yl]oxy}phenyl)-2-(pyrimidin-5-yl)acetamide
+Mpro,7gbe,A,KU6,318.758,"(4R)-6-chloro-N-(4-cyclopropyl-4H-1,2,4-triazol-3-yl)-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7gbf,A,KUU,302.799,(2R)-2-(3-chlorophenyl)-3-methyl-N-(4-methylpyridin-3-yl)butanamide
+Mpro,7gbg,A,KVF,289.76,(2S)-2-(3-chlorophenyl)-N-(5-methylpyridazin-4-yl)butanamide
+Mpro,7gbh,A,KVO,274.745,"2-(3-chlorophenyl)-N-(2,4-dimethylpyridin-3-yl)acetamide"
+Mpro,7gbi,A,KVX,304.728,"(3S)-5-chloro-N-[4-(hydroxymethyl)pyridin-3-yl]-2,3-dihydro-1-benzofuran-3-carboxamide"
+Mpro,7gbj,A,KW9,356.348,"7-fluoro-N-[2-(2-methoxyphenoxy)ethyl]-2-oxo-1,2-dihydroquinoline-4-carboxamide"
+Mpro,7gbk,A,KXF,242.273,2-(3-hydroxyphenyl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gbl,A,KWR,297.309,N-(3-{[(2S)-4-oxoazetidin-2-yl]oxy}phenyl)-2-(pyridin-3-yl)acetamide
+Mpro,7gbm,A,KX9,326.78,(2R)-2-(3-chlorophenyl)-N-[(4M)-4-(1H-pyrazol-1-yl)pyridin-3-yl]propanamide
+Mpro,7gbn,A,KXR,316.287,N-(3-fluoro-5-{[(2S)-4-oxoazetidin-2-yl]oxy}phenyl)-2-(pyrimidin-5-yl)acetamide
+Mpro,7gbo,A,KY0,286.756,1-(3-chlorophenyl)-N-(4-methylpyridin-3-yl)cyclopropane-1-carboxamide
+Mpro,7gbp,A,KYC,303.787,(2S)-2-(3-chlorophenyl)-2-(dimethylamino)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gbq,A,KYU,296.7,"2-(3-chlorophenyl)-2,2-difluoro-N-(4-methylpyridin-3-yl)acetamide"
+Mpro,7gbr,A,KZC,307.346,"N-(2-anilinoethyl)-2-oxo-1,2-dihydroquinoline-4-carboxamide"
+Mpro,7gbs,A,KZX,244.264,2-(3-fluorophenyl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gbt,A,L1F,352.384,"N-[2-(2-methoxyphenoxy)ethyl]-N-methyl-2-oxo-1,2-dihydroquinoline-4-carboxamide"
+Mpro,7gbu,A,L2I,269.342,(2S)-4-(methylamino)-2-phenyl-N-(pyridin-3-yl)butanamide
+Mpro,7gbv,A,L3I,288.772,2-(3-chlorophenyl)-2-methyl-N-(4-methylpyridin-3-yl)propanamide
+Mpro,7gbw,A,L6R,302.799,(2R)-2-(3-chlorophenyl)-N-(4-methylpyridin-3-yl)pentanamide
+Mpro,7gbx,A,L6D,285.728,N-(1H-benzimidazol-1-yl)-2-(3-chlorophenyl)acetamide
+Mpro,7gby,A,L5I,218.295,(2R)-3-cyclopropyl-2-methyl-N-(4-methylpyridin-3-yl)propanamide
+Mpro,7gbz,A,L4U,220.311,"(3S)-3,4-dimethyl-N-(4-methylpyridin-3-yl)pentanamide"
+Mpro,7gc0,A,L4N,230.306,(5R)-N-(4-methylpyridin-3-yl)spiro[2.4]heptane-5-carboxamide
+Mpro,7gc1,A,L7F,230.306,"2-[(1S,5R)-bicyclo[3.1.0]hexan-1-yl]-N-(4-methylpyridin-3-yl)acetamide"
+Mpro,7gc2,A,L7Q,268.354,3-methyl-N-(4-methylpyridin-3-yl)-3-phenylbutanamide
+Mpro,7gc3,A,L7V,298.34,"1-[(2S)-2-(5-cyclopropyl-1,2,4-oxadiazol-3-yl)pyrrolidin-1-yl]-2-(pyridin-3-yl)ethan-1-one"
+Mpro,7gc5,A,L8F,342.435,N-(2-{7-[(4-acetylpiperazin-1-yl)methyl]-1H-indol-3-yl}ethyl)acetamide
+Mpro,7gc4,A,L83,275.733,N-(2-amino-4-methylpyridin-3-yl)-2-(3-chlorophenyl)acetamide
+Mpro,7gc6,A,L8O,265.35,"1-[(4R)-4-(3-methylphenyl)-3,4-dihydroisoquinolin-2(1H)-yl]ethan-1-one"
+Mpro,7gc7,A,L93,370.374,"6-fluoro-N-[(2R)-2-(2-methoxyphenoxy)propyl]-2-oxo-1,2-dihydroquinoline-4-carboxamide"
+Mpro,7gc8,A,L9F,287.701,"(3P,5R)-3-(3-chlorophenyl)-5-(pyridin-3-yl)imidazolidine-2,4-dione"
+Mpro,7gc9,A,L9O,230.306,(1S)-N-(4-methylpyridin-3-yl)spiro[3.3]heptane-1-carboxamide
+Mpro,7gca,A,LB0,230.306,"(1r,3r)-3-cyclopropyl-N-(4-methylpyridin-3-yl)cyclobutane-1-carboxamide"
+Mpro,7gcb,A,LBC,352.17,2-(3-iodophenyl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gcc,A,LBO,266.338,2-(3-cyclopropylphenyl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gcd,A,LCU,230.306,"2-[(1R,3s,5S)-bicyclo[3.1.0]hexan-3-yl]-N-(4-methylpyridin-3-yl)acetamide"
+Mpro,7gcf,A,LKX,252.657,"2-(3-chlorophenyl)-N-(5-oxo-1,5-dihydro-4H-1,2,4-triazol-4-yl)acetamide"
+Mpro,7gce,A,LDX,258.291,3-(2-fluorophenyl)-N-(4-methylpyridin-3-yl)propanamide
+Mpro,7gcg,A,LKI,282.746,3-chloro-N-(4-methylpyridin-3-yl)benzene-1-sulfonamide
+Mpro,7gci,A,LJO,231.251,(3R)-3-cyano-N-(4-methylpyridin-3-yl)oxolane-3-carboxamide
+Mpro,7gcj,A,LJ0,230.306,"(1R,6S,7r)-N-(4-methylpyridin-3-yl)bicyclo[4.1.0]heptane-7-carboxamide"
+Mpro,7gck,A,LF3,331.754,"2-(6-chloro-3-oxo-2,3-dihydro-4H-1,4-benzoxazin-4-yl)-N-(4-methylpyridin-3-yl)acetamide"
+Mpro,7gcl,A,LR0,299.3,"(7R)-N-(4-acetamidopyridin-3-yl)-4-fluorobicyclo[4.2.0]octa-1,3,5-triene-7-carboxamide"
+Mpro,7gcm,A,LQU,276.332,"3-[(4R)-2-acetyl-1,2,3,4-tetrahydroisoquinolin-4-yl]benzonitrile"
+Mpro,7gcn,A,LQ0,299.755,2-(6-chloro-1H-indol-1-yl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gco,A,LO0,288.299,"N-[2-(2-methoxyphenoxy)ethyl]-2-oxo-2,3-dihydropyridine-4-carboxamide"
+Mpro,7gcq,A,LRC,261.707,2-(5-chloropyridin-3-yl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gcp,A,LM0,275.303,"(3S)-N',2-diacetyl-1,2,3,4-tetrahydroisoquinoline-3-carbohydrazide"
+Mpro,7gcr,A,LRN,336.512,"1-[(3R)-3-{(cyclohexylmethyl)[(1r,4R)-4-hydroxycyclohexyl]amino}piperidin-1-yl]ethan-1-one"
+Mpro,7gcs,A,LS0,283.3,2-(6-fluoro-1H-indol-1-yl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gct,A,LSF,311.335,N-(4-methylpyridin-3-yl)-2-(3-{[(2R)-4-oxoazetidin-2-yl]oxy}phenyl)acetamide
+Mpro,7gcu,A,LT9,314.766,1-(3-chlorophenyl)-N-(4-methylpyridin-3-yl)-3-oxocyclobutane-1-carboxamide
+Mpro,7gcv,A,LUC,345.78,2-(3-chloro-5-{[(2R)-4-oxoazetidin-2-yl]oxy}phenyl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gcw,A,LV9,311.378,N-(4-benzyloxan-4-yl)-N'-(pyridin-3-yl)urea
+Mpro,7gcy,A,LW6,145.158,1H-indole-4-carbaldehyde
+Mpro,7gcx,A,LVM,230.306,N-(4-methylpyridin-3-yl)-2-(spiro[2.3]hexan-5-yl)acetamide
+Mpro,7gd0,A,M4L,337.169,(2S)-2-(3-bromophenyl)-2-hydroxy-N-(4-methoxypyridin-3-yl)acetamide
+Mpro,7gcz,A,LWO,377.463,2-(1H-benzotriazol-1-yl)-N-[4-(methylamino)phenyl]-N-[(thiophen-3-yl)methyl]acetamide
+Mpro,7gd2,A,M26,421.26,"N-[(1R)-1-(3-bromophenyl)-2-methoxyethyl]-2-[(3S)-5-fluoro-2-oxo-2,3-dihydro-1H-indol-3-yl]acetamide"
+Mpro,7gd1,A,M2X,350.21,(2R)-2-amino-2-(5-bromo-2-methoxyphenyl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gd3,A,Y6J,431.51,~{N}-[4-[2-(benzotriazol-1-yl)ethanoyl-(thiophen-3-ylmethyl)amino]phenyl]cyclopropanecarboxamide
+Mpro,7gd4,A,R30,419.499,N-{4-[(1H-benzotriazol-1-ylacetyl)(thiophen-3-ylmethyl)amino]phenyl}propanamide
+Mpro,7gd5,A,M0X,391.489,2-(1H-benzotriazol-1-yl)-N-[4-(dimethylamino)phenyl]-N-[(thiophen-3-yl)methyl]acetamide
+Mpro,7gd6,A,M0G,304.771,(2S)-2-(3-chlorophenyl)-2-hydroxy-N-(4-methylpyridin-3-yl)butanamide
+Mpro,7gd8,A,KU6,318.758,"(4R)-6-chloro-N-(4-cyclopropyl-4H-1,2,4-triazol-3-yl)-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7gd7,A,LZX,333.405,(2R)-4-[(methanesulfonyl)amino]-2-phenyl-N-(pyridin-3-yl)butanamide
+Mpro,7gd9,A,LXF,375.465,"N-{4-[(2-phenylethyl)sulfamoyl]-1,3-benzothiazol-2-yl}acetamide"
+Mpro,7gda,A,MF0,275.733,(2R)-2-(5-chloropyridin-3-yl)-N-(4-methylpyridin-3-yl)propanamide
+Mpro,7gdc,A,M93,318.755,"(4R)-6-chloro-N-[4-(hydroxymethyl)pyridin-3-yl]-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7gdb,A,M9U,318.758,"(4S)-6-chloro-N-(4-cyclopropyl-4H-1,2,4-triazol-3-yl)-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7gde,A,M7X,260.719,2-(3-chlorophenyl)-N-(5-methylpyridin-3-yl)acetamide
+Mpro,7gdd,A,860,296.751,2-(3-chlorophenyl)-N-(isoquinolin-4-yl)acetamide
+Mpro,7gdf,A,M6U,309.286,N-(4-ethylpyridin-3-yl)-2-[6-(trifluoromethyl)pyridin-2-yl]acetamide
+Mpro,7gdg,A,M6I,247.68,N-(3-chlorophenyl)-N'-(pyridin-3-yl)urea
+Mpro,7gdh,A,M5X,228.225,"(3S)-3-hydroxy-2-oxo-2,3-dihydro-1H-indole-5-sulfonamide"
+Mpro,7gdi,A,M5I,260.719,N-(3-chlorophenyl)-2-(4-methylpyridin-3-yl)acetamide
+Mpro,7gdj,A,M50,261.707,2-(3-chlorophenyl)-N-(5-methylpyridazin-4-yl)acetamide
+Mpro,7gdk,A,MJR,249.696,2-(3-chlorophenyl)-N-(3-methyl-1H-pyrazol-4-yl)acetamide
+Mpro,7gdl,A,MKI,274.745,2-(3-chlorophenyl)-N-methyl-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gdm,A,MQ3,246.348,(2R)-2-cyclohexyl-N-(4-methylpyridin-3-yl)propanamide
+Mpro,7gdn,A,MU3,284.313,"(4R)-N-(4-cyclopropyl-4H-1,2,4-triazol-3-yl)-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7gdo,A,MVR,383.446,N-[(1-methyl-1H-pyrazol-3-yl)methyl]-2-(pyridin-3-yl)-N-[4-(pyridin-2-yl)phenyl]acetamide
+Mpro,7gdp,A,MVX,304.732,"(3S)-5-chloro-N-(4-cyclopropyl-4H-1,2,4-triazol-3-yl)-2,3-dihydro-1-benzofuran-3-carboxamide"
+Mpro,7gdq,A,MWN,286.079,"methyl (3R)-5-bromo-3-hydroxy-2-oxo-2,3-dihydro-1H-indole-7-carboxylate"
+Mpro,7gdr,A,MX9,297.305,"(3-methylphenyl)methyl (3R)-3-hydroxy-2-oxo-2,3-dihydro-1H-indole-7-carboxylate"
+Mpro,7gds,A,MZF,310.104,"(3R)-5-bromo-3-hydroxy-1-[(1,2,4-oxadiazol-3-yl)methyl]-1,3-dihydro-2H-indol-2-one"
+Mpro,7gdt,A,N00,287.741,(2R)-2-(6-chloro-1-methyl-9H-carbazol-2-yl)propanoic acid
+Mpro,7gdu,A,N0F,345.459,(3R)-3-(4-hydroxypiperidin-1-yl)-N-(4-methylpyridin-3-yl)-3-(thiophen-3-yl)propanamide
+Mpro,7gdv,A,N0O,340.764,"(3S)-5-chloro-N-(4-phenyl-4H-1,2,4-triazol-3-yl)-2,3-dihydro-1-benzofuran-3-carboxamide"
+Mpro,7gdw,A,N0X,298.34,"(4R)-N-(4-cyclopropyl-4H-1,2,4-triazol-3-yl)-4-methyl-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7gdx,A,N1U,392.244,"(3S)-5-bromo-1-[(3,4-dimethoxyphenyl)methyl]-3-hydroxy-7-methyl-1,3-dihydro-2H-indol-2-one"
+Mpro,7gdy,A,N2X,362.218,"(3S)-5-bromo-1-[(2-ethoxyphenyl)methyl]-3-hydroxy-1,3-dihydro-2H-indol-2-one"
+Mpro,7gdz,A,N3I,290.745,2-(3-chloro-5-methoxyphenyl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7ge0,A,N3R,356.348,"5-fluoro-N-[2-(2-methoxyphenoxy)ethyl]-2-oxo-1,2-dihydroquinoline-4-carboxamide"
+Mpro,7ge1,A,N43,368.383,"5-methoxy-N-[2-(2-methoxyphenoxy)ethyl]-2-oxo-1,2-dihydroquinoline-4-carboxamide"
+Mpro,7ge2,A,N4L,352.384,"N-[2-(2-methoxyphenoxy)ethyl]-5-methyl-2-oxo-1,2-dihydroquinoline-4-carboxamide"
+Mpro,7ge3,A,N5L,275.733,N-(5-amino-4-methylpyridin-3-yl)-2-(3-chlorophenyl)acetamide
+Mpro,7ge4,A,N6X,266.298,N-(5-amino-4-methylpyridin-3-yl)-2-(3-cyanophenyl)acetamide
+Mpro,7ge5,A,N7L,208.232,"(1R,2R)-2-(fluoromethyl)-N-(4-methylpyridin-3-yl)cyclopropane-1-carboxamide"
+Mpro,7ge6,A,N8X,244.292,"2-(3,5-dimethylphenyl)-N-(4-methyl-4H-1,2,4-triazol-3-yl)acetamide"
+Mpro,7ge7,A,N9I,281.352,"2-(4-methylpyridin-3-yl)-N-(1,2,3,4-tetrahydroisoquinolin-8-yl)acetamide"
+Mpro,7ge9,A,NB6,305.17,2-(3-bromophenyl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7ge8,A,NB0,351.374,4-[4-(2-fluorophenyl)piperazine-1-carbonyl]quinolin-2(1H)-one
+Mpro,7gea,A,N6F,317.77,(2S)-N-(4-acetamidopyridin-3-yl)-2-(3-chlorophenyl)propanamide
+Mpro,7geb,A,NDI,276.334,2-(4-acetylpiperazin-1-yl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gec,A,NEL,285.728,2-(3-chlorophenyl)-N-(1H-indazol-4-yl)acetamide
+Mpro,7ged,A,NGX,237.685,"(2S)-1-(3-chlorophenyl)-3-(1H-1,2,4-triazol-1-yl)propan-2-ol"
+Mpro,7gee,A,NIJ,258.291,3-(3-fluorophenyl)-N-(4-methylpyridin-3-yl)propanamide
+Mpro,7gef,A,NJE,233.309,N-(4-methylpyridin-3-yl)-2-(piperidin-1-yl)acetamide
+Mpro,7geg,A,NJU,300.783,"2-(3-chlorophenyl)-N-(5,6,7,8-tetrahydroisoquinolin-4-yl)acetamide"
+Mpro,7geh,A,NKU,314.77,2-(1H-benzotriazol-1-yl)-N-[(3-chlorophenyl)methyl]-N-methylacetamide
+Mpro,7gei,A,NM0,285.728,"2-(3-chlorophenyl)-N-[(4R)-imidazo[1,2-a]pyridin-3-yl]acetamide"
+Mpro,7gej,A,NO0,286.327,2-(3-ethynylphenyl)-N-(isoquinolin-4-yl)acetamide
+Mpro,7gek,A,NOI,249.696,2-(3-chlorophenyl)-N-(1-methyl-1H-imidazol-5-yl)acetamide
+Mpro,7gel,A,NQ3,285.728,"(1M,3P)-1-(3-chlorophenyl)-3-(4-methylpyridin-3-yl)-1,3-dihydro-2H-imidazol-2-one"
+Mpro,7gen,A,NRC,318.755,methyl (2R)-2-(3-chlorophenyl)-3-[(4-methylpyridin-3-yl)amino]-3-oxopropanoate
+Mpro,7gem,A,NQO,261.707,2-(3-chlorophenyl)-N-(4-methylpyridazin-3-yl)acetamide
+Mpro,7geo,A,NRX,285.728,"2-(3-chlorophenyl)-N-[(4S)-imidazo[1,5-a]pyridin-1-yl]acetamide"
+Mpro,7geq,A,NSR,338.788,"(4R)-6-chloro-N-(isoquinolin-4-yl)-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7ger,A,NU0,297.739,"2-(3-chlorophenyl)-N-(2,6-naphthyridin-4-yl)acetamide"
+Mpro,7ges,A,NUR,310.778,2-(3-chlorophenyl)-N-(isoquinolin-4-yl)-N-methylacetamide
+Mpro,7get,A,NV9,322.788,2-(3-chlorophenyl)-N-(4-phenylpyridin-3-yl)acetamide
+Mpro,7geu,A,NVO,297.739,2-(3-chlorophenyl)-N-(phthalazin-1-yl)acetamide
+Mpro,7gev,A,NW0,274.745,3-(3-chlorophenyl)-N-(4-methylpyridin-3-yl)propanamide
+Mpro,7gew,A,NWI,297.739,"2-(3-chlorophenyl)-N-(1,6-naphthyridin-8-yl)acetamide"
+Mpro,7gex,A,NX9,235.67,2-(3-chlorophenyl)-N-(1H-pyrazol-4-yl)acetamide
+Mpro,7gey,A,NYR,249.696,N-(3-chlorophenyl)-2-(3-methyl-1H-pyrazol-4-yl)acetamide
+Mpro,7gf0,A,O0C,297.739,"2-(3-chlorophenyl)-N-(2,7-naphthyridin-4-yl)acetamide"
+Mpro,7gez,A,NZK,312.366,2-(4-acetylpiperazin-1-yl)-N-(isoquinolin-4-yl)acetamide
+Mpro,7gf1,A,O0R,286.756,2-(3-chlorophenyl)-N-(4-cyclopropylpyridin-3-yl)acetamide
+Mpro,7gf2,A,O0X,297.739,"2-(3-chlorophenyl)-N-(1,7-naphthyridin-5-yl)acetamide"
+Mpro,7gf3,A,O1I,290.745,(2S)-2-(3-chlorophenyl)-3-hydroxy-N-(4-methylpyridin-3-yl)propanamide
+Mpro,7gf4,A,O1X,230.211,(2S)-2-(difluoromethoxy)-N-(4-methylpyridin-3-yl)propanamide
+Mpro,7gf5,A,O2R,332.825,2-(2-butoxy-5-chlorophenyl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gf6,A,O3I,386.822,"2-[(1M)-5-chloro-2',3'-difluoro-4'-methyl[1,1'-biphenyl]-3-yl]-N-(4-methylpyridin-3-yl)acetamide"
+Mpro,7gf7,A,O3U,302.395,"N-[(1R)-1,5-dicyano-4-(methylsulfanyl)-3-azaspiro[5.5]undeca-2,4-dien-2-yl]acetamide"
+Mpro,7gf8,A,O4L,324.334,"N-(3-acetyl-2,5-dimethyl-1H-pyrrol-1-yl)-4-oxo-3,4-dihydrophthalazine-1-carboxamide"
+Mpro,7gfa,A,Z26,326.777,2-(5-chloro-2-methoxyphenyl)-N-(isoquinolin-4-yl)acetamide
+Mpro,7gf9,A,O5C,295.308,1-[(4S)-3-(4-fluorobenzoyl)-2-methylindolizin-1-yl]ethan-1-one
+Mpro,7gfb,A,NSR,338.788,"(4R)-6-chloro-N-(isoquinolin-4-yl)-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7gfc,A,O87,401.382,4-{4-[3-(trifluoromethyl)phenyl]piperazine-1-carbonyl}quinolin-2(1H)-one
+Mpro,7gfd,A,O8L,359.807,(2S)-2-(3-chloro-5-{[(2R)-4-oxoazetidin-2-yl]oxy}phenyl)-N-(4-methylpyridin-3-yl)propanamide
+Mpro,7gff,A,O9X,230.211,(2R)-2-(difluoromethoxy)-N-(4-methylpyridin-3-yl)propanamide
+Mpro,7gfe,A,O9O,419.86,N-{3-chloro-5-[(6-methoxypyridin-2-yl)oxy]phenyl}-2-(isoquinolin-4-yl)acetamide
+Mpro,7gfg,A,OAO,372.806,"2-{3-chloro-5-[(3-methyl-1,2,4-oxadiazol-5-yl)methoxy]phenyl}-N-(4-methylpyridin-3-yl)acetamide"
+Mpro,7gfh,A,OBO,286.716,"2-(3-chlorophenyl)-N-(1H-imidazo[4,5-c]pyridin-7-yl)acetamide"
+Mpro,7gfi,A,OCI,354.812,2-(3-chloro-5-sulfamamidophenyl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gfj,A,OD7,456.54,2-(6-methoxy-1H-benzotriazol-1-yl)-N-[4-(piperidin-4-yl)phenyl]-N-[(pyridin-2-yl)methyl]acetamide
+Mpro,7gfk,A,ODX,359.85,"2-(3-chloro-5-{[(1S,2S)-2-hydroxycyclopentyl]amino}phenyl)-N-(4-methylpyridin-3-yl)acetamide"
+Mpro,7gfl,A,OE6,286.716,N-(1H-benzotriazol-1-yl)-2-(3-chlorophenyl)acetamide
+Mpro,7gfm,A,OEO,401.524,N-[4-(dimethylamino)phenyl]-2-(isoquinolin-4-yl)-N-[(thiophen-3-yl)methyl]acetamide
+Mpro,7gfn,A,OFX,375.427,2-(1H-benzotriazol-1-yl)-N-[4-(dimethylamino)phenyl]-N-[(1H-pyrazol-5-yl)methyl]acetamide
+Mpro,7gfo,A,OGF,420.488,2-(1H-benzotriazol-1-yl)-N-[4-(methylcarbamamido)phenyl]-N-[(thiophen-3-yl)methyl]acetamide
+Mpro,7gfp,A,OHC,331.797,2-[3-(acetamidomethyl)-5-chlorophenyl]-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gfq,A,OI4,302.756,"(4R)-6-chloro-N-(4-methylpyridin-3-yl)-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7gfr,A,OIE,297.739,2-(4-chloropyridin-2-yl)-N-(isoquinolin-4-yl)acetamide
+Mpro,7gfs,A,OIK,317.384,(isoquinolin-4-yl)(4-phenylpiperazin-1-yl)methanone
+Mpro,7gft,A,OIX,322.358,N-[2-(2-methoxyphenoxy)ethyl]isoquinoline-4-carboxamide
+Mpro,7gfu,A,OJ9,336.772,2-(5-chloro-1-benzofuran-7-yl)-N-(isoquinolin-4-yl)acetamide
+Mpro,7gfv,A,OJO,268.739,1-{4-[(3-chloro-5-hydroxyphenyl)methyl]piperazin-1-yl}ethan-1-one
+Mpro,7gfw,A,OK9,348.44,N-{(1Z)-1-[5-(morpholin-4-yl)thiophen-2-yl]-3-oxoprop-1-en-2-yl}thiophene-2-carboxamide
+Mpro,7gfx,A,OKW,286.756,"2-(3-chlorophenyl)-N-(6,7-dihydro-5H-cyclopenta[c]pyridin-4-yl)acetamide"
+Mpro,7gfy,A,OLX,235.236,"[(3R)-5-ethyl-3-hydroxy-2-oxo-2,3-dihydro-1H-indol-1-yl]acetic acid"
+Mpro,7gfz,A,ONU,349.383,4-[3-(2-methoxyanilino)azetidine-1-carbonyl]quinolin-2(1H)-one
+Mpro,7gg0,A,OGV,286.716,"2-(3-chlorophenyl)-N-[(4S)-[1,2,4]triazolo[4,3-a]pyridin-3-yl]acetamide"
+Mpro,7gg1,A,OGO,350.368,4-[3-(2-methoxyphenoxy)azetidine-1-carbonyl]quinolin-2(1H)-one
+Mpro,7gg2,A,OO6,352.814,"(3S,4R)-6-chloro-N-(isoquinolin-4-yl)-3-methyl-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7gg3,A,OOL,167.165,"(E)-1-(4,6-dimethoxypyrimidin-2-yl)methanimine"
+Mpro,7gg4,A,OPU,342.78,"(4R)-6-chloro-N-[(4S)-7-methyl[1,2,4]triazolo[4,3-a]pyridin-8-yl]-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7gg5,A,OQF,392.477,"2-(1H-benzotriazol-1-yl)-N-[4-(dimethylamino)phenyl]-N-[(1,3-thiazol-4-yl)methyl]acetamide"
+Mpro,7gg6,A,OQL,337.803,"(4R)-6-chloro-N-(isoquinolin-4-yl)-1,2,3,4-tetrahydroquinoline-4-carboxamide"
+Mpro,7gg7,A,OQX,406.865,2-(1H-benzotriazol-1-yl)-N-[(3-chlorophenyl)methyl]-N-(4-methoxyphenyl)acetamide
+Mpro,7gg8,A,ORR,301.771,"1-(5-amino-3,4-dihydro-1,7-naphthyridin-1(2H)-yl)-2-(3-chlorophenyl)ethan-1-one"
+Mpro,7gg9,A,SQ2,258.319,"2-(1H-1,2,3-benzotriazol-1-yl)-1-(4-methylpiperidin-1-yl)ethan-1-one"
+Mpro,7gga,A,OSI,352.814,"(4R)-6-chloro-N-(isoquinolin-4-yl)-4-methyl-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7ggb,A,OT6,356.849,2-{3-chloro-5-[(2-cyano-2-methylpropyl)amino]phenyl}-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7ggc,A,OTV,383.795,"2-(3-chloro-5-{[(1S,2R)-2-(trifluoromethyl)cyclopropyl]amino}phenyl)-N-(4-methylpyridin-3-yl)acetamide"
+Mpro,7ggd,A,OUF,397.467,"N-[(furan-2-yl)methyl]-N'-(2-methyl-1-oxo-1,2-dihydroisoquinolin-4-yl)-N-{3-[(propan-2-yl)oxy]propyl}urea"
+Mpro,7gge,A,OV4,385.462,2-(1H-benzotriazol-1-yl)-N-benzyl-N-[4-(dimethylamino)phenyl]acetamide
+Mpro,7ggf,A,OVF,419.907,2-(1H-benzotriazol-1-yl)-N-[(3-chlorophenyl)methyl]-N-[4-(dimethylamino)phenyl]acetamide
+Mpro,7ggg,A,OVX,365.813,1-(3-chlorophenyl)-4-(isoquinoline-4-carbonyl)piperazin-2-one
+Mpro,7ggh,A,OWC,336.815,(3S)-3-(3-chlorophenyl)-1-(isoquinolin-4-yl)piperidin-2-one
+Mpro,7ggi,A,OWX,301.771,"2-(3-chlorophenyl)-N-(1,2,3,4-tetrahydro-1,7-naphthyridin-5-yl)acetamide"
+Mpro,7ggj,A,OYF,339.776,"(4R)-6-chloro-N-(2,7-naphthyridin-4-yl)-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7ggk,A,OYX,392.557,N-(2-cyclohexylethyl)-2-(isoquinolin-4-yl)-N-[(thiophen-2-yl)methyl]acetamide
+Mpro,7ggl,A,OZC,336.815,(3S)-3-(4-chlorophenyl)-1-(isoquinolin-4-yl)piperidin-2-one
+Mpro,7ggm,A,OZX,297.739,2-(6-chloropyridin-2-yl)-N-(isoquinolin-4-yl)acetamide
+Mpro,7ggn,A,P0X,381.812,4-[4-(3-chlorophenyl)-3-oxopiperazine-1-carbonyl]quinolin-2(1H)-one
+Mpro,7ggp,A,P4R,379.796,"(1'M,4S)-6-chloro-1'-(isoquinolin-4-yl)-2,3-dihydrospiro[[1]benzopyran-4,4'-imidazolidine]-2',5'-dione"
+Mpro,7ggo,A,P3L,308.76,"(4R)-6-chloro-N-[(4R)-2-oxopiperidin-4-yl]-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7ggq,A,OQL,337.803,"(4R)-6-chloro-N-(isoquinolin-4-yl)-1,2,3,4-tetrahydroquinoline-4-carboxamide"
+Mpro,7ggr,A,P6O,367.786,"(4S)-6-chloro-4-hydroxy-N-(isoquinolin-4-yl)-2-oxo-1,2,3,4-tetrahydroquinoline-4-carboxamide"
+Mpro,7ggs,A,P7R,358.779,"(4R)-6-chloro-N-(1-methyl-2-oxo-2,3-dihydro-1H-imidazo[4,5-c]pyridin-7-yl)-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7ggt,A,P9O,343.807,"(4R)-6-chloro-N-(5,6,7,8-tetrahydro-2,6-naphthyridin-4-yl)-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7ggu,A,PJ6,368.814,"(4S)-6-chloro-N-(isoquinolin-4-yl)-4-methoxy-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7ggv,A,PJX,351.829,"(4R)-6-chloro-N-(isoquinolin-4-yl)-1-methyl-1,2,3,4-tetrahydroquinoline-4-carboxamide"
+Mpro,7ggw,A,PKW,342.78,"(4R)-6-chloro-N-(1-methyl-1H-imidazo[4,5-c]pyridin-7-yl)-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7ggx,A,PQ6,367.829,"(4R)-4-(aminomethyl)-6-chloro-N-(isoquinolin-4-yl)-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7ggy,A,PUU,379.84,"(4R)-1-acetyl-6-chloro-N-(isoquinolin-4-yl)-1,2,3,4-tetrahydroquinoline-4-carboxamide"
+Mpro,7ggz,A,PVR,302.371,2-(4-acetylpiperazin-1-yl)-N-(4-cyclopropylpyridin-3-yl)acetamide
+Mpro,7gh0,A,PWR,354.787,"(4R)-6-chloro-N-(2-oxo-2lambda~5~-isoquinolin-4-yl)-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7gh2,A,Q0I,394.851,"(4R)-6-chloro-N-(isoquinolin-4-yl)-N-propanoyl-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7gh1,A,PZ6,367.829,"(4S)-4-(aminomethyl)-6-chloro-N-(isoquinolin-4-yl)-3,4-dihydro-2H-1-benzopyran-4-carboxamide"
+Mpro,7gh3,A,Q1C,247.336,2-(4-methylpiperidin-1-yl)-N-(4-methylpyridin-3-yl)acetamide
+Mpro,7gh4,A,Q1U,326.777,2-(3-chlorophenyl)-N-(6-methoxyisoquinolin-4-yl)acetamide
+Mpro,7gh5,A,Q2G,261.707,N-(3-chlorophenyl)-N'-(4-methylpyridin-3-yl)urea
+Mpro,7gh6,A,Q2U,338.357,"N-[2-(2-methoxyphenoxy)ethyl]-2-oxo-1,2-dihydroquinoline-4-carboxamide"
+Mpro,7gh7,A,Q36,265.31,(2R)-2-(3-cyanophenyl)-N-(4-methylpyridin-3-yl)propanamide
+Mpro,7gh8,A,Q3U,262.695,N-(5-aminopyridin-3-yl)-N'-(3-chlorophenyl)urea
+Mpro,7gh9,A,Q45,340.441,2-[(2S)-2-{2-[(methanesulfonyl)amino]ethyl}piperidin-1-yl]-N-(pyridin-3-yl)acetamide
+Mpro,7gha,A,Q4F,264.751,"1-{(1S,4S)-5-[(3-chlorophenyl)methyl]-2,5-diazabicyclo[2.2.1]heptan-2-yl}ethan-1-one"
+Mpro,7ghb,A,Q4R,370.426,N~2~-methyl-N-(4-methylpyridin-3-yl)-N~2~-(quinoline-8-sulfonyl)glycinamide
+Mpro,7jp0,A,VJA,504.619,N-[(benzyloxy)carbonyl]-L-valyl-N-{(2R)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-L-leucinamide
+Mpro,7k6e,A,SV6,681.865,"(1S,3aR,6aS)-2-[(2S)-2-({(2S)-2-cyclohexyl-2-[(pyrazin-2-ylcarbonyl)amino]acetyl}amino)-3,3-dimethylbutanoyl]-N-[(2R,3S)-1-(cyclopropylamino)-2-hydroxy-1-oxohexan-3-yl]octahydrocyclopenta[c]pyrrole-1-carboxamide"
+Mpro,7k6d,A,SV6,681.865,"(1S,3aR,6aS)-2-[(2S)-2-({(2S)-2-cyclohexyl-2-[(pyrazin-2-ylcarbonyl)amino]acetyl}amino)-3,3-dimethylbutanoyl]-N-[(2R,3S)-1-(cyclopropylamino)-2-hydroxy-1-oxohexan-3-yl]octahydrocyclopenta[c]pyrrole-1-carboxamide"
+Mpro,7mat,A,H37,501.021,D-phenylalanyl-N-[(3S)-6-carbamimidamido-1-chloro-2-oxohexan-3-yl]-L-phenylalaninamide
+Mpro,7mat,B,H37,501.021,D-phenylalanyl-N-[(3S)-6-carbamimidamido-1-chloro-2-oxohexan-3-yl]-L-phenylalaninamide
+Mpro,7mau,A,YVP,576.686,N-{3-[(prop-2-yn-1-yl)oxy]propanoyl}-D-phenylalanyl-N-[(3S)-6-carbamimidamido-2-oxohexan-3-yl]-L-phenylalaninamide
+Mpro,7mau,B,YVP,576.686,N-{3-[(prop-2-yn-1-yl)oxy]propanoyl}-D-phenylalanyl-N-[(3S)-6-carbamimidamido-2-oxohexan-3-yl]-L-phenylalaninamide
+Mpro,7mau,B,DIO,88.105,"1,4-DIETHYLENE DIOXIDE"
+Mpro,7mav,A,YVY,577.671,N-{3-[(prop-2-yn-1-yl)oxy]propanoyl}-D-phenylalanyl-N-[(3S)-6-(carbamoylamino)-2-oxohexan-3-yl]-L-phenylalaninamide
+Mpro,7mav,B,YVY,577.671,N-{3-[(prop-2-yn-1-yl)oxy]propanoyl}-D-phenylalanyl-N-[(3S)-6-(carbamoylamino)-2-oxohexan-3-yl]-L-phenylalaninamide
+Mpro,7maw,A,YVA,493.595,ethyl (4R)-4-({3-cyclopropyl-N-[(2E)-3-(4-ethynylphenyl)prop-2-enoyl]-L-alanyl}amino)-5-[(3S)-2-oxopyrrolidin-3-yl]pentanoate
+Mpro,7maw,B,YVA,493.595,ethyl (4R)-4-({3-cyclopropyl-N-[(2E)-3-(4-ethynylphenyl)prop-2-enoyl]-L-alanyl}amino)-5-[(3S)-2-oxopyrrolidin-3-yl]pentanoate
+Mpro,7max,A,YV7,540.626,D-phenylalanyl-N-{(2R)-5-ethoxy-5-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]pentan-2-yl}-4-fluoro-L-phenylalaninamide
+Mpro,7max,B,YV7,540.626,D-phenylalanyl-N-{(2R)-5-ethoxy-5-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]pentan-2-yl}-4-fluoro-L-phenylalaninamide
+Mpro,7maz,A,YVD,558.617,4-fluoro-D-phenylalanyl-N-{(2R)-5-ethoxy-5-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]pentan-2-yl}-4-fluoro-L-phenylalaninamide
+Mpro,7maz,B,YVD,558.617,4-fluoro-D-phenylalanyl-N-{(2R)-5-ethoxy-5-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]pentan-2-yl}-4-fluoro-L-phenylalaninamide
+Mpro,7mb0,A,YVG,522.636,D-phenylalanyl-N-{(2R)-5-ethoxy-5-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]pentan-2-yl}-L-phenylalaninamide
+Mpro,7mb0,B,YVG,522.636,D-phenylalanyl-N-{(2R)-5-ethoxy-5-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]pentan-2-yl}-L-phenylalaninamide
+Mpro,7mb1,A,YVJ,540.626,4-fluoro-D-phenylalanyl-N-{(2R)-5-ethoxy-5-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]pentan-2-yl}-L-phenylalaninamide
+Mpro,7mb1,B,YVJ,540.626,4-fluoro-D-phenylalanyl-N-{(2R)-5-ethoxy-5-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]pentan-2-yl}-L-phenylalaninamide
+Mpro,7mb2,A,YVM,650.737,4-fluoro-N-{3-[(prop-2-yn-1-yl)oxy]propanoyl}-D-phenylalanyl-N-{(2R)-5-ethoxy-5-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]pentan-2-yl}-L-phenylalaninamide
+Mpro,7mb2,B,YVM,650.737,4-fluoro-N-{3-[(prop-2-yn-1-yl)oxy]propanoyl}-D-phenylalanyl-N-{(2R)-5-ethoxy-5-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]pentan-2-yl}-L-phenylalaninamide
+Mpro,7mb3,A,YVV,632.746,N-{3-[(prop-2-yn-1-yl)oxy]propanoyl}-D-phenylalanyl-N-{(2R)-5-ethoxy-5-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]pentan-2-yl}-L-phenylalaninamide
+Mpro,7mb3,B,YVV,632.746,N-{3-[(prop-2-yn-1-yl)oxy]propanoyl}-D-phenylalanyl-N-{(2R)-5-ethoxy-5-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]pentan-2-yl}-L-phenylalaninamide
+Mpro,7mb3,C,YVV,632.746,N-{3-[(prop-2-yn-1-yl)oxy]propanoyl}-D-phenylalanyl-N-{(2R)-5-ethoxy-5-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]pentan-2-yl}-L-phenylalaninamide
+Mpro,7mb3,D,YVV,632.746,N-{3-[(prop-2-yn-1-yl)oxy]propanoyl}-D-phenylalanyl-N-{(2R)-5-ethoxy-5-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]pentan-2-yl}-L-phenylalaninamide
+Mpro,7mb3,E,YVV,632.746,N-{3-[(prop-2-yn-1-yl)oxy]propanoyl}-D-phenylalanyl-N-{(2R)-5-ethoxy-5-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]pentan-2-yl}-L-phenylalaninamide
+Mpro,7mb3,F,YVV,632.746,N-{3-[(prop-2-yn-1-yl)oxy]propanoyl}-D-phenylalanyl-N-{(2R)-5-ethoxy-5-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]pentan-2-yl}-L-phenylalaninamide
+Mpro,7mng,A,ZL7,537.568,"(2R,3S)-N-cyclopropyl-3-{[(2R)-3-(cyclopropylmethanesulfonyl)-2-{[(1S)-2,2,2-trifluoro-1-(4-fluorophenyl)ethyl]amino}propanoyl]amino}-2-hydroxypentanamide (non-preferred name)"
+Mpro,7nbr,AAA,U5G,521.693,boceprevir (bound form)
+Mpro,7nbs,AAA,SV6,681.865,"(1S,3aR,6aS)-2-[(2S)-2-({(2S)-2-cyclohexyl-2-[(pyrazin-2-ylcarbonyl)amino]acetyl}amino)-3,3-dimethylbutanoyl]-N-[(2R,3S)-1-(cyclopropylamino)-2-hydroxy-1-oxohexan-3-yl]octahydrocyclopenta[c]pyrrole-1-carboxamide"
+Mpro,7nby,A,U88,130.125,"5-nitro-1,3-thiazole"
+Mpro,7nby,B,U88,130.125,"5-nitro-1,3-thiazole"
+Mpro,7ng3,A,ALD,477.637,N-[(benzyloxy)carbonyl]-L-leucyl-N-[(2S)-1-hydroxy-4-methylpentan-2-yl]-L-leucinamide
+Mpro,7ng3,B,ALD,477.637,N-[(benzyloxy)carbonyl]-L-leucyl-N-[(2S)-1-hydroxy-4-methylpentan-2-yl]-L-leucinamide
+Mpro,7nf5,A,ALD,477.637,N-[(benzyloxy)carbonyl]-L-leucyl-N-[(2S)-1-hydroxy-4-methylpentan-2-yl]-L-leucinamide
+Mpro,7ng6,A,ALD,477.637,N-[(benzyloxy)carbonyl]-L-leucyl-N-[(2S)-1-hydroxy-4-methylpentan-2-yl]-L-leucinamide
+Mpro,7ng6,B,ALD,477.637,N-[(benzyloxy)carbonyl]-L-leucyl-N-[(2S)-1-hydroxy-4-methylpentan-2-yl]-L-leucinamide
+Mpro,7q5e,A,90I,536.619,"benzyl (S)-2-(((S)-3,4-dioxo-1-((S)-2-oxopyrrolidin-3-yl)-4-(phenethylamino)butan-2-yl)carbamoyl)pyrrolidine-1-carboxylate"
+Mpro,7q5e,B,90I,536.619,"benzyl (S)-2-(((S)-3,4-dioxo-1-((S)-2-oxopyrrolidin-3-yl)-4-(phenethylamino)butan-2-yl)carbamoyl)pyrrolidine-1-carboxylate"
+Mpro,7q5f,A,90X,605.509,"(S)-1-(2-(2,4-dichlorophenoxy)acetyl)-N-((S)-3,4-dioxo-1-((S)-2-oxopyrrolidin-3-yl)-4-(phenethylamino)butan-2-yl)pyrrolidine-2-carboxamide"
+Mpro,7q5f,B,90X,605.509,"(S)-1-(2-(2,4-dichlorophenoxy)acetyl)-N-((S)-3,4-dioxo-1-((S)-2-oxopyrrolidin-3-yl)-4-(phenethylamino)butan-2-yl)pyrrolidine-2-carboxamide"
+Mpro,7set,A,I70,550.691,"(1R,2S,5S)-N-{(2S,3R)-4-amino-3-hydroxy-4-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}-3-[N-(tert-butylcarbamoyl)-3-methyl-L-valyl]-6,6-dimethyl-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,7rc1,A,4IO,457.844,5-chloropyridin-3-yl 1-(3-nitrobenzene-1-sulfonyl)-1H-indole-5-carboxylate
+Mpro,7sf3,A,90H,561.594,"(1R,2S,5S)-N-{(2S,3R)-3-hydroxy-4-(methylamino)-4-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,7sf1,A,8ZI,549.703,"(1R,2S,5S)-N-{(2S,3R)-4-amino-3-hydroxy-4-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}-3-[N-(3,3-dimethylbutanoyl)-3-methyl-L-valyl]-6,6-dimethyl-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,7sfb,A,90U,472.534,"benzyl (1R,2S,5S)-2-({(2S,3R)-4-amino-3-hydroxy-4-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}carbamoyl)-6,6-dimethyl-3-azabicyclo[3.1.0]hexane-3-carboxylate"
+Mpro,7sfh,A,91I,470.561,"(1R,2S,5S)-N-{(2S,3R)-4-amino-3-hydroxy-4-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}-6,6-dimethyl-3-(3-phenylpropanoyl)-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,7sfi,A,91Z,525.521,"(1R,2S,5S)-N-{(2S,3R)-4-amino-3-hydroxy-4-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}-6,6-dimethyl-3-[N-(2,4,6-trifluorophenyl)glycyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,7sgh,A,99W,455.474,"(S)-N-((S)-1-imino-3-((S)-2-oxopyrrolidin-3-yl)propan-2-yl)-4-methyl-2-(2-((2,4,6-trifluorophenyl)amino)acetamido)pentanamide"
+Mpro,7sgh,B,99W,455.474,"(S)-N-((S)-1-imino-3-((S)-2-oxopyrrolidin-3-yl)propan-2-yl)-4-methyl-2-(2-((2,4,6-trifluorophenyl)amino)acetamido)pentanamide"
+Mpro,7sgh,C,99W,455.474,"(S)-N-((S)-1-imino-3-((S)-2-oxopyrrolidin-3-yl)propan-2-yl)-4-methyl-2-(2-((2,4,6-trifluorophenyl)amino)acetamido)pentanamide"
+Mpro,7sgh,D,99W,455.474,"(S)-N-((S)-1-imino-3-((S)-2-oxopyrrolidin-3-yl)propan-2-yl)-4-methyl-2-(2-((2,4,6-trifluorophenyl)amino)acetamido)pentanamide"
+Mpro,7tvs,A,XNJ,484.616,"N-(4-methyl-3-{[4-(pyridin-3-yl)-1,3-thiazol-2-yl]amino}phenyl)-4-[(piperazin-1-yl)methyl]benzamide"
+Mpro,7tvx,A,G65,498.642,Masitinib
+Mpro,7uug,A,M0C,587.632,"(1R,2S,5S)-N-{(2S,3R)-4-(azetidin-1-yl)-3-hydroxy-4-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,7u92,A,M0C,587.632,"(1R,2S,5S)-N-{(2S,3R)-4-(azetidin-1-yl)-3-hydroxy-4-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,7uup,A,4WI,501.542,"(1R,2S,5S)-N-{(1E,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,7z0p,AAA,I8H,564.717,"(1~{R},2~{S},5~{S})-3-[(2~{S})-2-(~{tert}-butylcarbamoylamino)-3,3-dimethyl-butanoyl]-6,6-dimethyl-~{N}-[(2~{S},3~{R})-4-(methylamino)-3-oxidanyl-4-oxidanylidene-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]butan-2-yl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,7z59,A,IFO,510.508,"(3S)-4-[[2,4-bis(fluoranyl)phenyl]methoxy]-2-methyl-4-oxidanylidene-3-[[(Z)-3-oxidanylidene-2-(2-phenoxyethanoylamino)prop-1-enyl]amino]butane-2-sulfinic acid"
+Mpro,8a4q,A,V9R,595.687,"~{tert}-butyl ~{N}-[1-[(2~{R})-3-cyclopropyl-1-oxidanylidene-1-[[(2~{S},3~{S})-3-oxidanyl-4-oxidanylidene-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]-4-[(phenylmethyl)amino]butan-2-yl]amino]propan-2-yl]-2-oxidanylidene-pyridin-3-yl]carbamate"
+Mpro,8aj1,A,A1IMU,538.595,"(2R,3S)-3-[[(2S)-3-cyclopropyl-2-[2-oxidanylidene-3-(phenylcarbamoylamino)pyridin-1-yl]propanoyl]amino]-N-methyl-2-oxidanyl-4-[(3S)-2-oxidanylidenepyrrolidin-3-yl]butanamide"
+Mpro,8bga,A,QQL,487.549,4-methoxy-~{N}-[(2~{S})-4-methyl-1-[[(2~{S})-4-nitro-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]butan-2-yl]amino]-1-oxidanylidene-pentan-2-yl]-1~{H}-indole-2-carboxamide
+Mpro,8bga,B,QQL,487.549,4-methoxy-~{N}-[(2~{S})-4-methyl-1-[[(2~{S})-4-nitro-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]butan-2-yl]amino]-1-oxidanylidene-pentan-2-yl]-1~{H}-indole-2-carboxamide
+Mpro,8bgd,A,QH0,448.513,(phenylmethyl) N-[(2S)-4-methyl-1-[[(2S)-4-nitro-1-[(3R)-2-oxidanylidenepyrrolidin-3-yl]butan-2-yl]amino]-1-oxidanylidene-pentan-2-yl]carbamate
+Mpro,8c9o,AAA,O6K,595.687,"~{tert}-butyl ~{N}-[1-[(2~{S})-3-cyclopropyl-1-oxidanylidene-1-[[(2~{S},3~{R})-3-oxidanyl-4-oxidanylidene-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]-4-[(phenylmethyl)amino]butan-2-yl]amino]propan-2-yl]-2-oxidanylidene-pyridin-3-yl]carbamate"
+Mpro,8c9o,BBB,O6K,595.687,"~{tert}-butyl ~{N}-[1-[(2~{S})-3-cyclopropyl-1-oxidanylidene-1-[[(2~{S},3~{R})-3-oxidanyl-4-oxidanylidene-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]-4-[(phenylmethyl)amino]butan-2-yl]amino]propan-2-yl]-2-oxidanylidene-pyridin-3-yl]carbamate"
+Mpro,8cac,AAA,O6K,595.687,"~{tert}-butyl ~{N}-[1-[(2~{S})-3-cyclopropyl-1-oxidanylidene-1-[[(2~{S},3~{R})-3-oxidanyl-4-oxidanylidene-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]-4-[(phenylmethyl)amino]butan-2-yl]amino]propan-2-yl]-2-oxidanylidene-pyridin-3-yl]carbamate"
+Mpro,8cac,BBB,O6K,595.687,"~{tert}-butyl ~{N}-[1-[(2~{S})-3-cyclopropyl-1-oxidanylidene-1-[[(2~{S},3~{R})-3-oxidanyl-4-oxidanylidene-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]-4-[(phenylmethyl)amino]butan-2-yl]amino]propan-2-yl]-2-oxidanylidene-pyridin-3-yl]carbamate"
+Mpro,8cae,A,4WI,501.542,"(1R,2S,5S)-N-{(1E,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,8caj,AAA,UAX,595.687,"~{tert}-butyl ~{N}-[1-[(2~{S})-3-cyclopropyl-1-oxidanylidene-1-[[(2~{S},3~{S})-3-oxidanyl-4-oxidanylidene-1-[(3~{R})-2-oxidanylidenepyrrolidin-3-yl]-4-[(phenylmethyl)amino]butan-2-yl]amino]propan-2-yl]-2-oxidanylidene-pyridin-3-yl]carbamate"
+Mpro,8d4k,A,K36,485.551,"(1S,2S)-2-({N-[(benzyloxy)carbonyl]-L-leucyl}amino)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propane-1-sulfonic acid"
+Mpro,8d4m,A,K36,485.551,"(1S,2S)-2-({N-[(benzyloxy)carbonyl]-L-leucyl}amino)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propane-1-sulfonic acid"
+Mpro,8dcz,A,4WI,501.542,"(1R,2S,5S)-N-{(1E,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,8dcz,B,4WI,501.542,"(1R,2S,5S)-N-{(1E,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,8dd1,A,K36,485.551,"(1S,2S)-2-({N-[(benzyloxy)carbonyl]-L-leucyl}amino)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propane-1-sulfonic acid"
+Mpro,8dd9,A,B1S,485.551,"(1R,2S)-2-({N-[(benzyloxy)carbonyl]-L-leucyl}amino)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propane-1-sulfonic acid"
+Mpro,8ddm,A,K36,485.551,"(1S,2S)-2-({N-[(benzyloxy)carbonyl]-L-leucyl}amino)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propane-1-sulfonic acid"
+Mpro,8dgb,A,B1S,485.551,"(1R,2S)-2-({N-[(benzyloxy)carbonyl]-L-leucyl}amino)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propane-1-sulfonic acid"
+Mpro,8dgb,B,B1S,485.551,"(1R,2S)-2-({N-[(benzyloxy)carbonyl]-L-leucyl}amino)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propane-1-sulfonic acid"
+Mpro,8dsu,A,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,8dsu,B,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,8dt9,A,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,8dt9,B,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,8dzb,A,U6Y,571.665,"benzyl {(3S)-1-[(2S)-1-({(2S,3R)-4-(cyclopropylamino)-3-hydroxy-4-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-5-oxopyrrolidin-3-yl}carbamate"
+Mpro,8dzc,A,U76,621.673,"(3,5-difluorophenyl)methyl {(3S)-1-[(2S)-1-({(2S,3R)-4-(cyclopropylamino)-3-hydroxy-4-oxo-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-6-oxopiperidin-3-yl}carbamate"
+Mpro,8e4w,A,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,8e4w,B,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,8e5c,A,4WI,501.542,"(1R,2S,5S)-N-{(1E,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,8e7c,A,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,8e7c,B,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,8e7n,A,K36,485.551,"(1S,2S)-2-({N-[(benzyloxy)carbonyl]-L-leucyl}amino)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propane-1-sulfonic acid"
+Mpro,8e7n,B,K36,485.551,"(1S,2S)-2-({N-[(benzyloxy)carbonyl]-L-leucyl}amino)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propane-1-sulfonic acid"
+Mpro,8e7n,A,B1S,485.551,"(1R,2S)-2-({N-[(benzyloxy)carbonyl]-L-leucyl}amino)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propane-1-sulfonic acid"
+Mpro,8e7n,B,B1S,485.551,"(1R,2S)-2-({N-[(benzyloxy)carbonyl]-L-leucyl}amino)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propane-1-sulfonic acid"
+Mpro,8ezv,A,X6O,601.658,"(1R,2S,5S)-N-{(2S,3R)-4-(azetidin-1-yl)-3-hydroxy-4-oxo-1-[(3S)-2-oxopiperidin-3-yl]butan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,8ezz,A,X70,637.639,"(1R,2S,5S)-N-{(2S,3R)-4-(3,3-difluoroazetidin-1-yl)-3-hydroxy-4-oxo-1-[(3S)-2-oxopiperidin-3-yl]butan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,8f02,A,X6T,629.711,"(1R,2S,5S)-N-{(2S,3R)-4-(3,3-dimethylazetidin-1-yl)-3-hydroxy-4-oxo-1-[(3S)-2-oxopiperidin-3-yl]butan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,8f2c,A,X9Z,587.632,"(1R,2S,5S)-N-[(2S,3R)-4-(azetidin-1-yl)-3-hydroxy-4-oxo-1-(2-oxopyrrolidin-1-yl)butan-2-yl]-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,8f2d,A,XA8,601.658,"(1R,2S,5S)-N-[(2S,3R)-4-(azetidin-1-yl)-3-hydroxy-4-oxo-1-(2-oxopiperidin-1-yl)butan-2-yl]-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,8ftl,A,5ZF,483.989,"N-([1,1'-biphenyl]-4-yl)-2-chloro-N-[(1R)-2-oxo-2-{[(1S)-1-phenylethyl]amino}-1-(pyridin-3-yl)ethyl]acetamide"
+Mpro,8ftl,B,5ZF,483.989,"N-([1,1'-biphenyl]-4-yl)-2-chloro-N-[(1R)-2-oxo-2-{[(1S)-1-phenylethyl]amino}-1-(pyridin-3-yl)ethyl]acetamide"
+Mpro,8gqt,D,QUE,302.236,"3,5,7,3',4'-PENTAHYDROXYFLAVONE"
+Mpro,8okm,A,84C,494.624,"tert-butyl-N-[(2S)-1-[(3S,3aS,6aR)-3-[[(2S)-1-oxidanyl-3-[(3S)-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]carbamoyl]-3,3a,4,5,6,6a-hexahydro-1H-cyclopenta[c]pyrrol-2-yl]-3-methyl-1-oxidanylidene-butan-2-yl]carbamate"
+Mpro,8okm,B,84C,494.624,"tert-butyl-N-[(2S)-1-[(3S,3aS,6aR)-3-[[(2S)-1-oxidanyl-3-[(3S)-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]carbamoyl]-3,3a,4,5,6,6a-hexahydro-1H-cyclopenta[c]pyrrol-2-yl]-3-methyl-1-oxidanylidene-butan-2-yl]carbamate"
+Mpro,8okn,A,83W,512.639,"tert-butyl-N-[(2S,3R)-3-[(2-methylpropan-2-yl)oxy]-1-oxidanylidene-1-[(2S)-2-[[(2S)-1-oxidanyl-3-[(3S)-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]carbamoyl]pyrrolidin-1-yl]butan-2-yl]carbamate"
+Mpro,8okn,B,83W,512.639,"tert-butyl-N-[(2S,3R)-3-[(2-methylpropan-2-yl)oxy]-1-oxidanylidene-1-[(2S)-2-[[(2S)-1-oxidanyl-3-[(3S)-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]carbamoyl]pyrrolidin-1-yl]butan-2-yl]carbamate"
+Mpro,8p54,A,ALD,477.637,N-[(benzyloxy)carbonyl]-L-leucyl-N-[(2S)-1-hydroxy-4-methylpentan-2-yl]-L-leucinamide
+Mpro,8p55,A,ALD,477.637,N-[(benzyloxy)carbonyl]-L-leucyl-N-[(2S)-1-hydroxy-4-methylpentan-2-yl]-L-leucinamide
+Mpro,8okl,A,83N,484.586,"tert-butyl-N-[(2S)-1-[(2S,4S)-4-methoxy-2-[[(2S)-1-oxidanyl-3-[(3S)-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]carbamoyl]pyrrolidin-1-yl]-3-methyl-1-oxidanylidene-butan-2-yl]carbamate"
+Mpro,8okl,B,83N,484.586,"tert-butyl-N-[(2S)-1-[(2S,4S)-4-methoxy-2-[[(2S)-1-oxidanyl-3-[(3S)-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]carbamoyl]pyrrolidin-1-yl]-3-methyl-1-oxidanylidene-butan-2-yl]carbamate"
+Mpro,8p56,A,X77,459.583,N-(4-tert-butylphenyl)-N-[(1R)-2-(cyclohexylamino)-2-oxo-1-(pyridin-3-yl)ethyl]-1H-imidazole-4-carboxamide
+Mpro,8p57,A,X77,459.583,N-(4-tert-butylphenyl)-N-[(1R)-2-(cyclohexylamino)-2-oxo-1-(pyridin-3-yl)ethyl]-1H-imidazole-4-carboxamide
+Mpro,8p58,A,X77,459.583,N-(4-tert-butylphenyl)-N-[(1R)-2-(cyclohexylamino)-2-oxo-1-(pyridin-3-yl)ethyl]-1H-imidazole-4-carboxamide
+Mpro,8p58,B,X77,459.583,N-(4-tert-butylphenyl)-N-[(1R)-2-(cyclohexylamino)-2-oxo-1-(pyridin-3-yl)ethyl]-1H-imidazole-4-carboxamide
+Mpro,8p5a,A,X77,459.583,N-(4-tert-butylphenyl)-N-[(1R)-2-(cyclohexylamino)-2-oxo-1-(pyridin-3-yl)ethyl]-1H-imidazole-4-carboxamide
+Mpro,8p5a,B,X77,459.583,N-(4-tert-butylphenyl)-N-[(1R)-2-(cyclohexylamino)-2-oxo-1-(pyridin-3-yl)ethyl]-1H-imidazole-4-carboxamide
+Mpro,8p5c,A,9M5,459.583,~{N}-(4-~{tert}-butylphenyl)-~{N}-[(1~{S})-2-(cyclohexylamino)-2-oxidanylidene-1-pyridin-3-yl-ethyl]-1~{H}-imidazole-4-carboxamide
+Mpro,8p5c,B,9M5,459.583,~{N}-(4-~{tert}-butylphenyl)-~{N}-[(1~{S})-2-(cyclohexylamino)-2-oxidanylidene-1-pyridin-3-yl-ethyl]-1~{H}-imidazole-4-carboxamide
+Mpro,8p86,A,ALD,477.637,N-[(benzyloxy)carbonyl]-L-leucyl-N-[(2S)-1-hydroxy-4-methylpentan-2-yl]-L-leucinamide
+Mpro,8p87,A,X77,459.583,N-(4-tert-butylphenyl)-N-[(1R)-2-(cyclohexylamino)-2-oxo-1-(pyridin-3-yl)ethyl]-1H-imidazole-4-carboxamide
+Mpro,8r11,A,XI0,314.809,1-[(2~{S})-2-(3-chlorophenyl)pyrrolidin-1-yl]-2-(5-methylpyridin-3-yl)ethanone
+Mpro,8r11,B,XI0,314.809,1-[(2~{S})-2-(3-chlorophenyl)pyrrolidin-1-yl]-2-(5-methylpyridin-3-yl)ethanone
+Mpro,8r12,A,XH9,354.833,"2-[[4-(5-chloranylpyridin-3-yl)carbonyl-1,4-diazepan-1-yl]methyl]benzenecarbonitrile"
+Mpro,8r12,B,XH9,354.833,"2-[[4-(5-chloranylpyridin-3-yl)carbonyl-1,4-diazepan-1-yl]methyl]benzenecarbonitrile"
+Mpro,8r14,A,XHW,364.269,"(5-chloranylpyridin-3-yl)-[4-[(2-chlorophenyl)methyl]-1,4-diazepan-1-yl]methanone"
+Mpro,8r14,B,XHW,364.269,"(5-chloranylpyridin-3-yl)-[4-[(2-chlorophenyl)methyl]-1,4-diazepan-1-yl]methanone"
+Mpro,8r16,A,XJ9,335.228,"1-[6,7-bis(chloranyl)-3,4-dihydro-1H-isoquinolin-2-yl]-2-(5-methylpyridin-3-yl)ethanone"
+Mpro,8r16,B,XJ9,335.228,"1-[6,7-bis(chloranyl)-3,4-dihydro-1H-isoquinolin-2-yl]-2-(5-methylpyridin-3-yl)ethanone"
+Mpro,8r1q,A,O6K,595.687,"~{tert}-butyl ~{N}-[1-[(2~{S})-3-cyclopropyl-1-oxidanylidene-1-[[(2~{S},3~{R})-3-oxidanyl-4-oxidanylidene-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]-4-[(phenylmethyl)amino]butan-2-yl]amino]propan-2-yl]-2-oxidanylidene-pyridin-3-yl]carbamate"
+Mpro,8r1q,B,O6K,595.687,"~{tert}-butyl ~{N}-[1-[(2~{S})-3-cyclopropyl-1-oxidanylidene-1-[[(2~{S},3~{R})-3-oxidanyl-4-oxidanylidene-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]-4-[(phenylmethyl)amino]butan-2-yl]amino]propan-2-yl]-2-oxidanylidene-pyridin-3-yl]carbamate"
+Mpro,8r26,A,O6K,595.687,"~{tert}-butyl ~{N}-[1-[(2~{S})-3-cyclopropyl-1-oxidanylidene-1-[[(2~{S},3~{R})-3-oxidanyl-4-oxidanylidene-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]-4-[(phenylmethyl)amino]butan-2-yl]amino]propan-2-yl]-2-oxidanylidene-pyridin-3-yl]carbamate"
+Mpro,8r26,B,O6K,595.687,"~{tert}-butyl ~{N}-[1-[(2~{S})-3-cyclopropyl-1-oxidanylidene-1-[[(2~{S},3~{R})-3-oxidanyl-4-oxidanylidene-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]-4-[(phenylmethyl)amino]butan-2-yl]amino]propan-2-yl]-2-oxidanylidene-pyridin-3-yl]carbamate"
+Mpro,8r26,C,O6K,595.687,"~{tert}-butyl ~{N}-[1-[(2~{S})-3-cyclopropyl-1-oxidanylidene-1-[[(2~{S},3~{R})-3-oxidanyl-4-oxidanylidene-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]-4-[(phenylmethyl)amino]butan-2-yl]amino]propan-2-yl]-2-oxidanylidene-pyridin-3-yl]carbamate"
+Mpro,8r26,D,O6K,595.687,"~{tert}-butyl ~{N}-[1-[(2~{S})-3-cyclopropyl-1-oxidanylidene-1-[[(2~{S},3~{R})-3-oxidanyl-4-oxidanylidene-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]-4-[(phenylmethyl)amino]butan-2-yl]amino]propan-2-yl]-2-oxidanylidene-pyridin-3-yl]carbamate"
+Mpro,8rjv,A,A1H1J,496.961,(phenylmethyl) ~{N}-[(2~{S})-1-[[(3-chloranyl-2-fluoranyl-phenyl)methyl-(iminomethyl)amino]-methyl-amino]-1-oxidanylidene-3-phenyl-propan-2-yl]carbamate
+Mpro,8rjy,A,A1H1K,568.13,"~{N}-[(2~{S})-1-[[(2~{S})-1-[[(4-chlorophenyl)methyl-(iminomethyl)amino]-methyl-amino]-1-oxidanylidene-3-phenyl-propan-2-yl]amino]-3,3-dimethyl-1-oxidanylidene-butan-2-yl]thiophene-2-carboxamide"
+Mpro,8tqh,A,JX6,419.515,N~2~-[(benzyloxy)carbonyl]-N-{(2R)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-4-methyl-L-leucinamide
+Mpro,8tqj,A,YHI,429.509,"benzyl (1R,2S,5S)-2-({(2S)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}carbamoyl)-6,6-dimethyl-3-azabicyclo[3.1.0]hexane-3-carboxylate"
+Mpro,8tqt,A,K2X,512.062,"(3-chlorophenyl)methyl [(2S)-3-cyclohexyl-1-({(1S,2S)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]-1-sulfanylpropan-2-yl}amino)-1-oxopropan-2-yl]carbamate"
+Mpro,8tql,A,JY0,449.541,"benzyl [(2S,3S)-3-tert-butoxy-1-({(2S)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}amino)-1-oxobutan-2-yl]carbamate"
+Mpro,8ty3,A,SJF,498.399,"(1S,3aR,6aS)-2-[(3,4-dichlorophenoxy)acetyl]-N-{(2S)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}octahydrocyclopenta[c]pyrrole-1-carboxamide"
+Mpro,8ty4,A,SO0,498.399,"(1S,3aR,6aS)-2-[(2,4-dichlorophenoxy)acetyl]-N-{(2S)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}octahydrocyclopenta[c]pyrrole-1-carboxamide"
+Mpro,8ty5,A,SQ3,498.399,"(1R,2S,5S)-3-[(2,4-dichlorophenoxy)acetyl]-N-{(2S)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-6,6-dimethyl-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,8und,A,X4N,515.569,"(1R,2S,5S)-N-{(1E,2S)-1-imino-3-[(3S)-2-oxopiperidin-3-yl]propan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,8w1t,A,A1A21,470.789,(5-bromopyridin-3-yl){4-[(R)-(4-chlorophenyl)(phenyl)methyl]piperazin-1-yl}methanone
+Mpro,8w1t,B,A1A21,470.789,(5-bromopyridin-3-yl){4-[(R)-(4-chlorophenyl)(phenyl)methyl]piperazin-1-yl}methanone
+Mpro,8w1t,A,A1AFD,470.789,(5-bromopyridin-3-yl){4-[(S)-(4-chlorophenyl)(phenyl)methyl]piperazin-1-yl}methanone
+Mpro,8w1t,B,A1AFD,470.789,(5-bromopyridin-3-yl){4-[(S)-(4-chlorophenyl)(phenyl)methyl]piperazin-1-yl}methanone
+Mpro,8w1u,A,A1AFE,469.555,"11-[1-(1H-pyrrolo[3,2-c]pyridine-7-carbonyl)piperidin-4-ylidene]-6,11-dihydro-5H-5lambda~6~-dibenzo[b,e]thiepine-5,5-dione"
+Mpro,8w1u,B,A1AFE,469.555,"11-[1-(1H-pyrrolo[3,2-c]pyridine-7-carbonyl)piperidin-4-ylidene]-6,11-dihydro-5H-5lambda~6~-dibenzo[b,e]thiepine-5,5-dione"
+Mpro,8ws3,A,X7F,190.152,"5,8-bis(oxidanyl)naphthalene-1,4-dione"
+Mpro,8y42,A,A1D51,503.55,"~{N}-[(1~{S},2~{R})-2-[[4-cyclopropyl-2-(methylcarbamoyl)-6-nitro-phenyl]amino]cyclohexyl]-2-oxidanylidene-1~{H}-quinoline-4-carboxamide"
+Mpro,8y42,B,A1D51,503.55,"~{N}-[(1~{S},2~{R})-2-[[4-cyclopropyl-2-(methylcarbamoyl)-6-nitro-phenyl]amino]cyclohexyl]-2-oxidanylidene-1~{H}-quinoline-4-carboxamide"
+Mpro,8y42,C,A1D51,503.55,"~{N}-[(1~{S},2~{R})-2-[[4-cyclopropyl-2-(methylcarbamoyl)-6-nitro-phenyl]amino]cyclohexyl]-2-oxidanylidene-1~{H}-quinoline-4-carboxamide"
+Mpro,8y42,D,A1D51,503.55,"~{N}-[(1~{S},2~{R})-2-[[4-cyclopropyl-2-(methylcarbamoyl)-6-nitro-phenyl]amino]cyclohexyl]-2-oxidanylidene-1~{H}-quinoline-4-carboxamide"
+Mpro,8y44,A,A1D50,598.445,"~{N}-[(1~{S},2~{R})-2-[(4-bromanyl-2-morpholin-4-ylcarbonyl-6-nitro-phenyl)amino]cyclohexyl]-2-oxidanylidene-1~{H}-quinoline-4-carboxamide"
+Mpro,8y44,B,A1D50,598.445,"~{N}-[(1~{S},2~{R})-2-[(4-bromanyl-2-morpholin-4-ylcarbonyl-6-nitro-phenyl)amino]cyclohexyl]-2-oxidanylidene-1~{H}-quinoline-4-carboxamide"
+Mpro,8y4e,A,FHR,452.546,~{N}-[(2~{S})-3-cyclohexyl-1-oxidanylidene-1-[[(2~{S})-1-oxidanylidene-3-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]amino]propan-2-yl]-1~{H}-indole-2-carboxamide
+Mpro,8y4e,B,FHR,452.546,~{N}-[(2~{S})-3-cyclohexyl-1-oxidanylidene-1-[[(2~{S})-1-oxidanylidene-3-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]amino]propan-2-yl]-1~{H}-indole-2-carboxamide
+Mpro,8yls,A,A1LYZ,433.498,(4-methoxyphenyl)methyl ~{N}-[(2~{S})-4-methyl-1-oxidanylidene-1-[[(2~{S})-1-oxidanylidene-3-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]amino]pentan-2-yl]carbamate
+Mpro,8ywy,A,FHR,452.546,~{N}-[(2~{S})-3-cyclohexyl-1-oxidanylidene-1-[[(2~{S})-1-oxidanylidene-3-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]amino]propan-2-yl]-1~{H}-indole-2-carboxamide
+Mpro,8zbp,A,A1D76,954.661,"2-[(4R,5S,7R,25S,26R,29R,30S,31R)-13,14,15,18,19,20,21,31,35,36-decahydroxy-2,10,23,28,32-pentaoxo-5-(3,4,5-trihydroxybenzoyl)oxy-3,6,9,24,27,33-hexaoxaheptacyclo[28.7.1.04,25.07,26.011,16.017,22.034,38]octatriaconta-1(37),11,13,15,17(22),18,20,34(38),35-nonaen-29-yl]acetic acid"
+Mpro,9bbp,A,VAL,117.146,VALINE
+Mpro,9bbp,A,THR,119.119,THREONINE
+Mpro,9bbp,A,PHE,165.189,PHENYLALANINE
+Mpro,9bbp,A,A1ALW,471.568,"N-{(2R)-1-amino-3-[(2R,3S)-2-hydroxypyrrolidin-3-yl]propan-2-yl}-N~2~-[4-(6-fluoropyridin-3-yl)benzoyl]-L-leucinamide"
+Mpro,9cdk,A,XEK,565.379,"(5P)-5-[(1P,3M,3'P)-3-{3-chloro-5-[(2-chlorophenyl)methoxy]-4-fluorophenyl}-2-oxo-2H-[1,3'-bipyridin]-5-yl]-1-methylpyrimidine-2,4(1H,3H)-dione"
+Mpro,9cdl,A,XEK,565.379,"(5P)-5-[(1P,3M,3'P)-3-{3-chloro-5-[(2-chlorophenyl)methoxy]-4-fluorophenyl}-2-oxo-2H-[1,3'-bipyridin]-5-yl]-1-methylpyrimidine-2,4(1H,3H)-dione"
+Mpro,9cdm,A,XEK,565.379,"(5P)-5-[(1P,3M,3'P)-3-{3-chloro-5-[(2-chlorophenyl)methoxy]-4-fluorophenyl}-2-oxo-2H-[1,3'-bipyridin]-5-yl]-1-methylpyrimidine-2,4(1H,3H)-dione"
+Mpro,9dtz,A,A1BCZ,439.507,N-[(2S)-3-cyclopropyl-1-({(2R)-1-imino-3-[(3R)-2-oxopyrrolidin-3-yl]propan-2-yl}amino)-1-oxopropan-2-yl]-4-methoxy-1H-indole-2-carboxamide
+Mpro,9dtz,B,A1BCZ,439.507,N-[(2S)-3-cyclopropyl-1-({(2R)-1-imino-3-[(3R)-2-oxopyrrolidin-3-yl]propan-2-yl}amino)-1-oxopropan-2-yl]-4-methoxy-1H-indole-2-carboxamide
+Mpro,9du2,A,A1BCY,448.536,"N-[(2S)-3-cyclopropyl-1-{[(1Z,2S)-1-imino-4-(methanesulfonyl)butan-2-yl]amino}-1-oxopropan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9du2,B,A1BCY,448.536,"N-[(2S)-3-cyclopropyl-1-{[(1Z,2S)-1-imino-4-(methanesulfonyl)butan-2-yl]amino}-1-oxopropan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9du3,A,A1BCX,442.508,N-[(2S)-3-cyclopropyl-1-({(2R)-1-hydroxy-3-[(3R)-2-oxopyrrolidin-3-yl]propan-2-yl}amino)-1-oxopropan-2-yl]-4-methoxy-1H-indole-2-carboxamide
+Mpro,9du4,A,A1BCW,451.536,N-[(2S)-3-cyclopropyl-1-{[(2R)-1-hydroxy-4-(methanesulfonyl)butan-2-yl]amino}-1-oxopropan-2-yl]-4-methoxy-1H-indole-2-carboxamide
+Mpro,9du4,B,A1BCW,451.536,N-[(2S)-3-cyclopropyl-1-{[(2R)-1-hydroxy-4-(methanesulfonyl)butan-2-yl]amino}-1-oxopropan-2-yl]-4-methoxy-1H-indole-2-carboxamide
+Mpro,9e7b,A,A1BFE,523.548,"(3S)-N-{(1Z,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-2-[3-methyl-N-(trifluoroacetyl)-L-valyl]-1,2,3,4-tetrahydroisoquinoline-3-carboxamide"
+Mpro,9e7s,A,A1BFE,523.548,"(3S)-N-{(1Z,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-2-[3-methyl-N-(trifluoroacetyl)-L-valyl]-1,2,3,4-tetrahydroisoquinoline-3-carboxamide"
+Mpro,9e8r,A,A1BFE,523.548,"(3S)-N-{(1Z,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-2-[3-methyl-N-(trifluoroacetyl)-L-valyl]-1,2,3,4-tetrahydroisoquinoline-3-carboxamide"
+Mpro,9eev,A,4WI,501.542,"(1R,2S,5S)-N-{(1E,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,9el4,A,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9el4,B,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9elv,A,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9elv,B,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9g0h,A,A1IHT,516.633,"[(1~{S},5~{R})-8-[(~{S})-(3-fluorophenyl)-[1-(2-thiophen-3-ylethyl)-1,2,3-triazol-4-yl]methyl]-3,8-diazabicyclo[3.2.1]octan-3-yl]-(5-methylpyridin-3-yl)methanone"
+Mpro,9g0i,A,A1IHV,516.633,"[(1~{S},5~{R})-8-[(~{R})-(3-fluorophenyl)-[1-(2-thiophen-3-ylethyl)-1,2,3-triazol-4-yl]methyl]-3,8-diazabicyclo[3.2.1]octan-3-yl]-(5-methylpyridin-3-yl)methanone"
+Mpro,9gf7,A,A1IYL,424.493,~{N}-[(2~{S})-4-methyl-1-oxidanylidene-1-[[(2~{S})-1-oxidanylidene-3-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]amino]pentan-2-yl]quinoline-8-carboxamide
+Mpro,9gij,A,A1IL0,492.997,(2~{R})-3-(4-chlorophenyl)-2-[2-[(2~{R})-1-isoquinolin-4-ylcarbonylpyrrolidin-2-yl]ethanoyl-methyl-amino]-~{N}-methyl-propanamide
+Mpro,9gil,A,A1IL7,510.024,"(7~{R},11~{R},19~{E})-11-[(4-chlorophenyl)methyl]-13-oxa-3,10,23-triazatricyclo[19.3.1.0^{3,7}]pentacosa-1(24),19,21(25),22-tetraene-2,9,12-trione"
+Mpro,9gil,B,A1IL7,510.024,"(7~{R},11~{R},19~{E})-11-[(4-chlorophenyl)methyl]-13-oxa-3,10,23-triazatricyclo[19.3.1.0^{3,7}]pentacosa-1(24),19,21(25),22-tetraene-2,9,12-trione"
+Mpro,9glv,A,A1IMY,577.587,"(1S,3S,4S)-N-[(2S)-1-azanylidene-3-[(3S)-5,5-dimethyl-2-oxidanylidene-pyrrolidin-3-yl]propan-2-yl]-2-[(2R)-3-cyclobutyl-2-[2,2,2-tris(fluoranyl)ethanoylamino]propanoyl]-5,5-bis(fluoranyl)-2-azabicyclo[2.2.2]octane-3-carboxamide"
+Mpro,9glv,B,A1IMY,577.587,"(1S,3S,4S)-N-[(2S)-1-azanylidene-3-[(3S)-5,5-dimethyl-2-oxidanylidene-pyrrolidin-3-yl]propan-2-yl]-2-[(2R)-3-cyclobutyl-2-[2,2,2-tris(fluoranyl)ethanoylamino]propanoyl]-5,5-bis(fluoranyl)-2-azabicyclo[2.2.2]octane-3-carboxamide"
+Mpro,9gmq,A,MXU,505.564,"~{tert}-butyl ~{N}-[1-[(2~{S})-1-[[(2~{S},3~{R})-4-azanyl-3-oxidanyl-4-oxidanylidene-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]butan-2-yl]amino]-3-cyclopropyl-1-oxidanylidene-propan-2-yl]-2-oxidanylidene-pyridin-3-yl]carbamate"
+Mpro,9gmq,B,MXU,505.564,"~{tert}-butyl ~{N}-[1-[(2~{S})-1-[[(2~{S},3~{R})-4-azanyl-3-oxidanyl-4-oxidanylidene-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]butan-2-yl]amino]-3-cyclopropyl-1-oxidanylidene-propan-2-yl]-2-oxidanylidene-pyridin-3-yl]carbamate"
+Mpro,9h0f,A,A1IRW,465.619,"methyl-N-[(2S)-1-[(5R)-5-[[(2S)-1-azanyl-3-[(3S)-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]carbamoyl]-3,3-dimethyl-1,3-azasilolidin-1-yl]-3,3-dimethyl-1-oxidanylidene-butan-2-yl]carbamate"
+Mpro,9h0f,B,A1IRW,465.619,"methyl-N-[(2S)-1-[(5R)-5-[[(2S)-1-azanyl-3-[(3S)-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]carbamoyl]-3,3-dimethyl-1,3-azasilolidin-1-yl]-3,3-dimethyl-1-oxidanylidene-butan-2-yl]carbamate"
+Mpro,9h4b,A,A1ISK,645.767,"methyl 2-[(1S,2S)-2-[[(2S)-4-methyl-2-[[(2S)-3-methyl-2-(phenylmethoxycarbonylamino)butanoyl]amino]pentanoyl]amino]-1-oxidanyl-3-[(3S)-2-oxidanylidenepyrrolidin-3-yl]propyl]-1,3-thiazole-4-carboxylate"
+Mpro,9haj,A,A1ITJ,507.851,"(5~{R})-4-[(4-bromanyl-2-ethyl-phenyl)methyl]-1-(5-chloranylpyridin-3-yl)carbonyl-~{N}-ethyl-1,4-diazepane-5-carboxamide"
+Mpro,9haj,B,A1ITJ,507.851,"(5~{R})-4-[(4-bromanyl-2-ethyl-phenyl)methyl]-1-(5-chloranylpyridin-3-yl)carbonyl-~{N}-ethyl-1,4-diazepane-5-carboxamide"
+Mpro,9hak,A,A1ITI,529.492,"(5~{R})-4-[(4-bromanyl-2-ethyl-phenyl)methyl]-~{N}-ethyl-1-thieno[2,3-c]pyridin-4-ylcarbonyl-1,4-diazepane-5-carboxamide"
+Mpro,9hak,B,A1ITI,529.492,"(5~{R})-4-[(4-bromanyl-2-ethyl-phenyl)methyl]-~{N}-ethyl-1-thieno[2,3-c]pyridin-4-ylcarbonyl-1,4-diazepane-5-carboxamide"
+Mpro,9hfx,A,A1IUN,542.018,"(1~{S},2~{S},3~{S},6~{R},7~{R})-~{N}-[(2~{S})-1-azanylidene-3-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]-4-[(2~{S})-2-[[2-chloranyl-2,2-bis(fluoranyl)ethanoyl]amino]-3,3-dimethyl-butanoyl]-4-azatricyclo[5.2.1.0^{2,6}]decane-3-carboxamide"
+Mpro,9hfy,A,A1IUM,601.693,"(3~{S},3~{a}~{S},6~{a}~{R})-2-[(4-methoxy-1~{H}-indol-2-yl)carbonyl]-~{N}-[(2~{S},3~{R})-3-oxidanyl-4-oxidanylidene-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]-4-[(phenylmethyl)amino]butan-2-yl]-3,3~{a},4,5,6,6~{a}-hexahydro-1~{H}-cyclopenta[c]pyrrole-3-carboxamide"
+Mpro,9hfy,B,A1IUM,601.693,"(3~{S},3~{a}~{S},6~{a}~{R})-2-[(4-methoxy-1~{H}-indol-2-yl)carbonyl]-~{N}-[(2~{S},3~{R})-3-oxidanyl-4-oxidanylidene-1-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]-4-[(phenylmethyl)amino]butan-2-yl]-3,3~{a},4,5,6,6~{a}-hexahydro-1~{H}-cyclopenta[c]pyrrole-3-carboxamide"
+Mpro,9hjh,A,A1IVK,507.851,"(2~{R})-4-[(4-bromanyl-2-ethyl-phenyl)methyl]-1-(5-chloranylpyridin-3-yl)carbonyl-~{N}-ethyl-1,4-diazepane-2-carboxamide"
+Mpro,9hjh,B,A1IVK,507.851,"(2~{R})-4-[(4-bromanyl-2-ethyl-phenyl)methyl]-1-(5-chloranylpyridin-3-yl)carbonyl-~{N}-ethyl-1,4-diazepane-2-carboxamide"
+Mpro,9ir9,A,A1D7M,459.603,"(2~{S})-~{N}-[(2~{S})-1-azanylidene-3-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]-2-[[(2~{S})-3,3-dimethyl-2-(methylsulfonylamino)butanoyl]amino]-4-methyl-pentanamide"
+Mpro,9ira,A,A1D7M,459.603,"(2~{S})-~{N}-[(2~{S})-1-azanylidene-3-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]-2-[[(2~{S})-3,3-dimethyl-2-(methylsulfonylamino)butanoyl]amino]-4-methyl-pentanamide"
+Mpro,9ira,B,A1D7M,459.603,"(2~{S})-~{N}-[(2~{S})-1-azanylidene-3-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]-2-[[(2~{S})-3,3-dimethyl-2-(methylsulfonylamino)butanoyl]amino]-4-methyl-pentanamide"
+Mpro,9j19,A,MIY,457.476,"(4S,4AS,5AR,12AS)-4,7-BIS(DIMETHYLAMINO)-3,10,12,12A-TETRAHYDROXY-1,11-DIOXO-1,4,4A,5,5A,6,11,12A-OCTAHYDROTETRACENE-2- CARBOXAMIDE"
+Mpro,9lll,A,A1EK4,669.514,"1-[[2-[5-(aminomethyl)thiophen-2-yl]oxy-5-chloranyl-4-fluoranyl-phenyl]methylidene]-6-[(6-chloranyl-2-methyl-indazol-5-yl)amino]-3-[(2-oxidanylidene-1~{H}-pyridin-3-yl)methyl]-1$l^{4},3,5-triazinane-2,4-dione"
+Mpro,9m9r,A,4WI,501.542,"(1R,2S,5S)-N-{(1E,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,9ma3,A,4WI,501.542,"(1R,2S,5S)-N-{(1E,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,9ma6,A,4WI,501.542,"(1R,2S,5S)-N-{(1E,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,9ma6,B,4WI,501.542,"(1R,2S,5S)-N-{(1E,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,9mdq,A,A1BKV,536.408,"N-[(2S)-1-{2-(dichloroacetyl)-2-[(2-oxo-1,2-dihydropyridin-3-yl)methyl]hydrazin-1-yl}-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9mei,A,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9mei,B,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9mlj,A,A1BMU,691.736,"(3S)-N-{(1S,2S)-1-(1,3-benzothiazol-2-yl)-1-hydroxy-3-[(3S)-2-oxopiperidin-3-yl]propan-2-yl}-7-fluoro-2-[3-methyl-N-(trifluoroacetyl)-L-valyl]-1,2,3,4-tetrahydroisoquinoline-3-carboxamide"
+Mpro,9mvm,A,A1BTM,351.808,"1-[(4-chlorothiophen-2-yl)methyl]-3-[(2-oxo-1,2-dihydropyridin-3-yl)methyl]-1,3-diazinane-2,4-dione"
+Mpro,9mvo,A,A1BVT,506.942,"(3M,5P,6M)-5-(1H-1,2,3-benzotriazol-1-yl)-6-(3-chlorophenyl)-3-(isoquinolin-4-yl)-1-(prop-2-en-1-yl)pyrimidine-2,4(1H,3H)-dione"
+Mpro,9mvo,A,A1BTO,504.927,"(3M,5P,6M)-5-(1H-1,2,3-benzotriazol-1-yl)-6-(3-chlorophenyl)-3-(isoquinolin-4-yl)-1-(prop-2-yn-1-yl)pyrimidine-2,4(1H,3H)-dione"
+Mpro,9mvp,A,A1BTP,410.428,"(3M,5P)-5-(1H-1,2,3-benzotriazol-1-yl)-3-(isoquinolin-4-yl)-6-methyl-1-(prop-2-en-1-yl)pyrimidine-2,4(1H,3H)-dione"
+Mpro,9mvq,A,A1BTN,466.879,"(3M,5P,6M)-5-(1H-1,2,3-benzotriazol-1-yl)-6-(3-chlorophenyl)-3-(isoquinolin-4-yl)pyrimidine-2,4(1H,3H)-dione"
+Mpro,9mvq,B,A1BTN,466.879,"(3M,5P,6M)-5-(1H-1,2,3-benzotriazol-1-yl)-6-(3-chlorophenyl)-3-(isoquinolin-4-yl)pyrimidine-2,4(1H,3H)-dione"
+Mpro,9n3m,A,A1BVV,524.587,"(1S,2S,4S)-2-{[3-cyclopropyl-N-(4-methoxy-1H-indole-2-carbonyl)-L-alanyl]amino}-1-hydroxy-4-methyl-5-(methylamino)-5-oxopentane-1-sulfonic acid"
+Mpro,9n5q,A,A1BFE,523.548,"(3S)-N-{(1Z,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-2-[3-methyl-N-(trifluoroacetyl)-L-valyl]-1,2,3,4-tetrahydroisoquinoline-3-carboxamide"
+Mpro,9n6f,A,A1BFE,523.548,"(3S)-N-{(1Z,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-2-[3-methyl-N-(trifluoroacetyl)-L-valyl]-1,2,3,4-tetrahydroisoquinoline-3-carboxamide"
+Mpro,9n9b,A,A1BFE,523.548,"(3S)-N-{(1Z,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-2-[3-methyl-N-(trifluoroacetyl)-L-valyl]-1,2,3,4-tetrahydroisoquinoline-3-carboxamide"
+Mpro,9nng,A,A1BFE,523.548,"(3S)-N-{(1Z,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-2-[3-methyl-N-(trifluoroacetyl)-L-valyl]-1,2,3,4-tetrahydroisoquinoline-3-carboxamide"
+Mpro,9nnw,A,A1BMU,691.736,"(3S)-N-{(1S,2S)-1-(1,3-benzothiazol-2-yl)-1-hydroxy-3-[(3S)-2-oxopiperidin-3-yl]propan-2-yl}-7-fluoro-2-[3-methyl-N-(trifluoroacetyl)-L-valyl]-1,2,3,4-tetrahydroisoquinoline-3-carboxamide"
+Mpro,9o6e,A,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9o6e,B,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9o6d,A,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9o6d,B,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9o6p,A,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9o6p,B,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9o6f,A,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9o6f,B,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9o6q,A,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9o6q,B,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9o74,A,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9o74,B,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9opm,A,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9opm,B,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9opn,A,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9opn,B,V2M,474.55,"N-[(2S)-1-({(2S,3S)-3,4-dihydroxy-1-[(3S)-2-oxopyrrolidin-3-yl]butan-2-yl}amino)-4-methyl-1-oxopentan-2-yl]-4-methoxy-1H-indole-2-carboxamide"
+Mpro,9pfh,A,WZK,451.968,N-[(4-chlorothiophen-2-yl)methyl]-N-[4-(dimethylamino)phenyl]-2-(5-hydroxyisoquinolin-4-yl)acetamide
+Mpro,9pfh,B,WZK,451.968,N-[(4-chlorothiophen-2-yl)methyl]-N-[4-(dimethylamino)phenyl]-2-(5-hydroxyisoquinolin-4-yl)acetamide
+Mpro,9q7s,A,A1CR4,526.689,"methyl {(2S)-1-[(1R,2S,5S)-2-{[(2R,3S)-1-(cyclopropylamino)-2-hydroxy-5-(methylsulfanyl)-1-oxopentan-3-yl]carbamoyl}-6,6-dimethyl-3-azabicyclo[3.1.0]hexan-3-yl]-3,3-dimethyl-1-oxobutan-2-yl}carbamate (non-preferred name)"
+Mpro,9sdm,A,A1JNF,569.115,"N-[(2S)-1-[[(2S)-1-[2-[(3-chlorophenyl)methyl]-2-ethanoyl-hydrazinyl]-1-oxidanylidene-3-phenyl-propan-2-yl]amino]-3,3-dimethyl-1-oxidanylidene-butan-2-yl]thiophene-2-carboxamide"
+Mpro,9sdm,B,A1JNF,569.115,"N-[(2S)-1-[[(2S)-1-[2-[(3-chlorophenyl)methyl]-2-ethanoyl-hydrazinyl]-1-oxidanylidene-3-phenyl-propan-2-yl]amino]-3,3-dimethyl-1-oxidanylidene-butan-2-yl]thiophene-2-carboxamide"
+Mpro,9uoq,A,A1EPZ,478.506,"(2~{S})-2-[[(2~{S})-3,3-dimethyl-2-[2,2,2-tris(fluoranyl)ethanoylamino]butanoyl]amino]-4-methyl-~{N}-[(2~{S})-1-oxidanylidene-3-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]pentanamide"
+Mpro,9uor,A,A1EPZ,478.506,"(2~{S})-2-[[(2~{S})-3,3-dimethyl-2-[2,2,2-tris(fluoranyl)ethanoylamino]butanoyl]amino]-4-methyl-~{N}-[(2~{S})-1-oxidanylidene-3-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]pentanamide"
+Mpro,9uor,B,A1EPZ,478.506,"(2~{S})-2-[[(2~{S})-3,3-dimethyl-2-[2,2,2-tris(fluoranyl)ethanoylamino]butanoyl]amino]-4-methyl-~{N}-[(2~{S})-1-oxidanylidene-3-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]pentanamide"
+Mpro,9vkk,A,FHR,452.546,~{N}-[(2~{S})-3-cyclohexyl-1-oxidanylidene-1-[[(2~{S})-1-oxidanylidene-3-[(3~{S})-2-oxidanylidenepyrrolidin-3-yl]propan-2-yl]amino]propan-2-yl]-1~{H}-indole-2-carboxamide
+Mpro,9whe,A,A1MBL,471.523,"(2~{R})-~{N}-[4,4-bis(fluoranyl)cyclohexyl]-2-[ethanoyl-[4-(1,2-thiazol-5-yl)phenyl]amino]-2-pyrazin-2-yl-ethanamide"
+Mpro,9xym,A,A1CR5,465.53,"(1R,2S,5S)-6,6-dimethyl-N-[(2S)-4-(methylsulfanyl)-1-oxobutan-2-yl]-3-[N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,9xz6,A,A1CR3,441.585,"methyl {(2S)-1-[(1R,2S,5S)-6,6-dimethyl-2-{[(2S)-4-(methylsulfanyl)-1-oxobutan-2-yl]carbamoyl}-3-azabicyclo[3.1.0]hexan-3-yl]-3,3-dimethyl-1-oxobutan-2-yl}carbamate"
+Mpro,9y8w,A,A1CBU,385.343,(4S)-4-(iminomethyl)-3-(isoquinolin-4-yl)-1-[6-(trifluoromethyl)pyridin-3-yl]imidazolidin-2-one
+Mpro,9y8w,B,A1CBU,385.343,(4S)-4-(iminomethyl)-3-(isoquinolin-4-yl)-1-[6-(trifluoromethyl)pyridin-3-yl]imidazolidin-2-one
+Mpro,9y8w,C,A1CBU,385.343,(4S)-4-(iminomethyl)-3-(isoquinolin-4-yl)-1-[6-(trifluoromethyl)pyridin-3-yl]imidazolidin-2-one
+Mpro,9y8w,D,A1CBU,385.343,(4S)-4-(iminomethyl)-3-(isoquinolin-4-yl)-1-[6-(trifluoromethyl)pyridin-3-yl]imidazolidin-2-one
+Mpro,9y8x,A,A1CBU,385.343,(4S)-4-(iminomethyl)-3-(isoquinolin-4-yl)-1-[6-(trifluoromethyl)pyridin-3-yl]imidazolidin-2-one
+Mpro,9z74,A,4WI,501.542,"(1R,2S,5S)-N-{(1E,2S)-1-imino-3-[(3S)-2-oxopyrrolidin-3-yl]propan-2-yl}-6,6-dimethyl-3-[3-methyl-N-(trifluoroacetyl)-L-valyl]-3-azabicyclo[3.1.0]hexane-2-carboxamide"
+Mpro,9znl,A,A1C3L,685.756,"(3S)-N-[(1S,2S)-1-hydroxy-3-[(3S)-2-oxopyrrolidin-3-yl]-1-(4-phenyl-1,3-thiazol-2-yl)propan-2-yl]-2-[3-methyl-N-(trifluoroacetyl)-L-valyl]-1,2,3,4-tetrahydroisoquinoline-3-carboxamide"

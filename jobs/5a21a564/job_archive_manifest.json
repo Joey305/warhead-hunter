@@ -1,0 +1,412 @@
+{
+  "archive_file": "/home/jxs794/PROTAC_BUILDER/warhead_hunter/hunter_jobs/5a21a564/archives/5a21a564_warhead_hunter_full_job.zip",
+  "archive_size_bytes": 37173498,
+  "extract_dir": "/home/jxs794/PROTAC_BUILDER/warhead_hunter/hunter_jobs/5a21a564/job_files",
+  "extracted_file_count": 2185,
+  "extracted_files_sample": [
+    {
+      "relative_path": "Protein_Data.csv",
+      "size_bytes": 388
+    },
+    {
+      "relative_path": "Results_Display.csv",
+      "size_bytes": 194727
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Ligand_Metadata.csv",
+      "size_bytes": 258582
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Resolved_SASA_Summary.csv",
+      "size_bytes": 101794
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Warhead_SASA_atoms.csv",
+      "size_bytes": 489054
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Warhead_SASA_summary.csv",
+      "size_bytes": 23991
+    },
+    {
+      "relative_path": "input.csv",
+      "size_bytes": 388
+    },
+    {
+      "relative_path": "job.log",
+      "size_bytes": 432979
+    },
+    {
+      "relative_path": "job_metadata.json",
+      "size_bytes": 3075
+    },
+    {
+      "relative_path": "summary.json",
+      "size_bytes": 4010
+    },
+    {
+      "relative_path": "TARGET_RESULTS/3DSASAmapped.csv",
+      "size_bytes": 1094470
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Ligand_3D_Atoms.csv",
+      "size_bytes": 1013924
+    },
+    {
+      "relative_path": "TARGET_RESULTS/Ligand_3D_Atoms_with_SASA.csv",
+      "size_bytes": 1090701
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/11ro_A_A01_401.sdf",
+      "size_bytes": 5761
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/12af_A_A00_402.sdf",
+      "size_bytes": 5429
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23lw_A_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23lw_B_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23lx_A_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23ly_A_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23ly_B_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23lz_A_7ON_402.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23lz_B_7ON_402.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23lz_C_7ON_403.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23lz_D_7ON_402.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23ma_A_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23ma_B_7ON_402.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23mb_A_A02_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23mb_B_A02_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23mc_A_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23mc_B_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23md_A_A02_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23md_B_A02_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23me_A_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23me_B_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23mf_A_A02_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23mf_B_A02_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23mg_A_A02_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23mg_B_A02_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23mh_A_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23mh_B_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23mi_A_A02_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23mi_B_A02_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23mj_A_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23mj_B_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23mk_A_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23ml_A_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/23ml_B_7ON_401.sdf",
+      "size_bytes": 3878
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/6z2e_A_Q5T_401.sdf",
+      "size_bytes": 5665
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7aeh_A_R8H_405.sdf",
+      "size_bytes": 3118
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7be7_A_ALD_401.sdf",
+      "size_bytes": 6399
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7be7_B_ALD_702.sdf",
+      "size_bytes": 6399
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7bfb_A_9JT_401.sdf",
+      "size_bytes": 1087
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7bfb_A_9JT_402.sdf",
+      "size_bytes": 161
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7bfb_A_9JT_403.sdf",
+      "size_bytes": 1004
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7bfb_B_9JT_1002.sdf",
+      "size_bytes": 1005
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7bfb_B_9JT_1005.sdf",
+      "size_bytes": 1158
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7bgp_A_ALD_402.sdf",
+      "size_bytes": 6399
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7bgp_B_ALD_401.sdf",
+      "size_bytes": 6399
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gax_A_KJI_1001.sdf",
+      "size_bytes": 1944
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gay_A_KJO_1001.sdf",
+      "size_bytes": 1516
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gaz_A_KL6_1001.sdf",
+      "size_bytes": 1848
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gb0_A_KLR_1001.sdf",
+      "size_bytes": 2180
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gb1_A_KMF_405.sdf",
+      "size_bytes": 2109
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gb2_A_KMX_406.sdf",
+      "size_bytes": 1943
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gb3_A_KNU_406.sdf",
+      "size_bytes": 1253
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gb4_A_KO9_405.sdf",
+      "size_bytes": 1598
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gb5_A_KOI_1001.sdf",
+      "size_bytes": 1516
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gb6_A_KP0_405.sdf",
+      "size_bytes": 2192
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gb7_A_KQ3_1001.sdf",
+      "size_bytes": 2193
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gb8_A_KQL_405.sdf",
+      "size_bytes": 1847
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gb9_A_KQX_405.sdf",
+      "size_bytes": 1598
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gba_A_KS0_404.sdf",
+      "size_bytes": 1598
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbb_A_KSI_1001.sdf",
+      "size_bytes": 1848
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbc_A_KSX_404.sdf",
+      "size_bytes": 1681
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbd_A_KT9_404.sdf",
+      "size_bytes": 2026
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbe_A_KU6_1001.sdf",
+      "size_bytes": 1957
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbf_A_KUU_405.sdf",
+      "size_bytes": 1847
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbg_A_KVF_404.sdf",
+      "size_bytes": 1764
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbh_A_KVO_404.sdf",
+      "size_bytes": 1681
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbi_A_KVX_403.sdf",
+      "size_bytes": 1860
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbj_A_KW9_404.sdf",
+      "size_bytes": 2275
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbk_A_KXF_1001.sdf",
+      "size_bytes": 1599
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbl_A_KWR_405.sdf",
+      "size_bytes": 1943
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbm_A_KX9_404.sdf",
+      "size_bytes": 2026
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbn_A_KXR_404.sdf",
+      "size_bytes": 2026
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbo_A_KY0_404.sdf",
+      "size_bytes": 1777
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbp_A_KYC_405.sdf",
+      "size_bytes": 1847
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbq_A_KYU_404.sdf",
+      "size_bytes": 1764
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbr_A_KZC_405.sdf",
+      "size_bytes": 2026
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbs_A_KZX_404.sdf",
+      "size_bytes": 1598
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbt_A_L1F_1001.sdf",
+      "size_bytes": 2276
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbu_A_L2I_1001.sdf",
+      "size_bytes": 1765
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbv_A_L3I_404.sdf",
+      "size_bytes": 1764
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbw_A_L6R_405.sdf",
+      "size_bytes": 1847
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbx_A_L6D_405.sdf",
+      "size_bytes": 1777
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gby_A_L5I_404.sdf",
+      "size_bytes": 1432
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gbz_A_L4U_405.sdf",
+      "size_bytes": 1419
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gc0_A_L4N_404.sdf",
+      "size_bytes": 1528
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gc1_A_L7F_404.sdf",
+      "size_bytes": 1528
+    },
+    {
+      "relative_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/7gc2_A_L7Q_404.sdf",
+      "size_bytes": 1764
+    }
+  ],
+  "job_id": "5a21a564",
+  "source": "warhead-hunter-job-runner",
+  "stored_at_utc": "2026-06-09T15:32:43.540302Z",
+  "stored_dir": "/home/jxs794/PROTAC_BUILDER/warhead_hunter/hunter_jobs/5a21a564"
+}

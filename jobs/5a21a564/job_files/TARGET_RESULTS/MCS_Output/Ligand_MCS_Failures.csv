@@ -1,0 +1,177 @@
+Ligand,PDB,Error
+4IO,7rc1,Size mismatch: SMILES=31 vs 3D=32
+4WI,7uup,Size mismatch: SMILES=36 vs 3D=35
+4WI,8cae,Size mismatch: SMILES=36 vs 3D=35
+4WI,8dcz,Size mismatch: SMILES=36 vs 3D=35
+4WI,8dcz,Size mismatch: SMILES=36 vs 3D=35
+4WI,8e5c,Size mismatch: SMILES=36 vs 3D=70
+4WI,9eev,Size mismatch: SMILES=36 vs 3D=35
+4WI,9m9r,Size mismatch: SMILES=36 vs 3D=35
+4WI,9ma3,Size mismatch: SMILES=36 vs 3D=35
+4WI,9ma6,Size mismatch: SMILES=36 vs 3D=35
+4WI,9ma6,Size mismatch: SMILES=36 vs 3D=35
+4WI,9z74,Size mismatch: SMILES=36 vs 3D=68
+83N,8okl,Size mismatch: SMILES=34 vs 3D=73
+83N,8okl,Size mismatch: SMILES=34 vs 3D=73
+83W,8okn,Size mismatch: SMILES=36 vs 3D=79
+83W,8okn,Size mismatch: SMILES=36 vs 3D=79
+84C,8okm,Size mismatch: SMILES=35 vs 3D=76
+84C,8okm,Size mismatch: SMILES=35 vs 3D=76
+90I,7q5e,Size mismatch: SMILES=39 vs 3D=74
+90I,7q5e,Size mismatch: SMILES=39 vs 3D=74
+90X,7q5f,Size mismatch: SMILES=41 vs 3D=94
+90X,7q5f,GRAPH_FULL skipped: size>80
+90X,7q5f,Size mismatch: SMILES=41 vs 3D=94
+90X,7q5f,GRAPH_FULL skipped: size>80
+99W,7sgh,Size mismatch: SMILES=33 vs 3D=32
+99W,7sgh,Size mismatch: SMILES=33 vs 3D=32
+99W,7sgh,Size mismatch: SMILES=33 vs 3D=32
+99W,7sgh,Size mismatch: SMILES=33 vs 3D=32
+9JT,7bfb,Size mismatch: SMILES=16 vs 3D=12
+9JT,7bfb,Size mismatch: SMILES=16 vs 3D=1
+9JT,7bfb,3D has 0 bonds (bond perception failed)
+9JT,7bfb,Size mismatch: SMILES=16 vs 3D=11
+9JT,7bfb,Size mismatch: SMILES=16 vs 3D=11
+9JT,7bfb,Size mismatch: SMILES=16 vs 3D=13
+9M5,8p5c,Size mismatch: SMILES=34 vs 3D=66
+9M5,8p5c,Size mismatch: SMILES=34 vs 3D=66
+A00,12af,"Missing SMILES (tried ['A1DA8', 'A1D', 'A00'])"
+A01,11ro,"Missing SMILES (tried ['A1DAK', 'A1D', 'A01'])"
+A02,23mb,"Missing SMILES (tried ['A1EN0', 'A1E', 'A02'])"
+A02,23mb,"Missing SMILES (tried ['A1EN0', 'A1E', 'A02'])"
+A02,23md,"Missing SMILES (tried ['A1EN0', 'A1E', 'A02'])"
+A02,23md,"Missing SMILES (tried ['A1EN0', 'A1E', 'A02'])"
+A02,23mf,"Missing SMILES (tried ['A1EN0', 'A1E', 'A02'])"
+A02,23mf,"Missing SMILES (tried ['A1EN0', 'A1E', 'A02'])"
+A02,23mg,"Missing SMILES (tried ['A1EN0', 'A1E', 'A02'])"
+A02,23mg,"Missing SMILES (tried ['A1EN0', 'A1E', 'A02'])"
+A02,23mi,"Missing SMILES (tried ['A1EN0', 'A1E', 'A02'])"
+A02,23mi,"Missing SMILES (tried ['A1EN0', 'A1E', 'A02'])"
+A04,8rjv,Size mismatch: SMILES=36 vs 3D=60
+A05,8rjy,Size mismatch: SMILES=40 vs 3D=72
+A18,9e7b,Size mismatch: SMILES=38 vs 3D=68
+A18,9e7s,Size mismatch: SMILES=38 vs 3D=68
+A18,9e8r,Size mismatch: SMILES=38 vs 3D=68
+A18,9n5q,Size mismatch: SMILES=38 vs 3D=68
+A18,9n6f,Size mismatch: SMILES=38 vs 3D=68
+A18,9n9b,Size mismatch: SMILES=38 vs 3D=68
+A18,9nng,Size mismatch: SMILES=38 vs 3D=68
+A19,9g0h,Size mismatch: SMILES=37 vs 3D=67
+A20,9g0i,Size mismatch: SMILES=37 vs 3D=60
+A29,9hfx,Size mismatch: SMILES=38 vs 3D=33
+A32,9ir9,Size mismatch: SMILES=32 vs 3D=31
+A33,9lll,Size mismatch: SMILES=45 vs 3D=62
+A34,9mdq,Size mismatch: SMILES=36 vs 3D=34
+A35,9mlj,Size mismatch: SMILES=48 vs 3D=84
+A35,9mlj,GRAPH_FULL skipped: size>80
+A35,9nnw,Size mismatch: SMILES=48 vs 3D=84
+A35,9nnw,GRAPH_FULL skipped: size>80
+A41,9n3m,Size mismatch: SMILES=36 vs 3D=32
+A43,9sdm,Size mismatch: SMILES=39 vs 3D=71
+A43,9sdm,Size mismatch: SMILES=39 vs 3D=71
+A48,9znl,Size mismatch: SMILES=48 vs 3D=84
+A48,9znl,GRAPH_FULL skipped: size>80
+ALD,7be7,Size mismatch: SMILES=34 vs 3D=76
+ALD,7be7,Size mismatch: SMILES=34 vs 3D=76
+ALD,7bgp,Size mismatch: SMILES=34 vs 3D=76
+ALD,7bgp,Size mismatch: SMILES=34 vs 3D=76
+ALD,7nf5,Size mismatch: SMILES=34 vs 3D=76
+ALD,7ng3,Size mismatch: SMILES=34 vs 3D=76
+ALD,7ng3,Size mismatch: SMILES=34 vs 3D=76
+ALD,7ng6,Size mismatch: SMILES=34 vs 3D=76
+ALD,7ng6,Size mismatch: SMILES=34 vs 3D=76
+ALD,8p54,Size mismatch: SMILES=34 vs 3D=76
+ALD,8p55,Size mismatch: SMILES=34 vs 3D=76
+ALD,8p86,Size mismatch: SMILES=34 vs 3D=76
+B1S,8dd9,Size mismatch: SMILES=33 vs 3D=29
+B1S,8dgb,Size mismatch: SMILES=33 vs 3D=29
+B1S,8dgb,Size mismatch: SMILES=33 vs 3D=29
+DIO,7mau,Size mismatch: SMILES=6 vs 3D=14
+H37,7mat,Size mismatch: SMILES=36 vs 3D=65
+H37,7mat,Size mismatch: SMILES=36 vs 3D=65
+K2X,8tqt,Size mismatch: SMILES=34 vs 3D=33
+K36,8d4k,Size mismatch: SMILES=33 vs 3D=29
+K36,8d4m,Size mismatch: SMILES=33 vs 3D=29
+K36,8dd1,Size mismatch: SMILES=33 vs 3D=29
+K36,8ddm,Size mismatch: SMILES=33 vs 3D=29
+LZX,7gd7,Size mismatch: SMILES=23 vs 3D=46
+M26,7gd2,Size mismatch: SMILES=26 vs 3D=52
+OOL,7gg3,Size mismatch: SMILES=13 vs 3D=12
+PHE,9bbp,Size mismatch: SMILES=12 vs 3D=11
+THR,9bbp,Size mismatch: SMILES=8 vs 3D=7
+U88,7nby,Size mismatch: SMILES=8 vs 3D=9
+U88,7nby,Size mismatch: SMILES=8 vs 3D=9
+U88,7nby,Size mismatch: SMILES=8 vs 3D=9
+U88,7nby,Size mismatch: SMILES=8 vs 3D=9
+U88,7nby,Size mismatch: SMILES=8 vs 3D=9
+U88,7nby,Size mismatch: SMILES=8 vs 3D=9
+U88,7nby,Size mismatch: SMILES=8 vs 3D=9
+U88,7nby,Size mismatch: SMILES=8 vs 3D=9
+V2M,9el4,Size mismatch: SMILES=34 vs 3D=67
+V2M,9el4,Size mismatch: SMILES=34 vs 3D=67
+V2M,9elv,Size mismatch: SMILES=34 vs 3D=67
+V2M,9elv,Size mismatch: SMILES=34 vs 3D=67
+V2M,9mei,Size mismatch: SMILES=34 vs 3D=134
+V2M,9mei,GRAPH_FULL skipped: size>80
+V2M,9mei,Size mismatch: SMILES=34 vs 3D=67
+V2M,9o6d,Size mismatch: SMILES=34 vs 3D=62
+V2M,9o6d,Size mismatch: SMILES=34 vs 3D=62
+V2M,9o6e,Size mismatch: SMILES=34 vs 3D=62
+V2M,9o6e,Size mismatch: SMILES=34 vs 3D=62
+V2M,9o6f,Size mismatch: SMILES=34 vs 3D=62
+V2M,9o6f,Size mismatch: SMILES=34 vs 3D=62
+V2M,9o6p,Size mismatch: SMILES=34 vs 3D=67
+V2M,9o6p,Size mismatch: SMILES=34 vs 3D=67
+V2M,9o6q,Size mismatch: SMILES=34 vs 3D=67
+V2M,9o6q,Size mismatch: SMILES=34 vs 3D=67
+V2M,9o74,Size mismatch: SMILES=34 vs 3D=67
+V2M,9o74,Size mismatch: SMILES=34 vs 3D=67
+V2M,9opm,Size mismatch: SMILES=34 vs 3D=67
+V2M,9opm,Size mismatch: SMILES=34 vs 3D=67
+V2M,9opn,Size mismatch: SMILES=34 vs 3D=67
+V2M,9opn,Size mismatch: SMILES=34 vs 3D=67
+VAL,9bbp,Size mismatch: SMILES=8 vs 3D=7
+X4N,8und,Size mismatch: SMILES=37 vs 3D=71
+X77,8p56,Size mismatch: SMILES=34 vs 3D=66
+X77,8p57,Size mismatch: SMILES=34 vs 3D=66
+X77,8p58,Size mismatch: SMILES=34 vs 3D=66
+X77,8p58,Size mismatch: SMILES=34 vs 3D=66
+X77,8p5a,Size mismatch: SMILES=34 vs 3D=66
+X77,8p5a,Size mismatch: SMILES=34 vs 3D=66
+X77,8p87,Size mismatch: SMILES=34 vs 3D=66
+XEK,9cdk,Size mismatch: SMILES=39 vs 3D=116
+XEK,9cdk,GRAPH_FULL skipped: size>80
+XEK,9cdl,Size mismatch: SMILES=39 vs 3D=58
+XEK,9cdm,Size mismatch: SMILES=39 vs 3D=58
+YV7,7max,Size mismatch: SMILES=39 vs 3D=75
+YV7,7max,Size mismatch: SMILES=39 vs 3D=75
+YVA,7maw,Size mismatch: SMILES=36 vs 3D=70
+YVA,7maw,Size mismatch: SMILES=36 vs 3D=70
+YVD,7maz,Size mismatch: SMILES=40 vs 3D=150
+YVD,7maz,GRAPH_FULL skipped: size>80
+YVD,7maz,Size mismatch: SMILES=40 vs 3D=75
+YVG,7mb0,Size mismatch: SMILES=38 vs 3D=74
+YVG,7mb0,Size mismatch: SMILES=38 vs 3D=74
+YVJ,7mb1,Size mismatch: SMILES=39 vs 3D=75
+YVJ,7mb1,Size mismatch: SMILES=39 vs 3D=75
+YVM,7mb2,Size mismatch: SMILES=47 vs 3D=89
+YVM,7mb2,GRAPH_FULL skipped: size>80
+YVM,7mb2,Size mismatch: SMILES=47 vs 3D=89
+YVM,7mb2,GRAPH_FULL skipped: size>80
+YVP,7mau,Size mismatch: SMILES=43 vs 3D=79
+YVP,7mau,Size mismatch: SMILES=43 vs 3D=79
+YVV,7mb3,Size mismatch: SMILES=46 vs 3D=89
+YVV,7mb3,GRAPH_FULL skipped: size>80
+YVV,7mb3,Size mismatch: SMILES=46 vs 3D=89
+YVV,7mb3,GRAPH_FULL skipped: size>80
+YVV,7mb3,Size mismatch: SMILES=46 vs 3D=89
+YVV,7mb3,GRAPH_FULL skipped: size>80
+YVV,7mb3,Size mismatch: SMILES=46 vs 3D=89
+YVV,7mb3,GRAPH_FULL skipped: size>80
+YVV,7mb3,Size mismatch: SMILES=46 vs 3D=89
+YVV,7mb3,GRAPH_FULL skipped: size>80
+YVV,7mb3,Size mismatch: SMILES=46 vs 3D=89
+YVV,7mb3,GRAPH_FULL skipped: size>80
+YVY,7mav,Size mismatch: SMILES=42 vs 3D=78
+YVY,7mav,Size mismatch: SMILES=42 vs 3D=78
+ZL7,7mng,Size mismatch: SMILES=36 vs 3D=72

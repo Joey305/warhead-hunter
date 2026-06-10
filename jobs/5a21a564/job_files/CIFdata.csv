@@ -1,0 +1,2 @@
+protein,n_candidates,n_attempted,n_downloaded,n_verified,outdir,protein_dir,manifest_path
+Mpro,500,500,500,500,WAR,WAR/Mpro,CIF_Download_Manifest.csv
