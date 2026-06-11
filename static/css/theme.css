@@ -398,8 +398,21 @@ pre {
 .wh-step-title,
 .wh-output-title,
 .wh-metric-title,
+.wh-pipeline-title,
 .wh-cta-title {
   color: var(--text-primary);
+}
+
+.content-section h2,
+.content-card h2,
+.content-sidebar-card h2 {
+  color: var(--tron-cyan);
+}
+
+.content-section h3,
+.content-card h3,
+.content-sidebar-card h3 {
+  color: var(--warning-text);
 }
 
 .content-kicker,
@@ -439,6 +452,100 @@ pre {
 .wh-pill,
 .status-pill-subtle {
   color: var(--text-secondary);
+}
+
+.wh-pill {
+  background: var(--button-bg);
+  border-color: var(--button-border);
+  color: var(--button-text);
+}
+
+.wh-pill-strong {
+  background: var(--warning-bg);
+  border-color: var(--warning-border);
+  color: var(--warning-text);
+}
+
+.wh-card-icon {
+  border-color: var(--info-border);
+  background: var(--info-bg);
+  color: var(--info-text);
+}
+
+.wh-mini-metric-label,
+.wh-pipeline-copy,
+.wh-output-item,
+.wh-link-item {
+  color: var(--text-secondary);
+}
+
+.wh-pipeline-node {
+  background: var(--page-surface-muted);
+  border-color: var(--surface-border);
+}
+
+.wh-pipeline-label {
+  color: var(--warning-text);
+}
+
+.wh-step-number {
+  background: var(--warning-bg);
+  border-color: var(--warning-border);
+  color: var(--warning-text);
+}
+
+.wh-code-card pre {
+  background: var(--code-bg);
+  border-color: var(--surface-border);
+  color: var(--code-text);
+}
+
+.wh-orbit-core {
+  color: var(--text-primary);
+}
+
+.wh-orbit-node,
+.wh-orbit-tag {
+  background: var(--page-surface-elevated);
+  border-color: var(--surface-border);
+  color: var(--text-primary);
+}
+
+.viewport-loading-title,
+.warhead-results-loader-title {
+  color: var(--warning-text);
+  text-shadow: none;
+}
+
+.viewport-loading-detail,
+.warhead-results-loader-detail,
+.warhead-results-loader-current,
+.warhead-results-loader-state,
+.warhead-results-loader-step,
+.warhead-results-loader-btn.is-secondary {
+  color: var(--text-secondary);
+}
+
+.warhead-results-loader-progress {
+  background: var(--page-surface-muted);
+  border-color: var(--surface-border);
+}
+
+.warhead-results-loader-step {
+  background: var(--page-surface-muted);
+  border-color: var(--surface-border);
+}
+
+.warhead-results-loader-btn {
+  background: var(--button-bg);
+  border-color: var(--button-border);
+  color: var(--button-text);
+}
+
+.warhead-results-loader-btn:hover {
+  background: var(--button-bg-hover);
+  border-color: var(--nav-pill-hover-border);
+  color: var(--text-primary);
 }
 
 .content-note,
