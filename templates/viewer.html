@@ -1,22 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
+<style>
+  .viewer-shell {
+    width: min(1180px, 100%);
+    margin: 0 auto;
+    padding: 20px;
+  }
 
-<div class="container" style="padding: 20px;">
-    <h1 style="color: var(--tron-blue); text-shadow: 0 0 10px var(--tron-blue);">
-        TARGET STRUCTURE: <span style="color: white;">{{ file_url.split('/')[-1] }}</span>
+  .viewer-title {
+    margin: 0 0 16px;
+    color: var(--tron-blue);
+    text-shadow: 0 0 10px rgba(30, 144, 255, 0.35);
+  }
+
+  .viewer-title-file {
+    color: var(--text-primary);
+  }
+
+  .viewer-canvas {
+    width: 100%;
+    height: 600px;
+    background-color: #000;
+    border: 2px solid var(--tron-yellow);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.28);
+    position: relative;
+  }
+
+  .viewer-legend {
+    margin-top: 10px;
+    text-align: right;
+    color: var(--text-secondary);
+  }
+</style>
+
+<div class="viewer-shell">
+    <h1 class="viewer-title">
+        TARGET STRUCTURE: <span class="viewer-title-file">{{ file_url.split('/')[-1] }}</span>
     </h1>
 
-    <div id="viewer" style="
-        width: 100%;
-        height: 600px;
-        background-color: #000;
-        border: 2px solid var(--tron-yellow);
-        border-radius: 10px;
-        box-shadow: 0 0 15px var(--tron-yellow);
-        position: relative;
-    "></div>
+    <div id="viewer" class="viewer-canvas"></div>
 
-    <div style="margin-top: 10px; text-align: right;">
+    <div class="viewer-legend">
         <span style="color: #00FFFF;">■ Protein</span> &nbsp; 
         <span style="color: #FFA500;">■ Ligand (Warhead)</span>
     </div>

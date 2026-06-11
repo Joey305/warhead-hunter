@@ -18,6 +18,12 @@
     --scout-border: var(--surface-border);
     --scout-danger: #ff5a6d;
     --scout-ok: #66ff99;
+    --scout-input-bg: var(--input-bg);
+    --scout-input-text: var(--input-text);
+    --scout-input-border: var(--input-border);
+    --scout-card-bg: var(--page-surface-muted);
+    --scout-code-bg: var(--code-bg);
+    --scout-code-text: var(--code-text);
   }
 
   /* Mode bar */
@@ -262,9 +268,9 @@
   }
 
   .scout-modal-close {
-    border: 1px solid rgba(255,255,255,0.18);
-    color: white;
-    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--button-border);
+    color: var(--button-text);
+    background: var(--button-bg);
     width: 38px;
     height: 38px;
     border-radius: 10px;
@@ -311,9 +317,9 @@
   }
 
   .hunt-panel {
-    border: 1px solid rgba(255,255,255,0.10);
+    border: 1px solid var(--surface-border);
     border-radius: 14px;
-    background: rgba(0,0,0,0.28);
+    background: var(--scout-card-bg);
     padding: 14px;
   }
 
@@ -328,7 +334,7 @@
   }
 
   .hunt-help {
-    color: #8a8a8a;
+    color: var(--text-muted);
     font-size: 0.85em;
     line-height: 1.45;
     margin: 0 0 12px 0;
@@ -351,8 +357,8 @@
   }
 
   .hunt-entity-card {
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.035);
+    border: 1px solid var(--surface-border);
+    background: var(--page-surface);
     border-radius: 12px;
     padding: 12px;
     transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
@@ -379,19 +385,19 @@
 
   .hunt-entity-top input {
     transform: translateY(2px);
-    accent-color: #00ffff;
+    accent-color: var(--tron-cyan);
     flex-shrink: 0;
   }
 
   .hunt-entity-name {
-    color: #fff;
+    color: var(--text-primary);
     font-weight: 900;
     line-height: 1.3;
     overflow-wrap: anywhere;
   }
 
   .hunt-entity-meta {
-    color: #888;
+    color: var(--text-muted);
     font-size: 0.82em;
     margin-top: 4px;
     line-height: 1.45;
@@ -405,9 +411,9 @@
   }
 
   .hunt-badge {
-    border: 1px solid rgba(255,255,255,0.14);
-    color: #aaa;
-    background: rgba(0,0,0,0.20);
+    border: 1px solid var(--surface-border);
+    color: var(--text-muted);
+    background: var(--page-surface-muted);
     padding: 3px 7px;
     border-radius: 999px;
     font-size: 0.75em;
@@ -432,7 +438,7 @@
     display: flex;
     justify-content: space-between;
     gap: 8px;
-    color: #aaa;
+    color: var(--text-secondary);
     font-size: 0.82em;
     font-weight: 800;
     margin-bottom: 6px;
@@ -442,7 +448,7 @@
 
   .hunt-field small {
     display: block;
-    color: #6f6f6f;
+    color: var(--text-muted);
     margin-top: 5px;
     line-height: 1.35;
   }
@@ -451,9 +457,9 @@
   .hunt-textarea {
     width: 100%;
     box-sizing: border-box;
-    color: white;
-    background: rgba(0,0,0,0.74);
-    border: 1px solid rgba(0,255,255,0.36);
+    color: var(--scout-input-text);
+    background: var(--scout-input-bg);
+    border: 1px solid var(--scout-input-border);
     border-radius: 9px;
     padding: 11px 12px;
     outline: none;
@@ -470,7 +476,7 @@
     min-height: 180px;
     resize: vertical;
     font-family: "Courier New", monospace;
-    color: #00ff7b;
+    color: var(--scout-code-text);
     line-height: 1.35;
     font-size: 0.88em;
   }
@@ -488,17 +494,17 @@
   }
 
   .hunt-preview {
-    border: 1px solid rgba(255,255,255,0.10);
-    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--surface-border);
+    background: var(--page-surface-muted);
     border-radius: 10px;
     padding: 10px;
     font-size: 0.85em;
-    color: #999;
+    color: var(--text-muted);
     line-height: 1.45;
   }
 
   .hunt-preview strong {
-    color: white;
+    color: var(--text-primary);
   }
 
   .hunt-warning {
@@ -519,7 +525,7 @@
   .hunt-status {
     display: none;
     border: 1px solid rgba(0,255,255,0.18);
-    color: #aaa;
+    color: var(--text-secondary);
     background: rgba(0,255,255,0.04);
     border-radius: 10px;
     padding: 10px;
@@ -545,7 +551,7 @@
 
   .scout-modal-footer {
     padding: 14px 20px;
-    border-top: 1px solid rgba(255,255,255,0.10);
+    border-top: 1px solid var(--surface-border);
     display: flex;
     justify-content: space-between;
     gap: 12px;
@@ -554,7 +560,7 @@
   }
 
   .footer-note {
-    color: #777;
+    color: var(--text-muted);
     font-size: 0.86em;
     line-height: 1.35;
   }
@@ -603,8 +609,8 @@
   <!-- MODE SELECTOR -->
   <div class="glass-panel mode-bar">
     <div style="display:flex; flex-direction:column;">
-      <div style="color:#aaa; font-weight:700;">SEARCH MODE</div>
-      <div style="color:#666; font-size:0.85em;">Pick how you want to query RCSB</div>
+      <div style="color:var(--text-secondary); font-weight:700;">SEARCH MODE</div>
+      <div style="color:var(--text-muted); font-size:0.85em;">Pick how you want to query RCSB</div>
     </div>
 
     <div class="mode-pills">
@@ -622,7 +628,7 @@
     <div class="glass-panel search-panel">
       <div style="font-size: 1.5em; color: var(--tron-cyan);">🔍</div>
       <input type="text" id="pdbInput" placeholder="Enter PDB ID (e.g. 4CI3, 3EKY)"
-             style="flex-grow: 1; padding: 15px; background: black; border: 1px solid var(--tron-cyan); color: white; font-size: 1.2em; border-radius: 5px;"
+             style="flex-grow: 1; padding: 15px; background: var(--input-bg); border: 1px solid var(--tron-cyan); color: var(--input-text); font-size: 1.2em; border-radius: 5px;"
              onkeypress="handleEnter(event)">
       <button onclick="fetchPDB()" class="tron-btn" style="width: 200px;">FETCH DATA</button>
     </div>
@@ -634,16 +640,16 @@
     <div class="glass-panel search-panel">
       <div style="font-size: 1.5em; color: var(--tron-yellow);">🧠</div>
       <input type="text" id="queryInput" placeholder="Search by protein name, gene, UniProt, ligand text…"
-             style="flex-grow:1; padding:15px; background:black; border:1px solid var(--tron-yellow); color:white; font-size:1.2em; border-radius:5px;"
+             style="flex-grow:1; padding:15px; background:var(--input-bg); border:1px solid var(--tron-yellow); color:var(--input-text); font-size:1.2em; border-radius:5px;"
              onkeypress="if(event.key==='Enter') searchRCSB(true)">
       <button onclick="searchRCSB(true)" class="tron-btn" style="width:200px;">SEARCH RCSB</button>
     </div>
 
     <div class="hint-text">
-      Examples: <span style="color:#aaa;">HIV-1 protease</span>,
-      <span style="color:#aaa;">cereblon pomalidomide bound</span>,
-      <span style="color:#aaa;">DYRK1A inhibitor bound</span>,
-      <span style="color:#aaa;">uniprot:P00533</span>
+      Examples: <span style="color:var(--text-secondary);">HIV-1 protease</span>,
+      <span style="color:var(--text-secondary);">cereblon pomalidomide bound</span>,
+      <span style="color:var(--text-secondary);">DYRK1A inhibitor bound</span>,
+      <span style="color:var(--text-secondary);">uniprot:P00533</span>
     </div>
 
     <div id="hitList" class="glass-panel" style="display:none; margin-top:15px;">
@@ -665,10 +671,10 @@
     <div style="display: flex; flex-direction: column; gap: 20px;">
       <div class="glass-panel" style="border-left: 5px solid var(--tron-yellow);">
         <h2 id="pdbTitle" style="color: var(--tron-yellow); margin-top: 0; font-size: 1.4em;">-</h2>
-        <div style="display: flex; gap: 20px; color: #aaa; font-size: 0.9em; margin-top: 10px; flex-wrap:wrap;">
-          <div>📅 <span id="pdbDate" style="color: white;">-</span></div>
-          <div>📏 <span id="pdbRes" style="color: white;">-</span></div>
-          <div>🧬 <span id="pdbOrg" style="color: white;">-</span></div>
+        <div style="display: flex; gap: 20px; color: var(--text-secondary); font-size: 0.9em; margin-top: 10px; flex-wrap:wrap;">
+          <div>📅 <span id="pdbDate" style="color: var(--text-primary);">-</span></div>
+          <div>📏 <span id="pdbRes" style="color: var(--text-primary);">-</span></div>
+          <div>🧬 <span id="pdbOrg" style="color: var(--text-primary);">-</span></div>
         </div>
       </div>
 
@@ -688,7 +694,7 @@
         </div>
 
         <textarea id="pdbFasta" readonly
-                  style="width: 100%; height: 150px; background: #050505; border: 1px solid #333; color: #00ff00; font-family: 'Courier New', monospace; padding: 10px; font-size: 0.9em; resize: vertical;"></textarea>
+                  style="width: 100%; height: 150px; background: var(--code-bg); border: 1px solid var(--surface-border); color: var(--code-text); font-family: 'Courier New', monospace; padding: 10px; font-size: 0.9em; resize: vertical;"></textarea>
 
         <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap;">
           <button id="btnHuntWarhead"
@@ -700,7 +706,7 @@
           </button>
         </div>
 
-        <div id="huntStatus" style="margin-top:8px; color:#777; font-size:0.85em; display:none;"></div>
+        <div id="huntStatus" style="margin-top:8px; color:var(--text-muted); font-size:0.85em; display:none;"></div>
       </div>
     </div>
 
@@ -708,7 +714,7 @@
          style="padding: 0; overflow: hidden; border: 2px solid var(--tron-cyan); height: 800px; position: relative; background: black;">
       <div id="viewer" style="width: 100%; height: 100%; position: relative;"></div>
       <div id="viewerOverlay"
-           style="display:none; position:absolute; inset:0; z-index:12; background:black; align-items:center; justify-content:center; padding:24px; box-sizing:border-box; text-align:center; color:#bbb; pointer-events:none;">
+           style="display:none; position:absolute; inset:0; z-index:12; background:var(--code-bg); align-items:center; justify-content:center; padding:24px; box-sizing:border-box; text-align:center; color:var(--text-secondary); pointer-events:none;">
       </div>
 
       <div style="position: absolute; bottom: 10px; left: 10px; z-index: 10; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 5px;">
@@ -738,7 +744,7 @@
         <div class="hunt-panel">
           <h3 class="hunt-panel-title">
             <span>🧬 Protein Entities / Chains</span>
-            <span id="huntSelectedCount" style="color:#777; font-size:0.78em;">0 selected</span>
+            <span id="huntSelectedCount" style="color:var(--text-muted); font-size:0.78em;">0 selected</span>
           </h3>
           <p class="hunt-help">
             Choose the FASTA entries you actually want to use. For <strong>4CI3</strong>, you might select <strong>Protein cereblon / Chain B</strong> instead of automatically using DDB1 / Chain A.
@@ -781,7 +787,7 @@
             <div class="hunt-field">
               <label for="huntTargetName">
                 <span>Target Identifier</span>
-                <span style="color:#666;">required</span>
+                <span style="color:var(--text-muted);">required</span>
               </label>
               <input id="huntTargetName" class="hunt-input" type="text"
                      placeholder="e.g. CRBN, DDB1_CRBN, KRAS, BTK, SMARCA2">
@@ -791,7 +797,7 @@
             <div class="hunt-field">
               <label for="huntSearchQuery">
                 <span>RCSB Search Query</span>
-                <span style="color:#666;">required</span>
+                <span style="color:var(--text-muted);">required</span>
               </label>
               <input id="huntSearchQuery" class="hunt-input" type="text"
                      placeholder="e.g. cereblon pomalidomide bound, KRAS covalent inhibitor, HIV-1 protease inhibitor">
@@ -801,7 +807,7 @@
             <div class="hunt-field">
               <label for="huntFasta">
                 <span>Sequence (FASTA)</span>
-                <span style="color:#666;">selected only</span>
+                <span style="color:var(--text-muted);">selected only</span>
               </label>
               <textarea id="huntFasta" class="hunt-textarea" placeholder="Select one or more protein entities/chains to populate FASTA."></textarea>
               <small>Only selected entries are sent. You may manually edit/paste a sequence before launch.</small>

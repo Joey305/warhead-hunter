@@ -428,10 +428,10 @@ CURATED_EXAMPLE_CONFIG = [
         "use_case": "E3 ligase recruiter / PROTAC-oriented example",
     },
     {
-        "job_id": "01c4029c",
-        "label": "PRMT4 / CARM1",
-        "protein": "PRMT4",
-        "use_case": "methyltransferase inhibitor structure example",
+        "job_id": "5a21a564",
+        "label": "MPro / SARS-CoV-2 Main Protease",
+        "protein": "MPro",
+        "use_case": "main protease inhibitor structure example",
     },
     {
         "job_id": "d750cfea",

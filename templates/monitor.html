@@ -7,14 +7,14 @@
     margin-bottom:16px;
   }
   .monitor-title h1{ margin:0; }
-  .subtle{ opacity:.85; font-size:.95rem; margin-top:6px; color:#bfefff; }
+  .subtle{ opacity:.85; font-size:.95rem; margin-top:6px; color:var(--text-secondary); }
 
   .pill{
     display:inline-flex; align-items:center; gap:10px;
     padding:10px 14px; border-radius:999px;
-    border:1px solid rgba(0,255,255,.35);
-    background:rgba(0,0,0,.55);
-    box-shadow: 0 0 18px rgba(0,255,255,.12);
+    border:1px solid var(--surface-border-strong);
+    background:var(--page-surface-muted);
+    box-shadow: var(--surface-shadow);
     font-weight:700; letter-spacing:.03em;
     user-select:none;
   }
@@ -33,13 +33,11 @@
   .pill.running{ color: var(--tron-yellow); }
   .pill.completed{
     color: var(--tron-cyan);
-    border-color: rgba(0,255,255,.65);
-    box-shadow:0 0 22px rgba(0,255,255,.20);
+    border-color: var(--info-border);
   }
   .pill.failed{
-    color:#ff5b5b;
-    border-color: rgba(255, 91, 91,.55);
-    box-shadow:0 0 22px rgba(255, 91, 91,.15);
+    color:var(--danger-text);
+    border-color: var(--danger-border);
   }
 
   .actions{
@@ -48,18 +46,18 @@
   }
   .mini-btn{
     padding:8px 10px; border-radius:10px;
-    border:1px solid rgba(0,255,255,.35);
-    background:rgba(0,0,0,.55);
-    color:#d9ffff;
+    border:1px solid var(--button-border);
+    background:var(--button-bg);
+    color:var(--button-text);
     cursor:pointer;
   }
-  .mini-btn:hover{ border-color: rgba(0,255,255,.7); }
+  .mini-btn:hover{ border-color: var(--nav-pill-hover-border); background: var(--button-bg-hover); }
 
   .progress-sheen{
     position:relative;
     height:10px; border-radius:999px;
-    border:1px solid rgba(0,255,255,.35);
-    background:rgba(0,0,0,.55);
+    border:1px solid var(--surface-border);
+    background:var(--page-surface-muted);
     overflow:hidden;
     margin:10px 0 16px 0;
   }
@@ -77,20 +75,20 @@
   .progress-sheen.hidden{ display:none; }
 
   #console{
-    background:black;
+    background:var(--code-bg);
     border:2px solid var(--tron-cyan);
     height:520px;
     overflow-y:auto;
     padding:18px 18px;
     font-family:'Courier New', monospace;
-    color:#00ff00;
+    color:var(--code-text);
     box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.2);
     border-radius:16px;
   }
   .logline{ padding:2px 0; opacity:.95; }
   .logline.new{
-    background: rgba(0,255,255,.08);
-    border-left: 3px solid rgba(0,255,255,.65);
+    background: var(--info-bg);
+    border-left: 3px solid var(--info-border);
     padding-left:10px;
     animation: popin .25s ease-out;
   }
@@ -103,9 +101,9 @@
   .reveal{
     margin-top:16px;
     border-radius:18px;
-    border:1px solid rgba(0,255,255,.45);
-    background: rgba(0,0,0,.55);
-    box-shadow: 0 0 26px rgba(0,255,255,.14);
+    border:1px solid var(--surface-border-strong);
+    background: var(--page-surface-elevated);
+    box-shadow: var(--surface-shadow);
     overflow:hidden;
     display:none;
   }
@@ -117,7 +115,7 @@
   .reveal-head{
     padding:14px 16px;
     display:flex; align-items:center; justify-content:space-between; gap:12px;
-    border-bottom:1px solid rgba(0,255,255,.18);
+    border-bottom:1px solid var(--surface-border);
   }
   .reveal-title{
     font-weight:800;
@@ -126,7 +124,7 @@
   }
   .reveal-body{
     padding:14px 16px 18px 16px;
-    color:#d9ffff;
+    color:var(--text-secondary);
   }
   .statrow{
     display:grid;
@@ -135,10 +133,10 @@
     margin:10px 0 14px 0;
   }
   .stat{
-    border:1px solid rgba(0,255,255,.18);
+    border:1px solid var(--surface-border);
     border-radius:14px;
     padding:10px 12px;
-    background: rgba(0,0,0,.35);
+    background: var(--page-surface-muted);
   }
   .stat .k{ font-size:.8rem; opacity:.8; }
   .stat .v{ font-size:1.15rem; font-weight:800; margin-top:4px; }
@@ -153,10 +151,10 @@
     z-index:9999;
     min-width:280px; max-width:380px;
     border-radius:16px;
-    border:1px solid rgba(0,255,255,.35);
-    background: rgba(0,0,0,.78);
-    color:#e9ffff;
-    box-shadow: 0 0 28px rgba(0,255,255,.16);
+    border:1px solid var(--surface-border-strong);
+    background: var(--page-surface-elevated);
+    color:var(--text-primary);
+    box-shadow: var(--surface-shadow);
     padding:12px 14px;
     display:none;
   }
@@ -176,9 +174,9 @@
     max-width: 760px;
     margin: 8vh auto 0 auto;
     border-radius: 22px;
-    border: 1px solid rgba(0,255,255,.55);
-    background: rgba(0,0,0,.88);
-    box-shadow: 0 0 40px rgba(0,255,255,.18);
+    border: 1px solid var(--surface-border-strong);
+    background: var(--page-surface-elevated);
+    box-shadow: var(--surface-shadow);
     overflow:hidden;
   }
   #fireworks{
@@ -187,7 +185,7 @@
     height:260px;
     background:radial-gradient(circle at 50% 50%, rgba(0,255,255,.12), rgba(0,0,0,.95));
   }
-  #finish-body{ padding: 16px 18px 18px 18px; color:#e9ffff; }
+  #finish-body{ padding: 16px 18px 18px 18px; color:var(--text-primary); }
   #finish-header{
     display:flex; align-items:center; justify-content:space-between; gap:12px;
   }
@@ -204,10 +202,10 @@
     margin: 12px 0 14px 0;
   }
   .finish-stat{
-    border:1px solid rgba(0,255,255,.18);
+    border:1px solid var(--surface-border);
     border-radius:14px;
     padding:10px 12px;
-    background: rgba(0,0,0,.35);
+    background: var(--page-surface-muted);
   }
   .finish-stat .k{ font-size:.8rem; opacity:.8; }
   .finish-stat .v{ font-size:1.15rem; font-weight:900; margin-top:4px; }
@@ -219,12 +217,12 @@
 <style>
   .mini-btn{
     padding:8px 10px; border-radius:10px;
-    border:1px solid rgba(0,255,255,.35);
-    background:rgba(0,0,0,.55);
-    color:#d9ffff;
+    border:1px solid var(--button-border);
+    background:var(--button-bg);
+    color:var(--button-text);
     cursor:pointer;
   }
-  .mini-btn:hover{ border-color: rgba(0,255,255,.7); }
+  .mini-btn:hover{ border-color: var(--nav-pill-hover-border); background: var(--button-bg-hover); }
 </style>
 
 
@@ -232,7 +230,7 @@
   <div class="monitor-top">
     <div class="monitor-title">
       <h1 class="glow-text">
-        JOB MONITOR: <span style="color:white">{{ job.target }}</span>
+        JOB MONITOR: <span style="color:var(--text-primary)">{{ job.target }}</span>
       </h1>
       <div class="subtle">
         Keep this tab open — it will celebrate when your results are ready.

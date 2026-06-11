@@ -14,14 +14,10 @@
   .examples-hero,
   .example-panel,
   .example-card {
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)),
-      rgba(4, 8, 16, 0.84);
-    border: 1px solid rgba(125, 249, 255, 0.14);
+    background: var(--page-surface-elevated);
+    border: 1px solid var(--surface-border);
     border-radius: 24px;
-    box-shadow:
-      0 18px 44px rgba(0, 0, 0, 0.25),
-      inset 0 1px 0 rgba(255,255,255,0.03);
+    box-shadow: var(--surface-shadow);
   }
 
   .examples-hero,
@@ -38,7 +34,7 @@
   .examples-kicker,
   .example-section-kicker,
   .example-meta-label {
-    color: rgba(176, 214, 238, 0.74);
+    color: var(--text-muted);
     font-size: 0.76rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -48,7 +44,7 @@
   .example-section-title,
   .example-card-title {
     margin: 0;
-    color: #f4fbff;
+    color: var(--text-primary);
     font-family: 'Orbitron', sans-serif;
   }
 
@@ -61,7 +57,7 @@
   .example-copy,
   .example-status-copy,
   .example-card-copy {
-    color: rgba(220, 232, 242, 0.84);
+    color: var(--text-secondary);
     line-height: 1.75;
   }
 
@@ -86,9 +82,9 @@
     min-height: 40px;
     padding: 9px 14px;
     border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.08);
-    background: rgba(255,255,255,0.04);
-    color: rgba(235, 243, 252, 0.88);
+    border: 1px solid var(--button-border);
+    background: var(--button-bg);
+    color: var(--button-text);
     font-weight: 700;
     text-decoration: none;
     transition: transform 160ms ease, box-shadow 180ms ease, border-color 180ms ease, color 180ms ease;
@@ -97,15 +93,15 @@
   .example-link:hover,
   .example-link-muted:hover {
     transform: translateY(-2px);
-    color: var(--tron-cyan);
-    border-color: rgba(125, 249, 255, 0.26);
-    box-shadow: 0 0 18px rgba(125, 249, 255, 0.08);
+    color: var(--text-primary);
+    border-color: var(--nav-pill-hover-border);
+    background: var(--button-bg-hover);
   }
 
   .example-link {
-    border-color: rgba(255, 215, 0, 0.22);
-    background: rgba(255, 215, 0, 0.08);
-    color: #ffe694;
+    border-color: var(--warning-border);
+    background: var(--warning-bg);
+    color: var(--warning-text);
   }
 
   .example-card-grid {
@@ -131,7 +127,7 @@
 
   .example-meta-value,
   .example-count-value {
-    color: #f5fbff;
+    color: var(--text-primary);
   }
 
   .example-badge {
@@ -146,33 +142,33 @@
   }
 
   .example-badge-available {
-    background: rgba(0, 255, 127, 0.12);
-    color: #a7ffcf;
-    border: 1px solid rgba(0, 255, 127, 0.18);
+    background: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid var(--success-border);
   }
 
   .example-badge-partial {
-    background: rgba(255, 215, 0, 0.12);
-    color: #ffe694;
-    border: 1px solid rgba(255, 215, 0, 0.18);
+    background: var(--warning-bg);
+    color: var(--warning-text);
+    border: 1px solid var(--warning-border);
   }
 
   .example-badge-unavailable {
-    background: rgba(255, 122, 122, 0.12);
-    color: #ffc7c7;
-    border: 1px solid rgba(255, 122, 122, 0.18);
+    background: var(--danger-bg);
+    color: var(--danger-text);
+    border: 1px solid var(--danger-border);
   }
 
   .example-count-card {
     min-width: 112px;
     padding: 12px 14px;
     border-radius: 18px;
-    background: rgba(255,255,255,0.025);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: var(--page-surface-muted);
+    border: 1px solid var(--surface-border);
   }
 
   .example-count-label {
-    color: rgba(176, 214, 238, 0.74);
+    color: var(--text-muted);
     font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -193,7 +189,7 @@
   .example-help-list {
     margin: 0;
     padding-left: 18px;
-    color: rgba(220, 232, 242, 0.84);
+    color: var(--text-secondary);
     line-height: 1.7;
   }
 

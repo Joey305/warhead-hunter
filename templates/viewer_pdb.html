@@ -5,7 +5,25 @@
   <title>PDB Viewer</title>
   <script src="https://unpkg.com/ngl@2.0.0-dev.38/dist/ngl.js"></script>
   <style>
-    body { margin: 0; background: #000; color: #fff; }
+    :root {
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(14, 61, 91, 0.18), transparent 30%),
+        linear-gradient(180deg, #eef3f8 0%, #dfe8f2 100%);
+      color: #0f1728;
+      font-family: "Space Grotesk", sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background:
+          radial-gradient(circle at top left, rgba(14, 61, 91, 0.3), transparent 30%),
+          linear-gradient(180deg, #06090f 0%, #020409 100%);
+        color: #ebf2fb;
+      }
+    }
     #viewport { width: 100vw; height: 100vh; }
   </style>
 </head>
