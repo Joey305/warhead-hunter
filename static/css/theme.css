@@ -454,6 +454,11 @@ pre {
   color: var(--text-secondary);
 }
 
+.wh-link-card .wh-card-copy,
+.wh-feature-card .wh-card-copy {
+  color: var(--text-secondary);
+}
+
 .wh-pill {
   background: var(--button-bg);
   border-color: var(--button-border);
