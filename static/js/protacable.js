@@ -983,6 +983,9 @@
     document.querySelectorAll(".result-card").forEach(card => {
       if (card.dataset.interactionBound === "1") return;
       card.dataset.interactionBound = "1";
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let lastTouchActivationAt = 0;
 
       const activate = () => {
         if (card.dataset.renderable === "false") return;
@@ -998,7 +1001,28 @@
         window.syncView(pdb, chain, warhead, resid, smiles, exposedValue, { userInitiated: true });
       };
 
-      card.addEventListener("click", activate);
+      card.addEventListener("click", () => {
+        if ((Date.now() - lastTouchActivationAt) < 700) return;
+        activate();
+      });
+      card.addEventListener("touchstart", (event) => {
+        const touch = event.changedTouches && event.changedTouches[0];
+        if (!touch) return;
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+      }, { passive: true });
+      card.addEventListener("touchend", (event) => {
+        const touch = event.changedTouches && event.changedTouches[0];
+        if (!touch) return;
+        const deltaX = Math.abs(touch.clientX - touchStartX);
+        const deltaY = Math.abs(touch.clientY - touchStartY);
+
+        // Treat short, stationary touches as taps so horizontally scrollable
+        // mobile cards still activate reliably.
+        if (deltaX > 14 || deltaY > 14) return;
+        lastTouchActivationAt = Date.now();
+        activate();
+      }, { passive: true });
       card.addEventListener("keydown", (event) => {
         if (event.key !== "Enter" && event.key !== " ") return;
         event.preventDefault();
