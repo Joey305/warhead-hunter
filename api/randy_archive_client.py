@@ -29,6 +29,7 @@ import pandas as pd
 import requests
 from flask import Response
 
+from artifact_paths import extract_relative_artifact_path
 from api.svg_theme import themed_svg_response
 
 
@@ -98,6 +99,31 @@ TABLE_CANDIDATES = {
         "archives/TARGET_RESULTS/Ligand_Metadata.csv",
     ],
 }
+
+ARCHIVE_PDB_PREFIXES = (
+    "job_files/TARGET_RESULTS/WAR_PDB",
+    "job_files/WAR_PDB",
+    "TARGET_RESULTS/WAR_PDB",
+    "WAR_PDB",
+    "archives/TARGET_RESULTS/WAR_PDB",
+    "archives/WAR_PDB",
+)
+ARCHIVE_SDF_PREFIXES = (
+    "job_files/TARGET_RESULTS/MCS_Output/MCS_SDF",
+    "job_files/MCS_Output/MCS_SDF",
+    "TARGET_RESULTS/MCS_Output/MCS_SDF",
+    "MCS_Output/MCS_SDF",
+    "archives/TARGET_RESULTS/MCS_Output/MCS_SDF",
+    "archives/MCS_Output/MCS_SDF",
+)
+ARCHIVE_SVG_PREFIXES = (
+    "job_files/TARGET_RESULTS/MCS_Output/MCS_SVG",
+    "job_files/MCS_Output/MCS_SVG",
+    "TARGET_RESULTS/MCS_Output/MCS_SVG",
+    "MCS_Output/MCS_SVG",
+    "archives/TARGET_RESULTS/MCS_Output/MCS_SVG",
+    "archives/MCS_Output/MCS_SVG",
+)
 
 _LAST_TABLE_DIAGNOSTIC: Dict[str, Any] = {}
 
@@ -322,10 +348,17 @@ def _option_to_asset(option: Dict[str, Any], kind: str, plain: Optional[bool]) -
     if not name and not rel:
         return None
 
+    allowed_prefixes = {
+        "pdb": ARCHIVE_PDB_PREFIXES,
+        "sdf": ARCHIVE_SDF_PREFIXES,
+        "svg": ARCHIVE_SVG_PREFIXES,
+    }.get(kind, ())
+    normalized_rel = extract_relative_artifact_path(rel or name, allowed_prefixes) or str(rel or name).lstrip("/")
+
     return {
         "name": Path(str(name or rel)).name,
         "filename": Path(str(name or rel)).name,
-        "relative_path": str(rel or name).lstrip("/"),
+        "relative_path": normalized_rel,
         "source": "randy_options",
         "option": option,
     }

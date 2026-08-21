@@ -61,7 +61,7 @@ def _write_job_fixture(job_dir: Path, *, include_second_display_row: bool) -> No
                 "Chain": "A",
                 "Warhead": "BNG",
                 "Residue_ID": resid,
-                "pdb_path": str((job_dir / "TARGET_RESULTS" / "WAR_PDB" / "NTSR1" / "6yvr_A_A00.pdb").resolve()),
+                "pdb_path": "TARGET_RESULTS/WAR_PDB/NTSR1/6yvr_A_A00.pdb",
                 "sdf_path": str((target_results / "MCS_Output" / "MCS_SDF" / f"6yvr_A_BNG_{resid}.sdf").resolve()),
             })
 

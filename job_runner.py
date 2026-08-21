@@ -30,6 +30,7 @@ import pandas as pd
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, List, Tuple, Optional
+from artifact_paths import WAR_PDB_ALLOWED_PREFIXES, extract_relative_artifact_path, resolve_job_artifact
 from api.randy_backup_client import (
     archive_required,
     backup_job_directory,
@@ -1044,14 +1045,17 @@ def validate_required_display_artifacts(job_id: str, job_dir: str) -> None:
 
     unroutable_pdb = []
     for _, row in results.iterrows():
-        pdb_path = str(row.get("pdb_path") or "").strip()
-        if not pdb_path:
+        stored_path = str(row.get("pdb_path") or row.get("PDB_File") or "").strip()
+        if not stored_path:
             unroutable_pdb.append(_occurrence_key_from_row(row.to_dict()))
             continue
-        try:
-            if not Path(pdb_path).exists():
-                unroutable_pdb.append(_occurrence_key_from_row(row.to_dict()))
-        except Exception:
+        relative_path = extract_relative_artifact_path(stored_path, WAR_PDB_ALLOWED_PREFIXES)
+        resolved = (
+            resolve_job_artifact(job_path, relative_path, allowed_prefixes=WAR_PDB_ALLOWED_PREFIXES)
+            if relative_path
+            else None
+        )
+        if resolved is None:
             unroutable_pdb.append(_occurrence_key_from_row(row.to_dict()))
 
     if (

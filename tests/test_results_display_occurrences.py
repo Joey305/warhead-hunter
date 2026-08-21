@@ -11,6 +11,7 @@ import pandas as pd
 
 ROOT = Path("/Users/jxs794/Documents/warhead-hunter")
 PIPELINE_ASSETS = ROOT / "pipeline_assets"
+ARTIFACT_PATHS = ROOT / "artifact_paths.py"
 
 
 def _write_occurrence_atom_rows(csv_path: Path) -> None:
@@ -76,6 +77,7 @@ class ResultsDisplayOccurrenceTests(unittest.TestCase):
             (job_root / "MCS_Output" / "MCS_SDF").mkdir(parents=True)
             (job_root / "MCS_Output" / "MCS_SVG").mkdir(parents=True)
             (job_root / "WAR_PDB" / "NTSR1").mkdir(parents=True)
+            (job_root / "TARGET_RESULTS" / "WAR_PDB" / "NTSR1").mkdir(parents=True)
 
             _write_occurrence_atom_rows(job_root / "MCS_Output" / "Ligand_MCS_SASA_ALL_ATOMS.csv")
             pd.DataFrame(
@@ -87,6 +89,8 @@ class ResultsDisplayOccurrenceTests(unittest.TestCase):
 
             _write_source_pdb(job_root / "WAR_PDB" / "NTSR1" / "6yvr_AAA_BNG.pdb", "BNG", "A")
             _write_source_pdb(job_root / "WAR_PDB" / "NTSR1" / "9qc1_AAA_A00.pdb", "A00", "A")
+            _write_source_pdb(job_root / "TARGET_RESULTS" / "WAR_PDB" / "NTSR1" / "6yvr_AAA_BNG.pdb", "BNG", "A")
+            _write_source_pdb(job_root / "TARGET_RESULTS" / "WAR_PDB" / "NTSR1" / "9qc1_AAA_A00.pdb", "A00", "A")
 
             for base in ["6yvr_A_BNG_4001", "6yvr_A_BNG_4002", "9qc1_A_A00_601", "9qc1_A_A00_602"]:
                 (job_root / "MCS_Output" / "MCS_SDF" / f"{base}.sdf").write_text("stub sdf\n", encoding="utf-8")
@@ -95,6 +99,7 @@ class ResultsDisplayOccurrenceTests(unittest.TestCase):
 
             for filename in ["16_ResultsDisplay.py", "occurrence_keys.py"]:
                 (job_root / filename).write_text((PIPELINE_ASSETS / filename).read_text(encoding="utf-8"), encoding="utf-8")
+            (job_root / "artifact_paths.py").write_text(ARTIFACT_PATHS.read_text(encoding="utf-8"), encoding="utf-8")
 
             proc = subprocess.run(
                 [sys.executable, "16_ResultsDisplay.py"],
@@ -112,11 +117,11 @@ class ResultsDisplayOccurrenceTests(unittest.TestCase):
 
             by_pdb = results.groupby("pdb_path")["Residue_ID"].apply(list).to_dict()
             self.assertEqual(
-                sorted(str(v) for v in by_pdb[str((job_root / "WAR_PDB" / "NTSR1" / "6yvr_AAA_BNG.pdb").resolve())]),
+                sorted(str(v) for v in by_pdb["TARGET_RESULTS/WAR_PDB/NTSR1/6yvr_AAA_BNG.pdb"]),
                 ["4001", "4002"],
             )
             self.assertEqual(
-                sorted(str(v) for v in by_pdb[str((job_root / "WAR_PDB" / "NTSR1" / "9qc1_AAA_A00.pdb").resolve())]),
+                sorted(str(v) for v in by_pdb["TARGET_RESULTS/WAR_PDB/NTSR1/9qc1_AAA_A00.pdb"]),
                 ["601", "602"],
             )
 

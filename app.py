@@ -27,6 +27,12 @@ from flask import (
     url_for, send_from_directory, jsonify, abort, send_file, Response
 )
 
+from artifact_paths import (
+    WAR_PDB_ALLOWED_PREFIXES,
+    canonical_war_pdb_relative_path,
+    extract_relative_artifact_path,
+    resolve_job_artifact,
+)
 from job_runner import start_job, JOB_STORE, DEFAULT_LOG_API_TAIL
 import job_state as disk_jobs
 from api.sasa_api import bp as sasa_bp
@@ -1143,12 +1149,81 @@ def _local_war_pdb_roots(job_id: str) -> List[Path]:
     return [root for root in roots if root.exists() and root.is_dir()]
 
 
+def _resolve_results_display_complex_pdb(job_id: str, pdb: str, chain: str, ligand: str = "") -> Dict[str, Any]:
+    df = load_results_display(job_id)
+    if df is None or df.empty:
+        return {"ok": False, "checked": []}
+
+    pdb_col = _find_col_case_insensitive(df, ["pdb_id", "pdb"])
+    chain_col = _find_col_case_insensitive(df, ["Chain", "chain"])
+    ligand_col = _find_col_case_insensitive(df, ["Warhead", "Ligand_Resolved", "Ligand", "ligand"])
+    path_col = _find_col_case_insensitive(df, ["pdb_path", "PDB_File"])
+    if not all([pdb_col, chain_col, path_col]):
+        return {"ok": False, "checked": []}
+
+    wanted_pdb = _norm_str(pdb, lower=True)
+    wanted_chain = _norm_str(chain, upper=True)
+    wanted_ligand = _norm_str(ligand, upper=True)
+    subset = df[
+        (df[pdb_col].astype(str).str.lower() == wanted_pdb) &
+        (df[chain_col].astype(str).str.upper() == wanted_chain)
+    ].copy()
+    if ligand_col and wanted_ligand:
+        subset = subset[subset[ligand_col].astype(str).str.upper() == wanted_ligand].copy()
+    if subset.empty:
+        return {"ok": False, "checked": []}
+
+    checked: List[str] = []
+    matches: list[tuple[str, Path]] = []
+    seen_paths: set[str] = set()
+    job_dir = job_root(job_id)
+
+    for _, row in subset.iterrows():
+        stored = _row_pick(row.to_dict(), path_col, "PDB_File", "pdb_path")
+        rel = extract_relative_artifact_path(stored, WAR_PDB_ALLOWED_PREFIXES)
+        if rel:
+            checked.append(rel)
+            resolved = resolve_job_artifact(job_dir, rel, allowed_prefixes=WAR_PDB_ALLOWED_PREFIXES)
+            if resolved is not None:
+                canonical_rel = canonical_war_pdb_relative_path(job_dir, resolved) or rel
+                key = str(resolved.resolve())
+                if key not in seen_paths:
+                    matches.append((canonical_rel, resolved))
+                    seen_paths.add(key)
+        elif stored:
+            checked.append(str(stored))
+
+    if len(matches) == 1:
+        relative_path, resolved = matches[0]
+        return {
+            "ok": True,
+            "source": "local_results_display",
+            "local_path": resolved,
+            "relative_path": relative_path,
+            "filename": resolved.name,
+            "checked": checked,
+        }
+
+    if len(matches) > 1:
+        return {
+            "ok": False,
+            "source": "local_results_display_ambiguous",
+            "checked": checked,
+        }
+
+    return {"ok": False, "checked": checked}
+
+
 def _resolve_local_complex_pdb(job_id: str, pdb: str, chain: str, ligand: str = "") -> Dict[str, Any]:
     wanted_pdb = _norm_str(pdb, lower=True)
     wanted_chain = _norm_str(chain, upper=True)
+    manifest_match = _resolve_results_display_complex_pdb(job_id, wanted_pdb, wanted_chain, ligand)
+    if manifest_match.get("ok"):
+        return manifest_match
+
     candidate_ligands = _candidate_ligands_for_pdb_chain(job_id, wanted_pdb, wanted_chain, ligand)
     roots = _local_war_pdb_roots(job_id)
-    checked: List[str] = []
+    checked: List[str] = list(manifest_match.get("checked", []))
 
     for ligand_name in candidate_ligands:
         expected = f"{wanted_pdb}_{wanted_chain}_{ligand_name}.pdb"

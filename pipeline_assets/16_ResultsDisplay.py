@@ -15,6 +15,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from artifact_paths import canonical_war_pdb_relative_path
 from occurrence_keys import (
     asset_key,
     asset_key_from_occurrence,
@@ -277,6 +278,7 @@ def build_war_pdb_inventory(war_pdb_root: Path, chain_map: dict[tuple[str, str],
     inventory = {}
     bad_names = []
     audit = []
+    job_root = war_pdb_root.parent.parent if war_pdb_root.parent.name == "TARGET_RESULTS" else war_pdb_root.parent
 
     for target_dir in sorted(war_pdb_root.iterdir()):
         if not target_dir.is_dir():
@@ -312,7 +314,7 @@ def build_war_pdb_inventory(war_pdb_root: Path, chain_map: dict[tuple[str, str],
                 "filename_chain_token": chain_token,
                 "resolved_chain": resolved_chain,
                 "chain_resolution": chain_method,
-                "pdb_path": str(pdb_file.resolve()),
+                "pdb_path": canonical_war_pdb_relative_path(job_root, pdb_file),
             }
             inventory.setdefault(key, []).append(record)
             audit.append(record)
