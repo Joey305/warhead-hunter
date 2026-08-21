@@ -4,67 +4,41 @@
 """
 16_ResultsDisplay.py
 
-Builds Results_Display.csv for the gallery.
-
-Important fix:
-  - Do NOT blindly display every PDB in WAR_PDB.
-  - Only display entries that resolve to an actual generated SDF from Step 11/12.
-  - This keeps Results_Display.csv aligned with MCS_Output/MCS_SDF and prevents
-    final SDF validation mismatch errors.
+Builds Results_Display.csv for the gallery from successful Step 11 occurrences,
+not from WAR_PDB filenames alone.
 """
 
+from __future__ import annotations
+
 import sys
-import re
 from pathlib import Path
+
 import pandas as pd
 
-PDB_RE = re.compile(
-    r"^([0-9a-z]{4})_([A-Za-z0-9])_([A-Za-z0-9]{2,12})\.pdb$",
-    re.IGNORECASE,
+from occurrence_keys import (
+    asset_key,
+    asset_key_from_occurrence,
+    normalize_chain,
+    normalize_ligand,
+    normalize_pdb,
+    normalize_residue_id,
+    normalize_target,
+    occurrence_key,
+    parse_war_pdb_filename,
 )
+
+EXPOSED_THRESHOLD = 0.1
 
 
 def find_col(df, options):
-    for opt in options:
+    for option in options:
         for col in df.columns:
-            if col.lower() == opt.lower():
+            if col.lower() == option.lower():
                 return col
     return None
 
 
-def norm_pdb(value):
-    return str(value).strip().lower()
-
-
-def norm_chain(value):
-    return str(value).strip().upper()
-
-
-def norm_ligand(value):
-    s = str(value).strip()
-    if s.startswith("[") and s.endswith("]"):
-        inner = s[1:-1].strip().strip("'").strip('"').strip()
-        if inner:
-            s = inner
-    return s.upper()
-
-
-def norm_resid(value):
-    s = str(value).strip()
-    try:
-        f = float(s)
-        if f.is_integer():
-            return str(int(f))
-    except Exception:
-        pass
-    return s
-
-
-def discover_root():
-    """
-    Script usually runs from jobs/<job_id>.
-    It may also be run from jobs/<job_id>/TARGET_RESULTS.
-    """
+def discover_root() -> Path:
     return Path(".").resolve()
 
 
@@ -75,112 +49,307 @@ def find_war_pdb_root(root: Path) -> Path:
         root.parent / "WAR_PDB",
         root.parent / "TARGET_RESULTS" / "WAR_PDB",
     ]
-
-    for cand in candidates:
-        if cand.exists() and cand.is_dir():
-            return cand
+    for candidate in candidates:
+        if candidate.exists() and candidate.is_dir():
+            return candidate
 
     print("❌ Missing WAR_PDB. Checked:")
-    for cand in candidates:
-        print(f"  - {cand}")
+    for candidate in candidates:
+        print(f"  - {candidate}")
     sys.exit(1)
 
 
 def find_first_existing(root: Path, names):
-    candidates = []
     for name in names:
-        candidates.extend([
+        for candidate in (
             root / name,
             root / "TARGET_RESULTS" / name,
             root.parent / name,
             root.parent / "TARGET_RESULTS" / name,
-        ])
-
-    for cand in candidates:
-        if cand.exists() and cand.is_file():
-            return cand
-
+        ):
+            if candidate.exists() and candidate.is_file():
+                return candidate
     return None
 
 
-def find_sdf_roots(root: Path):
-    candidates = [
-        root / "MCS_Output" / "MCS_SDF",
-        root / "TARGET_RESULTS" / "MCS_Output" / "MCS_SDF",
-        root.parent / "MCS_Output" / "MCS_SDF",
-        root.parent / "TARGET_RESULTS" / "MCS_Output" / "MCS_SDF",
-    ]
-
-    out = []
+def find_existing_dirs(root: Path, names):
+    found = []
     seen = set()
-    for cand in candidates:
-        if cand.exists() and cand.is_dir():
-            resolved = str(cand.resolve())
-            if resolved not in seen:
-                out.append(cand)
-                seen.add(resolved)
+    for name in names:
+        for candidate in (
+            root / name,
+            root / "TARGET_RESULTS" / name,
+            root.parent / name,
+            root.parent / "TARGET_RESULTS" / name,
+        ):
+            if candidate.exists() and candidate.is_dir():
+                resolved = str(candidate.resolve())
+                if resolved not in seen:
+                    found.append(candidate)
+                    seen.add(resolved)
+    return found
+
+
+def first_nonempty(series: pd.Series) -> str:
+    for value in series:
+        text = str(value or "").strip()
+        if text and text.lower() != "nan":
+            return text
+    return ""
+
+
+def load_step11_failure_keys(root: Path) -> set[tuple[str, str, str, str, str]]:
+    failures = set()
+    path = find_first_existing(root, ["MCS_Output/Ligand_MCS_Item_Failures.csv"])
+    if path is None:
+        return failures
+
+    df = pd.read_csv(path, dtype=str).fillna("")
+    for _, row in df.iterrows():
+        failures.add(
+            occurrence_key(
+                row.get("Target"),
+                row.get("pdb_id"),
+                row.get("Chain"),
+                row.get("Ligand") or row.get("Warhead"),
+                row.get("Residue_ID"),
+            )
+        )
+    return failures
+
+
+def load_smiles_lookup(root: Path) -> dict[tuple[str, str], dict[str, str]]:
+    out: dict[tuple[str, str], dict[str, str]] = {}
+    for path in [
+        find_first_existing(root, ["Resolved_SASA_Summary.csv"]),
+        find_first_existing(root, ["Ligand_Metadata.csv"]),
+    ]:
+        if path is None:
+            continue
+        df = pd.read_csv(path, dtype=str).fillna("")
+        pdb_col = find_col(df, ["pdb_id", "pdb"])
+        lig_col = find_col(df, ["Warhead", "Ligand", "Ligand_Resolved", "Ligand5_Source"])
+        smiles_col = find_col(df, ["SMILES", "Canonical_SMILES", "smiles"])
+        smiles_id_col = find_col(df, ["Ligand_Resolved", "Ligand5_Source", "Warhead_5", "SMILES_ID"])
+        if not all([pdb_col, lig_col, smiles_col]):
+            continue
+
+        for _, row in df.iterrows():
+            key = (normalize_pdb(row[pdb_col]), normalize_ligand(row[lig_col]))
+            current = out.setdefault(key, {"SMILES": "", "SMILES_ID": ""})
+            if not current["SMILES"]:
+                current["SMILES"] = str(row[smiles_col]).strip()
+            if smiles_id_col and not current["SMILES_ID"]:
+                current["SMILES_ID"] = normalize_ligand(row[smiles_id_col])
     return out
+
+
+def load_occurrence_manifest(root: Path):
+    source = find_first_existing(
+        root,
+        [
+            "MCS_Output/Ligand_MCS_SASA_ALL_ATOMS.csv",
+            "MCS_Output/Ligand_AllAtoms_Map.csv",
+            "MCS_Output/Ligand_MCS_SASA.csv",
+            "MCS_Output/Ligand_MCS_Map.csv",
+        ],
+    )
+    if source is None:
+        raise RuntimeError("Could not find a Step 11 occurrence table in MCS_Output/")
+
+    df = pd.read_csv(source, dtype=str).fillna("")
+    target_col = find_col(df, ["Target", "target"])
+    pdb_col = find_col(df, ["pdb_id", "pdb"])
+    chain_col = find_col(df, ["Chain", "chain"])
+    lig_col = find_col(df, ["Ligand", "Warhead", "ligand"])
+    resid_col = find_col(df, ["Residue_ID", "residue_id", "resid"])
+    smiles_col = find_col(df, ["SMILES", "smiles"])
+    smiles_id_col = find_col(df, ["SMILES_ID", "Ligand_Resolved", "Ligand5_Source"])
+
+    if not all([target_col, pdb_col, chain_col, lig_col, resid_col]):
+        raise RuntimeError(
+            f"Occurrence table missing required columns: {source} cols={list(df.columns)}"
+        )
+
+    df["_Target"] = df[target_col].map(normalize_target)
+    df["_pdb_id"] = df[pdb_col].map(normalize_pdb)
+    df["_Chain"] = df[chain_col].map(normalize_chain)
+    df["_Ligand"] = df[lig_col].map(normalize_ligand)
+    df["_Residue_ID"] = df[resid_col].map(normalize_residue_id)
+
+    failures = load_step11_failure_keys(root)
+    if failures:
+        failure_mask = df.apply(
+            lambda row: occurrence_key(
+                row["_Target"], row["_pdb_id"], row["_Chain"], row["_Ligand"], row["_Residue_ID"]
+            ) in failures,
+            axis=1,
+        )
+        df = df.loc[~failure_mask].copy()
+
+    occurrence_cols = ["_Target", "_pdb_id", "_Chain", "_Ligand", "_Residue_ID"]
+    grouped = df.groupby(occurrence_cols, dropna=False, sort=True)
+
+    smiles_fallback = load_smiles_lookup(root)
+    manifest = {}
+    for key_vals, group in grouped:
+        target, pdb_id, chain, ligand, residue_id = key_vals
+        key = occurrence_key(target, pdb_id, chain, ligand, residue_id)
+
+        record = {
+            "Target": target,
+            "pdb_id": pdb_id,
+            "Chain": chain,
+            "Warhead": ligand,
+            "Residue_ID": residue_id,
+            "SMILES": first_nonempty(group[smiles_col]) if smiles_col else "",
+            "SMILES_ID": normalize_ligand(first_nonempty(group[smiles_id_col])) if smiles_id_col else "",
+        }
+
+        if not record["SMILES"]:
+            fallback = smiles_fallback.get((pdb_id, ligand), {})
+            record["SMILES"] = fallback.get("SMILES", "")
+            record["SMILES_ID"] = record["SMILES_ID"] or fallback.get("SMILES_ID", "")
+
+        if "Exposure_A2" in group.columns:
+            exposure = pd.to_numeric(group["Exposure_A2"], errors="coerce").fillna(0.0)
+            total_atoms = int(len(group))
+            exposed_atoms = int((exposure > EXPOSED_THRESHOLD).sum())
+            sasa_total = float(exposure.sum())
+            percent_exposed = (exposed_atoms / total_atoms) if total_atoms > 0 else 0.0
+            record.update({
+                "Total_atoms": total_atoms,
+                "Exposed_atoms": exposed_atoms,
+                "SASA_in_complex_A2": round(sasa_total, 3),
+                "%Exposed": round(percent_exposed, 3),
+                "%Buried": round(1 - percent_exposed, 3),
+            })
+
+        manifest[key] = record
+
+    if not manifest:
+        raise RuntimeError(f"Occurrence manifest from {source} was empty after filtering Step 11 failures.")
+
+    return manifest, source
+
+
+def load_chain_rename_map(root: Path) -> dict[tuple[str, str], str]:
+    path = find_first_existing(root, ["ChainRenameMAP.csv"])
+    if path is None:
+        return {}
+    try:
+        df = pd.read_csv(path, dtype=str).fillna("")
+    except Exception:
+        return {}
+    pdb_col = find_col(df, ["pdb"])
+    orig_col = find_col(df, ["orig_chain"])
+    new_col = find_col(df, ["new_chain"])
+    if not all([pdb_col, orig_col, new_col]):
+        return {}
+    mapping = {}
+    for _, row in df.iterrows():
+        pdb_id = normalize_pdb(row[pdb_col])
+        orig_chain = str(row[orig_col]).strip()
+        new_chain = normalize_chain(row[new_col])
+        if pdb_id and orig_chain and new_chain:
+            mapping[(pdb_id, orig_chain)] = new_chain
+    return mapping
+
+
+def infer_chain_from_file(pdb_file: Path) -> str:
+    chains = []
+    try:
+        with open(pdb_file, encoding="utf-8", errors="ignore") as handle:
+            for line in handle:
+                if line.startswith(("ATOM", "HETATM")) and len(line) > 21:
+                    chain = normalize_chain(line[21].strip())
+                    if chain:
+                        chains.append(chain)
+    except Exception:
+        return ""
+    unique = sorted(set(chains))
+    if len(unique) == 1:
+        return unique[0]
+    return ""
+
+
+def build_war_pdb_inventory(war_pdb_root: Path, chain_map: dict[tuple[str, str], str]):
+    inventory = {}
+    bad_names = []
+    audit = []
+
+    for target_dir in sorted(war_pdb_root.iterdir()):
+        if not target_dir.is_dir():
+            continue
+        target = normalize_target(target_dir.name)
+        for pdb_file in sorted(target_dir.glob("*.pdb")):
+            parsed = parse_war_pdb_filename(pdb_file.name)
+            if parsed is None:
+                bad_names.append(str(pdb_file.resolve()))
+                continue
+
+            pdb_id, chain_token, ligand = parsed
+            resolved_chain = chain_map.get((pdb_id, chain_token), "")
+            chain_method = ""
+            if resolved_chain:
+                chain_method = "ChainRenameMAP"
+            elif len(chain_token) == 1:
+                resolved_chain = normalize_chain(chain_token)
+                chain_method = "filename"
+            else:
+                resolved_chain = infer_chain_from_file(pdb_file)
+                if resolved_chain:
+                    chain_method = "file_contents"
+                else:
+                    resolved_chain = normalize_chain(chain_token)
+                    chain_method = "filename_unmapped"
+
+            key = (target, pdb_id, resolved_chain, ligand)
+            record = {
+                "Target": target,
+                "pdb_id": pdb_id,
+                "Warhead": ligand,
+                "filename_chain_token": chain_token,
+                "resolved_chain": resolved_chain,
+                "chain_resolution": chain_method,
+                "pdb_path": str(pdb_file.resolve()),
+            }
+            inventory.setdefault(key, []).append(record)
+            audit.append(record)
+
+    return inventory, bad_names, audit
+
+
+def find_sdf_roots(root: Path):
+    return find_existing_dirs(root, ["MCS_Output/MCS_SDF"])
 
 
 def find_svg_roots(root: Path):
-    candidates = [
-        root / "MCS_Output" / "MCS_SVG",
-        root / "TARGET_RESULTS" / "MCS_Output" / "MCS_SVG",
-        root.parent / "MCS_Output" / "MCS_SVG",
-        root.parent / "TARGET_RESULTS" / "MCS_Output" / "MCS_SVG",
-    ]
-
-    out = []
-    seen = set()
-    for cand in candidates:
-        if cand.exists() and cand.is_dir():
-            resolved = str(cand.resolve())
-            if resolved not in seen:
-                out.append(cand)
-                seen.add(resolved)
-    return out
+    return find_existing_dirs(root, ["MCS_Output/MCS_SVG"])
 
 
 def load_sdf_index(root: Path):
-    """
-    Returns:
-      sdf_index_exact: set of (pdb, chain, ligand, resid)
-      sdf_index_loose: set of (pdb, chain, ligand)
-      sdf_path_lookup: dict exact key -> path
-      sdf_loose_lookup: dict loose key -> list[(exact_key, path)]
-    """
-    sdf_index_exact = set()
-    sdf_index_loose = set()
-    sdf_path_lookup = {}
-    sdf_loose_lookup = {}
-
-    sdf_roots = find_sdf_roots(root)
-
-    for sdf_root in sdf_roots:
+    exact = set()
+    loose = set()
+    lookup = {}
+    loose_lookup = {}
+    roots = find_sdf_roots(root)
+    for sdf_root in roots:
         for sdf_file in sdf_root.glob("*.sdf"):
-            stem = sdf_file.stem
-            parts = stem.split("_")
+            parts = sdf_file.stem.split("_")
             if len(parts) < 4:
                 continue
-
-            pdb_id = norm_pdb(parts[0])
-            chain = norm_chain(parts[1])
-            ligand = norm_ligand(parts[2])
-            resid = norm_resid("_".join(parts[3:]))
-
-            exact_key = (pdb_id, chain, ligand, resid)
-            loose_key = (pdb_id, chain, ligand)
-
-            sdf_index_exact.add(exact_key)
-            sdf_index_loose.add(loose_key)
-            sdf_path_lookup[exact_key] = sdf_file
-            sdf_loose_lookup.setdefault(loose_key, []).append((exact_key, sdf_file))
-
-    return sdf_index_exact, sdf_index_loose, sdf_path_lookup, sdf_loose_lookup, sdf_roots
+            key = asset_key(parts[0], parts[1], parts[2], "_".join(parts[3:]))
+            loose_key = key[:3]
+            exact.add(key)
+            loose.add(loose_key)
+            lookup[key] = sdf_file
+            loose_lookup.setdefault(loose_key, []).append((key, sdf_file))
+    return exact, loose, lookup, loose_lookup, roots
 
 
 def load_svg_index(root: Path):
-    svg_index = {
+    index = {
         "plain_exact": set(),
         "plain_loose": set(),
         "plain_lookup": {},
@@ -191,12 +360,9 @@ def load_svg_index(root: Path):
         "exposed_loose_lookup": {},
         "roots": find_svg_roots(root),
     }
-
-    for svg_root in svg_index["roots"]:
+    for svg_root in index["roots"]:
         for svg_file in svg_root.glob("*.svg"):
             stem = svg_file.stem
-            kind = None
-            base = ""
             if stem.endswith("_plain"):
                 kind = "plain"
                 base = stem[:-6]
@@ -205,334 +371,203 @@ def load_svg_index(root: Path):
                 base = stem[:-8]
             else:
                 continue
-
             parts = base.split("_")
             if len(parts) < 4:
                 continue
-
-            pdb_id = norm_pdb(parts[0])
-            chain = norm_chain(parts[1])
-            ligand = norm_ligand(parts[2])
-            resid = norm_resid("_".join(parts[3:]))
-
-            exact_key = (pdb_id, chain, ligand, resid)
-            loose_key = (pdb_id, chain, ligand)
-
-            svg_index[f"{kind}_exact"].add(exact_key)
-            svg_index[f"{kind}_loose"].add(loose_key)
-            svg_index[f"{kind}_lookup"][exact_key] = svg_file
-            svg_index[f"{kind}_loose_lookup"].setdefault(loose_key, []).append((exact_key, svg_file))
-
-    return svg_index
+            key = asset_key(parts[0], parts[1], parts[2], "_".join(parts[3:]))
+            loose_key = key[:3]
+            index[f"{kind}_exact"].add(key)
+            index[f"{kind}_loose"].add(loose_key)
+            index[f"{kind}_lookup"][key] = svg_file
+            index[f"{kind}_loose_lookup"].setdefault(loose_key, []).append((key, svg_file))
+    return index
 
 
-def load_residue_lookup(root: Path):
-    """
-    Builds residue lookup from the actual ligand atom / summary tables.
-
-    This lets Results_Display attach the correct Residue_ID even though WAR_PDB
-    filenames only contain pdb, chain, and ligand.
-    """
-    lookup = {}
-
-    for filename in ["Ligand_3D_Atoms.csv", "Resolved_SASA_Summary.csv"]:
-        path = find_first_existing(root, [filename])
-        if path is None:
-            continue
-
-        try:
-            df = pd.read_csv(path, dtype=str).fillna("")
-        except Exception:
-            continue
-
-        pdb_col = find_col(df, ["pdb_id", "pdb"])
-        chain_col = find_col(df, ["Chain", "chain"])
-        lig_col = find_col(df, ["Warhead", "Ligand", "ligand"])
-        resid_col = find_col(df, ["Residue_ID", "resid", "Residue"])
-
-        if not all([pdb_col, chain_col, lig_col, resid_col]):
-            continue
-
-        for _, row in df.iterrows():
-            pdb_id = norm_pdb(row[pdb_col])
-            chain = norm_chain(row[chain_col])
-            ligand = norm_ligand(row[lig_col])
-            resid = norm_resid(row[resid_col])
-
-            if pdb_id and chain and ligand and resid:
-                lookup.setdefault((pdb_id, chain, ligand), resid)
-
-    return lookup
-
-
-def load_smiles_lookup(root: Path):
-    """
-    Prefer Ligand_Metadata.csv, but also fall back to Resolved_SASA_Summary.csv
-    because Step 7 stores per-row SMILES there.
-    """
-    meta_map = {}
-
-    meta_file = find_first_existing(root, ["Ligand_Metadata.csv"])
-    if meta_file is not None:
-        try:
-            meta = pd.read_csv(meta_file, dtype=str).fillna("")
-            smiles_col = None
-            if "Canonical_SMILES" in meta.columns:
-                smiles_col = "Canonical_SMILES"
-            elif "SMILES" in meta.columns:
-                smiles_col = "SMILES"
-
-            if smiles_col and "Ligand" in meta.columns:
-                for _, row in meta.iterrows():
-                    ligand = norm_ligand(row["Ligand"])
-                    smi = str(row[smiles_col]).strip()
-                    if ligand and smi:
-                        meta_map.setdefault(ligand, smi)
-        except Exception as exc:
-            print(f"⚠️ Could not read Ligand_Metadata.csv for SMILES lookup: {exc}")
-
-    summary_file = find_first_existing(root, ["Resolved_SASA_Summary.csv"])
-    if summary_file is not None:
-        try:
-            summ = pd.read_csv(summary_file, dtype=str).fillna("")
-            lig_col = find_col(summ, ["Warhead", "Ligand", "Ligand_Resolved"])
-            smiles_col = find_col(summ, ["SMILES", "smiles", "Canonical_SMILES"])
-
-            if lig_col and smiles_col:
-                for _, row in summ.iterrows():
-                    ligand = norm_ligand(row[lig_col])
-                    smi = str(row[smiles_col]).strip()
-                    if ligand and smi:
-                        meta_map.setdefault(ligand, smi)
-
-            # Also map Ligand_Resolved / Ligand5_Source if present.
-            for alt_col in ["Ligand_Resolved", "Ligand5_Source", "Warhead_5"]:
-                if alt_col in summ.columns and smiles_col:
-                    for _, row in summ.iterrows():
-                        ligand = norm_ligand(row[alt_col])
-                        smi = str(row[smiles_col]).strip()
-                        if ligand and smi:
-                            meta_map.setdefault(ligand, smi)
-
-        except Exception as exc:
-            print(f"⚠️ Could not read Resolved_SASA_Summary.csv for SMILES lookup: {exc}")
-
-    return meta_map
-
-
-def load_exposure_lookup(root: Path):
-    exp_lookup = {}
-
-    exp_file = find_first_existing(root, [
-        "Resolved_SASA_Summary.csv",
-        "WARHEAD_RESULTS.csv",
-        "Ligand_Exposure_Summary.csv",
-    ])
-
-    if exp_file is None:
-        return exp_lookup
-
-    try:
-        exp_df = pd.read_csv(exp_file, dtype=str).fillna("")
-    except Exception as exc:
-        print(f"⚠️ Could not read exposure summary: {exc}")
-        return exp_lookup
-
-    if exp_df.empty:
-        return exp_lookup
-
-    pdb_col = find_col(exp_df, ["pdb_id", "pdb"])
-    chain_col = find_col(exp_df, ["Chain", "chain"])
-    war_col = find_col(exp_df, ["Warhead", "Ligand", "ligand"])
-    exc_col = find_col(exp_df, ["FracExposed", "%Exposed", "percent_exposed", "ExposedFrac"])
-
-    if not all([pdb_col, chain_col, war_col, exc_col]):
-        return exp_lookup
-
-    tmp = exp_df[[pdb_col, chain_col, war_col, exc_col]].copy()
-    tmp[pdb_col] = tmp[pdb_col].map(norm_pdb)
-    tmp[chain_col] = tmp[chain_col].map(norm_chain)
-    tmp[war_col] = tmp[war_col].map(norm_ligand)
-    tmp[exc_col] = pd.to_numeric(tmp[exc_col], errors="coerce").fillna(0.0)
-
-    tmp = (
-        tmp.groupby([pdb_col, chain_col, war_col], as_index=False)[exc_col]
-        .max()
-    )
-
-    for _, row in tmp.iterrows():
-        exp_lookup[(row[pdb_col], row[chain_col], row[war_col])] = float(row[exc_col])
-
-    return exp_lookup
+def resolve_exact_or_unique_loose(exact_key, loose_key, exact_lookup, exact_index, loose_lookup):
+    if exact_key in exact_index:
+        return str(exact_lookup[exact_key]), "exact"
+    matches = loose_lookup.get(loose_key, [])
+    if len(matches) == 1:
+        return str(matches[0][1]), "unique_loose"
+    if len(matches) > 1:
+        return "", "ambiguous_loose"
+    return "", "missing"
 
 
 def main():
     root = discover_root()
     war_pdb_root = find_war_pdb_root(root)
 
-    sdf_index_exact, sdf_index_loose, sdf_path_lookup, sdf_loose_lookup, sdf_roots = load_sdf_index(root)
+    manifest, manifest_source = load_occurrence_manifest(root)
+    chain_map = load_chain_rename_map(root)
+    inventory, bad_names, _inventory_audit = build_war_pdb_inventory(war_pdb_root, chain_map)
+    sdf_exact, sdf_loose, sdf_lookup, sdf_loose_lookup, sdf_roots = load_sdf_index(root)
     svg_index = load_svg_index(root)
-    residue_lookup = load_residue_lookup(root)
-    meta_map = load_smiles_lookup(root)
-    exp_lookup = load_exposure_lookup(root)
 
     print(f"📁 ResultsDisplay root: {root}")
     print(f"📁 WAR_PDB root: {war_pdb_root}")
+    print(f"📁 Manifest source: {manifest_source}")
     print(f"📁 SDF roots: {[str(p) for p in sdf_roots]}")
     print(f"📁 SVG roots: {[str(p) for p in svg_index['roots']]}")
-    print(f"🧪 Indexed SDF exact keys: {len(sdf_index_exact)}")
-    print(f"🧪 Indexed SDF loose keys: {len(sdf_index_loose)}")
+    print(f"🧪 Successful occurrences: {len(manifest)}")
+    print(f"🧪 Indexed SDF exact keys: {len(sdf_exact)}")
+    print(f"🧪 Indexed SDF loose keys: {len(sdf_loose)}")
     print(f"🧪 Indexed SVG exact keys: plain={len(svg_index['plain_exact'])} exposed={len(svg_index['exposed_exact'])}")
-    print(f"🧾 Residue lookup keys: {len(residue_lookup)}")
 
-    rows = []
-    skipped_no_sdf = []
-    skipped_bad_name = []
-    artifact_audit = []
+    display_rows = []
+    audit_rows = []
 
-    for target_dir in sorted(war_pdb_root.iterdir()):
-        if not target_dir.is_dir():
-            continue
+    successful_occurrences = set(manifest.keys())
+    display_occurrences = set()
+    sdf_occurrences = set()
+    plain_svg_occurrences = set()
+    exposed_svg_occurrences = set()
+    unroutable_pdb = set()
 
-        target_name = target_dir.name
+    for occ_key in sorted(successful_occurrences):
+        target, pdb_id, chain, ligand, residue_id = occ_key
+        info = dict(manifest[occ_key])
+        artifact_key = asset_key_from_occurrence(occ_key)
+        loose_key = artifact_key[:3]
 
-        for pdb_file in sorted(target_dir.glob("*.pdb")):
-            match = PDB_RE.match(pdb_file.name)
-            if not match:
-                skipped_bad_name.append(str(pdb_file))
-                continue
+        pdb_candidates = inventory.get((target, pdb_id, chain, ligand), [])
+        if len(pdb_candidates) == 1:
+            pdb_path = pdb_candidates[0]["pdb_path"]
+            pdb_status = "ok"
+            pdb_detail = pdb_candidates[0]["chain_resolution"]
+        elif len(pdb_candidates) > 1:
+            pdb_path = ""
+            pdb_status = "ambiguous"
+            pdb_detail = "multiple matching WAR_PDB files"
+            unroutable_pdb.add(occ_key)
+        else:
+            pdb_path = ""
+            pdb_status = "missing"
+            pdb_detail = "no matching WAR_PDB file"
+            unroutable_pdb.add(occ_key)
 
-            pdb_id = norm_pdb(match.group(1))
-            chain = norm_chain(match.group(2))
-            warhead = norm_ligand(match.group(3))
+        sdf_path, sdf_status = resolve_exact_or_unique_loose(
+            artifact_key, loose_key, sdf_lookup, sdf_exact, sdf_loose_lookup
+        )
+        plain_svg_path, plain_svg_status = resolve_exact_or_unique_loose(
+            artifact_key,
+            loose_key,
+            svg_index["plain_lookup"],
+            svg_index["plain_exact"],
+            svg_index["plain_loose_lookup"],
+        )
+        exposed_svg_path, exposed_svg_status = resolve_exact_or_unique_loose(
+            artifact_key,
+            loose_key,
+            svg_index["exposed_lookup"],
+            svg_index["exposed_exact"],
+            svg_index["exposed_loose_lookup"],
+        )
 
-            resid = residue_lookup.get((pdb_id, chain, warhead), "")
+        if sdf_path:
+            sdf_occurrences.add(artifact_key)
+        if plain_svg_path:
+            plain_svg_occurrences.add(artifact_key)
+        if exposed_svg_path:
+            exposed_svg_occurrences.add(artifact_key)
 
-            exact_key = (pdb_id, chain, warhead, resid) if resid else None
-            loose_key = (pdb_id, chain, warhead)
+        svg_status = "ok"
+        if plain_svg_status != "exact" or exposed_svg_status != "exact":
+            if plain_svg_path and exposed_svg_path:
+                svg_status = "fallback"
+            else:
+                svg_status = "missing"
 
-            has_sdf = False
-            sdf_path = ""
+        audit_row = {
+            **info,
+            "PDB_File": pdb_path,
+            "SDF_File": sdf_path,
+            "SVG_Plain": plain_svg_path,
+            "SVG_Exposed": exposed_svg_path,
+            "PDB_Status": pdb_status,
+            "PDB_Detail": pdb_detail,
+            "SDF_Status": sdf_status,
+            "SVG_Plain_Status": plain_svg_status,
+            "SVG_Exposed_Status": exposed_svg_status,
+            "SVG_Status": svg_status,
+        }
+        audit_rows.append(audit_row)
 
-            if exact_key and exact_key in sdf_index_exact:
-                has_sdf = True
-                sdf_path = str(sdf_path_lookup.get(exact_key, ""))
-            elif loose_key in sdf_index_loose:
-                matches = sdf_loose_lookup.get(loose_key, [])
-                if len(matches) == 1:
-                    has_sdf = True
-                    resid = matches[0][0][3]
-                    sdf_path = str(matches[0][1])
-
-            if not has_sdf:
-                skipped_no_sdf.append({
-                    "Target": target_name,
-                    "pdb_id": pdb_id,
-                    "Chain": chain,
-                    "Warhead": warhead,
-                    "Residue_ID": resid,
-                    "pdb_path": str(pdb_file.resolve()),
-                    "reason": "No unique matching SDF in MCS_Output/MCS_SDF",
-                })
-                continue
-
-            plain_svg_path = ""
-            exposed_svg_path = ""
-            exact_svg_key = (pdb_id, chain, warhead, resid) if resid else None
-            loose_svg_key = (pdb_id, chain, warhead)
-
-            if exact_svg_key and exact_svg_key in svg_index["plain_exact"]:
-                plain_svg_path = str(svg_index["plain_lookup"].get(exact_svg_key, ""))
-            elif loose_svg_key in svg_index["plain_loose"]:
-                matches = svg_index["plain_loose_lookup"].get(loose_svg_key, [])
-                if len(matches) == 1:
-                    plain_svg_path = str(matches[0][1])
-
-            if exact_svg_key and exact_svg_key in svg_index["exposed_exact"]:
-                exposed_svg_path = str(svg_index["exposed_lookup"].get(exact_svg_key, ""))
-            elif loose_svg_key in svg_index["exposed_loose"]:
-                matches = svg_index["exposed_loose_lookup"].get(loose_svg_key, [])
-                if len(matches) == 1:
-                    exposed_svg_path = str(matches[0][1])
-
-            smiles_value = meta_map.get(warhead, "")
-            svg_plain_available = bool(plain_svg_path)
-            svg_exposed_available = bool(exposed_svg_path)
-
-            rows.append({
-                "Target": target_name,
-                "pdb_id": pdb_id,
-                "Chain": chain,
-                "Warhead": warhead,
-                "Residue_ID": resid,
-                "SMILES": smiles_value,
-                "%Exposed": exp_lookup.get((pdb_id, chain, warhead), 0.0),
-                "pdb_path": str(pdb_file.resolve()),
+        if pdb_status == "ok" and sdf_path and plain_svg_path and exposed_svg_path:
+            display_rows.append({
+                **info,
+                "pdb_path": pdb_path,
                 "sdf_path": sdf_path,
                 "sdf_available": True,
-                "svg_plain_available": svg_plain_available,
-                "svg_exposed_available": svg_exposed_available,
-                "svg_available": bool(svg_plain_available or svg_exposed_available),
+                "svg_plain_available": True,
+                "svg_exposed_available": True,
+                "svg_available": True,
                 "svg_plain_path": plain_svg_path,
                 "svg_exposed_path": exposed_svg_path,
             })
+            display_occurrences.add(occ_key)
 
-            artifact_audit.append({
-                "Target": target_name,
-                "pdb_id": pdb_id,
-                "Chain": chain,
-                "Warhead": warhead,
-                "Residue_ID": resid,
-                "SMILES": smiles_value,
-                "sdf_available": True,
-                "sdf_path": sdf_path,
-                "svg_plain_available": svg_plain_available,
-                "svg_exposed_available": svg_exposed_available,
-                "svg_available": bool(svg_plain_available or svg_exposed_available),
-                "svg_plain_path": plain_svg_path,
-                "svg_exposed_path": exposed_svg_path,
-                "artifact_status": "ok" if (svg_plain_available or svg_exposed_available) else "missing_svg",
-            })
+    missing_display = successful_occurrences - display_occurrences
+    missing_sdf = {key for key in successful_occurrences if asset_key_from_occurrence(key) not in sdf_occurrences}
+    missing_plain_svg = {key for key in successful_occurrences if asset_key_from_occurrence(key) not in plain_svg_occurrences}
+    missing_exposed_svg = {key for key in successful_occurrences if asset_key_from_occurrence(key) not in exposed_svg_occurrences}
 
-    out = pd.DataFrame(rows)
+    display_df = pd.DataFrame(display_rows)
+    if not display_df.empty:
+        display_df = display_df.sort_values(
+            ["%Exposed", "pdb_id", "Warhead", "Chain", "Residue_ID"],
+            ascending=[False, True, True, True, True],
+        )
 
-    if out.empty:
-        skipped_file = root / "Results_Display_Skipped_NoSDF.csv"
-        pd.DataFrame(skipped_no_sdf).to_csv(skipped_file, index=False)
-        print(f"❌ No SDF-backed PDBs found for display.")
-        print(f"🧾 Wrote skipped report: {skipped_file}")
-        sys.exit(1)
+    results_file = root / "Results_Display.csv"
+    audit_file = root / "Results_Display_Artifact_Audit.csv"
+    pd.DataFrame(audit_rows).to_csv(audit_file, index=False)
+    display_df.to_csv(results_file, index=False)
 
-    out["%Exposed"] = pd.to_numeric(out["%Exposed"], errors="coerce").fillna(0.0)
+    if bad_names:
+        bad_file = root / "Results_Display_Skipped_BadNames.csv"
+        pd.DataFrame({"pdb_path": bad_names}).to_csv(bad_file, index=False)
+        print(f"⚠️ Skipped {len(bad_names)} badly named PDB files → {bad_file}")
 
-    out = out.sort_values(
-        ["%Exposed", "pdb_id", "Warhead", "Chain"],
-        ascending=[False, True, True, True],
+    print(
+        "🧪 Display coverage: "
+        f"successful_occurrences={len(successful_occurrences)} "
+        f"display_rows={len(display_rows)} "
+        f"sdf_occurrences={len(sdf_occurrences)} "
+        f"plain_svg_occurrences={len(plain_svg_occurrences)} "
+        f"exposed_svg_occurrences={len(exposed_svg_occurrences)}"
+    )
+    print(
+        "🧪 Missing coverage: "
+        f"missing_display={len(missing_display)} "
+        f"missing_sdf={len(missing_sdf)} "
+        f"missing_plain_svg={len(missing_plain_svg)} "
+        f"missing_exposed_svg={len(missing_exposed_svg)} "
+        f"unroutable_pdb={len(unroutable_pdb)}"
     )
 
-    out_file = root / "Results_Display.csv"
-    out.to_csv(out_file, index=False)
-    audit_file = root / "Results_Display_Artifact_Audit.csv"
-    pd.DataFrame(artifact_audit).to_csv(audit_file, index=False)
+    if display_df.empty:
+        print("❌ No occurrence-complete display rows could be generated.")
+        print(f"🧾 Wrote audit: {audit_file}")
+        sys.exit(1)
 
-    if skipped_no_sdf:
-        skipped_file = root / "Results_Display_Skipped_NoSDF.csv"
-        pd.DataFrame(skipped_no_sdf).to_csv(skipped_file, index=False)
-        print(f"⚠️ Skipped {len(skipped_no_sdf)} PDB rows without SDF support → {skipped_file}")
+    if missing_display or missing_sdf or missing_plain_svg or missing_exposed_svg or unroutable_pdb:
+        print("❌ Results display coverage is incomplete. See audit for details:")
+        print(f"🧾 Audit file: {audit_file}")
+        if missing_display:
+            print(f"   missing_display sample: {sorted(missing_display)[:10]}")
+        if missing_sdf:
+            print(f"   missing_sdf sample: {sorted(missing_sdf)[:10]}")
+        if missing_plain_svg:
+            print(f"   missing_plain_svg sample: {sorted(missing_plain_svg)[:10]}")
+        if missing_exposed_svg:
+            print(f"   missing_exposed_svg sample: {sorted(missing_exposed_svg)[:10]}")
+        if unroutable_pdb:
+            print(f"   unroutable_pdb sample: {sorted(unroutable_pdb)[:10]}")
+        sys.exit(1)
 
-    if skipped_bad_name:
-        bad_file = root / "Results_Display_Skipped_BadNames.csv"
-        pd.DataFrame({"pdb_path": skipped_bad_name}).to_csv(bad_file, index=False)
-        print(f"⚠️ Skipped {len(skipped_bad_name)} badly named PDB files → {bad_file}")
-
-    missing_svg_count = sum(1 for row in artifact_audit if row["artifact_status"] == "missing_svg")
-    if missing_svg_count:
-        print(f"⚠️ Included {missing_svg_count} display rows without SVG support → {audit_file}")
-    else:
-        print(f"✅ All display rows have routable SVG support → {audit_file}")
-
-    print(f"✅ Wrote {out_file} ({len(out)} SDF-backed entries)")
-    print(f"📊 Input WAR_PDB rows skipped due to missing SDF: {len(skipped_no_sdf)}")
+    print(f"✅ Wrote {results_file} ({len(display_df)} occurrence-backed entries)")
+    print(f"✅ Wrote artifact audit → {audit_file}")
 
 
 if __name__ == "__main__":

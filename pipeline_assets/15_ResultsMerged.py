@@ -32,9 +32,8 @@ sasa = pd.read_csv(sasa_csv)
 # (this avoids duplicate columns entirely)
 # ------------------------------------------------------------------
 
-sasa_keyed = sasa[
-    ["Target", "pdb_id", "Warhead", "Chain", "atom_id", "Exposure_A2"]
-].copy()
+merge_keys = ["Target", "pdb_id", "Warhead", "Residue_ID", "Chain", "atom_id"]
+sasa_keyed = sasa[merge_keys + ["Exposure_A2"]].copy()
 
 # Ensure numeric exposure
 sasa_keyed["Exposure_A2"] = pd.to_numeric(
@@ -47,7 +46,7 @@ sasa_keyed["Exposure_A2"] = pd.to_numeric(
 
 merged = lig.merge(
     sasa_keyed,
-    on=["Target", "pdb_id", "Warhead", "Chain", "atom_id"],
+    on=merge_keys,
     how="left"
 )
 

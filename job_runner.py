@@ -38,6 +38,7 @@ from api.randy_backup_client import (
     initial_backup_status,
 )
 from api.sdf_resolver import expected_mcs_sdf_filename, resolve_sdf_path, row_sdf_key
+from api.sdf_resolver import parse_mcs_sdf_filename
 from job_state import append_job_log, write_job_metadata as write_job_metadata_disk, results_ready_from_disk
 
 # =============================================================================
@@ -865,6 +866,75 @@ def _residue_lookup_from_summary(job_path: Path) -> Dict[Tuple[str, str, str], s
     return lookup
 
 
+def _normalize_target(value: Any) -> str:
+    return str(value or "").strip()
+
+
+def _occurrence_key_from_row(row: Dict[str, Any]) -> Tuple[str, str, str, str, str]:
+    pdb, chain, ligand, resid = row_sdf_key(row)
+    return (_normalize_target(row.get("Target") or row.get("target")), pdb, chain, ligand, resid)
+
+
+def _read_step11_item_failure_occurrences(job_path: Path) -> set[Tuple[str, str, str, str, str]]:
+    out: set[Tuple[str, str, str, str, str]] = set()
+    for candidate in [
+        job_path / "TARGET_RESULTS" / "MCS_Output" / "Ligand_MCS_Item_Failures.csv",
+        job_path / "MCS_Output" / "Ligand_MCS_Item_Failures.csv",
+    ]:
+        if not candidate.exists():
+            continue
+        try:
+            df = pd.read_csv(candidate, dtype=str).fillna("")
+        except Exception:
+            continue
+        for _, row in df.iterrows():
+            out.add(_occurrence_key_from_row(row.to_dict()))
+    return out
+
+
+def _read_successful_occurrences(job_path: Path) -> set[Tuple[str, str, str, str, str]]:
+    candidates = [
+        job_path / "TARGET_RESULTS" / "MCS_Output" / "Ligand_MCS_SASA_ALL_ATOMS.csv",
+        job_path / "TARGET_RESULTS" / "MCS_Output" / "Ligand_AllAtoms_Map.csv",
+        job_path / "TARGET_RESULTS" / "MCS_Output" / "Ligand_MCS_SASA.csv",
+        job_path / "TARGET_RESULTS" / "MCS_Output" / "Ligand_MCS_Map.csv",
+        job_path / "MCS_Output" / "Ligand_MCS_SASA_ALL_ATOMS.csv",
+        job_path / "MCS_Output" / "Ligand_AllAtoms_Map.csv",
+        job_path / "MCS_Output" / "Ligand_MCS_SASA.csv",
+        job_path / "MCS_Output" / "Ligand_MCS_Map.csv",
+    ]
+    failure_occurrences = _read_step11_item_failure_occurrences(job_path)
+    for candidate in candidates:
+        if not candidate.exists():
+            continue
+        try:
+            df = pd.read_csv(candidate, dtype=str).fillna("")
+        except Exception:
+            continue
+        keys = {_occurrence_key_from_row(row.to_dict()) for _, row in df.iterrows()}
+        keys = {key for key in keys if all(key[1:]) and key not in failure_occurrences}
+        if keys:
+            return keys
+    return set()
+
+
+def _read_display_occurrences(results: pd.DataFrame) -> set[Tuple[str, str, str, str, str]]:
+    return {_occurrence_key_from_row(row.to_dict()) for _, row in results.iterrows()}
+
+
+def _read_svg_occurrences(svg_dir: Path, suffix: str) -> set[Tuple[str, str, str, str]]:
+    out: set[Tuple[str, str, str, str]] = set()
+    if not svg_dir.exists():
+        return out
+    marker = f"_{suffix}.svg"
+    for fp in sorted(svg_dir.glob(f"*{marker}")):
+        base = fp.name[:-len(marker)] + ".sdf"
+        parsed = parse_mcs_sdf_filename(base)
+        if parsed:
+            out.add(parsed)
+    return out
+
+
 def validate_mcs_sdf_checkpoint(job_id: str, job_dir: str, *, copied: bool) -> None:
     job_path = Path(job_dir)
     sdf_dir = (
@@ -918,12 +988,19 @@ def validate_required_display_artifacts(job_id: str, job_dir: str) -> None:
         raise RuntimeError("Required display artifact missing: Results_Display.csv")
 
     try:
-        results = pd.read_csv(results_path, dtype=str, usecols=["pdb_id", "Chain", "Warhead", "Residue_ID"]).fillna("")
+        results = pd.read_csv(results_path, dtype=str).fillna("")
     except Exception as exc:
         raise RuntimeError(f"Could not read Results_Display.csv: {exc}") from exc
 
     if results.empty:
         raise RuntimeError("Results_Display.csv exists but has zero displayed rows")
+
+    successful_occurrences = _read_successful_occurrences(job_path)
+    if not successful_occurrences:
+        raise RuntimeError(
+            "Could not derive successful Step 11 occurrences from MCS output tables. "
+            f"Available TARGET_RESULTS files={_list_target_result_files(job_path, limit=40)}"
+        )
 
     sdf_dir = job_path / "TARGET_RESULTS" / "MCS_Output" / "MCS_SDF"
     if not sdf_dir.exists():
@@ -938,18 +1015,15 @@ def validate_required_display_artifacts(job_id: str, job_dir: str) -> None:
             f"Actual TARGET_RESULTS files: {_list_target_result_files(job_path, limit=30)}"
         )
 
-    residue_lookup = _residue_lookup_from_summary(job_path)
-    missing = []
-    matched = 0
-    for _, row in results.iterrows():
-        pdb, chain, ligand, resid = row_sdf_key(row.to_dict())
-        if not resid:
-            resid = residue_lookup.get((pdb, chain, ligand), "")
-        resolved, _diag = resolve_sdf_path(job_path, pdb, chain, ligand, resid)
-        if resolved:
-            matched += 1
-        else:
-            missing.append((pdb, chain, ligand, resid))
+    display_occurrences = _read_display_occurrences(results)
+    sdf_occurrences = {
+        parsed
+        for parsed in (parse_mcs_sdf_filename(fp.name) for fp in sdf_files)
+        if parsed
+    }
+    svg_dir = job_path / "TARGET_RESULTS" / "MCS_Output" / "MCS_SVG"
+    plain_svg_occurrences = _read_svg_occurrences(svg_dir, "plain")
+    exposed_svg_occurrences = _read_svg_occurrences(svg_dir, "exposed")
 
     required_csvs = ["Warhead_SASA_atoms.csv"]
     for filename in required_csvs:
@@ -960,16 +1034,61 @@ def validate_required_display_artifacts(job_id: str, job_dir: str) -> None:
     if ligand_sasa is None:
         raise RuntimeError("Required display artifact missing: Ligand_3D_Atoms_with_SASA.csv")
 
-    if missing:
+    successful_assets = {(pdb, chain, ligand, resid) for _, pdb, chain, ligand, resid in successful_occurrences}
+    display_assets = {(pdb, chain, ligand, resid) for _, pdb, chain, ligand, resid in display_occurrences}
+    missing_display = successful_occurrences - display_occurrences
+    unexpected_display = display_occurrences - successful_occurrences
+    missing_sdf = successful_assets - sdf_occurrences
+    missing_plain_svg = successful_assets - plain_svg_occurrences
+    missing_exposed_svg = successful_assets - exposed_svg_occurrences
+
+    unroutable_pdb = []
+    for _, row in results.iterrows():
+        pdb_path = str(row.get("pdb_path") or "").strip()
+        if not pdb_path:
+            unroutable_pdb.append(_occurrence_key_from_row(row.to_dict()))
+            continue
+        try:
+            if not Path(pdb_path).exists():
+                unroutable_pdb.append(_occurrence_key_from_row(row.to_dict()))
+        except Exception:
+            unroutable_pdb.append(_occurrence_key_from_row(row.to_dict()))
+
+    if (
+        missing_display
+        or unexpected_display
+        or missing_sdf
+        or missing_plain_svg
+        or missing_exposed_svg
+        or unroutable_pdb
+    ):
         raise RuntimeError(
-            "SDF contract failed: at least one Results_Display row does not resolve to an SDF. "
-            f"Rows={len(results)}, SDF files={len(sdf_files)}, "
-            f"First missing keys={missing[:10]}, "
+            "Display occurrence coverage failed. "
+            f"successful_occurrences={len(successful_occurrences)} display_rows={len(display_occurrences)} "
+            f"sdf_occurrences={len(sdf_occurrences)} plain_svg_occurrences={len(plain_svg_occurrences)} "
+            f"exposed_svg_occurrences={len(exposed_svg_occurrences)} "
+            f"missing_display={len(missing_display)} unexpected_display={len(unexpected_display)} "
+            f"missing_sdf={len(missing_sdf)} missing_plain_svg={len(missing_plain_svg)} "
+            f"missing_exposed_svg={len(missing_exposed_svg)} unroutable_pdb={len(unroutable_pdb)} "
+            f"sample_missing_display={sorted(missing_display)[:10]} "
+            f"sample_missing_sdf={sorted(missing_sdf)[:10]} "
+            f"sample_missing_plain_svg={sorted(missing_plain_svg)[:10]} "
+            f"sample_missing_exposed_svg={sorted(missing_exposed_svg)[:10]} "
+            f"sample_unroutable_pdb={unroutable_pdb[:10]} "
             f"Sample SDF files={[str(p.relative_to(job_path)) for p in sdf_files[:10]]}, "
-            f"Actual TARGET_RESULTS files={_list_target_result_files(job_path, limit=30)}"
+            f"Actual TARGET_RESULTS files={_list_target_result_files(job_path, limit=40)}"
         )
 
-    log_message(job_id, f"✅ final SDF validation PASS: rows={len(results)} matched={matched} sdf_files={len(sdf_files)} dir={sdf_dir}")
+    log_message(
+        job_id,
+        "✅ final display validation PASS: "
+        f"successful_occurrences={len(successful_occurrences)} "
+        f"display_rows={len(display_occurrences)} "
+        f"sdf_occurrences={len(sdf_occurrences)} "
+        f"plain_svg_occurrences={len(plain_svg_occurrences)} "
+        f"exposed_svg_occurrences={len(exposed_svg_occurrences)} "
+        f"dir={sdf_dir}",
+    )
 
 
 def _attempt_randy_backup(job_id: str, job_dir: str, *, status: str, required_result_tables: bool) -> Dict[str, Any]:

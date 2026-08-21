@@ -759,9 +759,8 @@ def build_chain_map_from_warpdb(war_pdb_root="WAR_PDB"):
 
 
 def assign_chains_from_warpdb(df, PDB_COL, chain_map_multi):
-
     if "Chain" in df.columns:
-        df["Chain"] = df["Chain"].apply(lambda v: normalize_chain(v, default="A"))
+        df["Chain"] = df["Chain"].apply(lambda v: normalize_chain(v, default=""))
     elif "Variant" in df.columns:
         df["Chain"] = df["Variant"].apply(lambda v: normalize_chain(v, default="A"))
     else:
@@ -776,7 +775,14 @@ def assign_chains_from_warpdb(df, PDB_COL, chain_map_multi):
         if not chains:
             continue
 
-        idx = g.sort_values("_row_i").index.tolist()
+        idx = [
+            row_idx
+            for row_idx in g.sort_values("_row_i").index.tolist()
+            if not str(df.at[row_idx, "Chain"]).strip()
+        ]
+
+        if not idx:
+            continue
 
         if len(chains) == len(idx):
             for i, row_idx in enumerate(idx):
@@ -788,6 +794,7 @@ def assign_chains_from_warpdb(df, PDB_COL, chain_map_multi):
 
     if "Variant" in df.columns:
         df.drop(columns=["Variant"], inplace=True)
+    df["Chain"] = df["Chain"].apply(lambda v: normalize_chain(v, default="A"))
     df.drop(columns=["_row_i"], inplace=True)
 
     return df

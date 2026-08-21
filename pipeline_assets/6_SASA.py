@@ -90,7 +90,7 @@ def atom_csv_header() -> list[str]:
 
 def summary_csv_header() -> list[str]:
     return [
-        "Target", "pdb_id", "Warhead", "Residue_ID", "Variant",
+        "Target", "pdb_id", "Warhead", "Residue_ID", "Variant", "Chain",
         "Total_atoms", "Exposed_atoms", "SASA_in_complex_A2",
         "%Exposed", "%Buried",
     ]
@@ -115,10 +115,27 @@ def append_atom_rows(rows: Iterable[list]) -> None:
             csv.writer(handle).writerows(rows)
 
 
-def append_summary_row(row: list) -> None:
+def append_summary_rows(rows: Iterable[list]) -> None:
+    rows = list(rows)
+    if not rows:
+        return
     with WRITE_LOCK:
         with open(SUMMARY_CSV, "a", newline="", encoding="utf-8") as handle:
-            csv.writer(handle).writerow(row)
+            csv.writer(handle).writerows(rows)
+
+
+def normalize_residue_id(value) -> str:
+    try:
+        number = int(value)
+        return str(number)
+    except Exception:
+        return str(value).strip()
+
+
+def residue_id_string(residue) -> str:
+    seq = normalize_residue_id(residue.id[1])
+    insertion = str(residue.id[2] or "").strip()
+    return f"{seq}{insertion}".strip()
 
 
 def pdb_metadata(pdb_path: Path) -> tuple[str, str, str, str]:
@@ -134,7 +151,7 @@ def analyze_sasa(
     pdb_path: Path,
     probe_radius: float,
     atom_sink: Optional[Callable[[list], None]] = None,
-) -> tuple[list, int, list[list]]:
+) -> tuple[list[list], int, list[list]]:
     target, pdb_id, warhead, variant = pdb_metadata(pdb_path)
     parser = PDBParser(QUIET=True)
     structure = parser.get_structure("s", str(pdb_path))
@@ -150,10 +167,7 @@ def analyze_sasa(
     sr.compute(structure, level="A")
     debug_mem(f"computed SASA {pdb_id}_{warhead}")
 
-    total_atoms = 0
-    exposed_atoms = 0
-    sasa_total = 0.0
-    residue_id_value: str | int = "NA"
+    occurrence_stats: dict[tuple[str, str], dict[str, float | int]] = {}
     rows_buffer: list[list] = []
     written_rows = 0
     collected_rows: list[list] = []
@@ -174,14 +188,19 @@ def analyze_sasa(
             for residue in chain:
                 if residue.resname.strip() != warhead:
                     continue
-                residue_id_value = residue.id[1]
+                residue_id_value = residue_id_string(residue)
+                occ_key = (chain.id, residue_id_value)
+                stats = occurrence_stats.setdefault(
+                    occ_key,
+                    {"total_atoms": 0, "exposed_atoms": 0, "sasa_total": 0.0},
+                )
                 for atom in residue.get_atoms():
-                    total_atoms += 1
+                    stats["total_atoms"] += 1
                     sasa = float(getattr(atom, "sasa", 0.0) or 0.0)
                     if sasa <= THRESHOLD:
                         continue
-                    exposed_atoms += 1
-                    sasa_total += sasa
+                    stats["exposed_atoms"] += 1
+                    stats["sasa_total"] += sasa
                     emit([
                         target,
                         pdb_id,
@@ -206,40 +225,49 @@ def analyze_sasa(
             written_rows += len(rows_buffer)
             rows_buffer = []
 
-    percent_exposed = (exposed_atoms / total_atoms) if total_atoms > 0 else 0.0
-    summary_row = [
-        target,
-        pdb_id,
-        warhead,
-        residue_id_value,
-        variant,
-        total_atoms,
-        exposed_atoms,
-        round(sasa_total, 3),
-        round(percent_exposed, 3),
-        round(1 - percent_exposed, 3),
-    ]
+    if not occurrence_stats:
+        raise RuntimeError(f"No ligand residues matched warhead {warhead} in {pdb_path.name}")
+
+    summary_rows = []
+    for (chain_id, residue_id_value), stats in occurrence_stats.items():
+        total_atoms = int(stats["total_atoms"])
+        exposed_atoms = int(stats["exposed_atoms"])
+        sasa_total = float(stats["sasa_total"])
+        percent_exposed = (exposed_atoms / total_atoms) if total_atoms > 0 else 0.0
+        summary_rows.append([
+            target,
+            pdb_id,
+            warhead,
+            residue_id_value,
+            variant,
+            chain_id,
+            total_atoms,
+            exposed_atoms,
+            round(sasa_total, 3),
+            round(percent_exposed, 3),
+            round(1 - percent_exposed, 3),
+        ])
 
     del structure
     gc.collect()
-    debug_mem(f"finished {pdb_path.name} exposed_rows={written_rows}")
-    return summary_row, written_rows, collected_rows
+    debug_mem(f"finished {pdb_path.name} exposed_rows={written_rows} occurrences={len(summary_rows)}")
+    return summary_rows, written_rows, collected_rows
 
 
 def process_file(pdb_path: Path, probe_radius: float, stream_output: bool) -> dict:
     try:
-        summary_row, written_rows, atom_rows = analyze_sasa(
+        summary_rows, written_rows, atom_rows = analyze_sasa(
             pdb_path,
             probe_radius,
             atom_sink=append_atom_rows if stream_output else None,
         )
         if not stream_output:
             append_atom_rows(atom_rows)
-        append_summary_row(summary_row)
+        append_summary_rows(summary_rows)
         return {
             "ok": True,
             "pdb_file": pdb_path.name,
-            "summary_row": summary_row,
+            "summary_rows": summary_rows,
             "written_rows": written_rows,
         }
     except Exception as exc:
@@ -309,9 +337,9 @@ def main() -> None:
             result = process_file(pdb_file, args.probe, STREAM_OUTPUT)
             processed += 1
             if result.get("ok"):
-                summary = result["summary_row"]
+                summaries = result["summary_rows"]
                 written_rows_total += int(result.get("written_rows") or 0)
-                print(f"✅ {pdb_file.name}: {summary[6]}/{summary[5]} exposed ({summary[8]:.2f})")
+                print(f"✅ {pdb_file.name}: occurrences={len(summaries)} exposed_atom_rows={int(result.get('written_rows') or 0)}")
             else:
                 failures.append(result)
                 print(f"❌ Error in {pdb_file.name}: {result.get('error')}")
@@ -325,9 +353,9 @@ def main() -> None:
                 result = future.result()
                 processed += 1
                 if result.get("ok"):
-                    summary = result["summary_row"]
+                    summaries = result["summary_rows"]
                     written_rows_total += int(result.get("written_rows") or 0)
-                    print(f"✅ {pdb_file.name}: {summary[6]}/{summary[5]} exposed ({summary[8]:.2f})")
+                    print(f"✅ {pdb_file.name}: occurrences={len(summaries)} exposed_atom_rows={int(result.get('written_rows') or 0)}")
                 else:
                     failures.append(result)
                     print(f"❌ Error in {pdb_file.name}: {result.get('error')}")
