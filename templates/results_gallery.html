@@ -4,6 +4,486 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/protacable.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/protacable-2d-toggle.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/protacable-mobile.css') }}">
+
+{#
+  Theme-safe page overrides.
+  Keep this block AFTER the three page stylesheets so legacy dark-only literals
+  in those files cannot override the semantic variables from theme.css.
+  No literal theme colors are used below: every foreground/background/border
+  comes from the shared light/dark design tokens.
+#}
+<style>
+  /* ---------- Command-center title ---------- */
+  .cc-title.glow-text {
+    color: var(--text-primary);
+    text-shadow: none;
+  }
+
+  .cc-job-id {
+    color: var(--warning-text);
+  }
+
+  .cc-title-separator {
+    color: var(--text-soft);
+    opacity: .72;
+  }
+
+  .protein-cycler {
+    color: var(--info-text);
+    -webkit-text-stroke: 1px var(--surface-border-strong);
+    text-shadow: 0 0 12px currentColor;
+    animation-name: whThemeProteinCycle;
+  }
+
+  @keyframes whThemeProteinCycle {
+    0%, 100% {
+      color: var(--warning-text);
+      -webkit-text-stroke-color: var(--info-text);
+    }
+    25% {
+      color: var(--info-text);
+      -webkit-text-stroke-color: var(--danger-text);
+    }
+    50% {
+      color: var(--danger-text);
+      -webkit-text-stroke-color: var(--success-text);
+    }
+    75% {
+      color: var(--success-text);
+      -webkit-text-stroke-color: var(--warning-text);
+    }
+  }
+
+  /* ---------- Shared surfaces ---------- */
+  .glass-panel,
+  .mini-panel,
+  .result-card,
+  .hud,
+  .viewport-loading-card,
+  .warhead-results-loader-card,
+  .map-legend,
+  .qed-tooltip {
+    background: var(--page-surface-elevated);
+    border-color: var(--surface-border);
+    color: var(--text-primary);
+    box-shadow: var(--surface-shadow);
+  }
+
+  .cc-right {
+    border-right-color: var(--warning-border);
+  }
+
+  /* ---------- Result cards ---------- */
+  .result-card {
+    background: var(--page-surface-elevated);
+    border-left-color: var(--info-text);
+  }
+
+  .result-card:hover {
+    background: var(--page-surface-muted);
+    border-left-color: var(--warning-text);
+  }
+
+  .result-card.is-active {
+    background: var(--page-surface-muted);
+    border-color: var(--warning-border);
+    border-left-color: var(--warning-text);
+    box-shadow: var(--surface-shadow);
+  }
+
+  .result-card:focus-visible {
+    outline-color: var(--focus-ring);
+  }
+
+  .result-card.sdf-missing {
+    border-left-color: var(--danger-text);
+  }
+
+  .artifact-warning {
+    color: var(--danger-text);
+    background: var(--danger-bg);
+    border-color: var(--danger-border);
+  }
+
+  .result-card-top {
+    color: var(--info-text);
+    background: var(--page-surface-muted);
+    border-color: var(--surface-border);
+    box-shadow: none;
+  }
+
+  .pdb-chip,
+  .metric-label,
+  .result-card-mobile-label {
+    color: var(--info-text);
+  }
+
+  .result-card-title,
+  .exp-chip,
+  .metric-main,
+  .result-card-mobile-value,
+  .ligand-metrics-yellow {
+    color: var(--warning-text);
+    text-shadow: none;
+  }
+
+  .result-card-title,
+  .exp-chip {
+    background: var(--warning-bg);
+    border-color: var(--warning-border);
+    box-shadow: none;
+  }
+
+  .exp-chip::before {
+    color: var(--warning-text);
+    background: currentColor;
+    box-shadow: 0 0 8px currentColor;
+  }
+
+  .metric,
+  .result-card-mobile-pill {
+    background: var(--page-surface-muted);
+    border-color: var(--surface-border);
+    box-shadow: none;
+  }
+
+  .metric-sub,
+  .metric-unit {
+    color: var(--text-secondary);
+  }
+
+  .metric-bar,
+  .qed-bar-bg,
+  .warhead-results-loader-progress {
+    background: var(--page-surface-muted);
+    border-color: var(--surface-border);
+  }
+
+  .metric-bar span {
+    background: var(--warning-text);
+    box-shadow: none;
+  }
+
+  /* ---------- Viewport / HUD ---------- */
+  .cc-viewport {
+    background: var(--page-surface-muted);
+    border-color: var(--info-border);
+  }
+
+  .viewer-control-btn {
+    background: var(--button-bg);
+    color: var(--warning-text);
+    border-color: var(--warning-border);
+    box-shadow: var(--surface-shadow);
+    text-shadow: none;
+  }
+
+  .viewer-control-btn:hover {
+    background: var(--button-bg-hover);
+    color: var(--text-primary);
+    border-color: var(--nav-pill-hover-border);
+    box-shadow: var(--surface-shadow);
+  }
+
+  .viewer-control-btn:focus-visible {
+    outline-color: var(--focus-ring);
+  }
+
+  .viewer-control-btn[aria-pressed="false"] {
+    color: var(--info-text);
+    border-color: var(--info-border);
+    box-shadow: none;
+  }
+
+  .hud {
+    background: var(--page-surface-elevated);
+    border-color: var(--surface-border);
+    color: var(--text-primary);
+  }
+
+  .hud-toggle {
+    background: var(--button-bg);
+    border-color: var(--button-border);
+    color: var(--button-text);
+    text-shadow: none;
+  }
+
+  .hud-toggle:hover {
+    background: var(--button-bg-hover);
+    border-color: var(--nav-pill-hover-border);
+    color: var(--text-primary);
+    box-shadow: none;
+  }
+
+  #hud-exp {
+    color: var(--warning-text);
+    background: var(--warning-bg);
+    border-color: var(--warning-border);
+    text-shadow: none;
+  }
+
+  /* ---------- Viewport/result loading states ---------- */
+  .viewport-loading,
+  .warhead-results-loader {
+    background: var(--page-overlay);
+  }
+
+  .viewport-loading-card,
+  .warhead-results-loader-card {
+    background: var(--page-surface-elevated);
+    border-color: var(--surface-border-strong);
+    color: var(--text-primary);
+  }
+
+  .viewport-spinner,
+  .warhead-results-loader-orbit {
+    border-color: var(--surface-border);
+    box-shadow: none;
+  }
+
+  .viewport-spinner {
+    border-top-color: var(--warning-text);
+    border-right-color: var(--info-text);
+  }
+
+  .warhead-results-loader-orbit::before {
+    border-top-color: var(--warning-text);
+    border-right-color: var(--info-text);
+  }
+
+  .warhead-results-loader-orbit::after {
+    border-bottom-color: var(--info-text);
+    border-left-color: var(--warning-text);
+  }
+
+  .viewport-loading-title,
+  .warhead-results-loader-title {
+    color: var(--warning-text);
+    text-shadow: none;
+  }
+
+  .viewport-loading-detail,
+  .warhead-results-loader-detail,
+  .warhead-results-loader-current,
+  .warhead-results-loader-state,
+  .warhead-results-loader-step,
+  .warhead-results-loader-btn.is-secondary {
+    color: var(--text-secondary);
+  }
+
+  .viewport-loading-error .viewport-spinner,
+  .warhead-results-loader-step.is-error,
+  .warhead-results-loader.is-error .warhead-results-loader-card {
+    border-color: var(--danger-border);
+  }
+
+  .viewport-loading-error .viewport-loading-title,
+  .warhead-results-loader-step.is-error span:first-child,
+  .warhead-results-loader.is-error .warhead-results-loader-title {
+    color: var(--danger-text);
+    text-shadow: none;
+  }
+
+  .warhead-results-loader-step {
+    background: var(--page-surface-muted);
+    border-color: var(--surface-border);
+  }
+
+  .warhead-results-loader-step span:first-child {
+    color: var(--info-text);
+  }
+
+  .warhead-results-loader-step.is-success {
+    border-color: var(--success-border);
+  }
+
+  .warhead-results-loader-step.is-success span:first-child {
+    color: var(--success-text);
+  }
+
+  .warhead-results-loader-step.is-warn,
+  .warhead-results-loader.is-partial .warhead-results-loader-card {
+    border-color: var(--warning-border);
+  }
+
+  .warhead-results-loader-step.is-warn span:first-child {
+    color: var(--warning-text);
+  }
+
+  .warhead-results-loader-progress > span {
+    background: linear-gradient(90deg, var(--info-text), var(--warning-text));
+    box-shadow: none;
+  }
+
+  .warhead-results-loader-btn {
+    background: var(--button-bg);
+    border-color: var(--button-border);
+    color: var(--button-text);
+  }
+
+  .warhead-results-loader-btn:hover {
+    background: var(--button-bg-hover);
+    border-color: var(--nav-pill-hover-border);
+    color: var(--text-primary);
+    box-shadow: none;
+  }
+
+  /* ---------- Right-side panels ---------- */
+  .map-title,
+  .right-title,
+  .panel-h,
+  .rules-title {
+    color: var(--text-primary);
+  }
+
+  .legend-row,
+  .rules-summary,
+  .qed-scale,
+  .qed-muted {
+    color: var(--text-secondary);
+  }
+
+  .map-legend {
+    background: var(--page-surface-elevated);
+    border-color: var(--surface-border);
+    box-shadow: var(--surface-shadow);
+  }
+
+  #sasa-legend .legend-note,
+  #sasa-legend .legend-note::before {
+    color: var(--info-text);
+    text-shadow: none;
+  }
+
+  #sasa-legend {
+    background: var(--info-bg);
+    border-color: var(--info-border);
+    box-shadow: none;
+  }
+
+  .map-legend .swatch.low {
+    color: var(--success-text);
+    background: currentColor;
+    box-shadow: 0 0 10px currentColor;
+  }
+
+  .map-legend .swatch.med {
+    color: var(--warning-text);
+    background: currentColor;
+    box-shadow: 0 0 10px currentColor;
+  }
+
+  .map-legend .swatch.high {
+    color: var(--danger-text);
+    background: currentColor;
+    box-shadow: 0 0 10px currentColor;
+  }
+
+  /* Keep the molecular SVG canvas dark-compatible through a shared token.
+     theme.css owns --code-bg, so this is still tokenized rather than literal. */
+  .map-scroll,
+  .map-img,
+  .map-svg-shell svg,
+  .map-svg-shell.is-loading::before {
+    background: var(--code-bg);
+    border-color: var(--surface-border);
+  }
+
+  .smiles-box,
+  .prop-row {
+    color: var(--text-primary);
+    background: var(--page-surface-muted);
+    border-color: var(--surface-border);
+    box-shadow: none;
+  }
+
+  .smiles-box {
+    border-color: var(--warning-border);
+  }
+
+  /* ---------- Buttons / chips / rules ---------- */
+  .toggle-btn,
+  .copy-btn,
+  .chip,
+  .rule-chip {
+    background: var(--button-bg);
+    border-color: var(--button-border);
+    color: var(--button-text);
+    box-shadow: none;
+  }
+
+  .toggle-btn:hover,
+  .copy-btn:hover {
+    background: var(--button-bg-hover);
+    border-color: var(--nav-pill-hover-border);
+    color: var(--text-primary);
+    box-shadow: none;
+  }
+
+  .toggle-btn.active {
+    background: var(--button-active-bg);
+    color: var(--button-active-text);
+    border-color: var(--warning-border);
+    box-shadow: none;
+  }
+
+  .copy-btn.secondary {
+    color: var(--info-text);
+    border-color: var(--info-border);
+  }
+
+  .copy-btn.secondary:hover {
+    background: var(--info-bg);
+    color: var(--info-text);
+  }
+
+  .copy-btn:active,
+  .copy-btn.flash {
+    background: var(--button-active-bg);
+    color: var(--button-active-text);
+    border-color: var(--info-border);
+    box-shadow: none;
+  }
+
+  .rule-chip.ok {
+    color: var(--success-text);
+    border-color: var(--success-border);
+    background: var(--success-bg);
+  }
+
+  .rule-chip.bad {
+    color: var(--danger-text);
+    border-color: var(--danger-border);
+    background: var(--danger-bg);
+  }
+
+  /* ---------- QED tooltip / status colors ---------- */
+  .qed-tooltip {
+    background: var(--page-surface-elevated);
+    border: 1px solid var(--surface-border);
+    color: var(--text-primary);
+  }
+
+  .qed-title {
+    color: var(--text-primary);
+  }
+
+  .qed-line-poor {
+    color: var(--danger-text);
+  }
+
+  .qed-line-moderate {
+    color: var(--warning-text);
+  }
+
+  .qed-line-good {
+    color: var(--success-text);
+  }
+
+  .qed-bar-fill {
+    background: var(--info-text);
+  }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -26,8 +506,8 @@
 <div class="container-fluid cc-wrap">
   <h1 class="glow-text cc-title">
     WARHEAD COMMAND CENTER:
-    <span style="color:var(--tron-yellow)">{{ job_id }}</span>
-    <span style="opacity:.55;">·</span>
+    <span class="cc-job-id">{{ job_id }}</span>
+    <span class="cc-title-separator" aria-hidden="true">·</span>
     <span class="protein-cycler">{{ target_name }}</span>
 
 
