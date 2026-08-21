@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from __future__ import annotations
+
 import gzip
 import io
 import os
@@ -128,6 +130,28 @@ def generate_chain_id(idx: int) -> str:
     return "X"
 
 
+def rename_target_ligand_residues(structure, chain_id: str, ligand5: str, ligandX: str) -> int:
+    source = str(ligand5 or "").strip().upper()
+    target = str(ligandX or "").strip().upper()
+    if not source or not target or source == target:
+        return 0
+
+    renamed = 0
+    for model in structure:
+        for chain in model:
+            if chain.id != chain_id:
+                continue
+            for residue in chain:
+                hetflag = str(residue.id[0] or "")
+                if not hetflag.startswith("H_"):
+                    continue
+                if residue.get_resname().strip().upper() != source:
+                    continue
+                residue.resname = target
+                renamed += 1
+    return renamed
+
+
 def build_single_pdb(job: dict):
     protein, pdb_id = job["protein"], job["pdb"]
     orig_chain, new_chain = job["orig_chain"], job["new_chain"]
@@ -155,6 +179,13 @@ def build_single_pdb(job: dict):
             for ch in model:
                 if ch.id == orig_chain:
                     ch.id = new_chain
+
+    rename_target_ligand_residues(
+        structure,
+        new_chain,
+        job.get("ligand5", ""),
+        job.get("ligandX", ""),
+    )
 
     io_obj = io.StringIO()
     io_pdb = PDBIO()
@@ -542,6 +573,8 @@ def main():
             "orig_chain": chain,
             "new_chain": new_chain,
             "ligand": ligand,
+            "ligand5": ligand_str if len(ligand_str) == 5 else "",
+            "ligandX": lig5_to_ligX.get(ligand_str, "") if len(ligand_str) == 5 else "",
             "cif_path": str(resolved_cif),
             "cif_lookup_mode": lookup_mode,
             "expected_paths": " | ".join(expected_paths),

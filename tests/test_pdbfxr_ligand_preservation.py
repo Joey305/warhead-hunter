@@ -1,13 +1,16 @@
 from __future__ import annotations
 
 import importlib.util
+import io
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
+from Bio.PDB import Atom, Chain, Model, PDBIO, Residue, Structure
 
 
 ROOT = Path("/Users/jxs794/Documents/warhead-hunter")
@@ -22,28 +25,94 @@ def _load_pdbfxr_module():
     return module
 
 
-def _five_char_hetatm_line() -> str:
-    return (
-        "HETATM"
-        f"{1:5d} "
-        f"{'C1':>4}"
-        f" {'A1I5W':<5}"
-        f"{'A':1}"
-        f"{601:4d}    "
-        f"{-23.695:8.3f}{12.345:8.3f}{6.789:8.3f}"
-        f"{1.00:6.2f}{20.00:6.2f}          "
-        f"{'C':>2}\n"
+def _five_char_hetatm_line(
+    *,
+    resname: str,
+    resseq: int,
+    atom_name: str,
+    coords: tuple[float, float, float],
+    occupancy: float,
+    bfactor: float,
+    element: str,
+) -> str:
+    structure = Structure.Structure("fixture")
+    model = Model.Model(0)
+    chain = Chain.Chain("A")
+    residue = Residue.Residue((f"H_{resname}", resseq, " "), resname, " ")
+    atom = Atom.Atom(
+        atom_name,
+        np.array(coords, dtype=float),
+        bfactor,
+        occupancy,
+        " ",
+        f"{atom_name:>4}",
+        1,
+        element=element,
     )
+    residue.add(atom)
+    chain.add(residue)
+    model.add(chain)
+    structure.add(model)
+
+    sio = io.StringIO()
+    io_pdb = PDBIO()
+    io_pdb.set_structure(structure)
+    io_pdb.save(sio)
+    return sio.getvalue().splitlines()[0] + "\n"
 
 
 class PdbfxrLigandPreservationTests(unittest.TestCase):
+    def test_biopython_step3_serializes_five_char_ligand_with_shifted_columns(self):
+        line = _five_char_hetatm_line(
+            resname="A1I5W",
+            resseq=1000,
+            atom_name="C26",
+            coords=(-23.695, 16.865, 14.424),
+            occupancy=1.00,
+            bfactor=15.02,
+            element="C",
+        )
+        self.assertEqual(
+            line,
+            "HETATM    1  C26 A1I5W A1000     -23.695  16.865  14.424  1.00 15.02           C  \n",
+        )
+
     def test_parser_accepts_shifted_five_character_residue_line(self):
         pdbfxr = _load_pdbfxr_module()
-        parsed = pdbfxr.parse_hetatm_line(_five_char_hetatm_line())
+        parsed = pdbfxr.parse_hetatm_line(
+            _five_char_hetatm_line(
+                resname="A1I5W",
+                resseq=1000,
+                atom_name="C26",
+                coords=(-23.695, 16.865, 14.424),
+                occupancy=1.00,
+                bfactor=15.02,
+                element="C",
+            )
+        )
         self.assertEqual(parsed["resname"], "A1I5W")
         self.assertEqual(parsed["chain"], "A")
-        self.assertEqual(parsed["resseq"], 601)
+        self.assertEqual(parsed["resseq"], 1000)
         self.assertAlmostEqual(parsed["x"], -23.695)
+
+    def test_parser_splits_glued_occupancy_and_high_bfactor_from_shifted_line(self):
+        pdbfxr = _load_pdbfxr_module()
+        parsed = pdbfxr.parse_hetatm_line(
+            _five_char_hetatm_line(
+                resname="A1I5G",
+                resseq=601,
+                atom_name="O1",
+                coords=(-22.327, 13.237, 13.206),
+                occupancy=0.50,
+                bfactor=105.95,
+                element="O",
+            )
+        )
+        self.assertEqual(parsed["resname"], "A1I5G")
+        self.assertEqual(parsed["chain"], "A")
+        self.assertEqual(parsed["resseq"], 601)
+        self.assertAlmostEqual(parsed["occ"], 0.50)
+        self.assertAlmostEqual(parsed["bfac"], 105.95)
 
     def test_step4_fails_hard_when_target_ligand_rewrite_preserves_zero_atoms(self):
         with tempfile.TemporaryDirectory(prefix="pdbfxr-fail-") as tmp:

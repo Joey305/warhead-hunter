@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from __future__ import annotations
+
 import os
 import re
 from collections import Counter
@@ -146,19 +148,24 @@ def _parse_standard_fixed_width(line: str) -> dict[str, object]:
 
 
 def _parse_five_char_fixed_width(line: str) -> dict[str, object]:
-    occ, bfac = _split_occ_bfac(line[57:63], line[63:69])
+    occ, bfac = _split_occ_bfac(line[56:62], line[62:68])
+    element = ""
+    if len(line) >= 80:
+        element = line[78:80].strip()
+    if not element and len(line) >= 78:
+        element = line[76:78].strip()
     return {
         "serial": int(line[6:11]),
         "atom_name": line[12:16].strip(),
         "resname": line[17:22].strip().upper(),
-        "chain": line[22].strip(),
-        "resseq": int(line[23:27]),
-        "x": float(line[31:39]),
-        "y": float(line[39:47]),
-        "z": float(line[47:55]),
+        "chain": line[23].strip(),
+        "resseq": int(line[24:28]),
+        "x": float(line[32:40]),
+        "y": float(line[40:48]),
+        "z": float(line[48:56]),
         "occ": occ,
         "bfac": bfac,
-        "element": line[78:80].strip() if len(line) >= 80 else line[76:78].strip(),
+        "element": element,
     }
 
 
@@ -168,7 +175,7 @@ def parse_hetatm_line(line: str) -> dict[str, object]:
     ligand code inserted into the residue-name field.
     """
     errors = []
-    for parser in (_parse_hetatm_tokens, _parse_standard_fixed_width, _parse_five_char_fixed_width):
+    for parser in (_parse_standard_fixed_width, _parse_five_char_fixed_width, _parse_hetatm_tokens):
         try:
             return parser(line)
         except Exception as exc:
