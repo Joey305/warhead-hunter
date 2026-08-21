@@ -16,8 +16,8 @@
     --scout-muted: var(--text-muted);
     --scout-panel: var(--page-surface-elevated);
     --scout-border: var(--surface-border);
-    --scout-danger: #ff5a6d;
-    --scout-ok: #66ff99;
+    --scout-danger: var(--danger-text);
+    --scout-ok: var(--success-text);
     --scout-input-bg: var(--input-bg);
     --scout-input-text: var(--input-text);
     --scout-input-border: var(--input-border);
@@ -59,10 +59,10 @@
     opacity: 1;
     color: var(--tron-cyan);
     border: 1px solid var(--tron-cyan);
-    background: rgba(0,255,255,0.08);
+    background: color-mix(in srgb, var(--tron-cyan) 8%, transparent);
     box-shadow:
-      0 0 18px rgba(0,255,255,0.20),
-      inset 0 0 12px rgba(0,255,255,0.10);
+      0 0 18px color-mix(in srgb, var(--tron-cyan) 20%, transparent),
+      inset 0 0 12px color-mix(in srgb, var(--tron-cyan) 10%, transparent);
     transform: translateY(-1px);
   }
 
@@ -143,9 +143,9 @@
   }
 
   @keyframes viewerPulse {
-    0%   { box-shadow: 0 0 0 rgba(0,255,255,0.00); }
-    30%  { box-shadow: 0 0 28px rgba(0,255,255,0.35); }
-    100% { box-shadow: 0 0 0 rgba(0,255,255,0.00); }
+    0%   { box-shadow: 0 0 0 transparent; }
+    30%  { box-shadow: 0 0 28px color-mix(in srgb, var(--tron-cyan) 35%, transparent); }
+    100% { box-shadow: 0 0 0 transparent; }
   }
 
   /* Composition cards */
@@ -182,7 +182,7 @@
   }
 
   .mini-tron-btn {
-    border: 1px solid rgba(0,255,255,0.55);
+    border: 1px solid color-mix(in srgb, var(--tron-cyan) 55%, transparent);
     color: var(--tron-cyan);
     background: var(--button-bg);
     border-radius: 6px;
@@ -195,19 +195,19 @@
 
   .mini-tron-btn:hover {
     background: var(--button-bg-hover);
-    box-shadow: 0 0 12px rgba(0,255,255,0.18);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--tron-cyan) 18%, transparent);
     transform: translateY(-1px);
   }
 
   .mini-yellow-btn {
-    border-color: rgba(255,230,80,0.55);
+    border-color: color-mix(in srgb, var(--tron-yellow) 55%, transparent);
     color: var(--tron-yellow);
-    background: rgba(255,230,80,0.04);
+    background: color-mix(in srgb, var(--tron-yellow) 4%, transparent);
   }
 
   .mini-yellow-btn:hover {
-    background: rgba(255,230,80,0.10);
-    box-shadow: 0 0 12px rgba(255,230,80,0.18);
+    background: color-mix(in srgb, var(--tron-yellow) 10%, transparent);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--tron-yellow) 18%, transparent);
   }
 
   /* Modal */
@@ -233,12 +233,12 @@
     overflow: hidden;
     border: 1px solid var(--surface-border-strong);
     background:
-      radial-gradient(circle at top left, rgba(0,255,255,0.08), transparent 28%),
-      radial-gradient(circle at bottom right, rgba(255,230,80,0.08), transparent 25%),
+      radial-gradient(circle at top left, color-mix(in srgb, var(--tron-cyan) 8%, transparent), transparent 28%),
+      radial-gradient(circle at bottom right, color-mix(in srgb, var(--tron-yellow) 8%, transparent), transparent 25%),
       var(--page-surface-elevated);
     box-shadow:
-      0 0 40px rgba(0,255,255,0.18),
-      inset 0 0 20px rgba(0,255,255,0.06);
+      0 0 40px color-mix(in srgb, var(--tron-cyan) 18%, transparent),
+      inset 0 0 20px color-mix(in srgb, var(--tron-cyan) 6%, transparent);
     border-radius: 18px;
     display: flex;
     flex-direction: column;
@@ -282,8 +282,8 @@
 
   .scout-modal-close:hover {
     color: var(--scout-danger);
-    border-color: rgba(255,90,109,0.5);
-    box-shadow: 0 0 12px rgba(255,90,109,0.16);
+    border-color: color-mix(in srgb, var(--danger-text) 50%, transparent);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--danger-text) 16%, transparent);
   }
 
   .scout-modal-body {
@@ -366,15 +366,15 @@
   }
 
   .hunt-entity-card:hover {
-    border-color: rgba(0,255,255,0.35);
-    background: rgba(0,255,255,0.045);
+    border-color: color-mix(in srgb, var(--tron-cyan) 35%, transparent);
+    background: color-mix(in srgb, var(--tron-cyan) 4.5%, transparent);
     transform: translateY(-1px);
   }
 
   .hunt-entity-card.selected {
-    border-color: rgba(0,255,255,0.85);
-    background: rgba(0,255,255,0.085);
-    box-shadow: 0 0 16px rgba(0,255,255,0.12);
+    border-color: color-mix(in srgb, var(--tron-cyan) 85%, transparent);
+    background: color-mix(in srgb, var(--tron-cyan) 8.5%, transparent);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--tron-cyan) 12%, transparent);
   }
 
   .hunt-entity-top {
@@ -421,12 +421,12 @@
 
   .hunt-badge.chain {
     color: var(--tron-cyan);
-    border-color: rgba(0,255,255,0.24);
+    border-color: color-mix(in srgb, var(--tron-cyan) 24%, transparent);
   }
 
   .hunt-badge.ligand {
     color: var(--tron-yellow);
-    border-color: rgba(255,230,80,0.26);
+    border-color: color-mix(in srgb, var(--tron-yellow) 26%, transparent);
   }
 
   .hunt-form-grid {
@@ -468,8 +468,8 @@
 
   .hunt-input:focus,
   .hunt-textarea:focus {
-    border-color: rgba(0,255,255,0.95);
-    box-shadow: 0 0 14px rgba(0,255,255,0.12);
+    border-color: color-mix(in srgb, var(--tron-cyan) 95%, transparent);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--tron-cyan) 12%, transparent);
   }
 
   .hunt-textarea {
@@ -509,9 +509,9 @@
 
   .hunt-warning {
     display: none;
-    border: 1px solid rgba(255,90,109,0.4);
-    color: #ffc6ce;
-    background: rgba(255,90,109,0.07);
+    border: 1px solid color-mix(in srgb, var(--danger-text) 40%, transparent);
+    color: var(--danger-text);
+    background: var(--danger-bg);
     border-radius: 10px;
     padding: 10px;
     line-height: 1.4;
@@ -524,9 +524,9 @@
 
   .hunt-status {
     display: none;
-    border: 1px solid rgba(0,255,255,0.18);
+    border: 1px solid color-mix(in srgb, var(--tron-cyan) 18%, transparent);
     color: var(--text-secondary);
-    background: rgba(0,255,255,0.04);
+    background: var(--info-bg);
     border-radius: 10px;
     padding: 10px;
     line-height: 1.4;
@@ -538,15 +538,15 @@
   }
 
   .hunt-status.error {
-    color: #ffc6ce;
-    border-color: rgba(255,90,109,0.4);
-    background: rgba(255,90,109,0.07);
+    color: var(--danger-text);
+    border-color: color-mix(in srgb, var(--danger-text) 40%, transparent);
+    background: var(--danger-bg);
   }
 
   .hunt-status.ok {
-    color: #d3ffe0;
-    border-color: rgba(102,255,153,0.35);
-    background: rgba(102,255,153,0.06);
+    color: var(--success-text);
+    border-color: var(--success-border);
+    background: var(--success-bg);
   }
 
   .scout-modal-footer {
@@ -597,9 +597,12 @@
     background: var(--code-bg) !important;
   }
 
-  #viewerOverlay,
-  #huntStatus {
+  #viewerOverlay {
     color: var(--text-muted) !important;
+  }
+
+  #huntStatus {
+    color: var(--text-muted);
   }
 </style>
 
@@ -679,7 +682,7 @@
       </div>
 
       <div class="glass-panel">
-        <h3 style="color: var(--tron-cyan); border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0;">
+        <h3 style="color: var(--tron-cyan); border-bottom: 1px solid var(--surface-border-strong); padding-bottom: 10px; margin-top: 0;">
           MOLECULAR COMPOSITION
         </h3>
         <div id="compositionList" style="max-height: 320px; overflow-y: auto;"></div>
@@ -711,13 +714,13 @@
     </div>
 
     <div id="viewerCard" class="glass-panel"
-         style="padding: 0; overflow: hidden; border: 2px solid var(--tron-cyan); height: 800px; position: relative; background: black;">
+         style="padding: 0; overflow: hidden; border: 2px solid var(--tron-cyan); height: 800px; position: relative; background: var(--code-bg);">
       <div id="viewer" style="width: 100%; height: 100%; position: relative;"></div>
       <div id="viewerOverlay"
            style="display:none; position:absolute; inset:0; z-index:12; background:var(--code-bg); align-items:center; justify-content:center; padding:24px; box-sizing:border-box; text-align:center; color:var(--text-secondary); pointer-events:none;">
       </div>
 
-      <div style="position: absolute; bottom: 10px; left: 10px; z-index: 10; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 5px;">
+      <div style="position: absolute; bottom: 10px; left: 10px; z-index: 10; background: color-mix(in srgb, var(--code-bg) 72%, transparent); padding: 5px; border-radius: 5px;">
         <span style="color: var(--tron-cyan);">■ Protein (By Chain)</span> &nbsp;
         <span style="color: var(--tron-yellow);">■ Ligands (Sticks)</span>
       </div>
@@ -939,13 +942,30 @@
       .replace(/\s+/g, " ");
   }
 
+  function getThemeColor(variableName) {
+    return getComputedStyle(document.documentElement)
+      .getPropertyValue(variableName)
+      .trim();
+  }
+
+  function syncViewerTheme() {
+    if (!viewer || typeof viewer.setBackgroundColor !== "function") return;
+    const bg = getThemeColor("--code-bg");
+    if (!bg) return;
+    viewer.setBackgroundColor(bg);
+    if (typeof viewer.render === "function") viewer.render();
+  }
+
+  const themeObserver = new MutationObserver(syncViewerTheme);
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
   function handleEnter(e) {
     if (e.key === 'Enter') fetchPDB();
   }
 
   function showResultsLoading() {
     document.getElementById('resultsArea').style.display = "grid";
-    document.getElementById('compositionList').innerHTML = '<div style="color:#888;">Loading composition…</div>';
+    document.getElementById('compositionList').innerHTML = '<div style="color:var(--text-muted);">Loading composition…</div>';
     document.getElementById('pdbFasta').value = "Loading sequences…";
     document.getElementById('pdbTitle').innerText = "Loading…";
     document.getElementById('pdbDate').innerText  = "—";
@@ -968,7 +988,7 @@
     const el = document.getElementById("huntStatus");
     if (!el) return;
     el.style.display = "block";
-    el.style.color = isError ? "#f66" : "#777";
+    el.style.color = isError ? "var(--danger-text)" : "var(--text-muted)";
     el.innerHTML = msg;
   }
 
@@ -1132,7 +1152,7 @@
 
     if (!viewer) {
       resetViewerInstance();
-      viewer = $3Dmol.createViewer("viewer", { backgroundColor: "black" });
+      viewer = $3Dmol.createViewer("viewer", { backgroundColor: getThemeColor("--code-bg") });
     }
     viewer.clear();
     viewer.addModel(structure.text, structure.format);
@@ -1207,7 +1227,7 @@
 
     const molP = fetchMolecules(pdbId, signal).then(entities => {
       if (!entities || !entities.length) {
-        document.getElementById('compositionList').innerHTML = '<div style="color:#888;">No molecule entities found.</div>';
+        document.getElementById('compositionList').innerHTML = '<div style="color:var(--text-muted);">No molecule entities found.</div>';
         document.getElementById('pdbFasta').value = "No polymer sequences found.";
         document.getElementById('pdbOrg').innerText = "N/A";
         return;
@@ -1236,11 +1256,11 @@
 
       if (CURRENT.huntTargets.length > 1) {
         _setHuntStatus(
-          `This structure has <span style="color:white;">${CURRENT.huntTargets.length}</span> protein FASTA entries. Click <span style="color:var(--tron-yellow);">Hunt for Warhead</span> and choose the exact target chain/entity before launching.`
+          `This structure has <span style="color:var(--text-primary); font-weight:800;">${CURRENT.huntTargets.length}</span> protein FASTA entries. Click <span style="color:var(--tron-yellow);">Hunt for Warhead</span> and choose the exact target chain/entity before launching.`
         );
       } else if (CURRENT.huntTargets.length === 1) {
         _setHuntStatus(
-          `One protein FASTA detected: <span style="color:white;">${escapeHtml(CURRENT.huntTargets[0].name)}</span>. You can still review/edit before launch.`
+          `One protein FASTA detected: <span style="color:var(--text-primary); font-weight:700;">${escapeHtml(CURRENT.huntTargets[0].name)}</span>. You can still review/edit before launch.`
         );
       } else {
         _setHuntStatus("No protein FASTA entries detected for Warhead Hunter.", true);
@@ -1275,7 +1295,7 @@
     document.getElementById("hitList").style.display = "block";
     document.getElementById("btnMoreHits").style.display = "none";
     document.getElementById("hitItems").innerHTML =
-      `<div style="color:#888;">Searching for <strong style="color:white;">${escapeHtml(q)}</strong>…</div>`;
+      `<div style="color:var(--text-muted);">Searching for <strong style="color:var(--text-primary);">${escapeHtml(q)}</strong>…</div>`;
 
     try {
       const body = {
@@ -1300,7 +1320,7 @@
 
       if (!res.ok) {
         document.getElementById("hitItems").innerHTML =
-          `<div style="color:#f66;">Search failed (${res.status}).</div>`;
+          `<div style="color:var(--danger-text);">Search failed (${res.status}).</div>`;
         return;
       }
 
@@ -1309,7 +1329,7 @@
 
       if (!hits.length) {
         document.getElementById("hitItems").innerHTML =
-          `<div style="color:#888;">No hits found.</div>`;
+          `<div style="color:var(--text-muted);">No hits found.</div>`;
         return;
       }
 
@@ -1321,7 +1341,7 @@
     } catch (e) {
       console.error("RCSB Search Error:", e);
       document.getElementById("hitItems").innerHTML =
-        `<div style="color:#f66;">Search error. Check console.</div>`;
+        `<div style="color:var(--danger-text);">Search error. Check console.</div>`;
     }
   }
 
@@ -1504,7 +1524,7 @@
       row.className = "composition-row";
 
       let icon = "❓";
-      let color = "white";
+      let color = "var(--text-primary)";
       let extraInfo = "";
       let actions = "";
 
@@ -1528,7 +1548,7 @@
         icon = "💊";
         color = "var(--tron-yellow)";
         if (entity.chem_comp_ids) {
-          extraInfo = `<div class="composition-extra">ID: <strong style="color:white">${escapeHtml(entity.chem_comp_ids.join(", "))}</strong></div>`;
+          extraInfo = `<div class="composition-extra">ID: <strong style="color:var(--text-primary)">${escapeHtml(entity.chem_comp_ids.join(", "))}</strong></div>`;
         }
       }
 
@@ -1744,10 +1764,10 @@
       } else {
         preview.innerHTML = `
           <strong>Preview:</strong><br>
-          <span style="color:#aaa;">Target label:</span> ${escapeHtml(targetName || "—")}<br>
-          <span style="color:#aaa;">Query:</span> ${escapeHtml(searchQuery || "—")}<br>
-          <span style="color:#aaa;">Selected:</span> ${escapeHtml(selected.map(t => `${t.name} / Chains ${t.chainsLabel}`).join("; "))}<br>
-          <span style="color:#aaa;">Detected ligands:</span> ${ligands.length ? escapeHtml(ligands.join("; ")) : "None detected"}
+          <span style="color:var(--text-muted);">Target label:</span> ${escapeHtml(targetName || "—")}<br>
+          <span style="color:var(--text-muted);">Query:</span> ${escapeHtml(searchQuery || "—")}<br>
+          <span style="color:var(--text-muted);">Selected:</span> ${escapeHtml(selected.map(t => `${t.name} / Chains ${t.chainsLabel}`).join("; "))}<br>
+          <span style="color:var(--text-muted);">Detected ligands:</span> ${ligands.length ? escapeHtml(ligands.join("; ")) : "None detected"}
         `;
       }
     }
@@ -1796,13 +1816,13 @@
 
       setModalStatus(
         `Launching Warhead Hunter…<br>
-         <span style="color:#aaa;">Target:</span> <span style="color:white;">${escapeHtml(targetName)}</span><br>
-         <span style="color:#aaa;">Query:</span> <span style="color:white;">${escapeHtml(searchQuery)}</span>`,
+         <span style="color:var(--text-muted);">Target:</span> <span style="color:var(--text-primary);">${escapeHtml(targetName)}</span><br>
+         <span style="color:var(--text-muted);">Query:</span> <span style="color:var(--text-primary);">${escapeHtml(searchQuery)}</span>`,
         "ok"
       );
 
       _setHuntStatus(
-        `Launching Warhead Hunter for <span style="color:white;">${escapeHtml(targetName)}</span>…`
+        `Launching Warhead Hunter for <span style="color:var(--text-primary); font-weight:700;">${escapeHtml(targetName)}</span>…`
       );
 
       // POST to the existing launcher used by the Warhead Hunter page.
