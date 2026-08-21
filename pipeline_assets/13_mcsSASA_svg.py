@@ -36,6 +36,7 @@ from rdkit.Chem import rdFMCS
 from rdkit.Chem import rdDepictor
 from rdkit.Chem.Draw import rdMolDraw2D
 from rdkit.Geometry import Point3D
+from step11_atom_semantics import element_from_atom_record, is_hydrogen_symbol
 
 # Optional: better bond perception
 try:
@@ -80,18 +81,6 @@ def safe_int_loose(x):
     m = re.search(r"-?\d+", s)
     return int(m.group(0)) if m else None
 
-def _extract_element(atom_name: str) -> str:
-    """
-    Try to infer element from a PDB-ish atom name.
-    Falls back to first alphabetic element-like token.
-    """
-    if not isinstance(atom_name, str):
-        return ""
-    s = atom_name.strip()
-    # Common PDB atom name patterns: " C1 ", " CA ", " CL1", " H12"
-    m = re.search(r"([A-Z][a-z]?)", s)
-    return m.group(1) if m else ""
-
 def recolor_svg(svg: str) -> str:
     CYAN = "#00D9FF"
     svg = re.sub(r"stroke:#000000", f"stroke:{CYAN}", svg)
@@ -133,10 +122,13 @@ def build_3d_mol_heavy(df_atoms: pd.DataFrame) -> tuple[Chem.Mol, pd.DataFrame]:
     df = df_atoms.copy().reset_index(drop=True)
 
     if "AtomSymbol" not in df.columns:
-        df["AtomSymbol"] = df["atom_name"].apply(_extract_element)
+        df["AtomSymbol"] = df.apply(
+            lambda row: element_from_atom_record(row.get("atom_name"), row.get("element")),
+            axis=1,
+        )
 
     # heavy-only
-    df = df[df["AtomSymbol"].str.upper() != "H"].copy().reset_index(drop=True)
+    df = df[~df["AtomSymbol"].map(is_hydrogen_symbol)].copy().reset_index(drop=True)
 
     rw = Chem.RWMol()
     for sym in df["AtomSymbol"]:
@@ -356,7 +348,10 @@ def main():
 
     # optional element column
     if "AtomSymbol" not in atom3d.columns:
-        atom3d["AtomSymbol"] = atom3d["atom_name"].apply(_extract_element)
+        atom3d["AtomSymbol"] = atom3d.apply(
+            lambda row: element_from_atom_record(row.get("atom_name"), row.get("element")),
+            axis=1,
+        )
 
     # ---- load SMILES map ----
     smiles_raw = pd.read_csv(args.smiles)

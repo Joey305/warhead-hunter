@@ -50,6 +50,11 @@ from rdkit.Chem import rdFMCS, AllChem
 from rdkit.Chem import rdDetermineBonds
 from rdkit.Chem import rdDepictor
 from rdkit.Chem.Draw import rdMolDraw2D
+from step11_atom_semantics import (
+    element_from_atom_record,
+    is_hydrogen_symbol,
+    mol_graph_atom_indices,
+)
 
 
 IS_HEROKU = bool(os.environ.get("DYNO"))
@@ -373,31 +378,6 @@ def make_bonds_generic(m: Chem.Mol) -> Chem.Mol:
     return q
 
 
-# =============================================================================
-# ELEMENT INFERENCE (fix CL/BR/etc parsing)
-# =============================================================================
-_TWO_LETTER_ELEMENTS = {
-    "CL": "Cl",
-    "BR": "Br",
-    "SI": "Si",
-    "SE": "Se",
-    "MG": "Mg",
-    "ZN": "Zn",
-    "FE": "Fe",
-    "CU": "Cu",
-    "MN": "Mn",
-    "NI": "Ni",
-    "HG": "Hg",
-    "PB": "Pb",
-    "AG": "Ag",
-    "AU": "Au",
-    "AL": "Al",
-    "K":  "K",
-    "LI": "Li",
-}
-_ORGANIC_FIRST_LETTERS = set(list("HCNOSPFIB")) | {"I"}
-
-
 def normalize_sdf_residue_id(value) -> str:
     s = str(value).strip()
     try:
@@ -434,34 +414,6 @@ def nonempty_file(path: Path) -> bool:
         return path.exists() and path.is_file() and path.stat().st_size > 0
     except Exception:
         return False
-
-
-def infer_element_from_atom_name(atom_name: str) -> str:
-    if atom_name is None or (isinstance(atom_name, float) and np.isnan(atom_name)):
-        return "C"
-
-    s = str(atom_name).strip()
-    s = re.sub(r"^[^A-Za-z]+", "", s)
-    s = re.sub(r"^[0-9]+", "", s)
-
-    m = re.match(r"^([A-Za-z]{1,2})", s)
-    if not m:
-        return "C"
-    tok = m.group(1).upper()
-
-    if tok in _TWO_LETTER_ELEMENTS:
-        if tok.startswith("C") and len(tok) == 2 and tok not in {"CL"}:
-            return "C"
-        return _TWO_LETTER_ELEMENTS[tok]
-
-    # PDB ligand hydrogens often arrive as HN1, HNC, HOL, etc. The leading H is
-    # the element; the remaining characters are atom-name context, not "Hn".
-    if tok[0] in _ORGANIC_FIRST_LETTERS:
-        return tok[0]
-
-    if len(tok) == 2:
-        return tok[0] + tok[1].lower()
-    return tok[0]
 
 
 # =============================================================================
@@ -560,7 +512,11 @@ def build_3d_mol(df: pd.DataFrame, template_charge: int | None = None):
     # ✅ CRITICAL: remove duplicated atoms inside a single occurrence
     df = dedupe_3d_atoms(df, coord_decimals=3)
 
-    df["AtomSymbol"] = df["atom_name"].apply(infer_element_from_atom_name)
+    df["AtomSymbol"] = df.apply(
+        lambda row: element_from_atom_record(row.get("atom_name"), row.get("element")),
+        axis=1,
+    )
+    df["IsGraphAtom"] = ~df["AtomSymbol"].map(is_hydrogen_symbol)
 
     rw = Chem.RWMol()
     for sym in df["AtomSymbol"]:
@@ -922,6 +878,7 @@ def compute_mcs(key, grouped, stage_callback=None):
     """
     ligand, target, pdb_id, resid, chain = key
     errs = []
+    warnings = []
     sdf_status = {
         "attempted": 0,
         "written": 0,
@@ -1143,10 +1100,12 @@ def compute_mcs(key, grouped, stage_callback=None):
 
     set_step("SIZE_CHECKS")
     n2 = mol2d.GetNumAtoms()
+    n2_graph_atoms = mol_graph_atom_indices(mol2d)
+    n2_graph = len(n2_graph_atoms)
     n3 = mol3d.GetNumAtoms()
+    graph_row_mask = df3d["IsGraphAtom"].astype(bool)
+    n3_graph = int(graph_row_mask.sum())
 
-    if n2 != n3:
-        errs.append([ligand, pdb_id, f"Size mismatch: SMILES={n2} vs 3D={n3}"])
     if mol3d.GetNumBonds() == 0:
         errs.append([ligand, pdb_id, "3D has 0 bonds (bond perception failed)"])
 
@@ -1162,12 +1121,12 @@ def compute_mcs(key, grouped, stage_callback=None):
                 map_3d_to_2d = {a3: a2 for a2, a3 in enumerate(m_full)}
                 mode = "GRAPH_FULL"
         except Exception as e:
-            errs.append([ligand, pdb_id, f"GRAPH_FULL error: {e}"])
+            warnings.append([ligand, pdb_id, f"GRAPH_FULL error: {e}"])
         finally:
             tmark("GRAPH_FULL", t_g)
     else:
         reason = "disabled" if not MCS_ENABLE_GRAPH_FULL else f"size>{MCS_GRAPH_FULL_MAX_ATOMS}"
-        errs.append([ligand, pdb_id, f"GRAPH_FULL skipped: {reason}"])
+        warnings.append([ligand, pdb_id, f"GRAPH_FULL skipped: {reason}"])
 
     # PASS A: TEMPLATE_FULL
     if not map_3d_to_2d and n2 == n3:
@@ -1180,11 +1139,12 @@ def compute_mcs(key, grouped, stage_callback=None):
                 map_3d_to_2d = {a3: a2 for a2, a3 in enumerate(full_match)}
                 mode = "TEMPLATE_FULL"
         except Exception as e:
-            errs.append([ligand, pdb_id, f"Template assign failed: {e}"])
+            warnings.append([ligand, pdb_id, f"Template assign failed: {e}"])
         finally:
             tmark("TEMPLATE_FULL", t_t)
 
     # PASS B: MCS
+    mcs_issue = None
     if not map_3d_to_2d:
         set_step("MCS")
         t_m = time.perf_counter()
@@ -1195,30 +1155,63 @@ def compute_mcs(key, grouped, stage_callback=None):
             smarts = find_mcs_smarts(q2, q3, timeout_sec=5)
 
             if not smarts:
-                errs.append([ligand, pdb_id, "MCS returned empty SMARTS"])
+                mcs_issue = "MCS returned empty SMARTS"
             else:
                 patt = Chem.MolFromSmarts(smarts)
                 if patt is None:
-                    errs.append([ligand, pdb_id, "SMARTS→MolFromSmarts failed"])
+                    mcs_issue = "SMARTS→MolFromSmarts failed"
                 else:
                     match2d = q2.GetSubstructMatch(patt)
                     match3d = q3.GetSubstructMatch(patt)
                     if not match2d or not match3d:
-                        errs.append([ligand, pdb_id, "No MCS substructure match"])
+                        mcs_issue = "No MCS substructure match"
                     else:
                         for a3, a2 in zip(match3d, match2d):
                             map_3d_to_2d[a3] = a2
                         mode = f"MCS({len(match2d)}/{n2})"
         except Exception as e:
-            errs.append([ligand, pdb_id, f"MCS error: {e}"])
+            mcs_issue = f"MCS error: {e}"
         finally:
             tmark("MCS", t_m)
+
+    if not map_3d_to_2d and mcs_issue:
+        errs.append([ligand, pdb_id, mcs_issue])
+
+    graph_map_3d_to_2d = {
+        a3: a2
+        for a3, a2 in map_3d_to_2d.items()
+        if bool(graph_row_mask.iloc[a3]) and a2 in n2_graph_atoms
+    }
+    mapped_graph_atoms_2d = {a2 for a2 in graph_map_3d_to_2d.values()}
+
+    if map_3d_to_2d:
+        if len(mapped_graph_atoms_2d) != n2_graph:
+            errs.append(
+                [
+                    ligand,
+                    pdb_id,
+                    f"Graph mapping incomplete: 2D_nonH={n2_graph} vs mapped_nonH={len(mapped_graph_atoms_2d)}",
+                ]
+            )
+        if n3_graph != n2_graph:
+            errs.append(
+                [
+                    ligand,
+                    pdb_id,
+                    (
+                        "Graph atom mismatch: "
+                        f"2D_nonH={n2_graph} vs 3D_nonH={n3_graph} "
+                        f"(all_atoms 2D={n2} 3D={n3})"
+                    ),
+                ]
+            )
 
     # summary print (same as your original, plus pid is already in dbg)
     dbg(
         f"[{ligand} {pdb_id} {chain} {resid}] "
-        f"2D={n2} 3D={n3} bonds3D={mol3d.GetNumBonds()} "
-        f"mapped={len(map_3d_to_2d)} mode={mode} smiles_id={ligand_for_smiles}"
+        f"2D={n2} 3D={n3} graph2D={n2_graph} graph3D={n3_graph} "
+        f"bonds3D={mol3d.GetNumBonds()} mapped={len(map_3d_to_2d)} "
+        f"mapped_graph={len(graph_map_3d_to_2d)} mode={mode} smiles_id={ligand_for_smiles}"
     )
 
     # ----------------------------
@@ -1226,9 +1219,9 @@ def compute_mcs(key, grouped, stage_callback=None):
     # ----------------------------
     set_step("BUILD_ROWS")
     rows_mcs = []
-    if map_3d_to_2d:
-        for a3 in sorted(map_3d_to_2d.keys()):
-            a2 = map_3d_to_2d[a3]
+    if graph_map_3d_to_2d:
+        for a3 in sorted(graph_map_3d_to_2d.keys()):
+            a2 = graph_map_3d_to_2d[a3]
             row = df3d.iloc[a3]
             rows_mcs.append([
                 ligand, target, pdb_id, resid, chain,

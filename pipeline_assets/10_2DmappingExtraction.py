@@ -9,7 +9,7 @@ from each PDB file into a unified CSV.
 
 Output CSV columns:
     Target, pdb_id, Warhead, Residue_ID, Variant, Chain,
-    atom_id, atom_name, x, y, z
+    atom_id, atom_name, element, x, y, z
 """
 
 import os
@@ -57,6 +57,7 @@ def extract_atoms_from_pdb(pdb_file, target):
             res_id = line[22:26].strip()
             atom_id = line[6:11].strip()
             atom_name = line[12:16].strip()
+            element = line[76:78].strip()
             x = float(line[30:38])
             y = float(line[38:46])
             z = float(line[46:54])
@@ -74,6 +75,7 @@ def extract_atoms_from_pdb(pdb_file, target):
                 "Chain": chain,
                 "atom_id": atom_id,
                 "atom_name": atom_name,
+                "element": element,
                 "x": x,
                 "y": y,
                 "z": z
@@ -97,7 +99,7 @@ for target_dir in ROOT.iterdir():
 with open(OUTFILE, "w", newline="") as f:
     writer = csv.DictWriter(f, fieldnames=[
         "Target","pdb_id","Warhead","Residue_ID","Variant","Chain",
-        "atom_id","atom_name","x","y","z"
+        "atom_id","atom_name","element","x","y","z"
     ])
     writer.writeheader()
     writer.writerows(rows)
