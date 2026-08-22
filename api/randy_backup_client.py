@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import csv
 import json
 import os
 import socket
@@ -18,6 +19,7 @@ import requests
 from requests import RequestException
 from urllib3.util import Timeout as Urllib3Timeout
 
+from artifact_paths import extract_relative_artifact_path
 from api import randy_archive_client
 
 
@@ -142,6 +144,18 @@ PREFERRED_ROOTS = [
     "TARGET_RESULTS",
     "bundles",
 ]
+RESULTS_DISPLAY_PDB_PREFIXES = (
+    "TARGET_RESULTS/WAR_PDB",
+    "WAR_PDB",
+)
+RESULTS_DISPLAY_SDF_PREFIXES = (
+    "TARGET_RESULTS/MCS_Output/MCS_SDF",
+    "MCS_Output/MCS_SDF",
+)
+RESULTS_DISPLAY_SVG_PREFIXES = (
+    "TARGET_RESULTS/MCS_Output/MCS_SVG",
+    "MCS_Output/MCS_SVG",
+)
 
 
 def _utc_now_iso() -> str:
@@ -479,6 +493,7 @@ def _apply_plan_metadata(result: Dict[str, Any], plan: Dict[str, Any]) -> None:
         "selected_path_kinds",
         "skipped_path_kinds",
         "route_critical_checks",
+        "results_display_referenced_artifact_count",
         "results_route_sufficient",
     ]:
         if key in plan:
@@ -575,7 +590,56 @@ def _summarize_candidate_files(files: List[CandidateFile], limit: int = PLANNER_
     ]
 
 
-def _route_critical_checks(selected_files: List[CandidateFile]) -> Dict[str, Any]:
+def _results_display_path_candidates(job_dir: Path) -> list[Path]:
+    return [
+        job_dir / "TARGET_RESULTS" / "Results_Display.csv",
+        job_dir / "Results_Display.csv",
+        job_dir / "job_files" / "Results_Display.csv",
+        job_dir / "job_files" / "TARGET_RESULTS" / "Results_Display.csv",
+    ]
+
+
+def _extract_display_artifact_relpaths(rows: List[Dict[str, Any]]) -> set[str]:
+    relpaths: set[str] = set()
+    specs = [
+        ("pdb_path", RESULTS_DISPLAY_PDB_PREFIXES),
+        ("PDB_File", RESULTS_DISPLAY_PDB_PREFIXES),
+        ("sdf_path", RESULTS_DISPLAY_SDF_PREFIXES),
+        ("SDF_File", RESULTS_DISPLAY_SDF_PREFIXES),
+        ("svg_plain_path", RESULTS_DISPLAY_SVG_PREFIXES),
+        ("SVG_Plain", RESULTS_DISPLAY_SVG_PREFIXES),
+        ("svg_exposed_path", RESULTS_DISPLAY_SVG_PREFIXES),
+        ("SVG_Exposed", RESULTS_DISPLAY_SVG_PREFIXES),
+    ]
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        for field, allowed_prefixes in specs:
+            rel = extract_relative_artifact_path(row.get(field), allowed_prefixes)
+            if rel:
+                relpaths.add(rel)
+    return relpaths
+
+
+def _results_display_referenced_relpaths(job_dir: Path) -> set[str]:
+    table_path = next((path for path in _results_display_path_candidates(job_dir) if path.exists()), None)
+    if table_path is None:
+        return set()
+
+    try:
+        with table_path.open("r", encoding="utf-8", newline="") as handle:
+            reader = csv.DictReader(handle)
+            rows = [dict(row) for row in reader if isinstance(row, dict)]
+    except Exception:
+        return set()
+    return _extract_display_artifact_relpaths(rows)
+
+
+def _route_critical_checks(
+    selected_files: List[CandidateFile],
+    *,
+    expected_display_relpaths: Optional[set[str]] = None,
+) -> Dict[str, Any]:
     rels = {item.rel for item in selected_files}
     has_results = any(rel in rels for rel in [
         "TARGET_RESULTS/Results_Display.csv",
@@ -590,13 +654,25 @@ def _route_critical_checks(selected_files: List[CandidateFile]) -> Dict[str, Any
     has_sdf = any(_viewer_critical_relpath(rel) and rel.lower().endswith(".sdf") for rel in rels)
     has_svg = any(_viewer_critical_relpath(rel) and rel.lower().endswith(".svg") for rel in rels)
     has_pdb = any(_viewer_critical_relpath(rel) and rel.lower().endswith(".pdb") for rel in rels)
+    expected_display_relpaths = expected_display_relpaths or set()
+    missing_display_artifacts = sorted(rel for rel in expected_display_relpaths if rel not in rels)
     return {
         "results_display_present": has_results,
         "resolved_sasa_summary_present": has_summary,
         "mcs_sdf_present": has_sdf,
         "mcs_svg_present": has_svg,
         "war_pdb_present": has_pdb,
-        "results_route_sufficient": bool(has_results and has_summary and has_sdf and has_svg and has_pdb),
+        "results_display_referenced_artifact_count": len(expected_display_relpaths),
+        "results_display_referenced_artifacts_present": not missing_display_artifacts,
+        "missing_results_display_artifacts": missing_display_artifacts,
+        "results_route_sufficient": bool(
+            has_results
+            and has_summary
+            and has_sdf
+            and has_svg
+            and has_pdb
+            and not missing_display_artifacts
+        ),
     }
 
 
@@ -622,6 +698,7 @@ def _plan_diagnostics(
     selected: List[CandidateFile],
     skipped: List[CandidateFile],
     required_relpaths: set[str],
+    expected_display_relpaths: set[str],
     plan_ok: bool,
     plan_reason: str = "",
     plan_status: str = "",
@@ -637,7 +714,7 @@ def _plan_diagnostics(
     other_selected = [item for item in selected if item.category == "other"]
     selected_relpaths = [item.rel for item in selected]
     skipped_relpaths = [item.rel for item in skipped]
-    rel_checks = _route_critical_checks(selected)
+    rel_checks = _route_critical_checks(selected, expected_display_relpaths=expected_display_relpaths)
     return {
         "ok": plan_ok,
         "reason": plan_reason,
@@ -685,6 +762,7 @@ def _plan_diagnostics(
             "pdb": sum(1 for rel in skipped_relpaths if rel.lower().endswith(".pdb")),
         },
         "route_critical_checks": rel_checks,
+        "results_display_referenced_artifact_count": len(expected_display_relpaths),
         "results_route_sufficient": bool(rel_checks.get("results_route_sufficient")),
     }
 
@@ -726,6 +804,7 @@ def iter_backup_candidates(job_dir: Path) -> Iterator[CandidateFile]:
 def build_backup_plan(job_dir: Path, *, max_bytes: Optional[int] = None) -> Dict[str, Any]:
     job_dir = Path(job_dir).resolve()
     max_bytes = int(max_bytes or backup_max_bytes())
+    expected_display_relpaths = _results_display_referenced_relpaths(job_dir)
     if not job_dir.exists():
         return _plan_diagnostics(
             job_dir=job_dir,
@@ -733,6 +812,7 @@ def build_backup_plan(job_dir: Path, *, max_bytes: Optional[int] = None) -> Dict
             selected=[],
             skipped=[],
             required_relpaths=set(),
+            expected_display_relpaths=expected_display_relpaths,
             plan_ok=False,
             plan_reason="Local job directory does not exist",
             plan_status="job_missing",
@@ -748,6 +828,7 @@ def build_backup_plan(job_dir: Path, *, max_bytes: Optional[int] = None) -> Dict
             selected=[],
             skipped=[],
             required_relpaths=required_relpaths,
+            expected_display_relpaths=expected_display_relpaths,
             plan_ok=False,
             plan_reason="No backup candidates found in job directory",
             plan_status="job_corrupt",
@@ -800,6 +881,7 @@ def build_backup_plan(job_dir: Path, *, max_bytes: Optional[int] = None) -> Dict
             selected=selected,
             skipped=[item for item in candidates if item.rel not in selected_rels],
             required_relpaths=required_relpaths,
+            expected_display_relpaths=expected_display_relpaths,
             plan_ok=False,
             plan_reason=f"Required backup file could not fit within WARHEAD_BACKUP_MAX_BYTES: {overflow_required}",
             plan_status="archive_too_large",
@@ -814,6 +896,7 @@ def build_backup_plan(job_dir: Path, *, max_bytes: Optional[int] = None) -> Dict
             selected=selected,
             skipped=[item for item in candidates if item.rel not in selected_rels],
             required_relpaths=required_relpaths,
+            expected_display_relpaths=expected_display_relpaths,
             plan_ok=False,
             plan_reason=f"Minimum viable results archive could not fit within WARHEAD_BACKUP_MAX_BYTES: {overflow_critical}",
             plan_status="archive_too_large",
@@ -823,7 +906,7 @@ def build_backup_plan(job_dir: Path, *, max_bytes: Optional[int] = None) -> Dict
     add_optional("preferred")
     add_optional("other")
 
-    route_checks = _route_critical_checks(selected)
+    route_checks = _route_critical_checks(selected, expected_display_relpaths=expected_display_relpaths)
     has_viewer_critical_candidates = bool(groups["viewer_critical"])
     if has_viewer_critical_candidates and not route_checks.get("results_route_sufficient"):
         return _plan_diagnostics(
@@ -832,6 +915,7 @@ def build_backup_plan(job_dir: Path, *, max_bytes: Optional[int] = None) -> Dict
             selected=selected,
             skipped=[item for item in candidates if item.rel not in selected_rels],
             required_relpaths=required_relpaths,
+            expected_display_relpaths=expected_display_relpaths,
             plan_ok=False,
             plan_reason="Minimum viable results archive is missing route-critical artifacts",
             plan_status="job_corrupt",
@@ -850,6 +934,7 @@ def build_backup_plan(job_dir: Path, *, max_bytes: Optional[int] = None) -> Dict
         selected=selected,
         skipped=skipped,
         required_relpaths=required_relpaths,
+        expected_display_relpaths=expected_display_relpaths,
         plan_ok=True,
         plan_reason="",
         plan_status="ready",
@@ -910,6 +995,8 @@ def _verify_archive(job_id: str) -> Dict[str, Any]:
         "artifact_ok": False,
         "table_path": "",
         "checked_at": _utc_now_iso(),
+        "results_display_referenced_artifact_count": 0,
+        "missing_results_display_artifacts": [],
     }
     if not detail:
         return status
@@ -920,17 +1007,34 @@ def _verify_archive(job_id: str) -> Dict[str, Any]:
     if isinstance(table_diag, dict):
         status["table_path"] = str(table_diag.get("resolved_path") or "")
 
-    options = detail.get("options") if isinstance(detail.get("options"), list) else []
-    if options:
-        first = next((item for item in options if isinstance(item, dict)), None)
-        if first:
-            pdb = str(first.get("pdb") or "").strip()
-            chain = str(first.get("chain") or "").strip()
-            ligand = str(first.get("ligand") or first.get("warhead") or "").strip()
-            resid = str(first.get("resid") or "").strip()
-            protein = randy_archive_client.find_protein_pdb_asset(job_id, pdb=pdb, chain=chain, ligand=ligand)
-            sdf = randy_archive_client.find_asset(job_id, pdb=pdb, chain=chain, ligand=ligand, resid=resid, kind="sdf")
-            status["artifact_ok"] = bool(protein and sdf)
+    referenced_paths: set[str] = set()
+    if table_df is not None and not table_df.empty:
+        referenced_paths = _extract_display_artifact_relpaths(table_df.to_dict(orient="records"))
+    status["results_display_referenced_artifact_count"] = len(referenced_paths)
+
+    missing_artifacts: list[str] = []
+    if referenced_paths:
+        for rel in sorted(referenced_paths):
+            asset = randy_archive_client.find_file(job_id, rel)
+            if not asset or not asset.get("relative_path"):
+                missing_artifacts.append(rel)
+                continue
+            if not randy_archive_client.get_file_bytes(job_id, str(asset.get("relative_path") or rel)):
+                missing_artifacts.append(rel)
+        status["missing_results_display_artifacts"] = missing_artifacts
+        status["artifact_ok"] = not missing_artifacts
+    else:
+        options = detail.get("options") if isinstance(detail.get("options"), list) else []
+        if options:
+            first = next((item for item in options if isinstance(item, dict)), None)
+            if first:
+                pdb = str(first.get("pdb") or "").strip()
+                chain = str(first.get("chain") or "").strip()
+                ligand = str(first.get("ligand") or first.get("warhead") or "").strip()
+                resid = str(first.get("resid") or "").strip()
+                protein = randy_archive_client.find_protein_pdb_asset(job_id, pdb=pdb, chain=chain, ligand=ligand)
+                sdf = randy_archive_client.find_asset(job_id, pdb=pdb, chain=chain, ligand=ligand, resid=resid, kind="sdf")
+                status["artifact_ok"] = bool(protein and sdf)
     if status["job_exists"] and status["table_ok"]:
         status["ok"] = True
         status["status"] = "verified"

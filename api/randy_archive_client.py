@@ -21,7 +21,7 @@ from __future__ import annotations
 import io
 import os
 from functools import lru_cache
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any, Dict, Iterable, Optional
 from urllib.parse import quote
 
@@ -285,6 +285,158 @@ def _candidate_options(payload: Dict[str, Any]) -> list[Dict[str, Any]]:
     if isinstance(options, list):
         return [o for o in options if isinstance(o, dict)]
     return []
+
+
+def _clean_relative_path(value: Any) -> str:
+    text = str(value or "").strip().replace("\\", "/").lstrip("/")
+    if not text:
+        return ""
+    pure = PurePosixPath(text)
+    if pure.is_absolute() or ".." in pure.parts:
+        return ""
+    return "/".join(part for part in pure.parts if part not in {"", "."})
+
+
+def _normalize_prefix(prefix: str) -> str:
+    return "/".join(part for part in str(prefix or "").strip().replace("\\", "/").strip("/").split("/") if part)
+
+
+def _relative_path_aliases(relative_path: str, allowed_prefixes: Iterable[str] = ()) -> list[str]:
+    raw = _clean_relative_path(relative_path)
+    if not raw:
+        return []
+
+    aliases: list[str] = []
+    seen: set[str] = set()
+
+    def add(value: str) -> None:
+        cleaned = _clean_relative_path(value)
+        if not cleaned:
+            return
+        lowered = cleaned.lower()
+        if lowered in seen:
+            return
+        seen.add(lowered)
+        aliases.append(cleaned)
+
+    bases = [raw]
+    if raw.lower().startswith("job_files/"):
+        bases.append(raw[len("job_files/"):])
+    if raw.lower().startswith("archives/"):
+        bases.append(raw[len("archives/"):])
+
+    for base in list(bases):
+        add(base)
+        add(f"job_files/{base}")
+        add(f"archives/{base}")
+
+    normalized_prefixes = [_normalize_prefix(prefix) for prefix in allowed_prefixes if _normalize_prefix(prefix)]
+    if normalized_prefixes:
+        for base in list(aliases):
+            base_low = base.lower()
+            for prefix in normalized_prefixes:
+                prefix_low = prefix.lower()
+                if base_low == prefix_low:
+                    suffix = ""
+                elif base_low.startswith(prefix_low + "/"):
+                    suffix = base[len(prefix):].lstrip("/")
+                else:
+                    continue
+                for alt_prefix in normalized_prefixes:
+                    add(f"{alt_prefix}/{suffix}" if suffix else alt_prefix)
+                break
+
+    return aliases
+
+
+def _candidate_file_index(payload: Dict[str, Any]) -> list[Dict[str, Any]]:
+    indexed: list[Dict[str, Any]] = []
+
+    for item in _candidate_files(payload):
+        rel = _clean_relative_path(item.get("relative_path") or item.get("filename") or item.get("name") or "")
+        if not rel:
+            continue
+        indexed.append({
+            **item,
+            "relative_path": rel,
+            "filename": str(item.get("filename") or item.get("name") or Path(rel).name),
+            "source": str(item.get("source") or "randy_files"),
+        })
+
+    available_tables = payload.get("available_tables")
+    if isinstance(available_tables, dict):
+        for name, rel in available_tables.items():
+            cleaned = _clean_relative_path(rel)
+            if not cleaned:
+                continue
+            indexed.append({
+                "relative_path": cleaned,
+                "filename": Path(cleaned).name or Path(str(name or "")).name,
+                "source": "randy_available_tables",
+            })
+
+    tables = payload.get("tables")
+    if isinstance(tables, dict):
+        for name, info in tables.items():
+            if not isinstance(info, dict):
+                continue
+            rel = _clean_relative_path(info.get("relative_path") or name)
+            if not rel:
+                continue
+            indexed.append({
+                **info,
+                "relative_path": rel,
+                "filename": Path(rel).name or Path(str(name or "")).name,
+                "source": "randy_tables_index",
+            })
+
+    deduped: list[Dict[str, Any]] = []
+    seen_paths: set[str] = set()
+    for item in indexed:
+        rel = str(item.get("relative_path") or "")
+        low = rel.lower()
+        if low in seen_paths:
+            continue
+        seen_paths.add(low)
+        deduped.append(item)
+    return deduped
+
+
+def list_files(job_id: str) -> list[Dict[str, Any]]:
+    payload = get_job(job_id)
+    if not payload:
+        return []
+    return _candidate_file_index(payload)
+
+
+def find_file(
+    job_id: str,
+    relative_path: str,
+    *,
+    allowed_prefixes: Iterable[str] = (),
+) -> Optional[Dict[str, Any]]:
+    payload = get_job(job_id)
+    if not payload:
+        return None
+
+    wanted_aliases = _relative_path_aliases(relative_path, allowed_prefixes=allowed_prefixes)
+    if not wanted_aliases:
+        return None
+
+    ranked: list[tuple[int, Dict[str, Any]]] = []
+    alias_ranks = {alias.lower(): idx for idx, alias in enumerate(wanted_aliases)}
+    for item in _candidate_file_index(payload):
+        rel = str(item.get("relative_path") or "")
+        rank = alias_ranks.get(rel.lower())
+        if rank is None:
+            continue
+        ranked.append((rank, item))
+
+    if not ranked:
+        return None
+
+    ranked.sort(key=lambda item: (item[0], str(item[1].get("relative_path") or "")))
+    return ranked[0][1]
 
 
 def _artifact_priority(relative_path: Any, kind: str) -> tuple[int, str]:
@@ -574,46 +726,75 @@ def get_file_bytes(job_id: str, relative_path: str, timeout: int = 30) -> Option
     if not archive_enabled() or not relative_path:
         return None
 
-    try:
-        resp = requests.get(_file_url(job_id, relative_path), headers=_headers(), timeout=timeout)
-        if resp.status_code in {400, 401, 403, 404}:
-            try:
-                detail = resp.json()
-            except Exception:
-                detail = {"status_code": resp.status_code, "text": resp.text[:300]}
+    candidate_asset = find_file(job_id, relative_path)
+    candidate_paths = [str(candidate_asset.get("relative_path") or "")] if candidate_asset else []
+    for candidate in _relative_path_aliases(relative_path):
+        if candidate not in candidate_paths:
+            candidate_paths.append(candidate)
+
+    last_error: Dict[str, Any] | None = None
+    for candidate_path in candidate_paths:
+        try:
+            resp = requests.get(_file_url(job_id, candidate_path), headers=_headers(), timeout=timeout)
+            if resp.status_code in {400, 401, 403, 404}:
+                try:
+                    detail = resp.json()
+                except Exception:
+                    detail = {"status_code": resp.status_code, "text": resp.text[:300]}
+                last_error = {
+                    "last_file_status": resp.status_code,
+                    "last_file_path": candidate_path,
+                    "last_file_error": detail,
+                }
+                continue
+            resp.raise_for_status()
             _LAST_TABLE_DIAGNOSTIC.update({
-                "last_file_status": resp.status_code,
-                "last_file_path": relative_path,
-                "last_file_error": detail,
+                "last_file_path": candidate_path,
+                "resolved_path": candidate_path,
             })
-            return None
-        resp.raise_for_status()
-        return resp.content, resp.headers.get("content-type", "application/octet-stream")
-    except Exception:
-        return None
+            return resp.content, resp.headers.get("content-type", "application/octet-stream")
+        except Exception as exc:
+            last_error = {
+                "last_file_path": candidate_path,
+                "last_file_error": str(exc),
+            }
+            continue
+
+    if last_error:
+        _LAST_TABLE_DIAGNOSTIC.update(last_error)
+    return None
 
 
-def proxy_file_response(job_id: str, relative_path: str, mimetype: str = "application/octet-stream") -> Optional[Response]:
+def proxy_file_response(
+    job_id: str,
+    relative_path: str,
+    mimetype: str = "application/octet-stream",
+    *,
+    as_attachment: bool = False,
+    download_name: str = "",
+) -> Optional[Response]:
     got = get_file_bytes(job_id, relative_path)
     if not got:
         return None
 
     content, content_type = got
+    filename = download_name or Path(_clean_relative_path(relative_path) or "download").name
+    headers = {
+        "Cache-Control": "no-store",
+        "X-Warhead-Handoff-Source": "RANDY_ARCHIVE",
+    }
+    if as_attachment and filename:
+        headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+
     if (mimetype or content_type or "").lower().startswith("image/svg") or str(relative_path or "").lower().endswith(".svg"):
         return themed_svg_response(
             content.decode("utf-8", errors="replace"),
-            headers={
-                "Cache-Control": "no-store",
-                "X-Warhead-Handoff-Source": "RANDY_ARCHIVE",
-            },
+            headers=headers,
         )
     return Response(
         content,
         mimetype=mimetype or content_type or "application/octet-stream",
-        headers={
-            "Cache-Control": "no-store",
-            "X-Warhead-Handoff-Source": "RANDY_ARCHIVE",
-        },
+        headers=headers,
     )
 
 

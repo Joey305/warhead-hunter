@@ -21,9 +21,21 @@
   .dot{
     width:10px; height:10px; border-radius:50%;
     background: var(--tron-yellow);
-    box-shadow:0 0 14px rgba(255, 230, 0, .6);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--tron-yellow) 60%, transparent);
   }
-  .dot.running{ animation:pulse 1s infinite; }
+  .dot.running{
+    background: var(--tron-yellow);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--tron-yellow) 60%, transparent);
+    animation:pulse 1s infinite;
+  }
+  .dot.completed{
+    background: var(--tron-cyan);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--tron-cyan) 70%, transparent);
+  }
+  .dot.failed{
+    background: var(--danger-text);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--danger-text) 60%, transparent);
+  }
   @keyframes pulse{
     0%{ transform:scale(1); opacity:.7;}
     50%{ transform:scale(1.45); opacity:1;}
@@ -65,7 +77,12 @@
     content:"";
     position:absolute; top:0; left:-40%;
     height:100%; width:40%;
-    background: linear-gradient(90deg, transparent, rgba(0,255,255,.55), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--tron-cyan) 55%, transparent),
+      transparent
+    );
     animation: sheen 1.2s linear infinite;
   }
   @keyframes sheen{
@@ -82,13 +99,15 @@
     padding:18px 18px;
     font-family:'Courier New', monospace;
     color:var(--code-text);
-    box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.2);
+    box-shadow: inset 0 0 20px color-mix(in srgb, var(--tron-cyan) 20%, transparent);
     border-radius:16px;
   }
   .logline{ padding:2px 0; opacity:.95; }
   .logline.new{
-    background: var(--info-bg);
-    border-left: 3px solid var(--info-border);
+    /* Keep new-line feedback without painting a light info panel over the dark terminal. */
+    background: transparent;
+    border-left: 3px solid var(--tron-cyan);
+    color: var(--code-text);
     padding-left:10px;
     animation: popin .25s ease-out;
   }
@@ -168,7 +187,12 @@
 
   /* Finish modal */
   #finish-modal{ display:none; position:fixed; inset:0; z-index:99999; }
-  #finish-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.75); }
+  #finish-backdrop{
+    position:absolute;
+    inset:0;
+    background: color-mix(in srgb, var(--code-bg) 78%, transparent);
+    backdrop-filter: blur(4px);
+  }
   #finish-card{
     position:relative;
     max-width: 760px;
@@ -183,7 +207,11 @@
     display:block;
     width:100%;
     height:260px;
-    background:radial-gradient(circle at 50% 50%, rgba(0,255,255,.12), rgba(0,0,0,.95));
+    background: radial-gradient(
+      circle at 50% 50%,
+      color-mix(in srgb, var(--tron-cyan) 12%, transparent),
+      var(--code-bg)
+    );
   }
   #finish-body{ padding: 16px 18px 18px 18px; color:var(--text-primary); }
   #finish-header{
@@ -213,16 +241,6 @@
 
 
   
-</style>
-<style>
-  .mini-btn{
-    padding:8px 10px; border-radius:10px;
-    border:1px solid var(--button-border);
-    background:var(--button-bg);
-    color:var(--button-text);
-    cursor:pointer;
-  }
-  .mini-btn:hover{ border-color: var(--nav-pill-hover-border); background: var(--button-bg-hover); }
 </style>
 
 
@@ -385,7 +403,7 @@
 
   // OS notification permission is separate from in-tab alerts
   let notificationsEnabled = false; // means OS notifications granted
-  let finishedAnnounced = (lastStatus === "completed" || lastStatus === "failed");
+  let finishedAnnounced = false;
 
   let titleFlashTimer = null;
   const originalTitle = document.title;
@@ -409,6 +427,12 @@
       .replaceAll("'","&#039;");
   }
 
+  function getThemeColor(variableName){
+    return getComputedStyle(document.documentElement)
+      .getPropertyValue(variableName)
+      .trim();
+  }
+
   function showToast(title, msg){
     if (!toast) return;
     toastTitle.textContent = title;
@@ -422,29 +446,19 @@
     if (statusText) statusText.innerText = "STATUS: " + (status || "").toUpperCase();
 
     pill?.classList.remove("running","completed","failed");
-    dot?.classList.remove("running");
+    dot?.classList.remove("running","completed","failed");
 
     if (s === "completed"){
       pill?.classList.add("completed");
-      if (dot){
-        dot.style.background = "var(--tron-cyan)";
-        dot.style.boxShadow = "0 0 14px rgba(0,255,255,.7)";
-      }
+      dot?.classList.add("completed");
       progress?.classList.add("hidden");
     } else if (s === "failed"){
       pill?.classList.add("failed");
-      if (dot){
-        dot.style.background = "#ff5b5b";
-        dot.style.boxShadow = "0 0 14px rgba(255,91,91,.6)";
-      }
+      dot?.classList.add("failed");
       progress?.classList.add("hidden");
     } else {
       pill?.classList.add("running");
       dot?.classList.add("running");
-      if (dot){
-        dot.style.background = "var(--tron-yellow)";
-        dot.style.boxShadow = "0 0 14px rgba(255,230,0,.6)";
-      }
       progress?.classList.remove("hidden");
     }
   }
@@ -724,6 +738,9 @@
     fireworksCanvas.height = Math.floor(cssH * dpr);
     fwCtx.setTransform(dpr,0,0,dpr,0,0);
 
+    const fireworksColor = getThemeColor("--tron-cyan");
+    if (!fireworksColor) return;
+
     const particles = [];
     const now = () => performance.now();
     const t0 = now();
@@ -762,8 +779,11 @@
 
         fwCtx.beginPath();
         fwCtx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-        fwCtx.fillStyle = "rgba(0,255,255,0.92)";
+        fwCtx.save();
+        fwCtx.globalAlpha = 0.92;
+        fwCtx.fillStyle = fireworksColor;
         fwCtx.fill();
+        fwCtx.restore();
 
         if (p.life <= 0) particles.splice(i,1);
       }
@@ -832,16 +852,23 @@
   setNotifyBtnState();
   setStatusUI(lastStatus);
 
-  // If page loads already completed/failed, reveal immediately
-  if (!finishedAnnounced && (lastStatus === "completed" || lastStatus === "failed")){
+  // If the page loads after the job already finished, reveal the final state immediately.
+  if (lastStatus === "completed" || lastStatus === "failed"){
     finishedAnnounced = true;
     revealResults(lastStatus);
     progress?.classList.add("hidden");
-  }
 
-  // Start polling
-  pollTimer = setInterval(pollOnce, 2000);
-  pollOnce();
+    if (lastStatus === "completed"){
+      fetch(`/api/job_summary/${jobId}`, { cache: "no-store" })
+        .then(r => r.json())
+        .then(summary => renderFinishSummary(summary))
+        .catch(() => {});
+    }
+  } else {
+    // Only poll while the job is still active.
+    pollTimer = setInterval(pollOnce, 2000);
+    pollOnce();
+  }
 </script>
 
 

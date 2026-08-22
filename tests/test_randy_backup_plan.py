@@ -90,6 +90,31 @@ class RandyBackupPlanTests(unittest.TestCase):
         self.assertIn("summary.json", plan["required_missing"])
         self.assertNotIn("job_metadata.json", plan["required_missing"])
 
+    def test_plan_fails_when_results_display_references_missing_artifact(self):
+        job_dir = self._job_dir()
+        (job_dir / "TARGET_RESULTS" / "WAR_PDB" / "1abc_A_ABC.pdb").unlink()
+        (job_dir / "TARGET_RESULTS" / "Results_Display.csv").write_text(
+            (
+                "pdb_id,Chain,pdb_path,sdf_path,svg_plain_path,svg_exposed_path\n"
+                "1abc,A,TARGET_RESULTS/WAR_PDB/1abc_A_ABC.pdb,"
+                "TARGET_RESULTS/MCS_Output/MCS_SDF/1abc_A_ABC_10.sdf,"
+                "TARGET_RESULTS/MCS_Output/MCS_SVG/1abc_A_ABC_10_plain.svg,"
+                "TARGET_RESULTS/MCS_Output/MCS_SVG/1abc_A_ABC_10_exposed.svg\n"
+            ),
+            encoding="utf-8",
+        )
+        (job_dir / "TARGET_RESULTS" / "MCS_Output" / "MCS_SVG" / "1abc_A_ABC_10_plain.svg").write_text("<svg/>", encoding="utf-8")
+        (job_dir / "TARGET_RESULTS" / "MCS_Output" / "MCS_SVG" / "1abc_A_ABC_10_exposed.svg").write_text("<svg/>", encoding="utf-8")
+
+        plan = randy_backup_client.build_backup_plan(job_dir, max_bytes=50_000)
+
+        self.assertFalse(plan["ok"])
+        self.assertEqual(plan["plan_status"], "job_corrupt")
+        self.assertIn(
+            "TARGET_RESULTS/WAR_PDB/1abc_A_ABC.pdb",
+            plan["route_critical_checks"]["missing_results_display_artifacts"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

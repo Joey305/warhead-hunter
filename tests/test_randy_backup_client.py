@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
+import pandas as pd
 import requests
 
 from api import randy_backup_client
@@ -154,6 +155,46 @@ class RandyBackupClientTests(unittest.TestCase):
         self.assertTrue(result["ok"])
         self.assertEqual(result["status"], "completed")
         self.assertEqual(result["verification"]["status"], "verified")
+
+    def test_verify_archive_checks_all_results_display_referenced_artifacts(self):
+        table_df = pd.DataFrame(
+            [
+                {
+                    "pdb_path": "TARGET_RESULTS/WAR_PDB/NTSR1/6yvr_AAA_BNG.pdb",
+                    "sdf_path": "TARGET_RESULTS/MCS_Output/MCS_SDF/6yvr_A_BNG_4001.sdf",
+                    "svg_plain_path": "TARGET_RESULTS/MCS_Output/MCS_SVG/6yvr_A_BNG_4001_plain.svg",
+                    "svg_exposed_path": "TARGET_RESULTS/MCS_Output/MCS_SVG/6yvr_A_BNG_4001_exposed.svg",
+                }
+            ]
+        )
+
+        def find_file(job_id, relative_path, allowed_prefixes=()):
+            return {"relative_path": f"job_files/{relative_path}", "filename": Path(relative_path).name}
+
+        def get_file_bytes(job_id, relative_path, timeout=30):
+            return (b"artifact", "application/octet-stream")
+
+        with patch.object(randy_backup_client.randy_archive_client, "reset_job_cache"), patch.object(
+            randy_backup_client.randy_archive_client, "job_exists", return_value=True
+        ), patch.object(
+            randy_backup_client.randy_archive_client, "get_job_index", return_value={"ok": True}
+        ), patch.object(
+            randy_backup_client.randy_archive_client, "get_table_dataframe", return_value=table_df
+        ), patch.object(
+            randy_backup_client.randy_archive_client,
+            "last_table_diagnostic",
+            return_value={"resolved_path": "job_files/TARGET_RESULTS/Results_Display.csv"},
+        ), patch.object(
+            randy_backup_client.randy_archive_client, "find_file", side_effect=find_file
+        ), patch.object(
+            randy_backup_client.randy_archive_client, "get_file_bytes", side_effect=get_file_bytes
+        ):
+            verify = randy_backup_client._verify_archive("61bf4697")
+
+        self.assertTrue(verify["ok"])
+        self.assertTrue(verify["artifact_ok"])
+        self.assertEqual(verify["results_display_referenced_artifact_count"], 4)
+        self.assertEqual(verify["missing_results_display_artifacts"], [])
 
 
 if __name__ == "__main__":

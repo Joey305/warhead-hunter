@@ -45,10 +45,12 @@ try:
     from api.randy_archive_client import (
         archive_enabled as randy_archive_enabled,
         find_asset as randy_find_asset,
+        find_file as randy_find_file,
         find_protein_pdb_asset as randy_find_protein_pdb_asset,
         get_job_index as randy_get_job_index,
         get_file_bytes as randy_get_file_bytes,
         list_archived_jobs as randy_list_archived_jobs,
+        list_files as randy_list_files,
         get_table_dataframe as randy_get_table_dataframe,
         proxy_file_response as randy_proxy_file_response,
         job_exists as randy_job_exists,
@@ -58,6 +60,9 @@ except Exception:
         return False
 
     def randy_find_asset(*args, **kwargs):
+        return None
+
+    def randy_find_file(*args, **kwargs):
         return None
 
     def randy_find_protein_pdb_asset(*args, **kwargs):
@@ -70,6 +75,9 @@ except Exception:
         return None
 
     def randy_list_archived_jobs(*args, **kwargs):
+        return []
+
+    def randy_list_files(*args, **kwargs):
         return []
 
     def randy_get_table_dataframe(*args, **kwargs):
@@ -1175,7 +1183,9 @@ def _resolve_results_display_complex_pdb(job_id: str, pdb: str, chain: str, liga
 
     checked: List[str] = []
     matches: list[tuple[str, Path]] = []
+    remote_matches: list[Dict[str, Any]] = []
     seen_paths: set[str] = set()
+    seen_remote_paths: set[str] = set()
     job_dir = job_root(job_id)
 
     for _, row in subset.iterrows():
@@ -1190,6 +1200,18 @@ def _resolve_results_display_complex_pdb(job_id: str, pdb: str, chain: str, liga
                 if key not in seen_paths:
                     matches.append((canonical_rel, resolved))
                     seen_paths.add(key)
+                continue
+
+            remote_asset = randy_find_file(job_id, rel, allowed_prefixes=WAR_PDB_ALLOWED_PREFIXES)
+            if remote_asset and remote_asset.get("relative_path"):
+                remote_rel = _canonical_archive_relative_path(str(remote_asset.get("relative_path") or ""))
+                remote_key = remote_rel.lower()
+                if remote_key not in seen_remote_paths:
+                    remote_matches.append({
+                        **remote_asset,
+                        "public_relative_path": remote_rel or rel,
+                    })
+                    seen_remote_paths.add(remote_key)
         elif stored:
             checked.append(str(stored))
 
@@ -1208,6 +1230,24 @@ def _resolve_results_display_complex_pdb(job_id: str, pdb: str, chain: str, liga
         return {
             "ok": False,
             "source": "local_results_display_ambiguous",
+            "checked": checked,
+        }
+
+    if len(remote_matches) == 1:
+        asset = remote_matches[0]
+        return {
+            "ok": True,
+            "source": "randy_results_display",
+            "remote_asset": asset,
+            "relative_path": str(asset.get("public_relative_path") or asset.get("relative_path") or ""),
+            "filename": str(asset.get("filename") or Path(str(asset.get("relative_path") or "")).name),
+            "checked": checked,
+        }
+
+    if len(remote_matches) > 1:
+        return {
+            "ok": False,
+            "source": "randy_results_display_ambiguous",
             "checked": checked,
         }
 
@@ -1585,7 +1625,7 @@ def api_job_files(job_id):
         return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
 
     base = safe_job_dir(job_id)
-    if not base or not base.exists():
+    if (not base or not base.exists()) and not randy_job_exists(job_id):
         return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
 
     kind = (request.args.get("kind") or "all").strip().lower()
@@ -1614,12 +1654,25 @@ def api_job_file_download(job_id, filename):
         return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
 
     base = safe_job_dir(job_id)
-    if not base or not base.exists():
-        return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
-
     rel = str(filename or "").strip().lstrip("/")
     if not rel or ".." in rel.split("/"):
         return _api_error("INVALID_PATH", "Requested file path is invalid.", 400)
+
+    if not base or not base.exists():
+        if not randy_job_exists(job_id):
+            return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
+        asset = randy_find_file(job_id, rel)
+        if not asset or not asset.get("relative_path"):
+            return _api_error("FILE_NOT_FOUND", "Requested file was not found.", 404)
+        proxied = randy_proxy_file_response(
+            job_id,
+            str(asset.get("relative_path") or rel),
+            as_attachment=True,
+            download_name=Path(rel).name,
+        )
+        if proxied is None:
+            return _api_error("FILE_NOT_FOUND", "Requested file was not found.", 404)
+        return proxied
 
     fp = (base / rel).resolve()
     if not _is_safe_job_file(base, fp):
@@ -1644,7 +1697,21 @@ def api_job_bundle(job_id):
             download_name=public_bundle.name,
         )
 
-    mem = create_safe_job_zip(job_id, mode="example")
+    if not _local_job_exists(job_id) and randy_job_exists(job_id):
+        payload = randy_get_job_index(job_id) or {}
+        bundle_relative_path = str(payload.get("bundle_relative_path") or "").strip()
+        if bundle_relative_path:
+            proxied = randy_proxy_file_response(
+                job_id,
+                bundle_relative_path,
+                "application/zip",
+                as_attachment=True,
+                download_name=Path(bundle_relative_path).name or f"{job_id}_warhead_hunter_results.zip",
+            )
+            if proxied is not None:
+                return proxied
+
+    mem = create_safe_job_zip(job_id, mode="job_api")
     if mem is None:
         return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
 
@@ -1661,7 +1728,7 @@ def api_job_war_pdbs(job_id):
     if not _safe_job_id(job_id):
         return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
     base = safe_job_dir(job_id)
-    if not base or not base.exists():
+    if (not base or not base.exists()) and not randy_job_exists(job_id):
         return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
     files = _war_pdb_files(job_id, namespace="jobs")
     return _api_json({
@@ -1693,7 +1760,7 @@ def api_job_artifacts(job_id):
     if not _safe_job_id(job_id):
         return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
     base = safe_job_dir(job_id)
-    if not base or not base.exists():
+    if (not base or not base.exists()) and not randy_job_exists(job_id):
         return _api_error("JOB_NOT_FOUND", "No job was found for this job_id.", 404)
     kind = (request.args.get("kind") or "all").strip().lower()
     if kind not in API_FILE_KINDS:
@@ -2523,6 +2590,65 @@ def build_file_download_url(job_id: str, relative_path: str, namespace: str = "e
     return f"/api/jobs/{job_id}/files/{rel}"
 
 
+def _canonical_archive_relative_path(relative_path: str) -> str:
+    rel = str(relative_path or "").replace("\\", "/").strip().lstrip("/")
+    for prefix in ("job_files/", "archives/"):
+        if rel.lower().startswith(prefix):
+            rel = rel[len(prefix):]
+            break
+    return rel
+
+
+def _archive_safe_file_items(
+    job_id: str,
+    *,
+    namespace: str = "jobs",
+    kind: Optional[str] = None,
+    folder: str = "",
+    limit: Optional[int] = None,
+) -> List[Dict[str, Any]]:
+    raw_files = randy_list_files(job_id)
+    kind_norm = (kind or "all").strip().lower()
+    folder_norm = folder.replace("\\", "/").strip("/")
+    files: List[Dict[str, Any]] = []
+    seen_paths: set[str] = set()
+
+    for raw in raw_files:
+        archive_rel = str(raw.get("relative_path") or "").strip().lstrip("/")
+        rel = _canonical_archive_relative_path(archive_rel)
+        if not rel:
+            continue
+        suffix = Path(rel).suffix.lower()
+        if suffix not in SAFE_RESULT_SUFFIXES:
+            continue
+
+        relative_key = rel.lower()
+        if relative_key in seen_paths:
+            continue
+        seen_paths.add(relative_key)
+
+        item = {
+            "name": Path(rel).name,
+            "filename": Path(rel).name,
+            "relative_path": rel,
+            "archive_relative_path": archive_rel,
+            "kind": classify_file_kind(Path(rel)),
+            "size_bytes": int(raw.get("size_bytes") or raw.get("size") or raw.get("bytes") or 0),
+            "modified_at": str(raw.get("modified_at") or raw.get("updated_at") or raw.get("mtime") or ""),
+            "download_url": build_file_download_url(job_id, rel, namespace=namespace),
+            "source": str(raw.get("source") or "randy_hunter_job_archive"),
+        }
+
+        if not _filter_file_item(item, kind_norm, folder_norm):
+            continue
+        files.append(item)
+
+    files.sort(key=lambda x: (x["kind"], x["relative_path"]))
+    if isinstance(limit, int) and limit > 0:
+        files = files[:limit]
+    return files
+
+
 def _filter_file_item(item: Dict[str, Any], kind: str, folder: str) -> bool:
     if kind not in {"", "all"}:
         if kind == "table":
@@ -2548,7 +2674,13 @@ def list_safe_job_files(
 ) -> List[Dict[str, Any]]:
     base = safe_job_dir(job_id)
     if not base or not base.exists():
-        return []
+        return _archive_safe_file_items(
+            job_id,
+            namespace=namespace,
+            kind=kind,
+            folder=folder,
+            limit=limit,
+        )
 
     kind_norm = (kind or "all").strip().lower()
     folder_norm = folder.replace("\\", "/").strip("/")
@@ -2598,7 +2730,27 @@ def create_safe_job_zip(
 ) -> Optional[io.BytesIO]:
     base = safe_job_dir(job_id)
     if not base or not base.exists():
-        return None
+        safe_files = _archive_safe_file_items(
+            job_id,
+            namespace="jobs" if mode in {"job", "job_api"} else "examples",
+            kind=kind,
+            folder=folder,
+        )
+        if not safe_files:
+            return None
+
+        mem = io.BytesIO()
+        with zipfile.ZipFile(mem, "w", zipfile.ZIP_DEFLATED) as z:
+            zip_root = root_name or job_id
+            for item in safe_files:
+                archive_rel = str(item.get("archive_relative_path") or item.get("relative_path") or "").strip()
+                got = randy_get_file_bytes(job_id, archive_rel)
+                if not got:
+                    continue
+                content, _content_type = got
+                z.writestr(str(Path(zip_root) / item["relative_path"]), content)
+        mem.seek(0)
+        return mem
 
     if mode == "job":
         rel_paths = []
@@ -2720,54 +2872,73 @@ def build_archive_results_manifest(job_id: str) -> Optional[Dict[str, Any]]:
 
     df = load_results_display(job_id)
     has_rows = bool(df is not None and not df.empty)
+    files = _archive_safe_file_items(job_id, namespace="jobs")
     available_tables = archive.get("available_tables", {}) if isinstance(archive.get("available_tables"), dict) else {}
     table_names = [name for name, rel in available_tables.items() if rel]
+    counts = {
+        "war_pdb": len([f for f in files if f["kind"] == "war_pdb"]),
+        "pdb": len([f for f in files if f["kind"] == "pdb"]),
+        "sdf": len([f for f in files if f["kind"] == "sdf"]),
+        "svg": len([f for f in files if f["kind"] == "svg"]),
+        "csv": len([f for f in files if f["kind"] == "csv"]),
+        "table": len([f for f in files if f["kind"] == "table"]),
+        "html": len([f for f in files if f["kind"] == "html"]),
+        "manifest": len([f for f in files if f["kind"] == "manifest"]),
+        "tsv": len([f for f in files if f["relative_path"].lower().endswith(".tsv")]),
+    }
+
+    def _first_matching(candidates: List[str]) -> str:
+        candidate_lows = {candidate.lower() for candidate in candidates}
+        for item in files:
+            rel = str(item.get("relative_path") or "")
+            if rel.lower() in candidate_lows:
+                return rel
+        return ""
+
+    summary_files = [
+        item for item in files
+        if item["relative_path"].endswith("Results_Display.csv")
+        or "summary" in item["relative_path"].lower()
+    ]
 
     return {
         "ok": True,
         "job_id": job_id,
         "has_results": has_rows,
-        "target_results_dir": "",
-        "summary_files": [
-            {
-                "name": name,
-                "filename": name,
-                "relative_path": str(available_tables.get(name) or ""),
-                "kind": "table",
-                "source": archive.get("source", "randy_hunter_job_archive"),
-            }
-            for name in table_names
-            if name in {"Results_Display.csv", "Resolved_SASA_Summary.csv", "Resolved_SASA_Summary.tsv"}
+        "target_results_dir": "TARGET_RESULTS" if any(
+            item["relative_path"] == "TARGET_RESULTS" or item["relative_path"].startswith("TARGET_RESULTS/")
+            for item in files
+        ) else "",
+        "summary_files": summary_files,
+        "display_files": [
+            item for item in files
+            if item["kind"] in {"html", "svg"}
         ],
-        "display_files": [],
-        "counts": {
-            "war_pdb": 0,
-            "pdb": 0,
-            "sdf": 0,
-            "svg": 0,
-            "csv": len([name for name in table_names if name.lower().endswith(".csv")]),
-            "table": len(table_names),
-            "html": 0,
-            "manifest": 0,
-            "tsv": len([name for name in table_names if name.lower().endswith(".tsv")]),
-        },
+        "counts": counts,
         "key_outputs": {
-            "results_display": "Results_Display.csv" if has_rows else "",
-            "resolved_sasa_summary": (
-                "Resolved_SASA_Summary.csv"
-                if available_tables.get("Resolved_SASA_Summary.csv")
-                else ("Resolved_SASA_Summary.tsv" if available_tables.get("Resolved_SASA_Summary.tsv") else "")
+            "results_display": _first_matching(["TARGET_RESULTS/Results_Display.csv", "Results_Display.csv"]),
+            "resolved_sasa_summary": _first_matching([
+                "TARGET_RESULTS/Resolved_SASA_Summary.csv",
+                "TARGET_RESULTS/Resolved_SASA_Summary.tsv",
+                "Resolved_SASA_Summary.csv",
+                "Resolved_SASA_Summary.tsv",
+            ]),
+            "ligand_metadata": _first_matching(["TARGET_RESULTS/Ligand_Metadata.csv", "Ligand_Metadata.csv"]),
+            "war_pdb_dir": (
+                "TARGET_RESULTS/WAR_PDB" if any(item["relative_path"].startswith("TARGET_RESULTS/WAR_PDB/") for item in files)
+                else ("WAR_PDB" if any(item["relative_path"].startswith("WAR_PDB/") for item in files) else "")
             ),
-            "ligand_metadata": "",
-            "war_pdb_dir": "",
-            "mcs_output_dir": "",
+            "mcs_output_dir": (
+                "TARGET_RESULTS/MCS_Output" if any(item["relative_path"].startswith("TARGET_RESULTS/MCS_Output/") for item in files)
+                else ("MCS_Output" if any(item["relative_path"].startswith("MCS_Output/") for item in files) else "")
+            ),
         },
         "urls": {
-            "files": "",
-            "bundle": "",
+            "files": f"/api/jobs/{job_id}/files",
+            "bundle": f"/api/jobs/{job_id}/bundle",
             "browser_results": f"/results/{job_id}",
         },
-        "files": [],
+        "files": files,
         "source": archive.get("source", "randy_hunter_job_archive"),
         "archive_layout": archive.get("archive_layout") or {},
     }
@@ -2779,6 +2950,14 @@ def get_job_api_metadata(job_id: str) -> Optional[Dict[str, Any]]:
         archive = _randy_job_state(job_id)
         if archive is None:
             return None
+        files = _archive_safe_file_items(job_id, namespace="jobs")
+        artifact_counts = {
+            "war_pdb_count": len([f for f in files if f["kind"] == "war_pdb"]),
+            "sdf_count": len([f for f in files if f["kind"] == "sdf"]),
+            "svg_count": len([f for f in files if f["kind"] == "svg"]),
+            "csv_count": len([f for f in files if f["kind"] == "csv"]),
+            "table_count": len([f for f in files if f["kind"] == "table"]),
+        }
         return {
             "job_id": job_id,
             "status": str(archive.get("status") or "completed").lower(),
@@ -2798,28 +2977,22 @@ def get_job_api_metadata(job_id: str) -> Optional[Dict[str, Any]]:
                 "job_dir": "",
                 "has_results": bool(archive.get("results_ready")),
                 "results_url": f"/api/jobs/{job_id}/results",
-                "files_url": "",
-                "bundle_url": "",
-                "war_pdbs_url": "",
-                "legacy_download_url": "",
-                "public_bundle_path": "",
+                "files_url": f"/api/jobs/{job_id}/files",
+                "bundle_url": f"/api/jobs/{job_id}/bundle",
+                "war_pdbs_url": f"/api/jobs/{job_id}/war-pdbs",
+                "legacy_download_url": f"/api/jobs/{job_id}/download",
+                "public_bundle_path": str((randy_get_job_index(job_id) or {}).get("bundle_relative_path") or ""),
                 "archive_layout": archive.get("archive_layout") or {},
             },
             "error": archive.get("error"),
             "monitor_url": f"/monitor/{job_id}",
             "results_url": f"/api/jobs/{job_id}/results",
-            "files_url": "",
-            "bundle_url": "",
+            "files_url": f"/api/jobs/{job_id}/files",
+            "bundle_url": f"/api/jobs/{job_id}/bundle",
             "browser_results_url": f"/results/{job_id}",
             "has_results": bool(archive.get("results_ready")),
             "results_ready": bool(archive.get("results_ready")),
-            "available_artifacts": {
-                "war_pdb_count": 0,
-                "sdf_count": 0,
-                "svg_count": 0,
-                "csv_count": len([name for name in (archive.get("available_tables") or {}).keys() if name.lower().endswith(".csv")]),
-                "table_count": len((archive.get("available_tables") or {}).keys()),
-            },
+            "available_artifacts": artifact_counts,
         }
 
     hydrated = disk_jobs.hydrate_job_from_disk(job_id, get_jobs_root(), JOB_STORE.get(job_id)) or {}
