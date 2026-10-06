@@ -38,6 +38,7 @@ from api.randy_backup_client import (
     backup_on_failure,
     initial_backup_status,
 )
+from api.randy_analytics_client import emit_event as emit_randy_analytics_event
 from api.sdf_resolver import expected_mcs_sdf_filename, resolve_sdf_path, row_sdf_key
 from api.sdf_resolver import parse_mcs_sdf_filename
 from job_state import append_job_log, write_job_metadata as write_job_metadata_disk, results_ready_from_disk
@@ -175,6 +176,49 @@ def _job_metadata_path(job_dir: str) -> str:
 
 def _metadata_timestamp() -> str:
     return datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+
+
+def _analytics_event(job_id: str, event_type: str, *, target_name: str, source: str, **metrics: Any) -> None:
+    """Emit best-effort operational telemetry without affecting the pipeline."""
+    emit_randy_analytics_event({
+        "event_type": event_type,
+        "job_id": job_id,
+        "target_name": target_name,
+        "source": source or "web",
+        "occurred_at_utc": _metadata_timestamp(),
+        "idempotency_key": f"{job_id}:{event_type}",
+        **metrics,
+    })
+
+
+def _analytics_result_metrics(job_dir: str) -> Dict[str, Any]:
+    """Derive compact, non-sensitive scientific-yield metrics from result tables."""
+    candidates = [
+        Path(job_dir) / "TARGET_RESULTS" / "Resolved_SASA_Summary.csv",
+        Path(job_dir) / "Resolved_SASA_Summary.csv",
+    ]
+    table = next((path for path in candidates if path.is_file()), None)
+    if table is None:
+        return {}
+    try:
+        df = pd.read_csv(table)
+    except Exception:
+        return {}
+    def numeric(name: str) -> pd.Series:
+        return pd.to_numeric(df.get(name, pd.Series(dtype=float)), errors="coerce").fillna(0)
+    exposure = numeric("%Exposed")
+    ligand_col = next((name for name in ("Ligand_Resolved", "Warhead", "Ligand5", "Ligand") if name in df.columns), "")
+    structures = df.get("pdb_id", pd.Series(dtype=str)).astype(str).replace({"nan": ""})
+    ligands = df.get(ligand_col, pd.Series(dtype=str)).astype(str).replace({"nan": ""}) if ligand_col else pd.Series(dtype=str)
+    return {
+        "structure_count": int(structures[structures != ""].nunique()) if not structures.empty else 0,
+        "pose_count": int(len(df)),
+        "unique_ligand_count": int(ligands[ligands != ""].nunique()) if not ligands.empty else 0,
+        "total_ligand_atoms": int(numeric("Total_atoms").sum()),
+        "exposed_atom_count": int(numeric("Exposed_atoms").sum()),
+        "mean_percent_exposed": float(exposure.mean()) if not exposure.empty else 0.0,
+        "high_exposure_pose_count": int((exposure >= 0.5).sum()),
+    }
 
 
 def _deepcopy_jsonable(value: Any) -> Any:
@@ -1173,6 +1217,14 @@ def _attempt_randy_backup(job_id: str, job_dir: str, *, status: str, required_re
 
 def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_seq: str) -> None:
     job_dir = os.path.join(JOBS_DIR, job_id)
+    pipeline_started_at = time.monotonic()
+    job_metadata = {}
+    try:
+        with open(_job_metadata_path(job_dir), "r", encoding="utf-8") as handle:
+            job_metadata = json.load(handle) or {}
+    except Exception:
+        pass
+    analytics_source = str(job_metadata.get("source") or "web")
 
     with JOB_LOCK:
         JOB_STORE[job_id]["status"] = "running"
@@ -1191,6 +1243,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
         "results_ready": False,
         "backup": initial_backup_status(job_id),
     }, job_dir=job_dir)
+    _analytics_event(job_id, "hunter_job_started", target_name=target_name, source=analytics_source)
 
     try:
         log_message(job_id, f"Initializing workspace for {target_name}...")
@@ -1263,6 +1316,14 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
             "archive_status": "backup_pending" if backup_on_complete() else "backup_skipped",
             "results_available_not_backed_up": bool(backup_on_complete()),
         }, job_dir=job_dir)
+        _analytics_event(
+            job_id,
+            "hunter_job_completed",
+            target_name=target_name,
+            source=analytics_source,
+            runtime_seconds=round(time.monotonic() - pipeline_started_at, 3),
+            **_analytics_result_metrics(job_dir),
+        )
         _touch_last_log_at(job_id, job_dir, force=True)
 
         backup_result: Optional[Dict[str, Any]] = None
@@ -1313,6 +1374,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
             existing_meta = {}
         memory_failure = existing_meta.get("memory_failure") if isinstance(existing_meta, dict) else None
         with JOB_LOCK:
+            failed_step = str(JOB_STORE.get(job_id, {}).get("current_step") or "")
             JOB_STORE[job_id]["status"] = "failed"
             JOB_STORE[job_id]["finished_at"] = _timestamp()
             JOB_STORE[job_id]["current_step"] = ""
@@ -1326,6 +1388,15 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
             "results_ready": results_ready_from_disk(job_id),
             "memory_failure": memory_failure,
         }, job_dir=job_dir)
+
+        _analytics_event(
+            job_id,
+            "hunter_job_failed",
+            target_name=target_name,
+            source=analytics_source,
+            runtime_seconds=round(time.monotonic() - pipeline_started_at, 3),
+            failed_step=failed_step,
+        )
 
         log_message(job_id, f"❌ CRITICAL ERROR: {str(e)}")
         _touch_last_log_at(job_id, job_dir, force=True)
@@ -1401,6 +1472,7 @@ def start_job(
         "error": None,
         "results_ready": False,
     }, job_dir=job_dir)
+    _analytics_event(job_id, "hunter_job_submitted", target_name=target_name, source=source)
     try:
         with open(_job_log_path(job_dir), "w", encoding="utf-8") as handle:
             handle.write(f"[{_now()}] Job {job_id} created for target: {target_name}\n")

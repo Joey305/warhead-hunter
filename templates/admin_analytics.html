@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Warhead Hunter Analytics</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+  <style>body{max-width:1200px;margin:2rem auto;padding:0 1.25rem;font-family:system-ui,sans-serif}.head{display:flex;gap:1rem;justify-content:space-between;align-items:center}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1.5rem 0}.card{border:1px solid #334155;border-radius:12px;padding:1rem;background:#101827}.value{font-size:1.9rem;font-weight:700;color:#5eead4}table{width:100%;border-collapse:collapse;margin-top:1rem}td,th{padding:.6rem;border-bottom:1px solid #334155;text-align:left}.warn{padding:1rem;border:1px solid #f59e0b;border-radius:8px;color:#fcd34d}</style>
+</head>
+<body>
+  <header class="head">
+    <div><h1>Warhead Hunter analytics</h1><p>Internal dashboard · last {{ days }} days</p></div>
+    <form action="{{ url_for('admin_logout') }}" method="post"><button type="submit">Sign out</button></form>
+  </header>
+  <form method="get"><label>Range <select name="days" onchange="this.form.submit()"><option value="7" {% if days == 7 %}selected{% endif %}>7 days</option><option value="30" {% if days == 30 %}selected{% endif %}>30 days</option><option value="90" {% if days == 90 %}selected{% endif %}>90 days</option><option value="365" {% if days == 365 %}selected{% endif %}>365 days</option></select></label></form>
+  {% if analytics_unavailable %}
+    <p class="warn">RANDY analytics is unavailable or not configured. Set RANDY_ANALYTICS_BASE_URL and RANDY_ANALYTICS_TOKEN (or the existing RANDY backup variables) in Warhead Hunter.</p>
+  {% else %}
+    {% set summary = analytics.overview %}
+    <section class="cards">
+      <article class="card"><div>Jobs</div><div class="value">{{ summary.total_jobs or 0 }}</div></article>
+      <article class="card"><div>Completion rate</div><div class="value">{{ '%.0f'|format((summary.completion_rate or 0) * 100) }}%</div></article>
+      <article class="card"><div>Avg. runtime</div><div class="value">{{ '%.1f'|format((summary.avg_runtime_seconds or 0) / 60) }}m</div></article>
+      <article class="card"><div>Avg. high-exposure poses</div><div class="value">{{ '%.1f'|format(summary.avg_high_exposure_poses or 0) }}</div></article>
+    </section>
+    <section class="cards">
+      <article class="card"><h2>Failure steps</h2><table><tr><th>Step</th><th>Failures</th></tr>{% for row in analytics.failures %}<tr><td>{{ row.failed_step }}</td><td>{{ row.count }}</td></tr>{% else %}<tr><td colspan="2">No failures recorded.</td></tr>{% endfor %}</table></article>
+      <article class="card"><h2>Top targets</h2><table><tr><th>Target</th><th>Jobs</th><th>Avg. high-exposure poses</th></tr>{% for row in analytics.targets %}<tr><td>{{ row.target_name }}</td><td>{{ row.job_count }}</td><td>{{ '%.1f'|format(row.avg_high_exposure_poses or 0) }}</td></tr>{% else %}<tr><td colspan="3">No jobs recorded.</td></tr>{% endfor %}</table></article>
+    </section>
+  {% endif %}
+</body>
+</html>

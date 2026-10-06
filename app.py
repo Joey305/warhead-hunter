@@ -12,6 +12,8 @@ import io
 import math
 import zipfile
 import uuid
+import hmac
+import secrets
 from pathlib import Path
 from typing import Optional, Dict, Any, List
 from datetime import datetime, timezone
@@ -24,7 +26,7 @@ import requests
 import urllib3
 from flask import (
     Flask, render_template, request, redirect,
-    url_for, send_from_directory, jsonify, abort, send_file, Response
+    url_for, send_from_directory, jsonify, abort, send_file, Response, session
 )
 
 from artifact_paths import (
@@ -40,6 +42,7 @@ from routes import bp as routes_bp
 from api.handoff_server import hand_bp
 from api.sdf_resolver import expected_mcs_sdf_filename, normalize_sdf_key, resolve_sdf_path
 from api.svg_theme import themed_svg_response
+from api.randy_analytics_client import get_overview as randy_analytics_overview
 
 try:
     from api.randy_archive_client import (
@@ -105,6 +108,7 @@ BATCHES_DIR = JOBS_DIR / "_batches"
 BATCHES_DIR.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = os.getenv("WARHEAD_SECRET_KEY") or os.getenv("FLASK_SECRET_KEY") or secrets.token_urlsafe(32)
 app.config["UPLOAD_FOLDER"] = str(APP_ROOT / "uploads")
 app.config["JOBS_DIR"] = str(JOBS_DIR)
 
@@ -129,6 +133,14 @@ app.config["PUBLIC_SITE_BASE"] = PUBLIC_SITE_BASE
 app.config["PROTAC_BUILDER_BASE"] = PROTAC_BUILDER_BASE
 app.config["API_VERSION"] = API_VERSION
 app.config["APP_ENVIRONMENT"] = APP_ENVIRONMENT
+
+
+def _admin_credentials_configured() -> bool:
+    return bool(os.getenv("ADMIN_EMAIL", "").strip() and os.getenv("ADMIN_PASSWORD", ""))
+
+
+def _is_admin() -> bool:
+    return bool(session.get("warhead_admin") and _admin_credentials_configured())
 
 app.register_blueprint(sasa_bp)
 app.register_blueprint(routes_bp)
@@ -3840,6 +3852,47 @@ def log_builder_click():
 def about():
     stats = get_about_stats()
     return render_template("about.html", **stats)
+
+
+@app.route("/admin/login", methods=["GET", "POST"])
+def admin_login():
+    if not _admin_credentials_configured():
+        return render_template("admin_login.html", configuration_error=True), 503
+    error = ""
+    if request.method == "POST":
+        email = str(request.form.get("email") or "").strip()
+        password = str(request.form.get("password") or "")
+        expected_email = os.getenv("ADMIN_EMAIL", "").strip()
+        expected_password = os.getenv("ADMIN_PASSWORD", "")
+        if hmac.compare_digest(email, expected_email) and hmac.compare_digest(password, expected_password):
+            session.clear()
+            session["warhead_admin"] = True
+            return redirect(url_for("admin_analytics"))
+        error = "Invalid email or password."
+    return render_template("admin_login.html", error=error, configuration_error=False)
+
+
+@app.post("/admin/logout")
+def admin_logout():
+    session.clear()
+    return redirect(url_for("admin_login"))
+
+
+@app.get("/admin/analytics")
+def admin_analytics():
+    if not _is_admin():
+        return redirect(url_for("admin_login"))
+    try:
+        days = max(1, min(int(str(request.args.get("days") or "30")), 3650))
+    except ValueError:
+        days = 30
+    analytics = randy_analytics_overview(days)
+    return render_template(
+        "admin_analytics.html",
+        days=days,
+        analytics=analytics,
+        analytics_unavailable=analytics is None,
+    )
 
 
 @app.route("/scout")

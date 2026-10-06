@@ -237,6 +237,30 @@ class BackupReceiverArchiveTests(unittest.TestCase):
         self.assertEqual(len(loaded), 120)
         self.assertIn("job_files/TARGET_RESULTS/MCS_Output/MCS_SDF/item_119.sdf", matches)
 
+    def test_hunter_analytics_events_are_idempotent_and_rolled_up(self):
+        submitted = {
+            "event_type": "hunter_job_submitted", "job_id": "analytics1", "target_name": "PRMT5",
+            "source": "web", "occurred_at_utc": "2026-10-01T10:00:00Z", "idempotency_key": "analytics1:submitted",
+        }
+        completed = {
+            "event_type": "hunter_job_completed", "job_id": "analytics1", "target_name": "PRMT5",
+            "source": "web", "occurred_at_utc": "2026-10-01T10:05:00Z", "idempotency_key": "analytics1:completed",
+            "runtime_seconds": 300, "structure_count": 4, "pose_count": 7, "unique_ligand_count": 3,
+            "total_ligand_atoms": 100, "exposed_atom_count": 35, "mean_percent_exposed": 0.42,
+            "high_exposure_pose_count": 2,
+        }
+        first = self.client.post("/backup/hunter-analytics-event", json=submitted, headers=self._auth())
+        duplicate = self.client.post("/backup/hunter-analytics-event", json=submitted, headers=self._auth())
+        done = self.client.post("/backup/hunter-analytics-event", json=completed, headers=self._auth())
+        self.assertEqual(first.status_code, 200)
+        self.assertFalse(first.get_json()["duplicate"])
+        self.assertTrue(duplicate.get_json()["duplicate"])
+        self.assertEqual(done.status_code, 200)
+        overview = backup_app.hunter_analytics_overview(3650)
+        self.assertEqual(overview["overview"]["completed_jobs"], 1)
+        self.assertEqual(overview["overview"]["total_jobs"], 1)
+        self.assertEqual(overview["targets"][0]["target_name"], "PRMT5")
+
     def test_archive_integrity_audit_reports_missing_results_display_artifacts(self):
         job_dir = self._job_dir("jobmiss1")
         self._write_results_display(

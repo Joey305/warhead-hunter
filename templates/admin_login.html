@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Warhead Hunter Admin</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+  <style>body{max-width:440px;margin:9vh auto;padding:0 1.25rem;font-family:system-ui,sans-serif}.card{padding:2rem;border:1px solid #334155;border-radius:14px;background:#101827}label,input,button{display:block;width:100%;box-sizing:border-box}label{margin-top:1rem}input{margin-top:.4rem;padding:.7rem;border-radius:7px;border:1px solid #64748b}button{margin-top:1.5rem;padding:.75rem;border:0;border-radius:7px;background:#14b8a6;color:#042f2e;font-weight:700}.error{color:#fca5a5}</style>
+</head>
+<body>
+  <main class="card">
+    <h1>Admin analytics</h1>
+    {% if configuration_error %}
+      <p class="error">Admin access is not configured. Set <code>ADMIN_EMAIL</code> and <code>ADMIN_PASSWORD</code> in the app configuration.</p>
+    {% else %}
+      {% if error %}<p class="error">{{ error }}</p>{% endif %}
+      <form method="post">
+        <label>Email <input required type="email" name="email" autocomplete="username"></label>
+        <label>Password <input required type="password" name="password" autocomplete="current-password"></label>
+        <button type="submit">Sign in</button>
+      </form>
+    {% endif %}
+  </main>
+</body>
+</html>

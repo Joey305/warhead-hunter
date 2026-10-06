@@ -19,6 +19,15 @@ from flask import Flask, Response, abort, jsonify, request, send_file
 from werkzeug.utils import secure_filename
 
 try:
+    from backup_receiver.conference_analytics import insert_event as insert_conference_analytics_event
+    from backup_receiver.conference_analytics import summary as conference_analytics_summary
+    from backup_receiver.conference_analytics import validate_event as validate_conference_analytics_event
+except ImportError:
+    from conference_analytics import insert_event as insert_conference_analytics_event
+    from conference_analytics import summary as conference_analytics_summary
+    from conference_analytics import validate_event as validate_conference_analytics_event
+
+try:
     from backup_receiver.e3_data_routes import register_e3_routes
 except ImportError:
     from e3_data_routes import register_e3_routes
@@ -272,6 +281,45 @@ def init_storage() -> None:
             )
             """
         )
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS analytics_events (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                occurred_at_utc TEXT NOT NULL,
+                event_type TEXT NOT NULL,
+                job_id TEXT,
+                idempotency_key TEXT NOT NULL UNIQUE,
+                source TEXT,
+                payload_json TEXT NOT NULL
+            )
+            """
+        )
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS hunter_job_facts (
+                job_id TEXT PRIMARY KEY,
+                target_name TEXT,
+                source TEXT,
+                submitted_at_utc TEXT,
+                started_at_utc TEXT,
+                finished_at_utc TEXT,
+                status TEXT,
+                failed_step TEXT,
+                runtime_seconds REAL,
+                structure_count INTEGER DEFAULT 0,
+                pose_count INTEGER DEFAULT 0,
+                unique_ligand_count INTEGER DEFAULT 0,
+                total_ligand_atoms INTEGER DEFAULT 0,
+                exposed_atom_count INTEGER DEFAULT 0,
+                mean_percent_exposed REAL,
+                high_exposure_pose_count INTEGER DEFAULT 0,
+                updated_at_utc TEXT NOT NULL
+            )
+            """
+        )
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_analytics_events_type_time ON analytics_events(event_type, occurred_at_utc)")
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_analytics_events_job_id ON analytics_events(job_id)")
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_hunter_job_facts_finished ON hunter_job_facts(finished_at_utc)")
         conn.commit()
 
     csv_headers = {
@@ -366,6 +414,118 @@ def store_event(payload: Dict[str, Any]) -> int:
         append_hunter_archive_csv(received_at, event_id, payload)
 
     return event_id
+
+
+def _analytics_number(payload: Dict[str, Any], key: str, default: float = 0) -> float:
+    try:
+        return float(payload.get(key, default) or default)
+    except (TypeError, ValueError):
+        return default
+
+
+def store_analytics_event(payload: Dict[str, Any]) -> Dict[str, Any]:
+    """Persist one idempotent Warhead Hunter analytics event and update its job fact."""
+    init_storage()
+    event_type = extract(payload, "event_type")
+    job_id = extract(payload, "job_id", "jobId")
+    if not event_type.startswith("hunter_job_") or not job_id:
+        raise ValueError("event_type must start with hunter_job_ and job_id is required")
+    occurred_at = extract(payload, "occurred_at_utc", "occurred_at") or now_utc()
+    event_key = extract(payload, "idempotency_key") or f"{job_id}:{event_type}:{occurred_at}"
+    source = extract(payload, "source") or "warhead-hunter"
+    payload_json = json.dumps(payload, sort_keys=True)
+
+    with sqlite3.connect(DB_PATH) as conn:
+        existing = conn.execute("SELECT id FROM analytics_events WHERE idempotency_key = ?", (event_key,)).fetchone()
+        if existing:
+            return {"event_id": int(existing[0]), "duplicate": True}
+        cur = conn.execute(
+            "INSERT INTO analytics_events (occurred_at_utc, event_type, job_id, idempotency_key, source, payload_json) VALUES (?, ?, ?, ?, ?, ?)",
+            (occurred_at, event_type, job_id, event_key, source, payload_json),
+        )
+        fields: Dict[str, Any] = {"job_id": job_id, "source": source, "updated_at_utc": occurred_at}
+        target = extract(payload, "target_name", "target")
+        if target:
+            fields["target_name"] = target
+        if event_type == "hunter_job_submitted":
+            fields.update({"submitted_at_utc": occurred_at, "status": "queued"})
+        elif event_type == "hunter_job_started":
+            fields.update({"started_at_utc": occurred_at, "status": "running"})
+        elif event_type == "hunter_job_completed":
+            fields.update({
+                "finished_at_utc": occurred_at, "status": "completed",
+                "runtime_seconds": _analytics_number(payload, "runtime_seconds"),
+                "structure_count": int(_analytics_number(payload, "structure_count")),
+                "pose_count": int(_analytics_number(payload, "pose_count")),
+                "unique_ligand_count": int(_analytics_number(payload, "unique_ligand_count")),
+                "total_ligand_atoms": int(_analytics_number(payload, "total_ligand_atoms")),
+                "exposed_atom_count": int(_analytics_number(payload, "exposed_atom_count")),
+                "mean_percent_exposed": _analytics_number(payload, "mean_percent_exposed"),
+                "high_exposure_pose_count": int(_analytics_number(payload, "high_exposure_pose_count")),
+            })
+        elif event_type == "hunter_job_failed":
+            fields.update({
+                "finished_at_utc": occurred_at, "status": "failed",
+                "runtime_seconds": _analytics_number(payload, "runtime_seconds"),
+                "failed_step": extract(payload, "failed_step", "current_step"),
+            })
+        assignments = ", ".join(f"{key} = excluded.{key}" for key in fields if key != "job_id")
+        columns = ", ".join(fields)
+        placeholders = ", ".join("?" for _ in fields)
+        conn.execute(
+            f"INSERT INTO hunter_job_facts ({columns}) VALUES ({placeholders}) ON CONFLICT(job_id) DO UPDATE SET {assignments}",
+            tuple(fields.values()),
+        )
+        conn.commit()
+        return {"event_id": int(cur.lastrowid), "duplicate": False}
+
+
+def hunter_analytics_overview(days: int = 30) -> Dict[str, Any]:
+    init_storage()
+    days = max(1, min(int(days), 3650))
+    cutoff = f"-{days} days"
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        row = conn.execute(
+            """SELECT COUNT(*) AS total_jobs,
+                      SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) AS completed_jobs,
+                      SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END) AS failed_jobs,
+                      AVG(CASE WHEN status = 'completed' THEN runtime_seconds END) AS avg_runtime_seconds,
+                      AVG(CASE WHEN status = 'completed' THEN unique_ligand_count END) AS avg_unique_ligands,
+                      AVG(CASE WHEN status = 'completed' THEN high_exposure_pose_count END) AS avg_high_exposure_poses
+               FROM hunter_job_facts
+               WHERE COALESCE(finished_at_utc, submitted_at_utc, updated_at_utc) >= datetime('now', ?)""",
+            (cutoff,),
+        ).fetchone()
+        failures = conn.execute(
+            """SELECT COALESCE(NULLIF(failed_step, ''), 'unknown') AS failed_step, COUNT(*) AS count
+               FROM hunter_job_facts WHERE status = 'failed'
+               AND COALESCE(finished_at_utc, updated_at_utc) >= datetime('now', ?)
+               GROUP BY COALESCE(NULLIF(failed_step, ''), 'unknown') ORDER BY count DESC LIMIT 10""",
+            (cutoff,),
+        ).fetchall()
+        targets = conn.execute(
+            """SELECT COALESCE(NULLIF(target_name, ''), 'Unknown') AS target_name, COUNT(*) AS job_count,
+                      SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) AS completed_jobs,
+                      AVG(CASE WHEN status = 'completed' THEN high_exposure_pose_count END) AS avg_high_exposure_poses
+               FROM hunter_job_facts WHERE COALESCE(finished_at_utc, submitted_at_utc, updated_at_utc) >= datetime('now', ?)
+               GROUP BY COALESCE(NULLIF(target_name, ''), 'Unknown') ORDER BY job_count DESC LIMIT 10""",
+            (cutoff,),
+        ).fetchall()
+        trend = conn.execute(
+            """SELECT substr(COALESCE(finished_at_utc, submitted_at_utc, updated_at_utc), 1, 10) AS day,
+                      COUNT(*) AS jobs,
+                      SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) AS completed,
+                      SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END) AS failed
+               FROM hunter_job_facts WHERE COALESCE(finished_at_utc, submitted_at_utc, updated_at_utc) >= datetime('now', ?)
+               GROUP BY day ORDER BY day""",
+            (cutoff,),
+        ).fetchall()
+    data = dict(row or {})
+    total = int(data.get("total_jobs") or 0)
+    completed = int(data.get("completed_jobs") or 0)
+    data["completion_rate"] = (completed / total) if total else 0
+    return {"ok": True, "days": days, "overview": data, "failures": [dict(x) for x in failures], "targets": [dict(x) for x in targets], "trend": [dict(x) for x in trend]}
 
 
 def append_component_csv(received_at: str, event_id: int, event_type: str, payload: Dict[str, Any]) -> None:
@@ -537,6 +697,35 @@ def backup_protac_events():
     return jsonify({"ok": True, "count": len(event_ids), "event_ids": event_ids, "skipped": skipped})
 
 
+@APP.post("/backup/hunter-analytics-event")
+def backup_hunter_analytics_event():
+    ok, error = require_auth()
+    if not ok:
+        message, status_code = error
+        return jsonify({"ok": False, "error": message}), status_code
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict):
+        return jsonify({"ok": False, "error": "Expected JSON object payload."}), 400
+    try:
+        result = store_analytics_event(payload)
+    except ValueError as exc:
+        return jsonify({"ok": False, "error": str(exc)}), 400
+    return jsonify({"ok": True, **result})
+
+
+@APP.get("/backup/analytics/hunter/overview")
+def backup_hunter_analytics_overview():
+    ok, error = require_auth()
+    if not ok:
+        message, status_code = error
+        return jsonify({"ok": False, "error": message}), status_code
+    try:
+        days = int(str(request.args.get("days") or "30"))
+    except ValueError:
+        days = 30
+    return jsonify(hunter_analytics_overview(days))
+
+
 @APP.get("/backup/summary")
 def backup_summary():
     ok, error = require_auth()
@@ -544,6 +733,32 @@ def backup_summary():
         message, status_code = error
         return jsonify({"ok": False, "error": message}), status_code
     return jsonify(summarize_events())
+
+
+@APP.post("/backup/analytics/event")
+def backup_analytics_event():
+    ok, error = require_auth()
+    if not ok:
+        message, status_code = error
+        return jsonify({"ok": False, "error": message}), status_code
+    event = validate_conference_analytics_event(request.get_json(silent=True))
+    if not event:
+        return jsonify({"ok": False, "error": "Invalid conference analytics event."}), 400
+    event_id = insert_conference_analytics_event(DB_PATH, event, now_utc())
+    return jsonify({"ok": True, "event_id": event_id}), 202
+
+
+@APP.get("/backup/analytics/summary")
+def backup_analytics_summary():
+    ok, error = require_auth()
+    if not ok:
+        message, status_code = error
+        return jsonify({"ok": False, "error": message}), status_code
+    payload = conference_analytics_summary(
+        DB_PATH, range_name=request.args.get("range", "30d"),
+        campaign=request.args.get("campaign", ""), start=request.args.get("start"), end=request.args.get("end"),
+    )
+    return jsonify({"ok": True, "persistence_source": "randy_backup_receiver", **payload})
 
 
 def parse_limit(default: int = 100, maximum: int = 1000) -> int:
