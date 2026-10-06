@@ -14,6 +14,7 @@ import zipfile
 import uuid
 import hmac
 import secrets
+import ipaddress
 from pathlib import Path
 from typing import Optional, Dict, Any, List
 from datetime import datetime, timezone
@@ -153,6 +154,33 @@ def _usage_device_type(user_agent: str) -> str:
     return "desktop"
 
 
+_GEOIP_CACHE: Dict[str, Dict[str, Any]] = {}
+
+
+def _usage_geo(request_ip: str, headers) -> Dict[str, Any]:
+    """Resolve country-level location, then discard the source IP."""
+    header_country = (headers.get("CF-IPCountry") or headers.get("X-Geo-Country") or "").upper()
+    if header_country and header_country not in {"XX", "T1"}:
+        return {"country_code": header_country, "country_name": header_country}
+    if os.getenv("WARHEAD_USAGE_GEOIP", "0") != "1":
+        return {"country_code": "UNKNOWN"}
+    try:
+        ipaddress.ip_address(request_ip)
+    except ValueError:
+        return {"country_code": "UNKNOWN"}
+    if request_ip in _GEOIP_CACHE:
+        return _GEOIP_CACHE[request_ip]
+    try:
+        data = requests.get(f"https://ipwho.is/{request_ip}", timeout=1.5).json()
+        if data.get("success") is False:
+            raise ValueError("unresolved")
+        result = {"country_code": str(data.get("country_code") or "UNKNOWN").upper(), "country_name": str(data.get("country") or "Unknown"), "latitude": data.get("latitude"), "longitude": data.get("longitude")}
+    except Exception:
+        result = {"country_code": "UNKNOWN"}
+    _GEOIP_CACHE[request_ip] = result
+    return result
+
+
 @app.after_request
 def _record_anonymous_usage(response):
     """Record anonymous public page views; never store raw IP addresses or query text."""
@@ -162,11 +190,12 @@ def _record_anonymous_usage(response):
     visitor_id = request.cookies.get("wh_visitor_id") or secrets.token_urlsafe(18)
     session_id = request.cookies.get("wh_session_id") or secrets.token_urlsafe(18)
     referrer = urlparse(request.referrer or "").hostname or "direct"
-    country = (request.headers.get("CF-IPCountry") or request.headers.get("X-Geo-Country") or "unknown").upper()
+    request_ip = str(request.headers.get("X-Forwarded-For") or request.remote_addr or "").split(",", 1)[0].strip()
+    geo = _usage_geo(request_ip, request.headers)
     emit_randy_usage_event({
         "event_type": "hunter_page_view", "source": "warhead-hunter-web", "endpoint": request.endpoint or "",
         "status": str(response.status_code), "visitor_id": visitor_id, "session_id": session_id,
-        "path": path, "referrer_host": referrer, "country_code": country,
+        "path": path, "referrer_host": referrer, **geo,
         "device_type": _usage_device_type(request.user_agent.string), "event_id": str(uuid.uuid4()),
     })
     if not request.cookies.get("wh_visitor_id"):

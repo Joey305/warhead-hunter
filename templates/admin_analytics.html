@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Warhead Hunter Analytics</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <style>
     :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
     * { box-sizing: border-box; }
@@ -35,6 +36,7 @@
     .empty { color: #a9bad1; text-align: center; padding: 24px; }
     .notice { padding: 18px; border: 1px solid #d1932f; border-radius: 12px; background: #30220d; color: #fde7be; }
     .footnote { margin-top: 20px; font-size: .8rem; color: #7790b0; }
+    #usage-map { height: 330px; border-radius: 10px; overflow: hidden; margin-top: 14px; }
     @media (max-width: 860px) { .metric-grid { grid-template-columns: repeat(2, 1fr); } .panel-grid { grid-template-columns: 1fr; } }
     @media (max-width: 560px) { .shell { padding: 24px 16px; } .header, .context { display: block; } .controls { margin-top: 18px; } .metric-grid { grid-template-columns: 1fr; } }
   </style>
@@ -78,6 +80,7 @@
         <article class="panel"><h2>Where jobs fail</h2><p>Pipeline stage associated with each failed run.</p><table><thead><tr><th>Pipeline stage</th><th>Failures</th></tr></thead><tbody>{% for row in analytics.failures %}<tr><td>{{ row.failed_step }}</td><td>{{ row.count }}</td></tr>{% else %}<tr><td class="empty" colspan="2">No failed jobs in this period.</td></tr>{% endfor %}</tbody></table></article>
         <article class="panel"><h2>Most analyzed targets</h2><p>Targets ranked by submitted jobs, with their scientific-yield indicator.</p><table><thead><tr><th>Target</th><th>Jobs</th><th>High-exposure poses</th></tr></thead><tbody>{% for row in analytics.targets %}<tr><td>{{ row.target_name }}</td><td>{{ row.job_count }}</td><td>{{ '%.1f'|format(row.avg_high_exposure_poses or 0) }}</td></tr>{% else %}<tr><td class="empty" colspan="3">No jobs recorded in this period.</td></tr>{% endfor %}</tbody></table></article>
       </section>
+      <section class="panel"><h2>Where usage is coming from</h2><p>Country-level, approximate GeoIP locations. Raw IP addresses are not saved.</p><div id="usage-map" aria-label="Map of visitor countries"></div></section>
       <section class="panel-grid">
         <article class="panel"><h2>Where visitors come from</h2><p>Referring host; “direct” means no referrer was supplied.</p><table><thead><tr><th>Referrer</th><th>Page views</th></tr></thead><tbody>{% for row in usage.referrers %}<tr><td>{{ row.name }}</td><td>{{ row.count }}</td></tr>{% else %}<tr><td class="empty" colspan="2">Usage collection starts with this deployment.</td></tr>{% endfor %}</tbody></table></article>
         <article class="panel"><h2>Location & device</h2><p>Country is available only when the hosting proxy forwards a country header.</p><table><thead><tr><th>Country</th><th>Views</th></tr></thead><tbody>{% for row in usage.countries %}<tr><td>{{ row.name }}</td><td>{{ row.count }}</td></tr>{% else %}<tr><td class="empty" colspan="2">No visitor geography recorded yet.</td></tr>{% endfor %}</tbody></table></article>
@@ -85,5 +88,21 @@
       <p class="footnote">A “high-exposure pose” has a mean ligand-atom exposure of at least 50%. This is a screening signal, not a chemical recommendation.</p>
     {% endif %}
   </main>
+  {% if not analytics_unavailable %}
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const locations = {{ (analytics.usage or {}).get('locations', []) | tojson }};
+    const map = L.map('usage-map', {scrollWheelZoom: false}).setView([20, 0], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 6, attribution: '&copy; OpenStreetMap contributors'}).addTo(map);
+    if (locations.length) {
+      const points = locations.map(item => {
+        const marker = L.circleMarker([item.latitude, item.longitude], {radius: Math.max(7, Math.min(22, 6 + item.count * 2)), color: '#0f766e', fillColor: '#5eead4', fillOpacity: .75, weight: 2}).addTo(map);
+        marker.bindPopup(`<strong>${item.name}</strong><br>${item.count} page view${item.count === 1 ? '' : 's'}`);
+        return [item.latitude, item.longitude];
+      });
+      map.fitBounds(points, {padding: [32, 32], maxZoom: 4});
+    }
+  </script>
+  {% endif %}
 </body>
 </html>
