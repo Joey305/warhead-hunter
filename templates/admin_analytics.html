@@ -57,6 +57,7 @@
       <section class="notice"><strong>Analytics data is unavailable.</strong><br>RANDY could not be reached from this app. Check the configured RANDY archive/backup URL and token.</section>
     {% else %}
       {% set summary = analytics.overview %}
+      {% set usage = analytics.usage or {} %}
       <section class="context">
         <div><h2>Overview</h2><p>Reporting period: {% if days == 3650 %}all available archived history{% else %}last {{ days }} days{% endif %}. Data updates when each job starts or finishes.</p></div>
       </section>
@@ -66,9 +67,20 @@
         <article class="metric"><span class="metric-label">Average run time</span><strong class="metric-value">{% if (summary.avg_runtime_seconds or 0) >= 1 %}{{ '%.1f'|format((summary.avg_runtime_seconds or 0) / 60) }}m{% else %}—{% endif %}</strong><span class="metric-detail">Recorded for new jobs; older archive records do not retain reliable timing.</span></article>
         <article class="metric"><span class="metric-label">High-exposure poses</span><strong class="metric-value">{{ '%.1f'|format(summary.avg_high_exposure_poses or 0) }}</strong><span class="metric-detail">Average poses with ≥50% ligand-atom exposure per completed job.</span></article>
       </section>
+      <section class="context"><div><h2>Audience & acquisition</h2><p>Anonymous product analytics. No names, email addresses, raw IP addresses, or search queries are stored.</p></div></section>
+      <section class="metric-grid" aria-label="Audience metrics">
+        <article class="metric"><span class="metric-label">Unique visitors</span><strong class="metric-value">{{ usage.unique_visitors or 0 }}</strong><span class="metric-detail">Distinct anonymous browser identifiers.</span></article>
+        <article class="metric"><span class="metric-label">Sessions</span><strong class="metric-value">{{ usage.sessions or 0 }}</strong><span class="metric-detail">Distinct browser sessions.</span></article>
+        <article class="metric"><span class="metric-label">Page views</span><strong class="metric-value">{{ usage.page_views or 0 }}</strong><span class="metric-detail">Public pages viewed in this period.</span></article>
+        <article class="metric"><span class="metric-label">Jobs per visitor</span><strong class="metric-value">{% if usage.unique_visitors %}{{ '%.2f'|format((summary.total_jobs or 0) / usage.unique_visitors) }}{% else %}—{% endif %}</strong><span class="metric-detail">A directional activation indicator, not user identity.</span></article>
+      </section>
       <section class="panel-grid">
         <article class="panel"><h2>Where jobs fail</h2><p>Pipeline stage associated with each failed run.</p><table><thead><tr><th>Pipeline stage</th><th>Failures</th></tr></thead><tbody>{% for row in analytics.failures %}<tr><td>{{ row.failed_step }}</td><td>{{ row.count }}</td></tr>{% else %}<tr><td class="empty" colspan="2">No failed jobs in this period.</td></tr>{% endfor %}</tbody></table></article>
         <article class="panel"><h2>Most analyzed targets</h2><p>Targets ranked by submitted jobs, with their scientific-yield indicator.</p><table><thead><tr><th>Target</th><th>Jobs</th><th>High-exposure poses</th></tr></thead><tbody>{% for row in analytics.targets %}<tr><td>{{ row.target_name }}</td><td>{{ row.job_count }}</td><td>{{ '%.1f'|format(row.avg_high_exposure_poses or 0) }}</td></tr>{% else %}<tr><td class="empty" colspan="3">No jobs recorded in this period.</td></tr>{% endfor %}</tbody></table></article>
+      </section>
+      <section class="panel-grid">
+        <article class="panel"><h2>Where visitors come from</h2><p>Referring host; “direct” means no referrer was supplied.</p><table><thead><tr><th>Referrer</th><th>Page views</th></tr></thead><tbody>{% for row in usage.referrers %}<tr><td>{{ row.name }}</td><td>{{ row.count }}</td></tr>{% else %}<tr><td class="empty" colspan="2">Usage collection starts with this deployment.</td></tr>{% endfor %}</tbody></table></article>
+        <article class="panel"><h2>Location & device</h2><p>Country is available only when the hosting proxy forwards a country header.</p><table><thead><tr><th>Country</th><th>Views</th></tr></thead><tbody>{% for row in usage.countries %}<tr><td>{{ row.name }}</td><td>{{ row.count }}</td></tr>{% else %}<tr><td class="empty" colspan="2">No visitor geography recorded yet.</td></tr>{% endfor %}</tbody></table></article>
       </section>
       <p class="footnote">A “high-exposure pose” has a mean ligand-atom exposure of at least 50%. This is a screening signal, not a chemical recommendation.</p>
     {% endif %}

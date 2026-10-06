@@ -36,6 +36,17 @@ def emit_event(payload: Dict[str, Any]) -> bool:
     """Best-effort telemetry: analytics must never fail a scientific job."""
     if not analytics_enabled():
         return False
+
+
+def emit_usage_event(payload: Dict[str, Any]) -> bool:
+    """Best-effort anonymous product-usage event; never affect a page response."""
+    if not analytics_enabled():
+        return False
+    try:
+        response = requests.post(f"{_base_url()}/protac-event", json=payload, headers=_headers(), timeout=1.5)
+        return bool(response.ok and response.json().get("ok"))
+    except Exception:
+        return False
     try:
         response = requests.post(f"{_base_url()}/hunter-analytics-event", json=payload, headers=_headers(), timeout=8)
         return bool(response.ok and response.json().get("ok"))

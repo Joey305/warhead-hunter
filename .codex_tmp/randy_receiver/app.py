@@ -521,11 +521,33 @@ def hunter_analytics_overview(days: int = 30) -> Dict[str, Any]:
                GROUP BY day ORDER BY day""",
             (cutoff,),
         ).fetchall()
+        usage_rows = conn.execute(
+            "SELECT received_at_utc, payload_json FROM protac_events WHERE event_type = 'hunter_page_view' AND received_at_utc >= datetime('now', ?)",
+            (cutoff,),
+        ).fetchall()
     data = dict(row or {})
     total = int(data.get("total_jobs") or 0)
     completed = int(data.get("completed_jobs") or 0)
     data["completion_rate"] = (completed / total) if total else 0
-    return {"ok": True, "days": days, "overview": data, "failures": [dict(x) for x in failures], "targets": [dict(x) for x in targets], "trend": [dict(x) for x in trend]}
+    visitors, sessions, by_country, by_referrer, by_device, usage_trend = set(), set(), {}, {}, {}, {}
+    for usage_row in usage_rows:
+        try:
+            event = json.loads(usage_row["payload_json"] or "{}")
+        except Exception:
+            continue
+        visitor = str(event.get("visitor_id") or "")
+        session = str(event.get("session_id") or "")
+        if visitor: visitors.add(visitor)
+        if session: sessions.add(session)
+        for bucket, key in ((by_country, str(event.get("country_code") or "unknown")), (by_referrer, str(event.get("referrer_host") or "direct")), (by_device, str(event.get("device_type") or "unknown"))):
+            bucket[key] = bucket.get(key, 0) + 1
+        day = str(usage_row["received_at_utc"] or "")[:10]
+        usage_trend[day] = usage_trend.get(day, 0) + 1
+    ranked = lambda values: [{"name": name, "count": count} for name, count in sorted(values.items(), key=lambda item: (-item[1], item[0]))[:10]]
+    return {
+        "ok": True, "days": days, "overview": data, "failures": [dict(x) for x in failures], "targets": [dict(x) for x in targets], "trend": [dict(x) for x in trend],
+        "usage": {"page_views": len(usage_rows), "unique_visitors": len(visitors), "sessions": len(sessions), "countries": ranked(by_country), "referrers": ranked(by_referrer), "devices": ranked(by_device), "trend": [{"day": day, "page_views": count} for day, count in sorted(usage_trend.items())]},
+    }
 
 
 def append_component_csv(received_at: str, event_id: int, event_type: str, payload: Dict[str, Any]) -> None:
