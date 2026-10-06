@@ -529,7 +529,7 @@ def hunter_analytics_overview(days: int = 30) -> Dict[str, Any]:
     total = int(data.get("total_jobs") or 0)
     completed = int(data.get("completed_jobs") or 0)
     data["completion_rate"] = (completed / total) if total else 0
-    visitors, sessions, by_country, by_referrer, by_device, usage_trend, locations = set(), set(), {}, {}, {}, {}, {}
+    visitors, sessions, by_country, by_referrer, by_device, usage_trend, locations, pages = set(), set(), {}, {}, {}, {}, {}, {}
     for usage_row in usage_rows:
         try:
             event = json.loads(usage_row["payload_json"] or "{}")
@@ -543,6 +543,11 @@ def hunter_analytics_overview(days: int = 30) -> Dict[str, Any]:
             bucket[key] = bucket.get(key, 0) + 1
         day = str(usage_row["received_at_utc"] or "")[:10]
         usage_trend[day] = usage_trend.get(day, 0) + 1
+        page = str(event.get("endpoint") or event.get("path") or "unknown")
+        page_rec = pages.setdefault(page, {"page": page, "views": 0, "visitors": set()})
+        page_rec["views"] += 1
+        if visitor:
+            page_rec["visitors"].add(visitor)
         try:
             lat, lon = float(event.get("latitude")), float(event.get("longitude"))
             name = str(event.get("country_name") or event.get("country_code") or "Unknown")
@@ -553,7 +558,7 @@ def hunter_analytics_overview(days: int = 30) -> Dict[str, Any]:
     ranked = lambda values: [{"name": name, "count": count} for name, count in sorted(values.items(), key=lambda item: (-item[1], item[0]))[:10]]
     return {
         "ok": True, "days": days, "overview": data, "failures": [dict(x) for x in failures], "targets": [dict(x) for x in targets], "trend": [dict(x) for x in trend],
-        "usage": {"page_views": len(usage_rows), "unique_visitors": len(visitors), "sessions": len(sessions), "countries": ranked(by_country), "referrers": ranked(by_referrer), "devices": ranked(by_device), "locations": sorted(locations.values(), key=lambda item: -item["count"]), "trend": [{"day": day, "page_views": count} for day, count in sorted(usage_trend.items())]},
+        "usage": {"page_views": len(usage_rows), "unique_visitors": len(visitors), "sessions": len(sessions), "countries": ranked(by_country), "referrers": ranked(by_referrer), "devices": ranked(by_device), "locations": sorted(locations.values(), key=lambda item: -item["count"]), "pages": [{"page": item["page"], "views": item["views"], "visitors": len(item["visitors"])} for item in sorted(pages.values(), key=lambda item: (-item["views"], item["page"]))[:15]], "trend": [{"day": day, "page_views": count} for day, count in sorted(usage_trend.items())]},
     }
 
 
