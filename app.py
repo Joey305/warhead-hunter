@@ -3883,7 +3883,7 @@ def admin_analytics():
     if not _is_admin():
         return redirect(url_for("admin_login"))
     try:
-        days = max(1, min(int(str(request.args.get("days") or "30")), 3650))
+        days = max(1, min(int(str(request.args.get("days") or "3650")), 3650))
     except ValueError:
         days = 30
     analytics = randy_analytics_overview(days)

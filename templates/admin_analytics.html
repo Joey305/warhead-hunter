@@ -58,12 +58,12 @@
     {% else %}
       {% set summary = analytics.overview %}
       <section class="context">
-        <div><h2>Overview</h2><p>Reporting period: last {{ days }} days. Data updates when each job starts or finishes.</p></div>
+        <div><h2>Overview</h2><p>Reporting period: {% if days == 3650 %}all available archived history{% else %}last {{ days }} days{% endif %}. Data updates when each job starts or finishes.</p></div>
       </section>
       <section class="metric-grid" aria-label="Summary metrics">
         <article class="metric"><span class="metric-label">Jobs analyzed</span><strong class="metric-value">{{ summary.total_jobs or 0 }}</strong><span class="metric-detail">Total submitted jobs in this period.</span></article>
         <article class="metric"><span class="metric-label">Successful completion</span><strong class="metric-value">{{ '%.0f'|format((summary.completion_rate or 0) * 100) }}%</strong><span class="metric-detail">{{ summary.completed_jobs or 0 }} completed · {{ summary.failed_jobs or 0 }} failed</span></article>
-        <article class="metric"><span class="metric-label">Average run time</span><strong class="metric-value">{{ '%.1f'|format((summary.avg_runtime_seconds or 0) / 60) }}m</strong><span class="metric-detail">Mean time for completed pipeline jobs.</span></article>
+        <article class="metric"><span class="metric-label">Average run time</span><strong class="metric-value">{% if (summary.avg_runtime_seconds or 0) >= 1 %}{{ '%.1f'|format((summary.avg_runtime_seconds or 0) / 60) }}m{% else %}—{% endif %}</strong><span class="metric-detail">Recorded for new jobs; older archive records do not retain reliable timing.</span></article>
         <article class="metric"><span class="metric-label">High-exposure poses</span><strong class="metric-value">{{ '%.1f'|format(summary.avg_high_exposure_poses or 0) }}</strong><span class="metric-detail">Average poses with ≥50% ligand-atom exposure per completed job.</span></article>
       </section>
       <section class="panel-grid">
