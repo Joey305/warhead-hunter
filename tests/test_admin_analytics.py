@@ -21,7 +21,7 @@ class AdminAnalyticsTests(unittest.TestCase):
         failed = self.client.post("/admin/login", data={"email": "admin@example.org", "password": "wrong"})
         self.assertIn(b"Invalid email or password", failed.data)
         with patch.object(app, "randy_analytics_overview", return_value={
-            "overview": {"total_jobs": 2, "completion_rate": 0.5, "avg_runtime_seconds": 60, "avg_high_exposure_poses": 1},
+            "overview": {"total_jobs": 2, "completed_jobs": 1, "failed_jobs": 1, "completion_rate": 0.5, "avg_runtime_seconds": 60, "avg_high_exposure_poses": 1},
             "failures": [{"failed_step": "6_SASA.py", "count": 1}],
             "targets": [{"target_name": "PRMT5", "job_count": 2, "avg_high_exposure_poses": 1}],
         }):
@@ -29,6 +29,5 @@ class AdminAnalyticsTests(unittest.TestCase):
             self.assertEqual(login.status_code, 302)
             dashboard = self.client.get("/admin/analytics")
         self.assertEqual(dashboard.status_code, 200)
-        self.assertIn(b"Warhead Hunter analytics", dashboard.data)
+        self.assertIn(b"Analytics dashboard", dashboard.data)
         self.assertIn(b"PRMT5", dashboard.data)
-

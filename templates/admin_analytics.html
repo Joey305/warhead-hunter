@@ -4,29 +4,74 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Warhead Hunter Analytics</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
-  <style>body{max-width:1200px;margin:2rem auto;padding:0 1.25rem;font-family:system-ui,sans-serif}.head{display:flex;gap:1rem;justify-content:space-between;align-items:center}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1.5rem 0}.card{border:1px solid #334155;border-radius:12px;padding:1rem;background:#101827}.value{font-size:1.9rem;font-weight:700;color:#5eead4}table{width:100%;border-collapse:collapse;margin-top:1rem}td,th{padding:.6rem;border-bottom:1px solid #334155;text-align:left}.warn{padding:1rem;border:1px solid #f59e0b;border-radius:8px;color:#fcd34d}</style>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: #07111f; color: #e5eefb; }
+    .shell { max-width: 1240px; margin: 0 auto; padding: 32px 24px 56px; }
+    .eyebrow { margin: 0 0 8px; color: #5eead4; font-size: .78rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 0; color: #fff; font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -.04em; }
+    h2 { margin: 0; color: #fff; font-size: 1.12rem; }
+    p { color: #a9bad1; }
+    .header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+    .subtitle { margin: 10px 0 0; font-size: 1rem; }
+    .controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    button, select { border: 1px solid #455b78; border-radius: 8px; padding: .65rem .8rem; font: inherit; color: #f8fafc; background: #16243a; cursor: pointer; }
+    button:hover { background: #243653; } .logout { color: #ffd5d5; border-color: #854c56; }
+    .context { margin: 30px 0 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .context h2 { margin-bottom: 4px; } .context p { margin: 0; font-size: .92rem; }
+    .metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+    .metric, .panel { background: #101b2d; border: 1px solid #263b58; border-radius: 14px; box-shadow: 0 12px 30px rgba(0,0,0,.16); }
+    .metric { padding: 20px; min-height: 148px; display: flex; flex-direction: column; justify-content: space-between; }
+    .metric-label { color: #cbd8ea; font-weight: 750; font-size: .95rem; }
+    .metric-value { color: #5eead4; font-size: 2.45rem; line-height: 1; font-weight: 800; letter-spacing: -.045em; }
+    .metric-detail { color: #8ea4c1; font-size: .82rem; line-height: 1.4; }
+    .panel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+    .panel { padding: 20px; } .panel > p { margin: 8px 0 16px; font-size: .88rem; }
+    table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+    th { color: #90a8c8; font-size: .74rem; text-transform: uppercase; letter-spacing: .07em; }
+    th, td { padding: 12px 8px; border-bottom: 1px solid #263b58; text-align: left; }
+    td { color: #f1f5f9; } tr:last-child td { border-bottom: 0; }
+    .empty { color: #a9bad1; text-align: center; padding: 24px; }
+    .notice { padding: 18px; border: 1px solid #d1932f; border-radius: 12px; background: #30220d; color: #fde7be; }
+    .footnote { margin-top: 20px; font-size: .8rem; color: #7790b0; }
+    @media (max-width: 860px) { .metric-grid { grid-template-columns: repeat(2, 1fr); } .panel-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 560px) { .shell { padding: 24px 16px; } .header, .context { display: block; } .controls { margin-top: 18px; } .metric-grid { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
-  <header class="head">
-    <div><h1>Warhead Hunter analytics</h1><p>Internal dashboard · last {{ days }} days</p></div>
-    <form action="{{ url_for('admin_logout') }}" method="post"><button type="submit">Sign out</button></form>
-  </header>
-  <form method="get"><label>Range <select name="days" onchange="this.form.submit()"><option value="7" {% if days == 7 %}selected{% endif %}>7 days</option><option value="30" {% if days == 30 %}selected{% endif %}>30 days</option><option value="90" {% if days == 90 %}selected{% endif %}>90 days</option><option value="365" {% if days == 365 %}selected{% endif %}>365 days</option></select></label></form>
-  {% if analytics_unavailable %}
-    <p class="warn">RANDY analytics is unavailable or not configured. Set RANDY_ANALYTICS_BASE_URL and RANDY_ANALYTICS_TOKEN (or the existing RANDY backup variables) in Warhead Hunter.</p>
-  {% else %}
-    {% set summary = analytics.overview %}
-    <section class="cards">
-      <article class="card"><div>Jobs</div><div class="value">{{ summary.total_jobs or 0 }}</div></article>
-      <article class="card"><div>Completion rate</div><div class="value">{{ '%.0f'|format((summary.completion_rate or 0) * 100) }}%</div></article>
-      <article class="card"><div>Avg. runtime</div><div class="value">{{ '%.1f'|format((summary.avg_runtime_seconds or 0) / 60) }}m</div></article>
-      <article class="card"><div>Avg. high-exposure poses</div><div class="value">{{ '%.1f'|format(summary.avg_high_exposure_poses or 0) }}</div></article>
-    </section>
-    <section class="cards">
-      <article class="card"><h2>Failure steps</h2><table><tr><th>Step</th><th>Failures</th></tr>{% for row in analytics.failures %}<tr><td>{{ row.failed_step }}</td><td>{{ row.count }}</td></tr>{% else %}<tr><td colspan="2">No failures recorded.</td></tr>{% endfor %}</table></article>
-      <article class="card"><h2>Top targets</h2><table><tr><th>Target</th><th>Jobs</th><th>Avg. high-exposure poses</th></tr>{% for row in analytics.targets %}<tr><td>{{ row.target_name }}</td><td>{{ row.job_count }}</td><td>{{ '%.1f'|format(row.avg_high_exposure_poses or 0) }}</td></tr>{% else %}<tr><td colspan="3">No jobs recorded.</td></tr>{% endfor %}</table></article>
-    </section>
-  {% endif %}
+  <main class="shell">
+    <header class="header">
+      <div>
+        <p class="eyebrow">Warhead Hunter · Admin only</p>
+        <h1>Analytics dashboard</h1>
+        <p class="subtitle">Operational reliability and scientific yield for submitted analysis jobs.</p>
+      </div>
+      <div class="controls">
+        <form method="get"><label for="range">Time range</label> <select id="range" name="days" onchange="this.form.submit()"><option value="7" {% if days == 7 %}selected{% endif %}>Last 7 days</option><option value="30" {% if days == 30 %}selected{% endif %}>Last 30 days</option><option value="90" {% if days == 90 %}selected{% endif %}>Last 90 days</option><option value="365" {% if days == 365 %}selected{% endif %}>Last year</option></select></form>
+        <form action="{{ url_for('admin_logout') }}" method="post"><button class="logout" type="submit">Sign out</button></form>
+      </div>
+    </header>
+
+    {% if analytics_unavailable %}
+      <section class="notice"><strong>Analytics data is unavailable.</strong><br>RANDY could not be reached from this app. Check the configured RANDY archive/backup URL and token.</section>
+    {% else %}
+      {% set summary = analytics.overview %}
+      <section class="context">
+        <div><h2>Overview</h2><p>Reporting period: last {{ days }} days. Data updates when each job starts or finishes.</p></div>
+      </section>
+      <section class="metric-grid" aria-label="Summary metrics">
+        <article class="metric"><span class="metric-label">Jobs analyzed</span><strong class="metric-value">{{ summary.total_jobs or 0 }}</strong><span class="metric-detail">Total submitted jobs in this period.</span></article>
+        <article class="metric"><span class="metric-label">Successful completion</span><strong class="metric-value">{{ '%.0f'|format((summary.completion_rate or 0) * 100) }}%</strong><span class="metric-detail">{{ summary.completed_jobs or 0 }} completed · {{ summary.failed_jobs or 0 }} failed</span></article>
+        <article class="metric"><span class="metric-label">Average run time</span><strong class="metric-value">{{ '%.1f'|format((summary.avg_runtime_seconds or 0) / 60) }}m</strong><span class="metric-detail">Mean time for completed pipeline jobs.</span></article>
+        <article class="metric"><span class="metric-label">High-exposure poses</span><strong class="metric-value">{{ '%.1f'|format(summary.avg_high_exposure_poses or 0) }}</strong><span class="metric-detail">Average poses with ≥50% ligand-atom exposure per completed job.</span></article>
+      </section>
+      <section class="panel-grid">
+        <article class="panel"><h2>Where jobs fail</h2><p>Pipeline stage associated with each failed run.</p><table><thead><tr><th>Pipeline stage</th><th>Failures</th></tr></thead><tbody>{% for row in analytics.failures %}<tr><td>{{ row.failed_step }}</td><td>{{ row.count }}</td></tr>{% else %}<tr><td class="empty" colspan="2">No failed jobs in this period.</td></tr>{% endfor %}</tbody></table></article>
+        <article class="panel"><h2>Most analyzed targets</h2><p>Targets ranked by submitted jobs, with their scientific-yield indicator.</p><table><thead><tr><th>Target</th><th>Jobs</th><th>High-exposure poses</th></tr></thead><tbody>{% for row in analytics.targets %}<tr><td>{{ row.target_name }}</td><td>{{ row.job_count }}</td><td>{{ '%.1f'|format(row.avg_high_exposure_poses or 0) }}</td></tr>{% else %}<tr><td class="empty" colspan="3">No jobs recorded in this period.</td></tr>{% endfor %}</tbody></table></article>
+      </section>
+      <p class="footnote">A “high-exposure pose” has a mean ligand-atom exposure of at least 50%. This is a screening signal, not a chemical recommendation.</p>
+    {% endif %}
+  </main>
 </body>
 </html>
