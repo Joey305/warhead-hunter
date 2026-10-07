@@ -583,6 +583,11 @@ def store_warhead_hunter_event(payload: Dict[str, Any]) -> bool:
     if "handoff_id" in payload and not re.fullmatch(r"[0-9a-f-]{32,36}", str(payload["handoff_id"]), re.I):
         return False
     occurred = str(payload.get("occurred_at_utc") or now_utc())
+    # The Hunter lane was added after the receiver was already running in
+    # production.  Ensure its table/index migration is applied before each
+    # write so a graceful reload cannot leave the endpoint routable but
+    # unusable on an older database.
+    init_storage()
     with sqlite3.connect(DB_PATH) as conn:
         conn.execute("INSERT OR IGNORE INTO warhead_hunter_analytics_events (event_id, occurred_at_utc, event_type, feature, payload_json) VALUES (?, ?, ?, ?, ?)", (event_id, occurred, payload["event_type"], payload["feature"], json.dumps(payload, sort_keys=True)))
         conn.commit()
@@ -592,6 +597,7 @@ def store_warhead_hunter_event(payload: Dict[str, Any]) -> bool:
 def warhead_hunter_analytics_rollup(days: int) -> Dict[str, Any]:
     """Aggregate the dedicated safe event lane; never expose event payloads."""
     cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
+    init_storage()
     with sqlite3.connect(DB_PATH) as conn:
         rows = conn.execute("SELECT event_type, feature, payload_json FROM warhead_hunter_analytics_events WHERE occurred_at_utc >= ?", (cutoff,)).fetchall()
     events = []
