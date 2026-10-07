@@ -44,7 +44,7 @@ from routes import bp as routes_bp
 from api.handoff_server import hand_bp
 from api.sdf_resolver import expected_mcs_sdf_filename, normalize_sdf_key, resolve_sdf_path
 from api.svg_theme import themed_svg_response
-from api.randy_analytics_client import get_overview as randy_analytics_overview, emit_usage_event as emit_randy_usage_event
+from api.randy_analytics_client import get_overview as randy_analytics_overview
 
 try:
     from api.randy_archive_client import (
@@ -180,29 +180,6 @@ def _usage_geo(request_ip: str, headers) -> Dict[str, Any]:
     _GEOIP_CACHE[request_ip] = result
     return result
 
-
-@app.after_request
-def _record_anonymous_usage(response):
-    """Record anonymous public page views; never store raw IP addresses or query text."""
-    path = request.path or ""
-    if response.status_code >= 400 or path.startswith(("/static/", "/admin/", "/api/", "/robots.txt", "/sitemap.xml")):
-        return response
-    visitor_id = request.cookies.get("wh_visitor_id") or secrets.token_urlsafe(18)
-    session_id = request.cookies.get("wh_session_id") or secrets.token_urlsafe(18)
-    referrer = urlparse(request.referrer or "").hostname or "direct"
-    request_ip = str(request.headers.get("X-Forwarded-For") or request.remote_addr or "").split(",", 1)[0].strip()
-    geo = _usage_geo(request_ip, request.headers)
-    emit_randy_usage_event({
-        "event_type": "hunter_page_view", "source": "warhead-hunter-web", "endpoint": request.endpoint or "",
-        "status": str(response.status_code), "visitor_id": visitor_id, "session_id": session_id,
-        "path": path, "referrer_host": referrer, **geo,
-        "device_type": _usage_device_type(request.user_agent.string), "event_id": str(uuid.uuid4()),
-    })
-    if not request.cookies.get("wh_visitor_id"):
-        response.set_cookie("wh_visitor_id", visitor_id, max_age=31536000, secure=True, httponly=True, samesite="Lax")
-    if not request.cookies.get("wh_session_id"):
-        response.set_cookie("wh_session_id", session_id, secure=True, httponly=True, samesite="Lax")
-    return response
 
 app.register_blueprint(sasa_bp)
 app.register_blueprint(routes_bp)

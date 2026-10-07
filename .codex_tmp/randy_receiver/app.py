@@ -320,6 +320,10 @@ def init_storage() -> None:
         conn.execute("CREATE INDEX IF NOT EXISTS idx_analytics_events_type_time ON analytics_events(event_type, occurred_at_utc)")
         conn.execute("CREATE INDEX IF NOT EXISTS idx_analytics_events_job_id ON analytics_events(job_id)")
         conn.execute("CREATE INDEX IF NOT EXISTS idx_hunter_job_facts_finished ON hunter_job_facts(finished_at_utc)")
+        conn.execute("""CREATE TABLE IF NOT EXISTS warhead_hunter_analytics_events (
+            event_id TEXT PRIMARY KEY, occurred_at_utc TEXT NOT NULL, event_type TEXT NOT NULL,
+            feature TEXT NOT NULL, payload_json TEXT NOT NULL)""")
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_wh_analytics_time ON warhead_hunter_analytics_events(occurred_at_utc, event_type)")
         conn.commit()
 
     csv_headers = {
@@ -562,6 +566,24 @@ def hunter_analytics_overview(days: int = 30) -> Dict[str, Any]:
     }
 
 
+HUNTER_EVENT_TYPES = {"workflow_started", "results_viewed", "export_generated", "companion_handoff", "analysis_submitted", "analysis_started", "analysis_completed", "analysis_failed"}
+HUNTER_FEATURES = {"hunter_launch", "rcsb_scout", "manual_upload", "api_docs", "job_monitor", "results_gallery", "candidate_structure", "candidate_2d_map", "archive_browse", "example_detail", "hunter_job", "sdf_download", "pdb_download", "job_bundle_download", "war_pdb_bundle_download", "job_index_csv", "api_artifact_download", "builder_from_results_gallery"}
+HUNTER_SAFE_FIELDS = {"event_id", "event_type", "feature", "occurred_at_utc", "visitor_id", "session_id", "route", "referrer_host", "device_type", "country_code", "country_name", "latitude", "longitude", "handoff_id", "runtime_seconds", "failure_stage", "structure_count", "pose_count", "unique_ligand_count", "total_ligand_atoms", "exposed_atom_count", "mean_percent_exposed", "high_exposure_pose_count", "archive_verified"}
+
+
+def store_warhead_hunter_event(payload: Dict[str, Any]) -> bool:
+    if set(payload) - HUNTER_SAFE_FIELDS or payload.get("event_type") not in HUNTER_EVENT_TYPES or payload.get("feature") not in HUNTER_FEATURES:
+        return False
+    event_id = str(payload.get("event_id") or "")
+    if not re.fullmatch(r"[0-9a-f-]{32,36}", event_id, re.I):
+        return False
+    occurred = str(payload.get("occurred_at_utc") or now_utc())
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.execute("INSERT OR IGNORE INTO warhead_hunter_analytics_events (event_id, occurred_at_utc, event_type, feature, payload_json) VALUES (?, ?, ?, ?, ?)", (event_id, occurred, payload["event_type"], payload["feature"], json.dumps(payload, sort_keys=True)))
+        conn.commit()
+    return True
+
+
 def append_component_csv(received_at: str, event_id: int, event_type: str, payload: Dict[str, Any]) -> None:
     with COMPONENTS_CSV_PATH.open("a", newline="", encoding="utf-8") as handle:
         csv.writer(handle).writerow([
@@ -745,6 +767,32 @@ def backup_hunter_analytics_event():
     except ValueError as exc:
         return jsonify({"ok": False, "error": str(exc)}), 400
     return jsonify({"ok": True, **result})
+
+
+@APP.post("/backup/warhead-hunter/analytics/events")
+def backup_warhead_hunter_analytics_event():
+    ok, error = require_auth()
+    if not ok:
+        message, status_code = error
+        return jsonify({"ok": False, "error": message}), status_code
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict) or not store_warhead_hunter_event(payload):
+        return jsonify({"ok": False, "error": "Invalid Hunter analytics event."}), 400
+    return jsonify({"ok": True}), 202
+
+
+@APP.get("/backup/warhead-hunter/analytics/rollup")
+def backup_warhead_hunter_analytics_rollup():
+    ok, error = require_auth()
+    if not ok:
+        message, status_code = error
+        return jsonify({"ok": False, "error": message}), status_code
+    try:
+        days = max(1, min(int(str(request.args.get("days") or "30")), 3650))
+    except ValueError:
+        days = 30
+    # Keep the established operational rollup while new safe product events accumulate separately.
+    return jsonify(hunter_analytics_overview(days))
 
 
 @APP.get("/backup/analytics/hunter/overview")

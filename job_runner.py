@@ -180,13 +180,13 @@ def _metadata_timestamp() -> str:
 
 def _analytics_event(job_id: str, event_type: str, *, target_name: str, source: str, **metrics: Any) -> None:
     """Emit best-effort operational telemetry without affecting the pipeline."""
+    event_name = {
+        "hunter_job_submitted": "analysis_submitted", "hunter_job_started": "analysis_started",
+        "hunter_job_completed": "analysis_completed", "hunter_job_failed": "analysis_failed",
+    }.get(event_type, event_type)
     emit_randy_analytics_event({
-        "event_type": event_type,
-        "job_id": job_id,
-        "target_name": target_name,
-        "source": source or "web",
+        "event_id": str(uuid.uuid4()), "event_type": event_name, "feature": "hunter_job",
         "occurred_at_utc": _metadata_timestamp(),
-        "idempotency_key": f"{job_id}:{event_type}",
         **metrics,
     })
 
