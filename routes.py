@@ -2,12 +2,15 @@
 from __future__ import annotations
 
 import os
+import uuid
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Optional
 
 import pandas as pd
-from flask import Blueprint, abort, current_app, render_template
+from flask import Blueprint, abort, current_app, render_template, request
 import job_state as disk_jobs
+from api.randy_analytics_client import emit_event as emit_randy_analytics_event
 
 try:
     from api.randy_archive_client import (
@@ -595,6 +598,9 @@ def view_results(job_id: str):
             target_name = str(randy_job.get("target") or "").strip()
 
     results = df.to_dict(orient="records")
+    emit_randy_analytics_event({"event_id": str(uuid.uuid4()), "event_type": "results_viewed", "feature": "results_gallery",
+        "occurred_at_utc": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
+        "visitor_id": request.cookies.get("wh_vid", ""), "session_id": request.cookies.get("wh_sid", ""), "route": "/results"})
     return render_template(
         "results_gallery.html",
         job_id=job_id,

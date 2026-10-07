@@ -184,8 +184,18 @@ def _analytics_event(job_id: str, event_type: str, *, target_name: str, source: 
         "hunter_job_submitted": "analysis_submitted", "hunter_job_started": "analysis_started",
         "hunter_job_completed": "analysis_completed", "hunter_job_failed": "analysis_failed",
     }.get(event_type, event_type)
+    # Stable opaque UUID prevents retry duplicates without disclosing the job id.
+    event_id = str(uuid.uuid5(uuid.NAMESPACE_URL, f"warhead-hunter:{job_id}:{event_name}"))
+    stage_map = {
+        "1_GRABBER.py": "structure_retrieval", "2_SQchk.py": "input_validation",
+        "3_PDBmkr.py": "structure_preparation", "4_PDBfxr.py": "structure_preparation", "5_PDBcln.py": "structure_preparation",
+        "6_SASA.py": "sasa", "7_metadata.py": "atom_mapping", "8_scaffold.py": "atom_mapping", "9_2Dmapping.py": "atom_mapping", "10_2DmappingExtraction.py": "atom_mapping", "11_mcsMatcher.py": "atom_mapping",
+        "12_Results.py": "result_generation", "15_ResultsMerged.py": "result_generation", "16_ResultsDisplay.py": "result_generation",
+    }
+    if event_name == "analysis_failed":
+        metrics["failure_stage"] = stage_map.get(str(metrics.pop("failed_step", "")), "unknown")
     emit_randy_analytics_event({
-        "event_id": str(uuid.uuid4()), "event_type": event_name, "feature": "hunter_job",
+        "event_id": event_id, "event_type": event_name, "feature": "hunter_job",
         "occurred_at_utc": _metadata_timestamp(),
         **metrics,
     })

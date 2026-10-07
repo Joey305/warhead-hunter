@@ -10,7 +10,7 @@ import re
 import sqlite3
 import shutil
 import zipfile
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path, PurePosixPath
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 from urllib.parse import quote, unquote
@@ -569,6 +569,7 @@ def hunter_analytics_overview(days: int = 30) -> Dict[str, Any]:
 HUNTER_EVENT_TYPES = {"workflow_started", "results_viewed", "export_generated", "companion_handoff", "analysis_submitted", "analysis_started", "analysis_completed", "analysis_failed"}
 HUNTER_FEATURES = {"hunter_launch", "rcsb_scout", "manual_upload", "api_docs", "job_monitor", "results_gallery", "candidate_structure", "candidate_2d_map", "archive_browse", "example_detail", "hunter_job", "sdf_download", "pdb_download", "job_bundle_download", "war_pdb_bundle_download", "job_index_csv", "api_artifact_download", "builder_from_results_gallery"}
 HUNTER_SAFE_FIELDS = {"event_id", "event_type", "feature", "occurred_at_utc", "visitor_id", "session_id", "route", "referrer_host", "device_type", "country_code", "country_name", "latitude", "longitude", "handoff_id", "runtime_seconds", "failure_stage", "structure_count", "pose_count", "unique_ligand_count", "total_ligand_atoms", "exposed_atom_count", "mean_percent_exposed", "high_exposure_pose_count", "archive_verified"}
+HUNTER_FAILURE_STAGES = {"input_validation", "structure_retrieval", "structure_preparation", "sasa", "atom_mapping", "result_generation", "archive_backup", "unknown"}
 
 
 def store_warhead_hunter_event(payload: Dict[str, Any]) -> bool:
@@ -577,11 +578,57 @@ def store_warhead_hunter_event(payload: Dict[str, Any]) -> bool:
     event_id = str(payload.get("event_id") or "")
     if not re.fullmatch(r"[0-9a-f-]{32,36}", event_id, re.I):
         return False
+    if payload.get("event_type") == "analysis_failed" and payload.get("failure_stage", "unknown") not in HUNTER_FAILURE_STAGES:
+        return False
+    if "handoff_id" in payload and not re.fullmatch(r"[0-9a-f-]{32,36}", str(payload["handoff_id"]), re.I):
+        return False
     occurred = str(payload.get("occurred_at_utc") or now_utc())
     with sqlite3.connect(DB_PATH) as conn:
         conn.execute("INSERT OR IGNORE INTO warhead_hunter_analytics_events (event_id, occurred_at_utc, event_type, feature, payload_json) VALUES (?, ?, ?, ?, ?)", (event_id, occurred, payload["event_type"], payload["feature"], json.dumps(payload, sort_keys=True)))
         conn.commit()
     return True
+
+
+def warhead_hunter_analytics_rollup(days: int) -> Dict[str, Any]:
+    """Aggregate the dedicated safe event lane; never expose event payloads."""
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
+    with sqlite3.connect(DB_PATH) as conn:
+        rows = conn.execute("SELECT event_type, feature, payload_json FROM warhead_hunter_analytics_events WHERE occurred_at_utc >= ?", (cutoff,)).fetchall()
+    events = []
+    for event_type, feature, raw in rows:
+        try:
+            data = json.loads(raw)
+            if isinstance(data, dict):
+                events.append((event_type, feature, data))
+        except Exception:
+            continue
+    count = lambda name: sum(1 for kind, _, _ in events if kind == name)
+    visitors = {str(data.get("visitor_id")) for _, _, data in events if data.get("visitor_id")}
+    sessions = {str(data.get("session_id")) for _, _, data in events if data.get("session_id")}
+    def tally(selector):
+        values = {}
+        for _, _, data in events:
+            value = selector(data)
+            if value: values[value] = values.get(value, 0) + 1
+        return [{"name": key, "count": value} for key, value in sorted(values.items(), key=lambda pair: (-pair[1], pair[0]))[:12]]
+    failures = tally(lambda d: d.get("failure_stage", "unknown") if d.get("event_type") == "analysis_failed" else None)
+    runtimes = sorted(float(d["runtime_seconds"]) for kind, _, d in events if kind == "analysis_completed" and isinstance(d.get("runtime_seconds"), (int, float)))
+    percentile = lambda fraction: runtimes[min(len(runtimes) - 1, max(0, int(round((len(runtimes) - 1) * fraction))))] if runtimes else None
+    completed = [d for kind, _, d in events if kind == "analysis_completed"]
+    average = lambda key: (sum(float(d.get(key) or 0) for d in completed) / len(completed)) if completed else 0
+    high_yield = sum(1 for d in completed if float(d.get("high_exposure_pose_count") or 0) > 0)
+    funnel_features = {"hunter_launch", "rcsb_scout", "manual_upload", "api_docs"}
+    workflow_started = sum(1 for kind, feature, _ in events if kind == "workflow_started" and feature in funnel_features)
+    results_viewed = sum(1 for kind, feature, _ in events if kind == "results_viewed" and feature == "results_gallery")
+    exports_or_handoffs = sum(1 for kind, _, _ in events if kind in {"export_generated", "companion_handoff"})
+    submitted, started, failed = count("analysis_submitted"), count("analysis_started"), count("analysis_failed")
+    archive_verified = sum(1 for d in completed if d.get("archive_verified") is True)
+    return {"ok": True, "days": days,
+        "audience": {"visitors": len(visitors), "sessions": len(sessions), "meaningful_events": len(events), "referrers": tally(lambda d: d.get("referrer_host") or "direct"), "devices": tally(lambda d: d.get("device_type") or "unknown"), "countries": tally(lambda d: d.get("country_code") or "UNKNOWN")},
+        "funnel": [{"name": "Workflow started", "count": workflow_started}, {"name": "Job submitted", "count": submitted}, {"name": "Job started", "count": started}, {"name": "Job completed", "count": len(completed)}, {"name": "Results gallery viewed", "count": results_viewed}, {"name": "Export or Builder handoff", "count": exports_or_handoffs}],
+        "pipeline": {"submitted": submitted, "started": started, "completed": len(completed), "failed": failed, "completion_rate": (len(completed) / submitted) if submitted else 0, "median_runtime_seconds": percentile(.5), "p90_runtime_seconds": percentile(.9), "archive_verified_rate": (archive_verified / len(completed)) if completed else 0, "failures": failures},
+        "yield": {"result_ready": len(completed), "avg_structures": average("structure_count"), "avg_poses": average("pose_count"), "high_exposure_job_rate": (high_yield / len(completed)) if completed else 0, "avg_high_exposure_poses": average("high_exposure_pose_count")},
+        "engagement": {"gallery_views": results_viewed, "candidate_structure_views": sum(1 for k, f, _ in events if k == "results_viewed" and f == "candidate_structure"), "candidate_2d_map_views": sum(1 for k, f, _ in events if k == "results_viewed" and f == "candidate_2d_map"), "exports": tally(lambda d: d.get("feature") if d.get("event_type") == "export_generated" else None), "builder_handoffs": sum(1 for k, _, _ in events if k == "companion_handoff")}}
 
 
 def append_component_csv(received_at: str, event_id: int, event_type: str, payload: Dict[str, Any]) -> None:
@@ -791,8 +838,7 @@ def backup_warhead_hunter_analytics_rollup():
         days = max(1, min(int(str(request.args.get("days") or "30")), 3650))
     except ValueError:
         days = 30
-    # Keep the established operational rollup while new safe product events accumulate separately.
-    return jsonify(hunter_analytics_overview(days))
+    return jsonify(warhead_hunter_analytics_rollup(days))
 
 
 @APP.get("/backup/analytics/hunter/overview")

@@ -28,7 +28,7 @@ import requests
 import urllib3
 from flask import (
     Flask, render_template, request, redirect,
-    url_for, send_from_directory, jsonify, abort, send_file, Response, session
+    url_for, send_from_directory, jsonify, abort, send_file, Response, session, g
 )
 
 from artifact_paths import (
@@ -44,7 +44,7 @@ from routes import bp as routes_bp
 from api.handoff_server import hand_bp
 from api.sdf_resolver import expected_mcs_sdf_filename, normalize_sdf_key, resolve_sdf_path
 from api.svg_theme import themed_svg_response
-from api.randy_analytics_client import get_overview as randy_analytics_overview
+from api.randy_analytics_client import get_overview as randy_analytics_overview, emit_event as emit_randy_analytics_event
 
 try:
     from api.randy_archive_client import (
@@ -110,6 +110,35 @@ BATCHES_DIR = JOBS_DIR / "_batches"
 BATCHES_DIR.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__)
+
+# Anonymous identifiers are opaque random browser tokens, not account identities.
+@app.before_request
+def _analytics_identity() -> None:
+    g.analytics_visitor_id = request.cookies.get("wh_vid") or str(uuid.uuid4())
+    g.analytics_session_id = request.cookies.get("wh_sid") or str(uuid.uuid4())
+    g.analytics_new_visitor = not bool(request.cookies.get("wh_vid"))
+    g.analytics_new_session = not bool(request.cookies.get("wh_sid"))
+
+
+@app.after_request
+def _analytics_cookie_response(response):
+    if getattr(g, "analytics_new_visitor", False):
+        response.set_cookie("wh_vid", g.analytics_visitor_id, max_age=31536000, secure=True, httponly=True, samesite="Lax")
+    if getattr(g, "analytics_new_session", False):
+        response.set_cookie("wh_sid", g.analytics_session_id, max_age=1800, secure=True, httponly=True, samesite="Lax")
+    return response
+
+
+def emit_product_analytics(event_type: str, feature: str, *, route: str = "") -> None:
+    """Capture only primitive allow-listed values before the async sender runs."""
+    referrer_host = (urlparse(request.referrer).hostname or "direct") if request.referrer else "direct"
+    agent = (request.user_agent.string or "").lower()
+    device = "mobile" if any(token in agent for token in ("mobile", "android", "iphone")) else "tablet" if "ipad" in agent else "desktop"
+    country = str(request.headers.get("CF-IPCountry") or request.headers.get("X-Country-Code") or "").upper()
+    emit_randy_analytics_event({"event_id": str(uuid.uuid4()), "event_type": event_type, "feature": feature,
+        "occurred_at_utc": datetime.now(timezone.utc).replace(microsecond=0).isoformat(), "visitor_id": g.analytics_visitor_id,
+        "session_id": g.analytics_session_id, "route": route[:80], "referrer_host": referrer_host[:255], "device_type": device,
+        **({"country_code": country} if re.fullmatch(r"[A-Z]{2}", country) else {})})
 app.config["SECRET_KEY"] = os.getenv("WARHEAD_SECRET_KEY") or os.getenv("FLASK_SECRET_KEY") or secrets.token_urlsafe(32)
 app.config["UPLOAD_FOLDER"] = str(APP_ROOT / "uploads")
 app.config["JOBS_DIR"] = str(JOBS_DIR)
@@ -1531,6 +1560,7 @@ def ligand_sdf_path(job_id: str, pdb: str, chain: str, warhead: str) -> Optional
 @app.get("/api-docs")
 @app.get("/api")
 def api_docs():
+    emit_product_analytics("workflow_started", "api_docs", route="/api-docs")
     return render_template(
         "api_docs.html",
         api_version=API_VERSION,
@@ -2178,6 +2208,7 @@ def home():
 
 @app.route("/upload_manual")
 def upload_manual():
+    emit_product_analytics("workflow_started", "manual_upload", route="/upload_manual")
     return render_template("upload.html")
 
 
@@ -3936,6 +3967,7 @@ def admin_analytics():
 
 @app.route("/scout")
 def rcsb_scout():
+    emit_product_analytics("workflow_started", "rcsb_scout", route="/scout")
     return render_template("rcsb_scout.html")
 
 
@@ -4018,6 +4050,7 @@ def launch_job():
         return "Missing Data", 400
 
     job_id = start_job(target, query, fasta)
+    emit_product_analytics("workflow_started", "hunter_launch", route="/launch_job")
     return redirect(url_for("job_monitor", job_id=job_id))
 
 
@@ -4028,6 +4061,7 @@ def job_monitor(job_id):
     job = resolve_known_job_state(job_id)
     if job is None:
         return "Job not found", 404
+    emit_product_analytics("results_viewed", "job_monitor", route="/monitor")
     if str(job.get("source") or "").startswith("randy") and job.get("results_ready"):
         return redirect(f"/results/{job_id}")
     if str(job.get("source") or "").startswith("randy"):
