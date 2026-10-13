@@ -193,12 +193,35 @@ def _analytics_event(job_id: str, event_type: str, *, target_name: str, source: 
         "12_Results.py": "result_generation", "15_ResultsMerged.py": "result_generation", "16_ResultsDisplay.py": "result_generation",
     }
     if event_name == "analysis_failed":
-        metrics["failure_stage"] = stage_map.get(str(metrics.pop("failed_step", "")), "unknown")
+        message = str(metrics.pop("failure_message", ""))
+        reason = _analytics_failure_reason(message)
+        metrics["failure_stage"] = "archive_backup" if reason == "archive_backup_failed" else stage_map.get(str(metrics.pop("failed_step", "")), "unknown")
+        metrics["failure_reason"] = reason
     emit_randy_analytics_event({
         "event_id": event_id, "event_type": event_name, "feature": "hunter_job",
         "occurred_at_utc": _metadata_timestamp(),
         **metrics,
     })
+
+
+def _analytics_failure_reason(message: str) -> str:
+    """Return a controlled failure class; never transmit an exception or user input."""
+    text = message.lower()
+    if "no output" in text:
+        return "no_output_timeout"
+    if "timed out" in text or "timeout" in text:
+        return "stage_timeout"
+    if "memory" in text or "rss" in text:
+        return "memory_limit"
+    if "not found" in text or "no such file" in text:
+        return "missing_required_file"
+    if "backup" in text or "archive" in text:
+        return "archive_backup_failed"
+    if "validation" in text or "checkpoint" in text or "artifact" in text:
+        return "output_validation_failed"
+    if "code " in text or "subprocess" in text:
+        return "stage_process_failed"
+    return "unexpected_error"
 
 
 def _analytics_result_metrics(job_dir: str) -> Dict[str, Any]:
@@ -1406,6 +1429,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
             source=analytics_source,
             runtime_seconds=round(time.monotonic() - pipeline_started_at, 3),
             failed_step=failed_step,
+            failure_message=str(e),
         )
 
         log_message(job_id, f"❌ CRITICAL ERROR: {str(e)}")

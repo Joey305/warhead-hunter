@@ -568,8 +568,9 @@ def hunter_analytics_overview(days: int = 30) -> Dict[str, Any]:
 
 HUNTER_EVENT_TYPES = {"workflow_started", "results_viewed", "export_generated", "companion_handoff", "analysis_submitted", "analysis_started", "analysis_completed", "analysis_failed"}
 HUNTER_FEATURES = {"hunter_launch", "rcsb_scout", "manual_upload", "api_docs", "job_monitor", "results_gallery", "candidate_structure", "candidate_2d_map", "archive_browse", "example_detail", "hunter_job", "sdf_download", "pdb_download", "job_bundle_download", "war_pdb_bundle_download", "job_index_csv", "api_artifact_download", "builder_from_results_gallery"}
-HUNTER_SAFE_FIELDS = {"event_id", "event_type", "feature", "occurred_at_utc", "visitor_id", "session_id", "route", "referrer_host", "device_type", "country_code", "country_name", "latitude", "longitude", "handoff_id", "runtime_seconds", "failure_stage", "structure_count", "pose_count", "unique_ligand_count", "total_ligand_atoms", "exposed_atom_count", "mean_percent_exposed", "high_exposure_pose_count", "archive_verified"}
+HUNTER_SAFE_FIELDS = {"event_id", "event_type", "feature", "occurred_at_utc", "visitor_id", "session_id", "route", "referrer_host", "device_type", "country_code", "country_name", "latitude", "longitude", "handoff_id", "runtime_seconds", "failure_stage", "failure_reason", "structure_count", "pose_count", "unique_ligand_count", "total_ligand_atoms", "exposed_atom_count", "mean_percent_exposed", "high_exposure_pose_count", "archive_verified"}
 HUNTER_FAILURE_STAGES = {"input_validation", "structure_retrieval", "structure_preparation", "sasa", "atom_mapping", "result_generation", "archive_backup", "unknown"}
+HUNTER_FAILURE_REASONS = {"no_output_timeout", "stage_timeout", "memory_limit", "missing_required_file", "archive_backup_failed", "output_validation_failed", "stage_process_failed", "unexpected_error"}
 
 
 def store_warhead_hunter_event(payload: Dict[str, Any]) -> bool:
@@ -579,6 +580,8 @@ def store_warhead_hunter_event(payload: Dict[str, Any]) -> bool:
     if not re.fullmatch(r"[0-9a-f-]{32,36}", event_id, re.I):
         return False
     if payload.get("event_type") == "analysis_failed" and payload.get("failure_stage", "unknown") not in HUNTER_FAILURE_STAGES:
+        return False
+    if payload.get("event_type") == "analysis_failed" and payload.get("failure_reason", "unexpected_error") not in HUNTER_FAILURE_REASONS:
         return False
     if "handoff_id" in payload and not re.fullmatch(r"[0-9a-f-]{32,36}", str(payload["handoff_id"]), re.I):
         return False
@@ -618,6 +621,15 @@ def warhead_hunter_analytics_rollup(days: int) -> Dict[str, Any]:
             if value: values[value] = values.get(value, 0) + 1
         return [{"name": key, "count": value} for key, value in sorted(values.items(), key=lambda pair: (-pair[1], pair[0]))[:12]]
     failures = tally(lambda d: d.get("failure_stage", "unknown") if d.get("event_type") == "analysis_failed" else None)
+    failure_reasons = tally(lambda d: d.get("failure_reason", "unexpected_error") if d.get("event_type") == "analysis_failed" else None)
+    failure_details = {}
+    for kind, _, data in events:
+        if kind != "analysis_failed":
+            continue
+        stage = str(data.get("failure_stage") or "unknown")
+        reason = str(data.get("failure_reason") or "unexpected_error")
+        key = (stage, reason)
+        failure_details[key] = failure_details.get(key, 0) + 1
     runtimes = sorted(float(d["runtime_seconds"]) for kind, _, d in events if kind == "analysis_completed" and isinstance(d.get("runtime_seconds"), (int, float)))
     percentile = lambda fraction: runtimes[min(len(runtimes) - 1, max(0, int(round((len(runtimes) - 1) * fraction))))] if runtimes else None
     completed = [d for kind, _, d in events if kind == "analysis_completed"]
@@ -632,7 +644,7 @@ def warhead_hunter_analytics_rollup(days: int) -> Dict[str, Any]:
     return {"ok": True, "days": days,
         "audience": {"visitors": len(visitors), "sessions": len(sessions), "meaningful_events": len(events), "referrers": tally(lambda d: d.get("referrer_host") or "direct"), "devices": tally(lambda d: d.get("device_type") or "unknown"), "countries": tally(lambda d: d.get("country_code") or "UNKNOWN")},
         "funnel": [{"name": "Workflow started", "count": workflow_started}, {"name": "Job submitted", "count": submitted}, {"name": "Job started", "count": started}, {"name": "Job completed", "count": len(completed)}, {"name": "Results gallery viewed", "count": results_viewed}, {"name": "Export or Builder handoff", "count": exports_or_handoffs}],
-        "pipeline": {"submitted": submitted, "started": started, "completed": len(completed), "failed": failed, "completion_rate": (len(completed) / submitted) if submitted else 0, "median_runtime_seconds": percentile(.5), "p90_runtime_seconds": percentile(.9), "archive_verified_rate": (archive_verified / len(completed)) if completed else 0, "failures": failures},
+        "pipeline": {"submitted": submitted, "started": started, "completed": len(completed), "failed": failed, "completion_rate": (len(completed) / submitted) if submitted else 0, "median_runtime_seconds": percentile(.5), "p90_runtime_seconds": percentile(.9), "archive_verified_rate": (archive_verified / len(completed)) if completed else 0, "failures": failures, "failure_reasons": failure_reasons, "failure_details": [{"stage": stage, "reason": reason, "count": count} for (stage, reason), count in sorted(failure_details.items(), key=lambda item: (-item[1], item[0]))]},
         "yield": {"result_ready": len(completed), "avg_structures": average("structure_count"), "avg_poses": average("pose_count"), "high_exposure_job_rate": (high_yield / len(completed)) if completed else 0, "avg_high_exposure_poses": average("high_exposure_pose_count")},
         "engagement": {"gallery_views": results_viewed, "candidate_structure_views": sum(1 for k, f, _ in events if k == "results_viewed" and f == "candidate_structure"), "candidate_2d_map_views": sum(1 for k, f, _ in events if k == "results_viewed" and f == "candidate_2d_map"), "exports": tally(lambda d: d.get("feature") if d.get("event_type") == "export_generated" else None), "builder_handoffs": sum(1 for k, _, _ in events if k == "companion_handoff")}}
 

@@ -17,7 +17,7 @@ ALLOWED_FEATURES = {
     "sdf_download", "pdb_download", "job_bundle_download", "war_pdb_bundle_download", "job_index_csv",
     "api_artifact_download", "builder_from_results_gallery",
 }
-SAFE_FIELDS = {"event_id", "event_type", "feature", "occurred_at_utc", "visitor_id", "session_id", "route", "referrer_host", "device_type", "country_code", "country_name", "latitude", "longitude", "handoff_id", "runtime_seconds", "failure_stage", "structure_count", "pose_count", "unique_ligand_count", "total_ligand_atoms", "exposed_atom_count", "mean_percent_exposed", "high_exposure_pose_count", "archive_verified"}
+SAFE_FIELDS = {"event_id", "event_type", "feature", "occurred_at_utc", "visitor_id", "session_id", "route", "referrer_host", "device_type", "country_code", "country_name", "latitude", "longitude", "handoff_id", "runtime_seconds", "failure_stage", "failure_reason", "structure_count", "pose_count", "unique_ligand_count", "total_ligand_atoms", "exposed_atom_count", "mean_percent_exposed", "high_exposure_pose_count", "archive_verified"}
 
 
 def _base_url() -> str:
