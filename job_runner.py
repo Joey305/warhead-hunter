@@ -194,8 +194,15 @@ def _analytics_event(job_id: str, event_type: str, *, target_name: str, source: 
     }
     if event_name == "analysis_failed":
         message = str(metrics.pop("failure_message", ""))
-        reason = _analytics_failure_reason(message)
-        metrics["failure_stage"] = "archive_backup" if reason == "archive_backup_failed" else stage_map.get(str(metrics.pop("failed_step", "")), "unknown")
+        failure = metrics.pop("failure", None)
+        failed_step = str(metrics.pop("failed_step", ""))
+        failed_stage = str(metrics.pop("failed_stage", ""))
+        reason = _analytics_failure_reason(message, failure=failure, stage=failed_stage or stage_map.get(failed_step, "unknown"))
+        metrics["failure_stage"] = (
+            "archive_backup"
+            if reason == "archive_backup_failed"
+            else failed_stage or stage_map.get(failed_step, "unknown")
+        )
         metrics["failure_reason"] = reason
     emit_randy_analytics_event({
         "event_id": event_id, "event_type": event_name, "feature": "hunter_job",
@@ -204,24 +211,51 @@ def _analytics_event(job_id: str, event_type: str, *, target_name: str, source: 
     })
 
 
-def _analytics_failure_reason(message: str) -> str:
+def _analytics_failure_reason(
+    message: str,
+    *,
+    failure: Optional[BaseException] = None,
+    stage: str = "unknown",
+) -> str:
     """Return a controlled failure class; never transmit an exception or user input."""
     text = message.lower()
+    if isinstance(failure, MemoryGuardError) or "memory guard" in text or "exceeded" in text and "memory" in text:
+        return "memory_limit"
+    if isinstance(failure, TimeoutError):
+        return "no_output_timeout" if "no output" in text else "stage_timeout"
+    if isinstance(failure, FileNotFoundError):
+        return "missing_required_file"
+    if isinstance(failure, PermissionError):
+        return "permission_denied"
     if "no output" in text:
         return "no_output_timeout"
     if "timed out" in text or "timeout" in text:
         return "stage_timeout"
-    if "memory" in text or "rss" in text:
+    if "memory" in text or "rss" in text or "out of memory" in text:
         return "memory_limit"
-    if "not found" in text or "no such file" in text:
+    if "permission denied" in text or "access is denied" in text:
+        return "permission_denied"
+    if "no module named" in text or "modulenotfounderror" in text or "importerror" in text:
+        return "dependency_unavailable"
+    if "not found" in text or "no such file" in text or "missing" in text or "required" in text:
         return "missing_required_file"
     if "backup" in text or "archive" in text:
         return "archive_backup_failed"
-    if "validation" in text or "checkpoint" in text or "artifact" in text:
+    if stage == "final_validation" or "validation" in text or "checkpoint" in text or "artifact" in text or "could not read" in text:
         return "output_validation_failed"
     if "code " in text or "subprocess" in text:
         return "stage_process_failed"
-    return "unexpected_error"
+    # The exception type is a useful, non-sensitive diagnostic for genuine
+    # application faults.  Its message stays only in the protected job log.
+    if isinstance(failure, KeyError):
+        return "internal_key_error"
+    if isinstance(failure, TypeError):
+        return "internal_type_error"
+    if isinstance(failure, ValueError):
+        return "internal_value_error"
+    if isinstance(failure, OSError):
+        return "io_error"
+    return "unclassified_runtime_error"
 
 
 def _analytics_result_metrics(job_dir: str) -> Dict[str, Any]:
@@ -1251,6 +1285,9 @@ def _attempt_randy_backup(job_id: str, job_dir: str, *, status: str, required_re
 def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_seq: str) -> None:
     job_dir = os.path.join(JOBS_DIR, job_id)
     pipeline_started_at = time.monotonic()
+    # Keep this separate from the current script name: setup and final
+    # validation can fail outside run_script_logged().
+    analytics_stage = "workspace_setup"
     job_metadata = {}
     try:
         with open(_job_metadata_path(job_dir), "r", encoding="utf-8") as handle:
@@ -1291,7 +1328,9 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
         write_job_metadata(job_id, {"last_log_at": _metadata_timestamp()}, job_dir=job_dir)
         _check_memory_guard(job_id, "pipeline", job_dir, phase="startup")
 
+        analytics_stage = "workspace_setup"
         _copy_assets(job_id, job_dir)
+        analytics_stage = "input_write"
         _write_inputs(job_id, job_dir, target_name, search_query, fasta_seq)
 
         # NOTE: Step 11 should NOT receive job_id as an arg unless it explicitly parses it.
@@ -1314,6 +1353,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
         ]
 
         for script_name, args in scripts:
+            analytics_stage = ""
             try:
                 run_script_logged(
                     job_id=job_id,
@@ -1334,6 +1374,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
             elif script_name == "12_Results.py":
                 validate_mcs_sdf_checkpoint(job_id, job_dir, copied=True)
 
+        analytics_stage = "final_validation"
         validate_required_display_artifacts(job_id, job_dir)
 
         with JOB_LOCK:
@@ -1361,6 +1402,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
 
         backup_result: Optional[Dict[str, Any]] = None
         if backup_on_complete():
+            analytics_stage = "archive_backup"
             backup_result = _attempt_randy_backup(
                 job_id,
                 job_dir,
@@ -1384,6 +1426,7 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
             log_message(job_id, "🗄️ RANDY backup skipped: WARHEAD_BACKUP_ON_COMPLETE=0")
 
         try:
+            analytics_stage = "cleanup_packaging"
             _run_cleanup_packaging(job_id, job_dir)
         except Exception as cleanup_error:
             log_message(job_id, f"⚠️ Cleanup packaging step failed: {cleanup_error}")
@@ -1429,7 +1472,9 @@ def run_pipeline_task(job_id: str, target_name: str, search_query: str, fasta_se
             source=analytics_source,
             runtime_seconds=round(time.monotonic() - pipeline_started_at, 3),
             failed_step=failed_step,
+            failed_stage=analytics_stage,
             failure_message=str(e),
+            failure=e,
         )
 
         log_message(job_id, f"❌ CRITICAL ERROR: {str(e)}")

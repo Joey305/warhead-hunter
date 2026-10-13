@@ -569,8 +569,8 @@ def hunter_analytics_overview(days: int = 30) -> Dict[str, Any]:
 HUNTER_EVENT_TYPES = {"workflow_started", "results_viewed", "export_generated", "companion_handoff", "analysis_submitted", "analysis_started", "analysis_completed", "analysis_failed"}
 HUNTER_FEATURES = {"hunter_launch", "rcsb_scout", "manual_upload", "api_docs", "job_monitor", "results_gallery", "candidate_structure", "candidate_2d_map", "archive_browse", "example_detail", "hunter_job", "sdf_download", "pdb_download", "job_bundle_download", "war_pdb_bundle_download", "job_index_csv", "api_artifact_download", "builder_from_results_gallery"}
 HUNTER_SAFE_FIELDS = {"event_id", "event_type", "feature", "occurred_at_utc", "visitor_id", "session_id", "route", "referrer_host", "device_type", "country_code", "country_name", "latitude", "longitude", "handoff_id", "runtime_seconds", "failure_stage", "failure_reason", "structure_count", "pose_count", "unique_ligand_count", "total_ligand_atoms", "exposed_atom_count", "mean_percent_exposed", "high_exposure_pose_count", "archive_verified"}
-HUNTER_FAILURE_STAGES = {"input_validation", "structure_retrieval", "structure_preparation", "sasa", "atom_mapping", "result_generation", "archive_backup", "unknown"}
-HUNTER_FAILURE_REASONS = {"no_output_timeout", "stage_timeout", "memory_limit", "missing_required_file", "archive_backup_failed", "output_validation_failed", "stage_process_failed", "unexpected_error"}
+HUNTER_FAILURE_STAGES = {"workspace_setup", "input_write", "input_validation", "structure_retrieval", "structure_preparation", "sasa", "atom_mapping", "result_generation", "final_validation", "cleanup_packaging", "archive_backup", "unknown"}
+HUNTER_FAILURE_REASONS = {"no_output_timeout", "stage_timeout", "memory_limit", "missing_required_file", "permission_denied", "dependency_unavailable", "archive_backup_failed", "output_validation_failed", "stage_process_failed", "internal_key_error", "internal_type_error", "internal_value_error", "io_error", "unclassified_runtime_error", "unexpected_error"}
 
 
 def store_warhead_hunter_event(payload: Dict[str, Any]) -> bool:
