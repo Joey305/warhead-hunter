@@ -3955,6 +3955,11 @@ def about():
     return render_template("about.html", **stats)
 
 
+@app.route("/citation")
+def citation():
+    return render_template("citation.html")
+
+
 @app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
     if not _admin_credentials_configured():

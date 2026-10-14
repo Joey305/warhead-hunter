@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Cite Warhead Hunter{% endblock %}
+{% block content %}
+<section class="panel-card" style="max-width:900px;margin:2rem auto;padding:2rem">
+  <p class="eyebrow">Research software</p><h1>How to cite Warhead Hunter</h1>
+  <p>Use the version-specific Zenodo DOI when Warhead Hunter informs structural interpretation, solvent-exposure analysis, or attachment-vector prioritization.</p>
+  <div class="panel-card" style="margin:1.5rem 0;padding:1.25rem"><h2>Recommended citation</h2><p>The Schürer Lab. (2026). <em>Warhead Hunter</em> (Version v2026.10) [Computer software]. Zenodo. <a href="https://doi.org/10.5281/zenodo.23374645">https://doi.org/10.5281/zenodo.23374645</a></p></div>
+  <p><a class="btn btn-primary" href="https://doi.org/10.5281/zenodo.23374645">Open Zenodo DOI</a> <a class="btn btn-secondary" href="{{ url_for('static', filename='citations/warhead-hunter-v2026.10.ris') }}" download>Download RIS</a></p>
+</section>
+{% endblock %}
