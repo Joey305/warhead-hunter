@@ -2174,7 +2174,10 @@ def api_indexed_jobs():
             "source": j.get("source", ""),
             "source_label": j.get("source_label", ""),
             "created_at": j.get("created_at", ""),
+            "finished_at": j.get("finished_at", ""),
             "modified_at": j.get("modified_at", ""),
+            "submission_source": j.get("submission_source", "unknown"),
+            "submission_source_label": j.get("submission_source_label", "UNKNOWN"),
             "monitor_url": j.get("monitor_url", f"/monitor/{j.get('job_id', '')}"),
             "open_job_url": j.get("open_job_url", f"/open_job/{j.get('job_id', '')}"),
             "browser_results_url": j.get("results_url", f"/results/{j.get('job_id', '')}"),
@@ -2406,6 +2409,7 @@ def _job_meta_from_dir(job_dir: Path) -> Dict[str, Any]:
         job_dir / "Results_Display.csv",
     ]))
     status = str(hydrated.get("status") or disk_meta.get("status") or ("completed" if has_results else "unknown")).lower()
+    submission_source, submission_source_label = _submission_channel(disk_meta)
 
     return {
         "job_id": job_dir.name,
@@ -2418,10 +2422,13 @@ def _job_meta_from_dir(job_dir: Path) -> Dict[str, Any]:
         "available": has_results,
         "status": status,
         "created_at": str(disk_meta.get("created_at") or created_s),
+        "finished_at": str(disk_meta.get("finished_at") or ""),
         "modified_at": modified_s,
         "mtime": modified_s,
         "source": "local_disk",
         "source_label": "LOCAL DISK",
+        "submission_source": submission_source,
+        "submission_source_label": submission_source_label,
         "browse_source_label": "Local jobs directory",
         "open_job_url": f"/open_job/{job_dir.name}",
         "results_url": f"/results/{job_dir.name}",
@@ -2472,6 +2479,27 @@ def _browse_source_label(mode: str) -> str:
     }.get(mode, "Indexed results library")
 
 
+def _submission_channel(meta: Dict[str, Any]) -> tuple[str, str]:
+    """Return the run origin separately from the storage/archive source."""
+    request_meta = meta.get("request") if isinstance(meta.get("request"), dict) else {}
+    metadata = meta.get("metadata") if isinstance(meta.get("metadata"), dict) else {}
+    raw = str(
+        meta.get("submission_source")
+        or meta.get("run_source")
+        or request_meta.get("submission_source")
+        or request_meta.get("source")
+        or metadata.get("submission_source")
+        or metadata.get("source")
+        or meta.get("source")
+        or ""
+    ).strip().lower()
+    if raw in {"api", "programmatic", "sdk"}:
+        return "api", "API"
+    if raw in {"web", "tool", "hunter", "ui", "manual"}:
+        return "tool", "HUNTER TOOL"
+    return "unknown", "UNKNOWN"
+
+
 def _normalize_browse_job(meta: Dict[str, Any], *, source: str, mode: str) -> Dict[str, Any]:
     job_id = str(meta.get("job_id") or "").strip()
     has_results = bool(meta.get("has_results"))
@@ -2487,6 +2515,7 @@ def _normalize_browse_job(meta: Dict[str, Any], *, source: str, mode: str) -> Di
     bundle_available = bool(meta.get("bundle_available"))
     if source == "local_disk":
         bundle_available = True
+    submission_source, submission_source_label = _submission_channel(meta)
     return {
         **meta,
         "job_id": job_id,
@@ -2500,6 +2529,8 @@ def _normalize_browse_job(meta: Dict[str, Any], *, source: str, mode: str) -> Di
         "status": status,
         "source": source,
         "source_label": source_label,
+        "submission_source": submission_source,
+        "submission_source_label": submission_source_label,
         "browse_source_label": _browse_source_label(mode),
         "open_job_url": open_job_url,
         "open_job_disabled_reason": open_job_disabled_reason,
@@ -2515,7 +2546,7 @@ def _merge_browse_job_records(primary: Dict[str, Any], secondary: Dict[str, Any]
     merged = dict(secondary)
     merged.update(primary)
 
-    for field in ["protein", "target_name", "search_query", "fasta", "created_at", "modified_at", "mtime"]:
+    for field in ["protein", "target_name", "search_query", "fasta", "created_at", "finished_at", "modified_at", "mtime", "submission_source", "submission_source_label"]:
         primary_value = str(primary.get(field) or "").strip()
         secondary_value = str(secondary.get(field) or "").strip()
         merged[field] = primary_value or secondary_value
@@ -4049,7 +4080,7 @@ def launch_job():
     if not target or not query:
         return "Missing Data", 400
 
-    job_id = start_job(target, query, fasta)
+    job_id = start_job(target, query, fasta, source="tool")
     emit_product_analytics("workflow_started", "hunter_launch", route="/launch_job")
     return redirect(url_for("job_monitor", job_id=job_id))
 

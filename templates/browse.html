@@ -137,6 +137,22 @@
     text-overflow: ellipsis;
   }
 
+  .run-date {
+    min-width: 154px;
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.45;
+  }
+
+  .run-date .date-label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.76em;
+    font-weight: 800;
+    letter-spacing: 0.35px;
+    text-transform: uppercase;
+  }
+
   .actions{
     display:flex;
     gap:8px;
@@ -391,6 +407,8 @@
             <th style="width: 118px;">Job ID</th>
             <th style="width: 180px;">Protein</th>
             <th>Search Query</th>
+            <th style="width: 175px;">Run Date</th>
+            <th style="width: 125px;">Submitted Via</th>
             <th style="width: 145px;">Status</th>
             <th style="width: 160px;">Results</th>
             <th style="width: 250px; text-align:right;">Actions</th>
@@ -399,7 +417,7 @@
 
         <tbody id="jobsBody">
           {% if jobs|length == 0 %}
-            <tr><td colspan="6" class="empty">{{ browse_empty_message or "No jobs found in the results library." }}</td></tr>
+            <tr><td colspan="8" class="empty">{{ browse_empty_message or "No jobs found in the results library." }}</td></tr>
           {% endif %}
 
           {% for j in jobs %}
@@ -411,6 +429,18 @@
               <td class="jobid">{{ j.job_id }}</td>
               <td class="protein">{{ j.protein or "—" }}</td>
               <td title="{{ j.search_query or '' }}" class="query">{{ j.search_query or "—" }}</td>
+              <td class="run-date">
+                {% if (j.status or '')|lower == 'failed' and j.finished_at %}
+                  <span class="date-label">Failed</span>{{ j.finished_at }}
+                {% elif j.created_at %}
+                  <span class="date-label">Submitted</span>{{ j.created_at }}
+                {% elif j.modified_at %}
+                  <span class="date-label">Last indexed</span>{{ j.modified_at }}
+                {% else %}
+                  —
+                {% endif %}
+              </td>
+              <td><span class="badge {{ 'ok' if j.submission_source == 'api' else 'warn' if j.submission_source == 'unknown' else '' }}">{{ j.submission_source_label or 'UNKNOWN' }}</span></td>
               <td>
                 <div style="display:flex; gap:8px; flex-wrap:wrap;">
                   <span class="badge">{{ (j.status or "unknown")|upper }}</span>
@@ -459,7 +489,7 @@
             </tr>
 
             <tr id="fasta-row-{{ j.job_id }}" class="fasta-row">
-              <td colspan="6" class="fasta-cell">
+              <td colspan="8" class="fasta-cell">
                 <div class="fasta-box">
                   <div class="fasta-head">
                     <div class="fasta-title">FASTA — {{ j.protein or "Unknown" }} (Job {{ j.job_id }})</div>

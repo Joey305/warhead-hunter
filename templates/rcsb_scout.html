@@ -36,6 +36,25 @@
     margin-top: 12px;
   }
 
+  .scout-intro {
+    margin: 0 0 14px;
+    padding: 15px 17px;
+    border: 1px solid color-mix(in srgb, var(--tron-cyan) 28%, var(--surface-border));
+    border-radius: 13px;
+    background: color-mix(in srgb, var(--tron-cyan) 5%, var(--page-surface-muted));
+  }
+
+  .scout-intro-title { color: var(--tron-cyan); font-weight: 900; letter-spacing: .45px; }
+  .scout-intro-copy { color: var(--text-secondary); line-height: 1.5; margin-top: 5px; }
+  .scout-guide { display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:12px; }
+  .scout-guide-item { padding:10px; border:1px solid var(--surface-border); border-radius:9px; background:var(--page-surface); color:var(--text-muted); font-size:.87em; line-height:1.4; }
+  .scout-guide-item strong { display:block; color:var(--text-primary); margin-bottom:3px; }
+  .scout-examples { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:10px; }
+  .scout-examples-label { color:var(--text-muted); font-size:.84em; font-weight:800; text-transform:uppercase; letter-spacing:.3px; }
+  .scout-example { border:1px solid var(--button-border); background:var(--button-bg); color:var(--button-text); border-radius:999px; padding:6px 10px; cursor:pointer; font:inherit; font-size:.84em; }
+  .scout-example:hover { border-color:var(--tron-cyan); color:var(--tron-cyan); background:var(--button-bg-hover); }
+  @media (max-width: 680px) { .scout-guide { grid-template-columns:1fr; } }
+
   .mode-pills {
     display: flex;
     gap: 10px;
@@ -611,11 +630,20 @@
 <div class="container" style="max-width: 1400px;">
   <h1 class="glow-text">RCSB TARGET SCOUT</h1>
 
+  <section class="scout-intro" aria-label="How to use RCSB Target Scout">
+    <div class="scout-intro-title">FIND A LIGAND-BOUND STRUCTURE BEFORE YOU LAUNCH A HUNT</div>
+    <div class="scout-intro-copy">Use Scout when you need help choosing the right protein structure. Load a known PDB ID, or search RCSB by protein plus a ligand/inhibitor term. Then inspect the structure, select the intended protein chain, and send that exact FASTA and query to Warhead Hunter.</div>
+    <div class="scout-guide">
+      <div class="scout-guide-item"><strong>I already have a PDB ID</strong>Use <em>PDB ID</em> for a four-character accession such as <em>4CI3</em> or <em>5ZWJ</em>.</div>
+      <div class="scout-guide-item"><strong>I only know the target or ligand</strong>Use <em>Protein / Keyword</em>. Search a phrase like <em>cereblon pomalidomide bound</em>, then choose a matching PDB.</div>
+    </div>
+  </section>
+
   <!-- MODE SELECTOR -->
   <div class="glass-panel mode-bar">
     <div style="display:flex; flex-direction:column;">
-      <div style="color:var(--text-secondary); font-weight:700;">SEARCH MODE</div>
-      <div style="color:var(--text-muted); font-size:0.85em;">Pick how you want to query RCSB</div>
+      <div style="color:var(--text-secondary); font-weight:700;">STEP 1 — CHOOSE HOW YOU WANT TO START</div>
+      <div style="color:var(--text-muted); font-size:0.85em;">Known accession? Use PDB ID. Otherwise search using protein + ligand/inhibitor words.</div>
     </div>
 
     <div class="mode-pills">
@@ -632,30 +660,27 @@
   <div id="panelDirect" class="mode-panel">
     <div class="glass-panel search-panel">
       <div style="font-size: 1.5em; color: var(--tron-cyan);">🔍</div>
-      <input type="text" id="pdbInput" placeholder="Enter PDB ID (e.g. 4CI3, 3EKY)"
+      <input type="text" id="pdbInput" placeholder="Enter exactly one 4-character PDB ID (e.g. 4CI3, 5ZWJ)"
              style="flex-grow: 1; padding: 15px; background: var(--input-bg); border: 1px solid var(--tron-cyan); color: var(--input-text); font-size: 1.2em; border-radius: 5px;"
              onkeypress="handleEnter(event)">
       <button onclick="fetchPDB()" class="tron-btn" style="width: 200px;">FETCH DATA</button>
     </div>
-    <div class="hint-text">Tip: This is fastest when you already know the PDB ID.</div>
+    <div class="hint-text">Use this only when you already know a specific structure accession.</div>
+    <div class="scout-examples"><span class="scout-examples-label">Try an example:</span><button class="scout-example" type="button" onclick="loadPdbExample('4CI3')">4CI3 · CRBN</button><button class="scout-example" type="button" onclick="loadPdbExample('5ZWJ')">5ZWJ · EGFR</button></div>
   </div>
 
   <!-- PANEL B: KEYWORD SEARCH -->
   <div id="panelSearch" class="mode-panel hidden">
     <div class="glass-panel search-panel">
       <div style="font-size: 1.5em; color: var(--tron-yellow);">🧠</div>
-      <input type="text" id="queryInput" placeholder="Search by protein name, gene, UniProt, ligand text…"
+      <input type="text" id="queryInput" placeholder="Protein + bound ligand/inhibitor (e.g. cereblon pomalidomide bound)"
              style="flex-grow:1; padding:15px; background:var(--input-bg); border:1px solid var(--tron-yellow); color:var(--input-text); font-size:1.2em; border-radius:5px;"
              onkeypress="if(event.key==='Enter') searchRCSB(true)">
       <button onclick="searchRCSB(true)" class="tron-btn" style="width:200px;">SEARCH RCSB</button>
     </div>
 
-    <div class="hint-text">
-      Examples: <span style="color:var(--text-secondary);">HIV-1 protease</span>,
-      <span style="color:var(--text-secondary);">cereblon pomalidomide bound</span>,
-      <span style="color:var(--text-secondary);">DYRK1A inhibitor bound</span>,
-      <span style="color:var(--text-secondary);">uniprot:P00533</span>
-    </div>
+    <div class="hint-text">Be specific: include the protein plus a ligand, inhibitor, “bound”, or “covalent” term. A target name alone often returns structures that cannot answer the warhead question.</div>
+    <div class="scout-examples"><span class="scout-examples-label">Try an example:</span><button class="scout-example" type="button" onclick="loadSearchExample('cereblon pomalidomide bound')">CRBN + pomalidomide</button><button class="scout-example" type="button" onclick="loadSearchExample('HIV-1 protease inhibitor bound')">HIV-1 protease + inhibitor</button><button class="scout-example" type="button" onclick="loadSearchExample('DYRK1A inhibitor bound')">DYRK1A + inhibitor</button></div>
 
     <div id="hitList" class="glass-panel" style="display:none; margin-top:15px;">
       <h3 style="color: var(--tron-yellow); margin-top:0;">MATCHES</h3>
@@ -909,6 +934,22 @@
       bA.classList.remove("active");
       setTimeout(() => document.getElementById("queryInput")?.focus(), 140);
     }
+  }
+
+  function loadPdbExample(pdbId) {
+    setMode('direct');
+    const input = document.getElementById('pdbInput');
+    if (!input) return;
+    input.value = pdbId;
+    fetchPDB();
+  }
+
+  function loadSearchExample(query) {
+    setMode('search');
+    const input = document.getElementById('queryInput');
+    if (!input) return;
+    input.value = query;
+    searchRCSB(true);
   }
 
   // -----------------------------

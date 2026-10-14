@@ -70,6 +70,30 @@ class BrowseLegacyJobsTests(unittest.TestCase):
         self.assertEqual(merged["target_name"], "OGA")
         self.assertEqual(merged["search_query"], "O-GlcNAcase 9BA9 6PM9 5UN9 5M7T")
 
+    def test_browse_normalization_keeps_submission_channel_separate_from_archive_source(self):
+        record = app._normalize_browse_job(
+            {
+                "job_id": "2d9b72a8",
+                "status": "failed",
+                "created_at": "2026-05-26T22:41:35Z",
+                "finished_at": "2026-05-27T00:41:42Z",
+                "metadata": {"source": "api"},
+            },
+            source="randy_hunter_job_archive",
+            mode="randy",
+        )
+
+        self.assertEqual(record["source"], "randy_hunter_job_archive")
+        self.assertEqual(record["submission_source"], "api")
+        self.assertEqual(record["submission_source_label"], "API")
+        self.assertEqual(record["finished_at"], "2026-05-27T00:41:42Z")
+
+    def test_legacy_web_submission_is_labeled_hunter_tool(self):
+        source, label = app._submission_channel({"source": "web"})
+
+        self.assertEqual(source, "tool")
+        self.assertEqual(label, "HUNTER TOOL")
+
 
 if __name__ == "__main__":
     unittest.main()

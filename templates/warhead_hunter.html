@@ -19,6 +19,24 @@
 
   .wh-card { padding: 22px; }
 
+  .wh-start {
+    border: 1px solid color-mix(in srgb, var(--tron-cyan) 30%, var(--surface-border));
+    background: color-mix(in srgb, var(--tron-cyan) 5%, var(--page-surface-muted));
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 16px;
+  }
+
+  .wh-start-title { color: var(--tron-cyan); font-weight: 900; letter-spacing: .4px; }
+  .wh-start-copy { color: var(--text-secondary); line-height: 1.5; margin-top: 5px; }
+  .wh-steps { display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-top:12px; }
+  .wh-step { border:1px solid var(--surface-border); border-radius:9px; padding:9px 10px; color:var(--text-muted); font-size:.86em; line-height:1.35; background:var(--page-surface); }
+  .wh-step strong { color:var(--text-primary); display:block; margin-bottom:2px; }
+  .wh-example-title { color:var(--text-secondary); font-size:.84em; font-weight:800; letter-spacing:.4px; text-transform:uppercase; margin:0 0 8px; }
+  .wh-example-card { margin:0 0 18px; padding:14px; border:1px solid var(--surface-border); border-radius:11px; background:var(--page-surface-muted); }
+  .wh-example-card p { margin:0 0 10px; color:var(--text-muted); font-size:.88em; line-height:1.4; }
+  @media (max-width: 680px){ .wh-steps { grid-template-columns: 1fr; } }
+
   .wh-grid {
     display:grid;
     grid-template-columns: 1fr 1fr;
@@ -145,13 +163,33 @@
   <div class="glass-panel wh-card">
     <form action="/launch_job" method="POST" id="whForm">
 
+      <section class="wh-start" aria-label="How to use Warhead Hunter">
+        <div class="wh-start-title">START HERE — WHAT THIS TOOL SEARCHES</div>
+        <div class="wh-start-copy">Warhead Hunter searches RCSB for <strong>ligand-bound structures</strong> matching your phrase, then maps solvent exposure around their ligands. It does <strong>not</strong> search a target name alone: the query should describe a protein plus a bound ligand, inhibitor, or covalent state.</div>
+        <div class="wh-steps">
+          <div class="wh-step"><strong>1. Name the target</strong>A short label for your results, e.g. <em>CRBN</em>.</div>
+          <div class="wh-step"><strong>2. Describe the structure</strong>Use a searchable RCSB phrase, e.g. <em>cereblon pomalidomide bound</em>.</div>
+          <div class="wh-step"><strong>3. Add FASTA if needed</strong>Recommended for broad names or protein families; then launch the scan.</div>
+        </div>
+      </section>
+
+      <section class="wh-example-card" aria-label="Ready-to-use examples">
+        <div class="wh-example-title">Not sure what to type? Load a complete example</div>
+        <p>These fill both required fields with a working search pattern. You can edit them before launching.</p>
+        <div class="wh-chips">
+          <button class="wh-chip" type="button" onclick="loadExample('CRBN','cereblon pomalidomide bound')">CRBN + pomalidomide</button>
+          <button class="wh-chip" type="button" onclick="loadExample('HIV-1 Protease','HIV-1 protease inhibitor bound')">HIV-1 protease + inhibitor</button>
+          <button class="wh-chip" type="button" onclick="loadExample('DYRK1A','DYRK1A inhibitor bound')">DYRK1A + inhibitor</button>
+        </div>
+      </section>
+
       <!-- TOP: two-column inputs -->
       <div class="wh-grid">
         <div class="wh-field">
           <div class="wh-label">Target Identifier</div>
           <input class="wh-input" type="text" name="target_name" id="target_name"
                  placeholder="e.g. KRAS, BTK, SMARCA2" required>
-          <div class="wh-help">Short label used to name and organize outputs.</div>
+          <div class="wh-help">Step 1: a short name for this run only. This field does not control the RCSB search.</div>
 
           <div class="wh-chips" aria-label="Target examples">
             <div class="wh-chip" onclick="setField('target_name','CRBN')">CRBN</div>
@@ -164,7 +202,7 @@
           <div class="wh-label">RCSB Search Query</div>
           <input class="wh-input" type="text" name="search_query" id="search_query"
                  placeholder="e.g. KRAS covalently bound" required>
-          <div class="wh-help">Natural language is fine. Include “covalent”, “bound”, inhibitor names, etc.</div>
+          <div class="wh-help">Step 2: this controls the RCSB search. Include the protein plus “bound”, a ligand/inhibitor name, or “covalent”. Avoid a target name by itself.</div>
 
           <div class="wh-chips" aria-label="Query examples">
             <div class="wh-chip" onclick="setField('search_query','cereblon pomalidomide bound')">cereblon pomalidomide bound</div>
@@ -192,7 +230,7 @@ MSEQNNTEMTFQIQRIYTKDISFEAPNAPHVFQKDW..."></textarea>
       <!-- ACTIONS -->
       <div class="wh-actions">
         <div class="wh-note">
-          This will start a scan job and generate outputs in your jobs directory.
+          Review the target and search phrase, then initiate the scan. Need help finding a PDB first? <a href="/scout">Use RCSB Target Scout</a>.
         </div>
 
         <div style="display:flex; gap:10px; margin-left:auto;">
@@ -218,6 +256,12 @@ MSEQNNTEMTFQIQRIYTKDISFEAPNAPHVFQKDW..."></textarea>
     document.getElementById("search_query").value = "";
     document.getElementById("fasta_seq").value = "";
     document.getElementById("target_name").focus();
+  }
+
+  function loadExample(target, query){
+    document.getElementById("target_name").value = target;
+    document.getElementById("search_query").value = query;
+    document.getElementById("search_query").focus();
   }
 </script>
 
