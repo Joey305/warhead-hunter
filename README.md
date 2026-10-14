@@ -494,13 +494,13 @@ Potential development directions:
 
 ## 🧬 Citation
 
-A manuscript for Warhead Hunter is currently in preparation. Until the Zenodo record is issued, cite the exact tagged software release:
+A manuscript for Warhead Hunter is currently in preparation. Please cite the published Zenodo software record:
 
 ```text
-The Schürer Lab. (2026). Warhead Hunter (Version 2026.10) [Computer software]. https://github.com/Joey305/warhead-hunter
+The Schürer Lab. (2026). Warhead Hunter (Version v2026.10) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23374645
 ```
 
-The repository includes `CITATION.cff` and `.zenodo.json`. When the Zenodo release DOI is available, use the version DOI instead of the GitHub URL and add it to `CITATION.cff`. A future preprint or publication can become the preferred citation.
+Visit [warheadhunter.com/citation](https://warheadhunter.com/citation) to copy the citation or download RIS. `CITATION.cff` contains the same release metadata for GitHub. A future preprint or publication can become the preferred citation.
 
 <p align="center">
   <a href="https://warheadhunter.com">
