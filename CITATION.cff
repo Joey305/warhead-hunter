@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use Warhead Hunter in academic work, please cite this software."
+title: "Warhead Hunter"
+type: software
+authors:
+  - name: "The Schürer Lab"
+    affiliation: "University of Miami"
+license: "PolyForm-Noncommercial-1.0.0"
+repository-code: "https://github.com/Joey305/warhead-hunter"
+date-released: 2026-10-13
+version: "2026.10"
