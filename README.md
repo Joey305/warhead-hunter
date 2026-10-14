@@ -494,15 +494,13 @@ Potential development directions:
 
 ## 🧬 Citation
 
-A manuscript for Warhead Hunter is currently in preparation.
-
-For now, cite the GitHub repository and website:
+A manuscript for Warhead Hunter is currently in preparation. Until the Zenodo record is issued, cite the exact tagged software release:
 
 ```text
-Schulz, J.-M. Warhead Hunter: Structure-Aware Solvent Exposure Analysis for Warhead, Linker, and PROTAC Attachment Vector Discovery. GitHub repository: https://github.com/Joey305/warhead-hunter. Web platform: https://warheadhunter.com.
+The Schürer Lab. (2026). Warhead Hunter (Version 2026.10) [Computer software]. https://github.com/Joey305/warhead-hunter
 ```
 
-Once a preprint or publication is available, this section should be updated with the formal citation, DOI, and manuscript link.
+The repository includes `CITATION.cff` and `.zenodo.json`. When the Zenodo release DOI is available, use the version DOI instead of the GitHub URL and add it to `CITATION.cff`. A future preprint or publication can become the preferred citation.
 
 <p align="center">
   <a href="https://warheadhunter.com">

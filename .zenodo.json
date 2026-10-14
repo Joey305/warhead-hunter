@@ -1,0 +1,13 @@
+{
+  "title": "Warhead Hunter",
+  "description": "A web-based molecular-design tool for identifying solvent-exposed ligand atoms in protein-bound structures and prioritizing chemically useful modification sites for warhead, linker, and PROTAC attachment-vector discovery.",
+  "creators": [
+    {
+      "name": "The Schürer Lab",
+      "affiliation": "University of Miami"
+    }
+  ],
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "access_right": "open",
+  "keywords": ["PROTAC", "warhead", "solvent exposure", "structural biology", "molecular design"]
+}
